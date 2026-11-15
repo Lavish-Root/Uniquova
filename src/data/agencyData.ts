@@ -1,0 +1,614 @@
+export interface ServiceItem {
+  id: string;
+  slug: string;
+  title: string;
+  shortDesc: string;
+  tagline: string;
+  badge: string;
+  iconName: "ShoppingCart" | "Code" | "Smartphone" | "PenTool" | "Palette";
+  features: string[];
+  deliverables: string[];
+  benefits: string[];
+  workflow: { step: string; title: string; desc: string }[];
+  faqs: { q: string; a: string }[];
+}
+
+export const SERVICES_DATA: ServiceItem[] = [
+  {
+    id: "ecommerce",
+    slug: "ecommerce",
+    title: "E-commerce Solutions",
+    tagline: "Sell. Grow. Scale.",
+    badge: "Marketplace & Growth",
+    shortDesc: "End-to-end management and scaling for Amazon, Flipkart, and direct-to-consumer digital storefronts.",
+    iconName: "ShoppingCart",
+    features: [
+      "Amazon marketplace management",
+      "Flipkart marketplace management",
+      "Product listing optimization",
+      "Product catalog management",
+      "Marketplace advertising and PPC",
+      "Storefront management",
+      "E-commerce account health support",
+    ],
+    deliverables: [
+      "Optimized A+ Content & High-Converting Bullet Points",
+      "Targeted Keyword Research & Competitor Benchmarking",
+      "PPC Campaign Architecture & Bid Management",
+      "Weekly ROAS and Buy-Box Monitoring Reports",
+      "Inventory Forecasting & Brand Registry Support",
+    ],
+    benefits: [
+      "Higher organic ranking across top search queries",
+      "Lower ACoS and maximized return on ad spend",
+      "Seamless day-to-day operations with dedicated marketplace specialists",
+      "Proactive protection against listing suppressions and policy flags",
+    ],
+    workflow: [
+      { step: "01", title: "Marketplace Audit", desc: "Comprehensive review of listings, catalog health, indexation, and ad spend efficiency." },
+      { step: "02", title: "Catalog & SEO Overhaul", desc: "Keyword-rich title, bullet, and image restructuring with consumer-intent copywriting." },
+      { step: "03", title: "Ad Strategy & Launch", desc: "Precision sponsored ads, video campaigns, and brand defense targeting." },
+      { step: "04", title: "Ongoing Scale", desc: "Daily bid management, negative keywords, inventory alerts, and monthly growth scaling." },
+    ],
+    faqs: [
+      {
+        q: "Which marketplaces do you actively manage?",
+        a: "We specialize in Amazon (IN, US, UK, UAE) and Flipkart, along with Shopify and WooCommerce headless integrations.",
+      },
+      {
+        q: "How fast can we see improvement in sales?",
+        a: "Listing enhancements and PPC restructuring typically show indexed keyword rank improvement and lower ACoS within 2 to 4 weeks.",
+      },
+      {
+        q: "Do you handle account suspension issues?",
+        a: "Yes, our team assists with Plan of Action (POA) documentation and policy compliance to restore suspended ASINs or seller privileges.",
+      },
+    ],
+  },
+  {
+    id: "web-development",
+    slug: "web-development",
+    title: "Website Development",
+    tagline: "Build. Perform. Excel.",
+    badge: "Full-Stack & Performance",
+    shortDesc: "High-performance business websites, headless e-commerce stores, and custom web applications.",
+    iconName: "Code",
+    features: [
+      "Business websites",
+      "E-commerce websites",
+      "Landing pages with ultra-high conversion",
+      "Custom web applications",
+      "UI/UX design & design systems",
+      "Website maintenance & security audits",
+    ],
+    deliverables: [
+      "Blazing-fast Next.js / React production codebases",
+      "Tailwind CSS custom styling with responsive mobile-first grids",
+      "Accessible, semantic markup optimized for 95+ Google Lighthouse scores",
+      "Complete CMS integration (Sanity, Strapi, WordPress, or custom headless)",
+      "Automated SSL, SEO metadata, and CDN deployment setup",
+    ],
+    benefits: [
+      "Lightning load speeds resulting in reduced bounce rates",
+      "Flawless responsiveness across phones, tablets, and wide monitors",
+      "Modular architectures that scale effortlessly as your traffic spikes",
+      "Clear conversion funnels designed to turn anonymous clicks into high-ticket leads",
+    ],
+    workflow: [
+      { step: "01", title: "Architecture & Wireframes", desc: "User journey mapping, information hierarchy, and interactive Figma wireframes." },
+      { step: "02", title: "UI/UX & Prototyping", desc: "Pixel-perfect visual design, micro-interactions, and design token specifications." },
+      { step: "03", title: "Modern Engineering", desc: "Clean TypeScript code, responsive Tailwind implementation, and API integrations." },
+      { step: "04", title: "QA & Deployment", desc: "Cross-browser testing, SEO checklist, speed benchmarking, and CI/CD hosting rollout." },
+    ],
+    faqs: [
+      {
+        q: "Which tech stack do you recommend for high-growth businesses?",
+        a: "We primarily build with Next.js, React, TypeScript, and Tailwind CSS backed by scalable Node/Cloudflare infrastructure.",
+      },
+      {
+        q: "Will our internal team be able to edit page copy and images?",
+        a: "Absolutely. We configure intuitive visual headless CMS setups so non-technical staff can create and update pages with ease.",
+      },
+      {
+        q: "Do you offer post-launch support and hosting maintenance?",
+        a: "Yes, we provide flexible monthly maintenance packages covering software updates, backups, security monitoring, and speed optimizations.",
+      },
+    ],
+  },
+  {
+    id: "app-development",
+    slug: "app-development",
+    title: "App Development",
+    tagline: "Innovate. Engage. Grow.",
+    badge: "iOS & Android",
+    shortDesc: "Native and cross-platform mobile apps engineered for fluid performance, security, and user retention.",
+    iconName: "Smartphone",
+    features: [
+      "Android applications",
+      "iOS applications",
+      "Cross-platform applications (Flutter / React Native)",
+      "Custom business applications",
+      "Secure REST & GraphQL API integration",
+    ],
+    deliverables: [
+      "Compiled iOS (.ipa) and Android (.aab) store-ready application binaries",
+      "Clean architectural code with state management (Redux, Zustand, or Riverpod)",
+      "Push notification systems (Firebase Cloud Messaging, OneSignal)",
+      "Payment gateway integration (Stripe, Razorpay, In-App Purchases)",
+      "Full App Store and Google Play compliance review and submission",
+    ],
+    benefits: [
+      "Direct channel to engage customers on their most personal devices",
+      "Native-level 60fps animations and frictionless checkout experiences",
+      "Offline caching and real-time syncing for mission-critical business tools",
+      "Continuous analytics tracking to optimize retention and user lifetime value",
+    ],
+    workflow: [
+      { step: "01", title: "Product Blueprint", desc: "Defining user personas, MVP feature scope, system architecture, and API specs." },
+      { step: "02", title: "Mobile UX/UI Design", desc: "Apple Human Interface and Google Material Design aligned flows and interactions." },
+      { step: "03", title: "Agile Sprints", desc: "Bi-weekly builds with integrated testing, real-device QA, and backend integrations." },
+      { step: "04", title: "Store Submission", desc: "Full submission handling, screenshot design, privacy compliance, and launch monitoring." },
+    ],
+    faqs: [
+      {
+        q: "Should we build cross-platform or native apps?",
+        a: "For over 85% of commercial applications, modern cross-platform frameworks (React Native/Flutter) save up to 40% development cost while delivering identical 60fps performance across both platforms.",
+      },
+      {
+        q: "Do you assist with Google Play and Apple App Store approvals?",
+        a: "Yes! We manage the entire developer account configuration, submission assets, privacy declarations, and review process.",
+      },
+    ],
+  },
+  {
+    id: "branding",
+    slug: "branding",
+    title: "Branding",
+    tagline: "Define. Differentiate.",
+    badge: "Identity & Strategy",
+    shortDesc: "Strategic brand identities that establish authority, captivate audiences, and foster deep customer loyalty.",
+    iconName: "PenTool",
+    features: [
+      "Brand identity development",
+      "Logo design & monogram systems",
+      "Brand strategy & positioning",
+      "Brand guidelines & design systems",
+      "Visual identity systems",
+      "Brand positioning & messaging frameworks",
+    ],
+    deliverables: [
+      "Master vector logo files (SVG, EPS, PNG, PDF in all colorways)",
+      "Comprehensive 30+ page Brand Guidelines document",
+      "Curated typography rules, color palettes, and accessibility ratios",
+      "Business stationery suite (cards, letterheads, invoice templates)",
+      "Social media brand kit and avatar/header asset templates",
+    ],
+    benefits: [
+      "Instantly recognizable presence that commands premium pricing",
+      "Consistent visual language across every digital and print touchpoint",
+      "Deep emotional resonance with your exact target demographic",
+      "Clear positioning that makes competitors look obsolete",
+    ],
+    workflow: [
+      { step: "01", title: "Brand Discovery", desc: "Auditing industry trends, competitor positioning, and brand values." },
+      { step: "02", title: "Moodboards & Concepts", desc: "Exploring 3 distinct conceptual directions with color theory and typography." },
+      { step: "03", title: "Design Refinement", desc: "Precision geometry crafting, lockup variations, and responsive scaling tests." },
+      { step: "04", title: "System Delivery", desc: "Comprehensive brand book, export bundles, and asset handover package." },
+    ],
+    faqs: [
+      {
+        q: "What is included in the Brand Guidelines book?",
+        a: "It details clear usage rules for your logo, clearance space, primary and secondary color palettes with HEX/RGB/CMYK codes, typography hierarchy, imagery style, and do's and don'ts.",
+      },
+      {
+        q: "Who owns the copyright of the brand assets?",
+        a: "You receive 100% full intellectual property and commercial copyright ownership upon project sign-off and final payment.",
+      },
+    ],
+  },
+  {
+    id: "graphic-designing",
+    slug: "graphic-designing",
+    title: "Graphic Designing",
+    tagline: "Create. Communicate.",
+    badge: "Creative & Visuals",
+    shortDesc: "High-impact visual creatives that stop the scroll, elevate campaigns, and accelerate customer conversion.",
+    iconName: "Palette",
+    features: [
+      "Social media creatives (Instagram, LinkedIn, X)",
+      "Advertising creatives for Meta, Google & TikTok ads",
+      "Product creatives & 3D mockups",
+      "Marketing banners & web promo assets",
+      "Brochures, pitch decks and promotional materials",
+    ],
+    deliverables: [
+      "High-res print-ready and digital formats (Figma, AI, PSD, PNG, WebP)",
+      "CTR-optimized ad variants engineered for A/B split testing",
+      "Interactive digital brochure and investor pitch deck presentations",
+      "Custom product packaging and unboxing visuals",
+      "Monthly on-demand design retainer support",
+    ],
+    benefits: [
+      "Consistent visual excellence that builds authority in your niche",
+      "Higher click-through rates and decreased ad acquisition costs",
+      "Rapid turnaround on urgent campaign launches and seasonal sales",
+      "Cohesive storytelling that aligns with your master brand guidelines",
+    ],
+    workflow: [
+      { step: "01", title: "Creative Brief", desc: "Aligning on goals, target audiences, sizes, formats, and call-to-actions." },
+      { step: "02", title: "Visual Ideation", desc: "Developing persuasive headline concepts, visual metaphors, and layout drafts." },
+      { step: "03", title: "Production & Polish", desc: "High-craft graphic execution, color grading, and typography balancing." },
+      { step: "04", title: "Multi-Format Exports", desc: "Exporting across all target platform dimensions ready for instant publishing." },
+    ],
+    faqs: [
+      {
+        q: "Can you provide designs in source formats like Figma or Adobe Illustrator?",
+        a: "Yes, all source layered files (Figma, AI, PSD) along with production-ready WebP, PNG, and PDF exports are delivered.",
+      },
+      {
+        q: "Do you design ad creatives specifically tailored to Meta and Google guidelines?",
+        a: "Yes, our designs strictly comply with platform safe zones, 20% text density recommendations, and conversion best practices.",
+      },
+    ],
+  },
+];
+
+export const WHY_CHOOSE_US_DATA = [
+  {
+    id: "integrated",
+    title: "Integrated Digital Solutions",
+    description:
+      "No more juggling disconnected agencies. We unify e-commerce, web development, apps, branding, and graphic design under one collaborative team.",
+    stat: "100%",
+    statLabel: "End-to-End Synergy",
+  },
+  {
+    id: "business-focused",
+    title: "Business-Focused Approach",
+    description:
+      "We measure success not by vanity metrics, but by your bottom-line profitability, qualified leads, ROAS, and enterprise customer lifetime value.",
+    stat: "3.4x",
+    statLabel: "Average Client ROI",
+  },
+  {
+    id: "creative-thinking",
+    title: "Creative Thinking",
+    description:
+      "Distinctive, award-grade aesthetics that make your company stand out in saturated digital spaces and command premium positioning.",
+    stat: "50+",
+    statLabel: "Design Accolades",
+  },
+  {
+    id: "tech-execution",
+    title: "Technology-Driven Execution",
+    description:
+      "Modern codebases built with Next.js, TypeScript, and modern cloud architectures that ensure lightning speed, security, and zero downtime.",
+    stat: "99.9%",
+    statLabel: "Uptime & Performance",
+  },
+  {
+    id: "scalable",
+    title: "Scalable Solutions",
+    description:
+      "Whether you're an early-stage startup or a high-volume multi-channel enterprise, our systems are built to scale gracefully as you expand.",
+    stat: "10x",
+    statLabel: "Traffic Scalability",
+  },
+  {
+    id: "client-centric",
+    title: "Client-Centric Collaboration",
+    description:
+      "Transparent communication, dedicated project managers, shared Slack channels, and rapid turnaround with zero technical jargon.",
+    stat: "98%",
+    statLabel: "Client Satisfaction",
+  },
+];
+
+export const PROCESS_STEPS = [
+  {
+    number: "01",
+    title: "Discover",
+    subtitle: "Understand requirements & goals",
+    description:
+      "We deep dive into your business objectives, target audience demographics, competitive landscape, and key performance indicators to set clear benchmarks.",
+    tags: ["Goal Setting", "Competitor Audit", "Target Persona", "Technical Scope"],
+  },
+  {
+    number: "02",
+    title: "Strategize",
+    subtitle: "Plan the right roadmap",
+    description:
+      "We architect a tailored action plan detailing user experience wireframes, tech stack selection, milestone schedules, and growth projections.",
+    tags: ["System Architecture", "Wireframing", "Roadmap", "Budget Optimization"],
+  },
+  {
+    number: "03",
+    title: "Create",
+    subtitle: "Design, develop & implement",
+    description:
+      "Our multi-disciplinary team crafts pixel-perfect designs, writes clean maintainable code, configures e-commerce catalogs, and runs rigorous QA.",
+    tags: ["UI/UX Prototyping", "Next.js & Mobile Dev", "E-com Setup", "Cross-Device QA"],
+  },
+  {
+    number: "04",
+    title: "Grow",
+    subtitle: "Launch, optimize & scale",
+    description:
+      "We oversee seamless launch deployments, implement live analytics tracking, run conversion rate optimization, and provide proactive ongoing support.",
+    tags: ["Production Launch", "Performance Tuning", "A/B Testing", "Continuous Scale"],
+  },
+];
+
+export const FEATURED_PROJECTS = [
+  {
+    id: "apex-commerce",
+    title: "Apex Direct — D2C E-commerce Scaling",
+    category: "E-commerce & Web",
+    client: "Apex Lifestyle Co.",
+    description:
+      "Re-platformed legacy storefront to Next.js with automated Amazon marketplace inventory sync and high-converting product pages.",
+    impact: "+182% Revenue Growth",
+    metrics: [
+      { label: "Conversion Rate", value: "+4.1%" },
+      { label: "ACoS Reduction", value: "-28%" },
+      { label: "Page Load", value: "0.8s" },
+    ],
+    technologies: ["Next.js", "Tailwind CSS", "Amazon Ads API", "Shopify Plus", "TypeScript"],
+    featured: true,
+    accent: "from-purple-500/20 to-indigo-500/10",
+  },
+  {
+    id: "nova-saas",
+    title: "NovaCloud — Enterprise SaaS Platform",
+    category: "Web & UI/UX",
+    client: "Nova Technologies",
+    description:
+      "Complete web application redesign and frontend architecture overhaul for an AI-powered operations monitoring suite.",
+    impact: "3.2x User Engagement",
+    metrics: [
+      { label: "Lighthouse Score", value: "99/100" },
+      { label: "Daily Active Users", value: "+140%" },
+      { label: "Sign-up Flow Time", value: "-45%" },
+    ],
+    technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion", "Node.js"],
+    featured: true,
+    accent: "from-violet-500/20 to-purple-500/10",
+  },
+  {
+    id: "zenith-app",
+    title: "Zenith Health — Telemedicine App",
+    category: "App Development",
+    client: "Zenith Digital Healthcare",
+    description:
+      "Cross-platform iOS and Android healthcare app with encrypted patient consultations, appointment booking, and prescription tracking.",
+    impact: "150K+ Active Users",
+    metrics: [
+      { label: "App Store Rating", value: "4.9 ★" },
+      { label: "Booking Speed", value: "< 2 mins" },
+      { label: "Crash-free Rate", value: "99.9%" },
+    ],
+    technologies: ["React Native", "WebRTC", "Node.js", "PostgreSQL", "HIPAA Compliant"],
+    featured: true,
+    accent: "from-blue-500/20 to-purple-500/10",
+  },
+  {
+    id: "lumina-brand",
+    title: "Lumina Organics — Global Brand Identity",
+    category: "Branding & Design",
+    client: "Lumina Beauty Group",
+    description:
+      "Full brand positioning, bespoke typography, eco-luxe packaging system, and cohesive visual identity guidelines across 20+ SKUs.",
+    impact: "Sold Out in 48 Hours",
+    metrics: [
+      { label: "Brand Recall", value: "+84%" },
+      { label: "Retail Distribution", value: "14 Countries" },
+      { label: "Social Following", value: "+320%" },
+    ],
+    technologies: ["Visual Identity", "Packaging Design", "Figma", "3D Renderings", "Brand Guidelines"],
+    featured: false,
+    accent: "from-pink-500/20 to-purple-500/10",
+  },
+];
+
+export const INDUSTRIES_DATA = [
+  {
+    id: "retail",
+    title: "E-commerce & Retail",
+    icon: "ShoppingBag",
+    description:
+      "Multi-channel marketplace domination, direct-to-consumer storefronts, inventory automation, and high-converting marketing campaigns.",
+    solutions: ["Amazon & Flipkart PPC", "Shopify & Headless Stores", "A+ Product Content", "ROAS Optimization"],
+  },
+  {
+    id: "saas",
+    title: "Technology & SaaS",
+    icon: "Cpu",
+    description:
+      "Interactive product dashboards, high-converting lead generation web pages, and sleek application interfaces that reduce churn.",
+    solutions: ["Modern Web Apps", "Design Systems", "Developer Portals", "Conversion Rate Optimization"],
+  },
+  {
+    id: "healthcare",
+    title: "Healthcare & MedTech",
+    icon: "HeartPulse",
+    description:
+      "HIPAA-conscious digital health platforms, patient booking systems, clinic branding, and accessible telemedicine mobile apps.",
+    solutions: ["Patient Portals", "Telehealth Mobile Apps", "Medical Brand Identity", "Regulatory-Ready Web"],
+  },
+  {
+    id: "education",
+    title: "Education & EdTech",
+    icon: "GraduationCap",
+    description:
+      "Engaging learning management systems, course landing funnels, virtual classrooms, and interactive student web portals.",
+    solutions: ["Interactive LMS", "Student Portals", "Course Funnels", "Mobile Learning Apps"],
+  },
+  {
+    id: "fashion",
+    title: "Lifestyle & Fashion",
+    icon: "Sparkles",
+    description:
+      "Ultra-chic editorial branding, lookbook digital experiences, fast mobile storefronts, and scroll-stopping social ad creatives.",
+    solutions: ["Editorial Visual Systems", "High-Speed Catalogs", "Influencer Ad Kits", "Luxury Packaging"],
+  },
+  {
+    id: "startups",
+    title: "Startups & Small Businesses",
+    icon: "Rocket",
+    description:
+      "Fast-track MVPs, investor pitch decks, brand launches, and cost-effective digital marketing frameworks tailored to rapid growth.",
+    solutions: ["Rapid MVP Launch", "Investor Pitch Decks", "Foundational Brand Kits", "Zero-to-One Marketing"],
+  },
+];
+
+export const TESTIMONIALS_DATA = [
+  {
+    id: "1",
+    name: "Vikram Singhania",
+    handle: "@vikram_singhania",
+    role: "Founder & CEO",
+    company: "Aurum Retail Labs",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "UNIQUOVA took our Amazon store from ₹4 Lakhs/month to over ₹32 Lakhs in under six months. Their marketplace team manages everything from PPC to A+ listings with incredible precision. Truly world-class execution.",
+    rating: 5,
+    tag: "E-commerce Growth",
+    platform: "linkedin",
+  },
+  {
+    id: "2",
+    name: "Elena Rostova",
+    handle: "@elena_rostova",
+    role: "VP of Product",
+    company: "Synapse Cloud Systems",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "We hired UNIQUOVA to re-engineer our customer-facing web platform in Next.js. The page load speed dropped by 70%, and our lead conversions doubled within weeks. Their engineering discipline is exceptional.",
+    rating: 5,
+    tag: "Web Engineering",
+    platform: "linkedin",
+  },
+  {
+    id: "3",
+    name: "Marcus Vance",
+    handle: "@marcus_vance",
+    role: "Managing Director",
+    company: "Vance & Sterling Ventures",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "The brand identity UNIQUOVA developed for our venture fund has set us apart on an international scale. Clean, minimalist, and commanding. We regularly receive compliments from our global partners.",
+    rating: 5,
+    tag: "Brand Identity",
+    platform: "twitter",
+  },
+  {
+    id: "4",
+    name: "Pooja Hegde",
+    handle: "@pooja_hegde",
+    role: "Head of Marketing",
+    company: "Kira Botanicals",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "Their graphic designing team produces scroll-stopping creatives at astonishing speed. Our Meta ad CPA reduced by 34% after running UNIQUOVA's new ad variants. They feel like a core part of our internal team.",
+    rating: 5,
+    tag: "Creative Strategy",
+    platform: "linkedin",
+  },
+  {
+    id: "5",
+    name: "Aamir Khan",
+    handle: "@aamir_k",
+    role: "Co-Founder",
+    company: "Pulse Logistics Tech",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "The mobile application UNIQUOVA engineered for our fleet operators has 99.9% crash-free sessions across both iOS and Android. Smooth 60fps animations and seamless offline data synchronization.",
+    rating: 5,
+    tag: "App Development",
+    platform: "linkedin",
+  },
+  {
+    id: "6",
+    name: "Sayantan Bera",
+    handle: "@sayantan_b",
+    role: "E-Commerce Director",
+    company: "Apex D2C Brands",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "Managing Flipkart and Amazon simultaneously used to be a logistics nightmare. UNIQUOVA restructured our catalogs, lowered our ACoS by 28%, and won the buy-box consistently.",
+    rating: 5,
+    tag: "Marketplace Scale",
+    platform: "twitter",
+  },
+  {
+    id: "7",
+    name: "Shreya Dhomane",
+    handle: "@shreya_dhomane",
+    role: "Product Lead",
+    company: "Nova FinTech",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "The level of detail in UNIQUOVA's micro-animations and clean UI design systems is unmatched. It's rare to find an agency that balances cinematic visual craft and high performance this well.",
+    rating: 5,
+    tag: "UI/UX & Web",
+    platform: "linkedin",
+  },
+  {
+    id: "8",
+    name: "Priti Verma",
+    handle: "@priti_verma",
+    role: "Creative Producer",
+    company: "Velvet Luxe Studio",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "Great communication, pixel-perfect design deliverables, and high-converting marketing collaterals. UNIQUOVA helped us launch our summer campaign two weeks ahead of schedule.",
+    rating: 5,
+    tag: "Graphic Design",
+    platform: "linkedin",
+  },
+  {
+    id: "9",
+    name: "Aarya Singh",
+    handle: "@aarya_singh",
+    role: "Founder",
+    company: "Zest Pure Living",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
+    quote:
+      "From brand positioning and logo design to our Shopify Plus store, UNIQUOVA built an identity that immediately resonated with our global audience. Highly recommend their strategic team.",
+    rating: 5,
+    tag: "Branding & Web",
+    platform: "linkedin",
+  },
+];
+
+export const FAQ_DATA = [
+  {
+    q: "What services does UNIQUOVA offer?",
+    a: "UNIQUOVA is a full-service digital agency providing five integrated core capabilities: E-commerce Solutions (Amazon, Flipkart, cataloging & PPC), Website Development (business sites, e-commerce, custom web apps), App Development (iOS, Android, cross-platform), Branding (identity, strategy, guidelines, visual systems), and Graphic Designing (social, ad creatives, brochures & marketing collaterals).",
+  },
+  {
+    q: "How does the project process work?",
+    a: "We follow a proven four-stage framework: 01 Discover (understanding your goals, audience, and scope), 02 Strategize (architecting wireframes, tech stack, and execution roadmap), 03 Create (designing, developing, and rigorous testing), and 04 Grow (deployment, continuous optimization, and analytics tracking).",
+  },
+  {
+    q: "How long does a project take?",
+    a: "Timelines depend on the project scale: brand identities and marketing creative sprints typically take 1 to 3 weeks; custom high-performance websites take 3 to 6 weeks; comprehensive e-commerce overhauls take 2 to 4 weeks; and mobile application builds range from 6 to 12 weeks with bi-weekly testable milestones.",
+  },
+  {
+    q: "Do you provide ongoing support?",
+    a: "Yes! We offer proactive monthly maintenance, cloud hosting management, marketplace daily PPC optimization, security patching, and creative design retainers so your business continues to excel long after launch.",
+  },
+  {
+    q: "Can I hire UNIQUOVA for a single service?",
+    a: "Absolutely. While many clients benefit from our integrated full-service approach, we frequently partner with clients exclusively for a specific requirement—such as Amazon marketplace management, a Next.js website redesign, or a complete brand identity revamp.",
+  },
+  {
+    q: "What is your pricing model?",
+    a: "We offer transparent, value-based pricing: milestone-based fixed fees for well-defined web, app, and branding projects; and monthly retainer models for ongoing marketplace management, PPC ad operations, and continuous graphic design support.",
+  },
+  {
+    q: "How can I start a project?",
+    a: "Getting started is simple! Click 'Let's Talk' or 'Start Your Project' to submit your brief through our contact form. Our digital strategy team reviews your requirements and schedules a discovery call within 24 business hours.",
+  },
+];
+
