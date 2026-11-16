@@ -32,9 +32,9 @@ const SERVICE_BG_IMAGES: Record<string, string> = {
   ecommerce: "/images/services/ecom_laptop_cart.jpg",
   "web-development": "/images/services/web_dev_bg.jpg",
   "app-development": "/images/services/app_dev_bg.jpg",
-  branding: "/images/services/branding_bg.jpg",
-  "graphic-designing": "/images/services/graphic_design_bg.jpg",
-  "graphic-design": "/images/services/graphic_design_bg.jpg",
+  branding: "/images/services/branding_bg.jpg?v=3",
+  "graphic-designing": "/images/services/graphic_design_bg.jpg?v=3",
+  "graphic-design": "/images/services/graphic_design_bg.jpg?v=3",
 };
 
 export default function IndividualServicePage() {
@@ -79,22 +79,25 @@ export default function IndividualServicePage() {
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 purple-mesh-bg relative overflow-hidden">
         {/* Themed Background Image Layer */}
         <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
-          {/* Service Background Image - Positioned on the right side */}
-          <div className="absolute inset-y-0 right-0 w-full lg:w-3/5 xl:w-7/12 h-full overflow-hidden">
+          {/* Service Background Image - Positioned on the right side with True Alpha Mask */}
+          <div 
+            className="absolute inset-y-0 right-0 w-full lg:w-3/4 xl:w-7/12 h-full overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)"
+            }}
+          >
             <img
               src={bgImage}
               alt={`${service.title} Service Background`}
-              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.04] brightness-[1.02]"
+              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.06] brightness-[1.02]"
             />
-            {/* Brand Theme Tint Overlay */}
-            <div className="absolute inset-0 bg-[#7545F5]/10 mix-blend-multiply" />
-            
-            {/* Left Gradient Fade: Ensures 100% clean, non-overwritten solid/soft background behind the text */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FAF9FF] via-[#FAF9FF]/95 to-transparent lg:from-[#FAF9FF] lg:via-[#FAF9FF]/80 lg:to-transparent" />
+            {/* Subtle Brand Theme Tint Overlay */}
+            <div className="absolute inset-0 bg-[#7545F5]/[0.03] mix-blend-multiply" />
             
             {/* Top & Bottom seamless gradient transitions */}
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#FAF9FF] to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#FAF9FF] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/90 via-white/40 to-transparent" />
           </div>
 
           {/* Subtle geometric dot grid for depth */}
