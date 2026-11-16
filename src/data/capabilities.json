@@ -1,0 +1,146 @@
+[
+  {
+    "id": "amazon-scale",
+    "name": "Amazon Marketplace",
+    "category": "E-commerce",
+    "track": 1,
+    "iconKey": "amazon",
+    "order": 1,
+    "active": true
+  },
+  {
+    "id": "nextjs",
+    "name": "Next.js 14",
+    "category": "Web Dev",
+    "track": 1,
+    "iconKey": "nextjs",
+    "order": 2,
+    "active": true
+  },
+  {
+    "id": "flipkart-mgmt",
+    "name": "Flipkart Scale",
+    "category": "E-commerce",
+    "track": 1,
+    "iconKey": "flipkart",
+    "order": 3,
+    "active": true
+  },
+  {
+    "id": "react",
+    "name": "React.js",
+    "category": "Web Dev",
+    "track": 1,
+    "iconKey": "react",
+    "order": 4,
+    "active": true
+  },
+  {
+    "id": "brand-identity",
+    "name": "Brand Strategy & Identity",
+    "category": "Branding",
+    "track": 1,
+    "iconKey": "pen",
+    "order": 5,
+    "active": true
+  },
+  {
+    "id": "mobile-apps",
+    "name": "iOS & Android Apps",
+    "category": "Mobile",
+    "track": 1,
+    "iconKey": "smartphone",
+    "order": 6,
+    "active": true
+  },
+  {
+    "id": "shopify-d2c",
+    "name": "Shopify Plus Stores",
+    "category": "E-commerce",
+    "track": 1,
+    "iconKey": "shopify",
+    "order": 7,
+    "active": true
+  },
+  {
+    "id": "social-creatives",
+    "name": "High-CTR Social Creatives",
+    "category": "Graphic Design",
+    "track": 1,
+    "iconKey": "palette",
+    "order": 8,
+    "active": true
+  },
+  {
+    "id": "ppc-ads",
+    "name": "Marketplace PPC & ROAS",
+    "category": "E-commerce",
+    "track": 2,
+    "iconKey": "trending",
+    "order": 1,
+    "active": true
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript",
+    "category": "Web Dev",
+    "track": 2,
+    "iconKey": "typescript",
+    "order": 2,
+    "active": true
+  },
+  {
+    "id": "tailwind-ui",
+    "name": "Tailwind CSS Design Systems",
+    "category": "UI/UX",
+    "track": 2,
+    "iconKey": "tailwind",
+    "order": 3,
+    "active": true
+  },
+  {
+    "id": "aplus-content",
+    "name": "A+ Content & Listing SEO",
+    "category": "E-commerce",
+    "track": 2,
+    "iconKey": "package",
+    "order": 4,
+    "active": true
+  },
+  {
+    "id": "flutter-cross",
+    "name": "React Native & Flutter",
+    "category": "App Dev",
+    "track": 2,
+    "iconKey": "layers",
+    "order": 5,
+    "active": true
+  },
+  {
+    "id": "ad-creatives",
+    "name": "Meta & Google Ad Creatives",
+    "category": "Graphic Design",
+    "track": 2,
+    "iconKey": "sparkles",
+    "order": 6,
+    "active": true
+  },
+  {
+    "id": "woocommerce-ops",
+    "name": "WooCommerce Solutions",
+    "category": "E-commerce",
+    "track": 2,
+    "iconKey": "cart",
+    "order": 7,
+    "active": true
+  },
+  {
+    "id": "web-apps",
+    "name": "Custom Web Applications",
+    "category": "Web Dev",
+    "track": 2,
+    "iconKey": "code",
+    "order": 8,
+    "active": true
+  }
+]

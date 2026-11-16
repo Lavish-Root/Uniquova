@@ -97,9 +97,14 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
     }
   }, [initialService]);
 
-  // Lock background scroll when modal is open
+  // Lock background scroll and listen for Escape key when modal is open
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
     if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -107,9 +112,10 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
       setIsSuccess(false);
     }
     return () => {
+      window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -175,41 +181,41 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto bg-dark/70 backdrop-blur-sm animate-in fade-in duration-200">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-dark/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0"
         onClick={onClose}
       />
 
-      {/* Modal Dialog */}
-      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-border overflow-hidden z-10 my-8">
-        {/* Top Gradient Banner */}
-        <div className="bg-gradient-to-r from-primary to-primary-dark p-6 sm:p-8 text-white relative">
+      {/* Modal Dialog Card */}
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-border overflow-hidden z-10 max-h-[92vh] flex flex-col my-auto animate-in zoom-in-95 duration-200">
+        {/* Top Gradient Banner (pinned at top) */}
+        <div className="bg-gradient-to-r from-primary to-primary-dark px-6 py-4.5 sm:px-7 sm:py-5 text-white relative shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
             aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-primary-200" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-white text-[10px] font-bold uppercase tracking-wider mb-1.5">
+            <Sparkles className="w-3 h-3 text-primary-200" />
             <span>Client Voice</span>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight">
             Share Your Experience
           </h3>
-          <p className="text-purple-100 text-sm mt-1">
+          <p className="text-purple-100 text-xs sm:text-sm mt-0.5 max-w-lg">
             Your review helps us celebrate client success and feature your brand on our official platform.
           </p>
         </div>
 
-        {/* Content Body */}
-        <div className="p-6 sm:p-8">
+        {/* Content Body with smooth internal scroll */}
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1">
           {isSuccess ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
@@ -228,76 +234,76 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {errorMessage && (
-                <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
+                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
                   {errorMessage}
                 </div>
               )}
 
-              {/* Client Name & Company */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Client Name & Company (2 Columns) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
                     Your Full Name *
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-dark-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <User className="w-4 h-4 text-dark-muted absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Vikram Singhania"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
                     Company / Brand Name *
                   </label>
                   <div className="relative">
-                    <Building className="w-4 h-4 text-dark-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Building className="w-4 h-4 text-dark-muted absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       required
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       placeholder="e.g. Aurum Retail Labs"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Role & Service Taken */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Role & Service Taken (2 Columns) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
                     Your Role / Title
                   </label>
                   <div className="relative">
-                    <Briefcase className="w-4 h-4 text-dark-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Briefcase className="w-4 h-4 text-dark-muted absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                       placeholder="e.g. Founder &amp; CEO"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
                     Service You Engaged *
                   </label>
                   <select
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-border text-sm text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="w-full px-3.5 py-2 rounded-xl border border-border text-sm text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   >
                     {SERVICE_OPTIONS.map((srv) => (
                       <option key={srv} value={srv}>
@@ -308,104 +314,105 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
                 </div>
               </div>
 
-              {/* Optional Photo / Logo Upload */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-                  Your Photo or Logo <span className="text-dark-muted font-normal lowercase">(optional)</span>
-                </label>
-                <div className="p-3.5 rounded-xl border border-dashed border-primary/30 bg-primary-light/10 hover:bg-primary-light/20 transition-all">
-                  {formData.avatar ? (
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <img
-                          src={formData.avatar}
-                          alt="Selected avatar"
-                          className="w-10 h-10 rounded-full object-cover ring-2 ring-primary shadow-xs shrink-0"
-                        />
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold text-dark truncate">Photo selected</p>
-                          <p className="text-[10px] text-dark-muted">Included on your testimonial</p>
+              {/* Photo Upload & Rating Picker (2 Columns) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Optional Photo / Logo Upload */}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
+                    Photo or Logo <span className="text-dark-muted font-normal lowercase">(optional)</span>
+                  </label>
+                  <div className="p-2 rounded-xl border border-dashed border-primary/30 bg-primary-light/10 hover:bg-primary-light/20 transition-all min-h-[46px] flex items-center">
+                    {formData.avatar ? (
+                      <div className="flex items-center justify-between gap-2 w-full">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img
+                            src={formData.avatar}
+                            alt="Selected avatar"
+                            className="w-7 h-7 rounded-full object-cover ring-2 ring-primary shadow-xs shrink-0"
+                          />
+                          <span className="text-xs font-bold text-dark truncate">Photo attached</span>
                         </div>
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="text-xs text-rose-600 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50 transition-colors shrink-0"
+                        >
+                          Remove
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="inline-flex items-center gap-1 text-xs text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1 rounded-lg hover:bg-rose-50 transition-colors"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                        <span>Remove</span>
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                        <Upload className="w-4 h-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <span className="text-xs font-bold text-primary hover:underline">
-                          Upload headshot or company logo
-                        </span>
-                        <p className="text-[10px] text-dark-muted">PNG, JPG, WebP</p>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                    </label>
-                  )}
+                    ) : (
+                      <label className="flex items-center gap-2.5 cursor-pointer w-full">
+                        <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                          <Upload className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs font-bold text-primary hover:underline truncate block">
+                            Upload headshot or logo
+                          </span>
+                          <p className="text-[10px] text-dark-muted">PNG, JPG, WebP</p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {/* Star Rating Picker */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-                  Your Overall Rating: <span className="text-primary">{formData.rating} / 5 Stars</span>
-                </label>
-                <div className="flex items-center gap-1.5 p-3 rounded-xl bg-softBg border border-border/80">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      onClick={() => setFormData({ ...formData, rating: star })}
-                      className="p-1 transition-transform hover:scale-125 focus:outline-hidden"
-                    >
-                      <Star
-                        className={`w-7 h-7 ${
-                          (hoverRating || formData.rating) >= star
-                            ? "fill-amber-400 text-amber-400"
-                            : "text-gray-300"
-                        } transition-colors`}
-                      />
-                    </button>
-                  ))}
-                  <span className="ml-3 text-xs font-semibold text-dark-muted">
-                    {formData.rating === 5 ? "Exceptional Results ⭐⭐⭐⭐⭐" : `${formData.rating} Stars`}
-                  </span>
+                {/* Star Rating Picker */}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
+                    Rating: <span className="text-primary font-bold">{formData.rating} / 5 Stars</span>
+                  </label>
+                  <div className="flex items-center justify-between p-2 rounded-xl bg-softBg border border-border/80 min-h-[46px]">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onMouseEnter={() => setHoverRating(star)}
+                          onMouseLeave={() => setHoverRating(0)}
+                          onClick={() => setFormData({ ...formData, rating: star })}
+                          className="p-0.5 transition-transform hover:scale-120 focus:outline-hidden"
+                        >
+                          <Star
+                            className={`w-5 h-5 ${
+                              (hoverRating || formData.rating) >= star
+                                ? "fill-amber-400 text-amber-400"
+                                : "text-gray-300"
+                            } transition-colors`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <span className="text-[11px] font-bold text-primary mr-1">
+                      {formData.rating === 5 ? "5.0 ★" : `${formData.rating}.0 ★`}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               {/* Feedback Textarea */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1">
                   Your Feedback / Testimonial *
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   required
                   value={formData.quote}
                   onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
                   placeholder="Tell us how UNIQUOVA helped your business grow, improve conversions, or deliver technical excellence..."
-                  className="w-full p-4 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full p-3 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                 />
               </div>
 
               {/* Client Verification Passcode */}
-              <div className="bg-primary-light/50 p-4 rounded-2xl border border-primary-200">
-                <div className="flex items-center justify-between mb-1.5">
+              <div className="bg-primary-light/40 p-3 rounded-xl border border-primary-200">
+                <div className="flex items-center justify-between mb-1">
                   <label className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
                     <KeyRound className="w-3.5 h-3.5" />
                     <span>Client Verification Code *</span>
@@ -418,20 +425,20 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
                   value={formData.code}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                   placeholder="Enter code (provided by UNIQOVA team, or UNIQOVA2026)"
-                  className="w-full px-4 py-2.5 rounded-xl border border-primary-200 text-sm font-mono text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full px-3 py-1.5 rounded-lg border border-primary-200 text-xs font-mono text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
-                <p className="text-[11px] text-dark-muted mt-1.5 flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <p className="text-[10px] text-dark-muted mt-1 flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
                   <span>Protects our client review wall against unauthorized spam and automated bots.</span>
                 </p>
               </div>
 
               {/* Submit CTA */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary hover:bg-primary-dark text-white font-bold text-sm py-4 rounded-full transition-all shadow-glow-sm hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-primary hover:bg-primary-dark text-white font-bold text-sm py-3 rounded-full transition-all shadow-glow-sm hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span>Verifying &amp; Publishing...</span>

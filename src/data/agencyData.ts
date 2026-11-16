@@ -710,6 +710,28 @@ export interface TestimonialItem {
   createdAt?: string;
 }
 
+export interface BrandPartnerItem {
+  id: string;
+  name: string;
+  logoUrl: string;
+  alt: string;
+  websiteUrl?: string;
+  order: number;
+  active: boolean;
+  createdAt?: string;
+}
+
+export interface CapabilityItem {
+  id: string;
+  name: string;
+  category: string;
+  track: 1 | 2;
+  iconKey: string;
+  order: number;
+  active: boolean;
+  createdAt?: string;
+}
+
 export const TESTIMONIALS_DATA: TestimonialItem[] = [
   {
     id: "1",
@@ -860,4 +882,59 @@ export const FAQ_DATA = [
     a: "Getting started is simple! Click 'Let's Talk' or 'Start Your Project' to submit your brief through our contact form. Our digital strategy team reviews your requirements and schedules a discovery call within 24 business hours.",
   },
 ];
+
+export interface SocialLinkItem {
+  url: string;
+  enabled: boolean;
+}
+
+export interface SocialLinks {
+  linkedin: SocialLinkItem;
+  twitter: SocialLinkItem;
+  instagram: SocialLinkItem;
+  facebook: SocialLinkItem;
+}
+
+export interface CompanyInfo {
+  email: string;
+  emailLabel?: string;
+  primaryPhone: string;
+  primaryPhoneLabel?: string;
+  secondaryPhone: string;
+  secondaryPhoneLabel?: string;
+  whatsappNumber: string;
+  whatsappMessage?: string;
+  officeName: string;
+  address: string;
+  tagline: string;
+  socialLinks?: SocialLinks;
+  lastUpdated?: string;
+}
+
+export const DEFAULT_COMPANY_INFO: CompanyInfo = {
+  email: "hello@uniquova.com",
+  emailLabel: "Inquiries & RFPs",
+  primaryPhone: "+91 (0) 98765-43210",
+  primaryPhoneLabel: "Mon – Fri, 9am – 6pm IST",
+  secondaryPhone: "+91 (0) 98765-43211",
+  secondaryPhoneLabel: "Mon – Sat, 9:30 AM – 7:00 PM IST",
+  whatsappNumber: "+91 98765 43210",
+  whatsappMessage: "Hello UNIQUOVA, I would like to discuss a digital project.",
+  officeName: "UNIQUOVA Digital HQ",
+  address: "Tech Park Corridor, Sector 4, Bangalore & New Delhi, India",
+  tagline: "Your Vision. Our Expertise.",
+  socialLinks: {
+    linkedin: { url: "https://linkedin.com", enabled: true },
+    twitter: { url: "https://twitter.com", enabled: true },
+    instagram: { url: "https://instagram.com", enabled: true },
+    facebook: { url: "https://facebook.com", enabled: true },
+  },
+  lastUpdated: "2026-11-17T03:00:00.000Z",
+};
+
+export function formatWhatsAppUrl(number: string, message?: string): string {
+  const cleanDigits = (number || "919876543210").replace(/\D/g, "");
+  const defaultMsg = message || "Hello UNIQUOVA, I would like to discuss a digital project.";
+  return `https://wa.me/${cleanDigits}?text=${encodeURIComponent(defaultMsg)}`;
+}
 

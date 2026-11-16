@@ -1,0 +1,32 @@
+{
+  "email": "hello@uniquovm",
+  "emailLabel": "Inquiries & RFPs",
+  "primaryPhone": "+91 (0) 98765-43210",
+  "primaryPhoneLabel": "Mon – Fri, 9am – 6pm IST",
+  "secondaryPhone": "+91 (0) 98765-43211",
+  "secondaryPhoneLabel": "Mon – Sat, 9:30 AM – 7:00 PM IST",
+  "whatsappNumber": "+91 98765 43210",
+  "whatsappMessage": "Hello UNIQUOVA, I would like to discuss a digital project.",
+  "officeName": "UNIQUOVA Digital HQ",
+  "address": "Tech Park Corridor, Sector 4, Bangalore & New Delhi, India",
+  "tagline": "Your Vision. Our Expertise.",
+  "socialLinks": {
+    "linkedin": {
+      "url": "https://linkedin.com",
+      "enabled": true
+    },
+    "twitter": {
+      "url": "https://twitter.com",
+      "enabled": true
+    },
+    "instagram": {
+      "url": "https://instagram.com",
+      "enabled": true
+    },
+    "facebook": {
+      "url": "https://facebook.com",
+      "enabled": true
+    }
+  },
+  "lastUpdated": "2026-11-16T22:45:02.949Z"
+}

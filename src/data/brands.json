@@ -1,0 +1,74 @@
+[
+  {
+    "id": "brand-1",
+    "name": "PraanSewa",
+    "logoUrl": "/images/clients/praansewa.png",
+    "alt": "PraanSewa — Healthcare & Wellness Partner",
+    "websiteUrl": "",
+    "order": 1,
+    "active": true
+  },
+  {
+    "id": "brand-2",
+    "name": "VERASTRA",
+    "logoUrl": "/images/clients/verastra_clean.png",
+    "alt": "VERASTRA — High-Growth D2C Brand",
+    "websiteUrl": "",
+    "order": 2,
+    "active": true
+  },
+  {
+    "id": "brand-3",
+    "name": "Syaahi",
+    "logoUrl": "/images/clients/syaahi.png",
+    "alt": "Syaahi — Lifestyle & Design Client Partner",
+    "websiteUrl": "",
+    "order": 3,
+    "active": true
+  },
+  {
+    "id": "brand-4",
+    "name": "CloudGuard AI",
+    "logoUrl": "/images/clients/cloudguard.png",
+    "alt": "CloudGuard AI — Enterprise Software Partner",
+    "websiteUrl": "",
+    "order": 4,
+    "active": true
+  },
+  {
+    "id": "brand-5",
+    "name": "Loopago",
+    "logoUrl": "/images/clients/loopago.png",
+    "alt": "Loopago — Digital Logistics Partner",
+    "websiteUrl": "",
+    "order": 5,
+    "active": true
+  },
+  {
+    "id": "brand-6",
+    "name": "Amazon",
+    "logoUrl": "/images/clients/amazon.svg",
+    "alt": "Amazon — Marketplace Partner Channel",
+    "websiteUrl": "",
+    "order": 6,
+    "active": true
+  },
+  {
+    "id": "brand-7",
+    "name": "Flipkart",
+    "logoUrl": "/images/clients/flipkart_clean.svg",
+    "alt": "Flipkart — Marketplace Partner Channel",
+    "websiteUrl": "",
+    "order": 7,
+    "active": true
+  },
+  {
+    "id": "brand-8",
+    "name": "Meesho",
+    "logoUrl": "/images/clients/meesho.png",
+    "alt": "Meesho — Social Commerce Marketplace Integration",
+    "websiteUrl": "",
+    "order": 8,
+    "active": true
+  }
+]

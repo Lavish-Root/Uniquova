@@ -1,148 +1,34 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import initialBrands from "@/data/brands.json";
+import { BrandPartnerItem } from "@/data/agencyData";
 
 export default function TrustedBy() {
-  const platforms = [
-    {
-      name: "PraanSewa",
-      svg: (
-        <div className="flex items-center hover:opacity-80 transition-opacity shrink-0">
-          <img
-            src="/images/clients/praansewa.png"
-            alt="PraanSewa — Healthcare &amp; Wellness Partner of UNIQUOVA"
-            width={120}
-            height={32}
-            loading="lazy"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "VERASTRA",
-      svg: (
-        <div className="flex items-center hover:scale-105 transition-transform shrink-0">
-          <img
-            src="/images/clients/verastra_clean.png"
-            alt="VERASTRA — High-Growth D2C Brand Scaled by UNIQUOVA"
-            width={130}
-            height={36}
-            loading="lazy"
-            className="h-8 sm:h-9 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "Syaahi",
-      svg: (
-        <div className="flex items-center hover:opacity-85 transition-opacity shrink-0">
-          <img
-            src="/images/clients/syaahi.png"
-            alt="Syaahi — Lifestyle &amp; Design Client Partner of UNIQUOVA"
-            width={100}
-            height={28}
-            loading="lazy"
-            className="h-6 sm:h-7 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "CloudGuard AI",
-      svg: (
-        <div className="flex items-center hover:scale-105 transition-transform shrink-0">
-          <img
-            src="/images/clients/cloudguard.png"
-            alt="CloudGuard AI — Enterprise Software Partner of UNIQUOVA"
-            width={140}
-            height={36}
-            loading="lazy"
-            className="h-8 sm:h-9 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "Loopago",
-      svg: (
-        <div className="flex items-center hover:opacity-85 transition-opacity shrink-0">
-          <img
-            src="/images/clients/loopago.png"
-            alt="Loopago — Digital Logistics Partner of UNIQUOVA"
-            width={110}
-            height={28}
-            loading="lazy"
-            className="h-6 sm:h-7 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "Amazon",
-      svg: (
-        <div className="flex items-center shrink-0">
-          <svg
-            viewBox="0 0 100 30"
-            className="h-6 w-auto fill-current text-dark hover:text-[#FF9900] transition-colors"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <text
-              x="0"
-              y="18"
-              fontFamily="Arial, Helvetica, sans-serif"
-              fontWeight="bold"
-              fontSize="18"
-              letterSpacing="-0.5"
-              fill="currentColor"
-            >
-              amazon
-            </text>
-            <path
-              d="M 8 23 Q 32 29 54 23"
-              stroke="#FF9900"
-              strokeWidth="2.5"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <path
-              d="M 51 21 L 56 23 L 53 26 Z"
-              fill="#FF9900"
-            />
-          </svg>
-        </div>
-      ),
-    },
-    {
-      name: "Flipkart",
-      svg: (
-        <div className="flex items-center hover:opacity-90 transition-opacity shrink-0">
-          <img
-            src="/images/clients/flipkart_clean.svg"
-            alt="Flipkart — Marketplace Partner Channel Managed by UNIQUOVA"
-            width={120}
-            height={28}
-            loading="lazy"
-            className="h-6 sm:h-7 w-auto object-contain"
-          />
-        </div>
-      ),
-    },
-    {
-      name: "Meesho",
-      svg: (
-        <div className="flex items-center hover:opacity-90 transition-opacity shrink-0">
-          <img
-            src="/images/clients/meesho.png"
-            alt="Meesho — Social Commerce Marketplace Integration by UNIQUOVA"
-            width={120}
-            height={32}
-            loading="lazy"
-            className="h-7 sm:h-8 w-auto object-contain rounded-xl shadow-xs"
-          />
-        </div>
-      ),
-    },
-  ];
+  const [brands, setBrands] = useState<BrandPartnerItem[]>(initialBrands as BrandPartnerItem[]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/brands")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && data.success && Array.isArray(data.brands)) {
+          setBrands(data.brands);
+        }
+      })
+      .catch(() => {
+        // Keep initial fallback brands
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const activeBrands = brands.filter((b) => b.active !== false);
+
+  if (activeBrands.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 mt-6 lg:mt-10">
@@ -190,15 +76,41 @@ export default function TrustedBy() {
 
           {/* Continuous Moving Track: from Left to Right */}
           <div className="flex w-max items-center space-x-8 sm:space-x-10 animate-marquee-left-to-right">
-            {[...platforms, ...platforms, ...platforms, ...platforms].map((p, idx) => (
-              <div
-                key={`${p.name}-${idx}`}
-                className="shrink-0 transition-transform duration-200 hover:scale-105"
-                title={p.name}
-              >
-                {p.svg}
-              </div>
-            ))}
+            {[...activeBrands, ...activeBrands, ...activeBrands, ...activeBrands].map((brand, idx) => {
+              const content = (
+                <div className="flex items-center hover:opacity-85 transition-opacity shrink-0 py-1">
+                  <img
+                    src={brand.logoUrl}
+                    alt={brand.alt || `${brand.name} — Trusted Partner`}
+                    width={130}
+                    height={36}
+                    loading="lazy"
+                    className="h-7 sm:h-8 w-auto object-contain max-w-[140px]"
+                  />
+                </div>
+              );
+
+              return (
+                <div
+                  key={`${brand.id}-${idx}`}
+                  className="shrink-0 transition-transform duration-200 hover:scale-105"
+                  title={brand.name}
+                >
+                  {brand.websiteUrl ? (
+                    <a
+                      href={brand.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block cursor-pointer"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

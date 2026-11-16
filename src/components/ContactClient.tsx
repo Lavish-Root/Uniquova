@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
   Mail,
   Phone,
+  PhoneCall,
   MapPin,
   MessageSquare,
   Send,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { trackEvent } from "@/components/Analytics";
+import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
 
 export default function ContactClient() {
   const [name, setName] = useState("");
@@ -30,6 +32,28 @@ export default function ContactClient() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<{ message: string; leadId: string } | null>(null);
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(DEFAULT_COMPANY_INFO);
+
+  useEffect(() => {
+    fetch("/api/company-info")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.companyInfo) {
+          setCompanyInfo(data.companyInfo);
+        }
+      })
+      .catch(() => {});
+
+    const handleUpdate = (e: Event) => {
+      const customEvt = e as CustomEvent<CompanyInfo>;
+      if (customEvt.detail) {
+        setCompanyInfo(customEvt.detail);
+      }
+    };
+
+    window.addEventListener("companyInfoUpdated", handleUpdate);
+    return () => window.removeEventListener("companyInfoUpdated", handleUpdate);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,33 +194,61 @@ export default function ContactClient() {
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-dark-muted">Email Inquiries</p>
                     <a
-                      href="mailto:contact@uniquova.com"
-                      onClick={() => trackEvent("email_click", { destination: "contact@uniquova.com" })}
-                      className="text-base font-bold text-dark hover:text-primary transition-colors"
+                      href={`mailto:${companyInfo.email || "hello@uniquova.com"}`}
+                      onClick={() => trackEvent("email_click", { destination: companyInfo.email || "hello@uniquova.com" })}
+                      className="text-base font-bold text-dark hover:text-primary transition-colors break-all"
                     >
-                      contact@uniquova.com
+                      {companyInfo.email || "hello@uniquova.com"}
                     </a>
-                    <p className="text-xs text-dark-muted mt-0.5">RFPs, partnerships &amp; career queries</p>
+                    <p className="text-xs text-dark-muted mt-0.5">
+                      {companyInfo.emailLabel || "RFPs, partnerships & career queries"}
+                    </p>
                   </div>
                 </div>
 
+                {/* Primary Phone Line */}
                 <div className="p-5 rounded-2xl bg-[#FAF9FF] border border-border flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-dark-muted">Direct Line</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-dark-muted">Direct Line 1</p>
                     <a
-                      href="tel:+919876543210"
-                      onClick={() => trackEvent("phone_call_click", { number: "+919876543210" })}
+                      href={`tel:${(companyInfo.primaryPhone || "+919876543210").replace(/\s+/g, "")}`}
+                      onClick={() => trackEvent("phone_call_click", { number: companyInfo.primaryPhone || "+919876543210" })}
                       className="text-base font-bold text-dark hover:text-primary transition-colors"
                     >
-                      +91 (0) 98765-43210
+                      {companyInfo.primaryPhone || "+91 (0) 98765-43210"}
                     </a>
-                    <p className="text-xs text-dark-muted mt-0.5">Mon – Sat, 9:30 AM – 7:00 PM IST</p>
+                    <p className="text-xs text-dark-muted mt-0.5">
+                      {companyInfo.primaryPhoneLabel || "Mon – Sat, 9:30 AM – 7:00 PM IST"}
+                    </p>
                   </div>
                 </div>
 
+                {/* Secondary Phone Line (if configured) */}
+                {companyInfo.secondaryPhone && (
+                  <div className="p-5 rounded-2xl bg-[#FAF9FF] border border-border flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
+                      <PhoneCall className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-dark-muted">Direct Line 2</p>
+                      <a
+                        href={`tel:${companyInfo.secondaryPhone.replace(/\s+/g, "")}`}
+                        onClick={() => trackEvent("phone_call_click", { number: companyInfo.secondaryPhone })}
+                        className="text-base font-bold text-dark hover:text-primary transition-colors"
+                      >
+                        {companyInfo.secondaryPhone}
+                      </a>
+                      <p className="text-xs text-dark-muted mt-0.5">
+                        {companyInfo.secondaryPhoneLabel || "Support & Direct Line"}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* WhatsApp Direct */}
                 <div className="p-5 rounded-2xl bg-emerald-50/50 border border-emerald-100 flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                     <MessageSquare className="w-5 h-5" />
@@ -204,7 +256,10 @@ export default function ContactClient() {
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">Instant WhatsApp Chat</p>
                     <a
-                      href="https://wa.me/919876543210?text=Hello%20UNIQUOVA%2C%20I%20would%20like%20to%20discuss%20a%20project."
+                      href={formatWhatsAppUrl(
+                        companyInfo.whatsappNumber || DEFAULT_COMPANY_INFO.whatsappNumber,
+                        companyInfo.whatsappMessage || DEFAULT_COMPANY_INFO.whatsappMessage
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => trackEvent("whatsapp_click", { platform: "whatsapp" })}
@@ -213,19 +268,24 @@ export default function ContactClient() {
                       <span>Connect with Lead Strategist</span>
                       <span>→</span>
                     </a>
-                    <p className="text-xs text-emerald-700 mt-0.5">Quick responses during business hours</p>
+                    <p className="text-xs text-emerald-700 mt-0.5">
+                      Replies via WhatsApp ({companyInfo.whatsappNumber || "+91 98765 43210"})
+                    </p>
                   </div>
                 </div>
 
+                {/* Operations Hub / Address */}
                 <div className="p-5 rounded-2xl bg-[#FAF9FF] border border-border flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-dark-muted">Operations Hub</p>
-                    <p className="text-sm font-bold text-dark">UNIQUOVA Digital Agency</p>
-                    <p className="text-xs text-dark-muted mt-0.5">
-                      Serving Clients Across India &amp; Worldwide
+                    <p className="text-sm font-bold text-dark">
+                      {companyInfo.officeName || "UNIQUOVA Digital Agency"}
+                    </p>
+                    <p className="text-xs text-dark-muted mt-0.5 leading-relaxed">
+                      {companyInfo.address || "Serving Clients Across India & Worldwide"}
                     </p>
                   </div>
                 </div>

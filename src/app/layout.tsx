@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import FloatingFeedbackButton from "@/components/FloatingFeedbackButton";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://uniquova.com"),
@@ -75,6 +76,7 @@ export default function RootLayout({
       <body className="font-sans bg-white text-dark antialiased selection:bg-primary/20 selection:text-primary-dark">
         {children}
         <FloatingFeedbackButton />
+        <FloatingWhatsAppButton />
         <Analytics />
       </body>
     </html>
