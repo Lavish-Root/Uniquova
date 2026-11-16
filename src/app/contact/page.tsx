@@ -76,10 +76,47 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero Header */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 purple-mesh-bg relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+      <section className="pt-32 pb-16 lg:pt-40 lg:pb-28 purple-mesh-bg relative overflow-hidden">
+        {/* Themed Background Image Layer */}
+        <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+          {/* Executive Discovery Background Image - Positioned on the right side with True Alpha Mask */}
+          <div 
+            className="absolute inset-y-0 right-0 w-full lg:w-3/4 xl:w-7/12 h-full overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)"
+            }}
+          >
+            <img
+              src="/images/contact_hero_bg.jpg?v=1"
+              alt="UNIQUOVA Executive Project Discovery and Consultation"
+              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.06] brightness-[1.02]"
+            />
+            {/* Subtle Brand Theme Tint Overlay */}
+            <div className="absolute inset-0 bg-[#7545F5]/[0.03] mix-blend-multiply" />
+            
+            {/* Top & Bottom seamless gradient transitions */}
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#FAF9FF] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white via-white/60 to-transparent" />
+          </div>
+
+          {/* Subtle geometric dot grid for depth */}
+          <div 
+            className="absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage: `radial-gradient(#7545F5 1.5px, transparent 1.5px)`,
+              backgroundSize: "32px 32px"
+            }}
+          />
+
+          {/* Ambient Glow Orbs */}
+          <div className="absolute -top-24 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary-light/40 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-2xl lg:max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 shadow-xs">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Direct Discovery</span>
             </div>

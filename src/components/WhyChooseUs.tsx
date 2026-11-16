@@ -23,6 +23,15 @@ const iconMap = [
   Users2,
 ];
 
+const PILLAR_BG_IMAGES: Record<string, string> = {
+  integrated: "/images/pillars/integrated.jpg",
+  "business-focused": "/images/pillars/business_focused.jpg",
+  "creative-thinking": "/images/pillars/creative_thinking.jpg",
+  "tech-execution": "/images/pillars/tech_execution.jpg",
+  scalable: "/images/pillars/scalable.jpg",
+  "client-centric": "/images/pillars/client_centric.jpg",
+};
+
 export default function WhyChooseUs() {
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
@@ -55,40 +64,64 @@ export default function WhyChooseUs() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {WHY_CHOOSE_US_DATA.map((pillar, idx) => {
             const Icon = iconMap[idx % iconMap.length];
+            const bgImage = PILLAR_BG_IMAGES[pillar.id];
+
             return (
               <div
                 key={pillar.id}
-                className="group relative bg-[#FAF9FF] hover:bg-white rounded-3xl p-8 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between"
+                className="group relative bg-[#FAF9FF] hover:bg-white rounded-3xl p-8 border border-border/80 hover:border-primary/40 shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.14)] hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between overflow-hidden"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-white group-hover:bg-primary-light text-primary flex items-center justify-center border border-border group-hover:border-primary-200 transition-colors shadow-sm">
-                      <Icon className="w-6 h-6" />
-                    </div>
-
-                    <div className="text-right">
-                      <span className="text-2xl font-black text-dark group-hover:text-primary transition-colors">
-                        {pillar.stat}
-                      </span>
-                      <p className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
-                        {pillar.statLabel}
-                      </p>
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-dark mb-3 group-hover:text-primary transition-colors">
-                    {pillar.title}
-                  </h3>
-
-                  <p className="text-sm text-dark-muted leading-relaxed">
-                    {pillar.description}
-                  </p>
+                {/* Background Image Layer with Zoom, Pan, & Glow Hover Animations */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0">
+                  {bgImage && (
+                    <img
+                      src={bgImage}
+                      alt={pillar.title}
+                      className="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.08] brightness-[1.02] opacity-20 group-hover:opacity-60 scale-100 group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-700 ease-out"
+                    />
+                  )}
+                  {/* Frosted Gradient Wash: Guarantees 100% Text Legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/40 group-hover:from-white/95 group-hover:via-white/75 group-hover:to-white/20 transition-all duration-500" />
+                  
+                  {/* Ambient Violet Glow on Hover */}
+                  <div className="absolute -top-12 -right-12 w-48 h-48 bg-primary/15 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Subtle Accent Glow Ring on Hover */}
+                  <div className="absolute inset-0 rounded-3xl border border-primary/0 group-hover:border-primary/30 transition-colors duration-500" />
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-border/70 flex items-center justify-between text-xs font-semibold text-primary">
-                  <span>Guaranteed Standards</span>
-                  <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-primary" />
+                {/* Card Content */}
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md group-hover:bg-primary group-hover:text-white text-primary flex items-center justify-center border border-border group-hover:border-primary-200 transition-all duration-500 shadow-sm group-hover:scale-110 group-hover:shadow-glow-sm">
+                        <Icon className="w-6 h-6 transition-transform duration-500" />
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-2xl font-black text-dark group-hover:text-primary transition-colors duration-300">
+                          {pillar.stat}
+                        </span>
+                        <p className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
+                          {pillar.statLabel}
+                        </p>
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-dark mb-3 group-hover:text-primary transition-colors duration-300">
+                      {pillar.title}
+                    </h3>
+
+                    <p className="text-sm text-dark-muted leading-relaxed font-medium">
+                      {pillar.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-6 mt-6 border-t border-border/70 flex items-center justify-between text-xs font-semibold text-primary">
+                    <span>Guaranteed Standards</span>
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                      <Check className="w-3 h-3 text-primary group-hover:text-white transition-colors duration-300" />
+                    </div>
                   </div>
                 </div>
               </div>

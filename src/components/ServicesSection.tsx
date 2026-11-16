@@ -23,6 +23,15 @@ const iconMap = {
   Palette: Palette,
 };
 
+const SERVICE_BG_IMAGES: Record<string, string> = {
+  ecommerce: "/images/services/ecom_laptop_cart.jpg",
+  "web-development": "/images/services/web_dev_bg.jpg",
+  "app-development": "/images/services/app_dev_bg.jpg",
+  branding: "/images/services/branding_bg.jpg?v=3",
+  "graphic-designing": "/images/services/graphic_design_bg.jpg?v=3",
+  "graphic-design": "/images/services/graphic_design_bg.jpg?v=3",
+};
+
 interface ServicesSectionProps {
   onSelectService?: (serviceTitle: string) => void;
 }
@@ -58,86 +67,108 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {SERVICES_DATA.map((service, index) => {
             const IconComponent = iconMap[service.iconName];
+            const bgImage = SERVICE_BG_IMAGES[service.slug] || SERVICE_BG_IMAGES[service.id];
 
             return (
               <div
                 key={service.id}
-                className={`group relative bg-white rounded-3xl p-8 border border-border transition-all duration-300 hover:border-primary/40 hover:shadow-card-hover flex flex-col justify-between ${
+                className={`group relative bg-white rounded-3xl p-8 border border-border/80 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_22px_50px_rgba(117,69,245,0.15)] hover:-translate-y-2 flex flex-col justify-between overflow-hidden ${
                   index === 0 ? "lg:col-span-1" : ""
                 }`}
               >
-                <div>
-                  {/* Top Header: Icon & Category Badge */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 shadow-sm">
-                      <IconComponent className="w-7 h-7" />
-                    </div>
-
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-softBg text-dark-muted border border-border">
-                      {service.badge}
-                    </span>
-                  </div>
-
-                  {/* Title & Tagline */}
-                  <div className="mb-4">
-                    <h3 className="text-xl font-bold text-dark group-hover:text-primary transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-xs font-semibold text-primary mt-0.5">
-                      {service.tagline}
-                    </p>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-dark-muted leading-relaxed mb-6">
-                    {service.shortDesc}
-                  </p>
-
-                  {/* Feature highlights list */}
-                  <div className="space-y-2 mb-8 border-t border-border/60 pt-5">
-                    {service.features.slice(0, 4).map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2.5 text-xs text-dark/90 font-medium">
-                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                    {service.features.length > 4 && (
-                      <p className="text-[11px] text-dark-muted pl-6 font-medium">
-                        + {service.features.length - 4} more specialized capabilities
-                      </p>
-                    )}
-                  </div>
+                {/* Themed Background Image Layer with Interactive Hover Animation */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0">
+                  {bgImage && (
+                    <img
+                      src={bgImage}
+                      alt={`${service.title} background`}
+                      className="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.08] brightness-[1.02] opacity-20 group-hover:opacity-60 scale-100 group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-700 ease-out"
+                    />
+                  )}
+                  {/* Frosted Gradient Wash: Guarantees 100% Text Legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/45 group-hover:from-white/95 group-hover:via-white/75 group-hover:to-white/20 transition-all duration-500" />
+                  
+                  {/* Ambient Violet Glow on Hover */}
+                  <div className="absolute -top-10 -right-10 w-44 h-44 bg-primary/15 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Subtle Accent Glow Ring on Hover */}
+                  <div className="absolute inset-0 rounded-3xl border border-primary/0 group-hover:border-primary/30 transition-colors duration-500" />
                 </div>
 
-                {/* Card Footer: Action Links */}
-                <div className="flex items-center justify-between pt-4 border-t border-border/60 mt-auto">
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="inline-flex items-center gap-1.5 text-sm font-bold text-primary group-hover:text-primary-dark transition-colors"
-                  >
-                    <span>Learn More</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div>
+                    {/* Top Header: Icon & Category Badge */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-14 h-14 rounded-2xl bg-white/90 backdrop-blur-md text-primary flex items-center justify-center border border-primary/20 shadow-sm transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:shadow-glow-sm">
+                        <IconComponent className="w-7 h-7" />
+                      </div>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onSelectService) {
-                        onSelectService(service.title);
-                      }
-                    }}
-                    className="text-xs font-semibold text-dark-muted hover:text-dark px-3 py-1.5 rounded-full hover:bg-softBg transition-colors"
-                  >
-                    Inquire
-                  </button>
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-dark-muted border border-border shadow-xs">
+                        {service.badge}
+                      </span>
+                    </div>
+
+                    {/* Title & Tagline */}
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-dark group-hover:text-primary transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                      <p className="text-xs font-semibold text-primary mt-0.5">
+                        {service.tagline}
+                      </p>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-sm text-dark-muted leading-relaxed mb-6">
+                      {service.shortDesc}
+                    </p>
+
+                    {/* Feature highlights list */}
+                    <div className="space-y-2 mb-8 border-t border-border/60 pt-5">
+                      {service.features.slice(0, 4).map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2.5 text-xs text-dark/95 font-medium">
+                          <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                      {service.features.length > 4 && (
+                        <p className="text-[11px] text-dark-muted pl-6 font-medium">
+                          + {service.features.length - 4} more specialized capabilities
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Card Footer: Action Links */}
+                  <div className="flex items-center justify-between pt-4 border-t border-border/60 mt-auto">
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-primary group-hover:text-primary-dark transition-colors"
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onSelectService) {
+                          onSelectService(service.title);
+                        }
+                      }}
+                      className="text-xs font-semibold text-dark-muted hover:text-dark px-3 py-1.5 rounded-full hover:bg-white/80 transition-colors"
+                    >
+                      Inquire
+                    </button>
+                  </div>
                 </div>
               </div>
             );
           })}
 
           {/* 6th Card: Custom Enterprise & All-In-One Consultation */}
-          <div className="bg-gradient-to-br from-dark via-[#1d1738] to-[#120e24] rounded-3xl p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 -mr-8 -mt-8 w-44 h-44 bg-primary/30 rounded-full blur-2xl" />
+          <div className="bg-gradient-to-br from-dark via-[#1d1738] to-[#120e24] rounded-3xl p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden group transition-all duration-500 hover:shadow-[0_22px_50px_rgba(117,69,245,0.22)] hover:-translate-y-2">
+            <div className="absolute top-0 right-0 -mr-8 -mt-8 w-44 h-44 bg-primary/30 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-700" />
 
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-purple-200 text-xs font-semibold mb-6">
