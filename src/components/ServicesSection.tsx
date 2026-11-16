@@ -45,7 +45,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-200/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
@@ -65,32 +65,34 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
 
         {/* 5 Service Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
-          {SERVICES_DATA.map((service, index) => {
+          {SERVICES_DATA.filter((s) => !s.isSubService).map((service, index) => {
             const IconComponent = iconMap[service.iconName];
             const bgImage = SERVICE_BG_IMAGES[service.slug] || SERVICE_BG_IMAGES[service.id];
 
             return (
               <div
                 key={service.id}
-                className={`group relative bg-white rounded-3xl p-8 border border-border/80 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_22px_50px_rgba(117,69,245,0.15)] hover:-translate-y-2 flex flex-col justify-between overflow-hidden ${
-                  index === 0 ? "lg:col-span-1" : ""
-                }`}
+                className={`group relative bg-white rounded-3xl p-8 border border-border/80 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_22px_50px_rgba(117,69,245,0.15)] hover:-translate-y-2 flex flex-col justify-between overflow-hidden ${index === 0 ? "lg:col-span-1" : ""
+                  }`}
               >
                 {/* Themed Background Image Layer with Interactive Hover Animation */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0">
                   {bgImage && (
                     <img
                       src={bgImage}
-                      alt={`${service.title} background`}
-                      className="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.08] brightness-[1.02] opacity-20 group-hover:opacity-60 scale-100 group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-700 ease-out"
+                      alt={`${service.title} — Digital Agency Capability at UNIQUOVA`}
+                      width={600}
+                      height={400}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.06] brightness-[1.02] opacity-20 group-hover:opacity-35 scale-100 group-hover:scale-108 transition-all duration-700 ease-out"
                     />
                   )}
-                  {/* Frosted Gradient Wash: Guarantees 100% Text Legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/45 group-hover:from-white/95 group-hover:via-white/75 group-hover:to-white/20 transition-all duration-500" />
-                  
+                  {/* Frosted Gradient Wash: Balanced so image stays visible while protecting text clarity */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/45 group-hover:from-white/95 group-hover:via-white/85 group-hover:to-white/40 transition-all duration-500" />
+
                   {/* Ambient Violet Glow on Hover */}
                   <div className="absolute -top-10 -right-10 w-44 h-44 bg-primary/15 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
+
                   {/* Subtle Accent Glow Ring on Hover */}
                   <div className="absolute inset-0 rounded-3xl border border-primary/0 group-hover:border-primary/30 transition-colors duration-500" />
                 </div>
@@ -124,7 +126,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
                     </p>
 
                     {/* Feature highlights list */}
-                    <div className="space-y-2 mb-8 border-t border-border/60 pt-5">
+                    <div className="space-y-2 mb-6 border-t border-border/60 pt-5">
                       {service.features.slice(0, 4).map((feat, fIdx) => (
                         <div key={fIdx} className="flex items-start gap-2.5 text-xs text-dark/95 font-medium">
                           <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -137,6 +139,27 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
                         </p>
                       )}
                     </div>
+
+                    {/* Specialized sub-service deep links for E-commerce priority */}
+                    {service.id === "ecommerce" && (
+                      <div className="mb-6 pt-3 border-t border-border/50">
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-primary mb-2">Specialized Marketplace Services:</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
+                          <Link href="/services/amazon-account-management" className="text-dark hover:text-primary transition-colors flex items-center gap-1 font-medium hover:underline">
+                            <ArrowRight className="w-3 h-3 text-primary shrink-0" /> Amazon Management
+                          </Link>
+                          <Link href="/services/flipkart-account-management" className="text-dark hover:text-primary transition-colors flex items-center gap-1 font-medium hover:underline">
+                            <ArrowRight className="w-3 h-3 text-primary shrink-0" /> Flipkart Operations
+                          </Link>
+                          <Link href="/services/amazon-ppc-management" className="text-dark hover:text-primary transition-colors flex items-center gap-1 font-medium hover:underline">
+                            <ArrowRight className="w-3 h-3 text-primary shrink-0" /> Amazon PPC Ads
+                          </Link>
+                          <Link href="/services/ecommerce-catalog-management" className="text-dark hover:text-primary transition-colors flex items-center gap-1 font-medium hover:underline">
+                            <ArrowRight className="w-3 h-3 text-primary shrink-0" /> Catalog &amp; Listing SEO
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Card Footer: Action Links */}

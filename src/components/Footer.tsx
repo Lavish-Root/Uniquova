@@ -12,6 +12,10 @@ export default function Footer() {
 
   const services = [
     { name: "E-commerce Solutions", href: "/services/ecommerce" },
+    { name: "Amazon Account Management", href: "/services/amazon-account-management" },
+    { name: "Flipkart Account Management", href: "/services/flipkart-account-management" },
+    { name: "Amazon PPC & Ads", href: "/services/amazon-ppc-management" },
+    { name: "Catalog & Listing SEO", href: "/services/ecommerce-catalog-management" },
     { name: "Website Development", href: "/services/web-development" },
     { name: "App Development", href: "/services/app-development" },
     { name: "Branding", href: "/services/branding" },

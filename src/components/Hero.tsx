@@ -151,22 +151,34 @@ export default function Hero({ onOpenContact }: HeroProps) {
                 <img
                   className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80"
-                  alt="Client avatar"
+                  alt="UNIQUOVA Client Partner — E-commerce Brand Founder"
+                  width={36}
+                  height={36}
+                  loading="lazy"
                 />
                 <img
                   className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80"
-                  alt="Client avatar"
+                  alt="UNIQUOVA Client Partner — Tech Enterprise Director"
+                  width={36}
+                  height={36}
+                  loading="lazy"
                 />
                 <img
                   className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
                   src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&auto=format&fit=crop&q=80"
-                  alt="Client avatar"
+                  alt="UNIQUOVA Client Partner — D2C Brand Leader"
+                  width={36}
+                  height={36}
+                  loading="lazy"
                 />
                 <img
                   className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&auto=format&fit=crop&q=80"
-                  alt="Client avatar"
+                  alt="UNIQUOVA Client Partner — Global Retail Executive"
+                  width={36}
+                  height={36}
+                  loading="lazy"
                 />
               </div>
 

@@ -199,7 +199,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                               onClick={() => setServicesOpen(false)}
                               className="text-xs font-semibold text-primary hover:text-primary-dark inline-flex items-center gap-1 py-1"
                             >
-                              Explore All 5 Services <ArrowRight className="w-3 h-3" />
+                              Explore All Capabilities <ArrowRight className="w-3 h-3" />
                             </Link>
                           </div>
                         </div>
@@ -269,7 +269,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                   <div key={link.name} className="py-2 border-b border-border/50">
                     <div className="flex items-center justify-between font-bold text-dark mb-2">
                       <span>Services</span>
-                      <span className="text-xs text-primary font-semibold">5 Services</span>
+                      <span className="text-xs text-primary font-semibold">All Capabilities</span>
                     </div>
                     <div className="grid grid-cols-1 gap-2 pl-2">
                       {servicesList.map((s) => (

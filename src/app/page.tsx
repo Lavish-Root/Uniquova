@@ -1,69 +1,59 @@
-"use client";
+import React from "react";
+import type { Metadata } from "next";
+import HomeClient from "@/components/HomeClient";
+import JsonLd from "@/components/JsonLd";
+import {
+  getOrganizationSchema,
+  getWebSiteSchema,
+  getProfessionalServiceSchema,
+  getFaqSchema,
+} from "@/lib/schema";
 
-import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import ServicesSection from "@/components/ServicesSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import WorkingProcess from "@/components/WorkingProcess";
-import FeaturedProjects from "@/components/FeaturedProjects";
-import IndustriesSection from "@/components/IndustriesSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import FAQSection from "@/components/FAQSection";
-import ContactCTA from "@/components/ContactCTA";
-import Footer from "@/components/Footer";
-import ContactModal from "@/components/ContactModal";
+export const metadata: Metadata = {
+  title: "UNIQUOVA — Full-Service Digital Agency | E-commerce, Web, App & Branding",
+  description:
+    "UNIQUOVA is India's leading digital agency specializing in Amazon & Flipkart marketplace management, Next.js web development, mobile apps, branding, and graphic design.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "UNIQUOVA — Full-Service Digital Agency | Your Vision. Our Expertise.",
+    description:
+      "Scale faster, smarter, and bigger. Full-funnel marketplace management, modern web applications, native apps, and iconic brand identity.",
+    url: "https://uniquova.com",
+    siteName: "UNIQUOVA",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/images/hero-reference.jpg",
+        width: 1200,
+        height: 630,
+        alt: "UNIQUOVA Full-Service Digital Agency",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UNIQUOVA — Full-Service Digital Agency",
+    description:
+      "Premium e-commerce management, web engineering, mobile apps, and branding tailored for high-growth businesses.",
+    images: ["/images/hero-reference.jpg"],
+  },
+};
 
 export default function HomePage() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-  const [selectedServiceForModal, setSelectedServiceForModal] = useState("E-commerce Solutions");
-
-  const handleOpenContactWithService = (serviceTitle: string) => {
-    setSelectedServiceForModal(serviceTitle);
-    setIsContactOpen(true);
-  };
+  const schemas = [
+    getOrganizationSchema(),
+    getWebSiteSchema(),
+    getProfessionalServiceSchema(),
+    getFaqSchema(),
+  ];
 
   return (
-    <main className="min-h-screen bg-white text-dark flex flex-col selection:bg-primary/20 selection:text-primary-dark">
-      {/* Navigation Bar */}
-      <Navbar onOpenContact={() => setIsContactOpen(true)} />
-
-      {/* Section 1: Hero (with Section 2: Trusted By integrated) */}
-      <Hero onOpenContact={() => setIsContactOpen(true)} />
-
-      {/* Section 3: Our Services */}
-      <ServicesSection onSelectService={handleOpenContactWithService} />
-
-      {/* Section 4: Why Choose UNIQUOVA? */}
-      <WhyChooseUs />
-
-      {/* Section 5: Our Working Process */}
-      <WorkingProcess />
-
-      {/* Section 6: Featured Projects */}
-      <FeaturedProjects />
-
-      {/* Section 7: Industries We Serve */}
-      <IndustriesSection />
-
-      {/* Section 8: Testimonials */}
-      <TestimonialsSection />
-
-      {/* Section 9: FAQ */}
-      <FAQSection onOpenContact={() => setIsContactOpen(true)} />
-
-      {/* Section 10: Contact CTA */}
-      <ContactCTA onOpenContact={() => setIsContactOpen(true)} />
-
-      {/* Section 11: Footer */}
-      <Footer />
-
-      {/* Interactive Contact & Lead Inquiry Modal */}
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-        defaultService={selectedServiceForModal}
-      />
-    </main>
+    <>
+      <JsonLd data={schemas} />
+      <HomeClient />
+    </>
   );
 }

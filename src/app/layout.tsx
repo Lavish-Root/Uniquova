@@ -1,29 +1,67 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
+import FloatingFeedbackButton from "@/components/FloatingFeedbackButton";
 
 export const metadata: Metadata = {
-  title: "UNIQUOVA — Premium Full-Service Digital Agency | Your Vision. Our Expertise.",
+  metadataBase: new URL("https://uniquova.com"),
+  title: {
+    default: "UNIQUOVA — Premium Full-Service Digital Agency | Your Vision. Our Expertise.",
+    template: "%s | UNIQOVA",
+  },
   description:
-    "UNIQUOVA crafts innovative e-commerce solutions, website development, app development, branding and graphic designing to help your business scale faster, smarter and bigger.",
+    "UNIQUOVA is India's leading full-service digital agency. We specialize in Amazon & Flipkart marketplace management, Next.js web development, mobile apps, branding, and graphic design to scale your business.",
   keywords: [
     "UNIQUOVA",
-    "Digital Agency",
-    "E-commerce Solutions",
-    "Amazon Marketplace Management",
-    "Flipkart Marketplace",
-    "Website Development",
-    "App Development",
-    "Branding",
-    "Graphic Designing",
+    "Digital Agency India",
+    "E-commerce Management Services",
+    "Amazon Account Management Services",
+    "Flipkart Account Management",
+    "Amazon PPC Management Services",
+    "Product Listing Optimization",
+    "Website Development Company India",
+    "Mobile App Development Company India",
+    "Branding Agency India",
+    "Graphic Design Services",
   ],
-  authors: [{ name: "UNIQUOVA" }],
+  authors: [{ name: "UNIQUOVA", url: "https://uniquova.com" }],
+  creator: "UNIQUOVA",
+  publisher: "UNIQUOVA",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "UNIQUOVA — Full-Service Digital Agency",
-    description: "Your Vision. Our Digital Expertise. Premium e-commerce, web, app and branding solutions.",
+    title: "UNIQUOVA — Premium Full-Service Digital Agency",
+    description: "Your Vision. Our Digital Expertise. Premium e-commerce, web development, app development, and branding solutions.",
     url: "https://uniquova.com",
     siteName: "UNIQUOVA",
-    locale: "en_US",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/images/hero-reference.jpg",
+        width: 1200,
+        height: 630,
+        alt: "UNIQUOVA Full-Service Digital Agency",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UNIQUOVA — Premium Full-Service Digital Agency",
+    description: "Your Vision. Our Digital Expertise. Premium e-commerce, web development, app development, and branding.",
+    images: ["/images/hero-reference.jpg"],
   },
 };
 
@@ -36,6 +74,8 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className="font-sans bg-white text-dark antialiased selection:bg-primary/20 selection:text-primary-dark">
         {children}
+        <FloatingFeedbackButton />
+        <Analytics />
       </body>
     </html>
   );

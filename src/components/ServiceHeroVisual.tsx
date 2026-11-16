@@ -3,18 +3,12 @@
 import React from "react";
 import {
   TrendingUp,
-  Package,
   ShoppingCart,
-  Star,
-  CheckCircle2,
   Code,
-  Zap,
   Smartphone,
-  Layers,
   Sparkles,
   PenTool,
   Palette,
-  Eye,
 } from "lucide-react";
 
 interface ServiceHeroVisualProps {
@@ -144,7 +138,7 @@ export default function ServiceHeroVisual({ slug }: ServiceHeroVisualProps) {
           {/* Syntax Code Preview */}
           <div className="space-y-1.5 text-xs text-purple-200/90 leading-relaxed font-mono">
             <p><span className="text-purple-400">import</span> &#123; NextApp &#125; <span className="text-purple-400">from</span> <span className="text-emerald-400">&quot;@uniquova/core&quot;</span>;</p>
-            <p className="text-gray-500">// 100/100 Core Web Vitals Guaranteed</p>
+            <p className="text-gray-500">&#47;&#47; 100/100 Core Web Vitals Guaranteed</p>
             <p><span className="text-purple-400">export default async function</span> <span className="text-amber-300">ModernExperience</span>() &#123;</p>
             <p className="pl-4"><span className="text-purple-400">return</span> (</p>
             <p className="pl-8 text-emerald-300">&lt;<span className="text-rose-400">ScalablePlatform</span> speed=<span className="text-amber-400">&quot;instant&quot;</span> security=<span className="text-amber-400">&quot;enterprise&quot;</span> /&gt;</p>

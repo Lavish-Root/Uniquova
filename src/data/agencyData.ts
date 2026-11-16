@@ -11,7 +11,22 @@ export interface ServiceItem {
   benefits: string[];
   workflow: { step: string; title: string; desc: string }[];
   faqs: { q: string; a: string }[];
+  isSubService?: boolean;
+  category?: string;
 }
+
+export const SERVICE_BG_IMAGES: Record<string, string> = {
+  ecommerce: "/images/services/ecom_laptop_cart.jpg",
+  "amazon-account-management": "/images/services/ecommerce_bg_1.jpg",
+  "flipkart-account-management": "/images/services/ecommerce_bg_3.jpg",
+  "amazon-ppc-management": "/images/services/ecom_digital_retail.jpg",
+  "ecommerce-catalog-management": "/images/services/ecom_packages.jpg",
+  "web-development": "/images/services/web_dev_bg.jpg",
+  "app-development": "/images/services/app_dev_bg.jpg",
+  branding: "/images/services/branding_bg.jpg?v=3",
+  "graphic-designing": "/images/services/graphic_design_bg.jpg?v=3",
+  "graphic-design": "/images/services/graphic_design_bg.jpg?v=3",
+};
 
 export const SERVICES_DATA: ServiceItem[] = [
   {
@@ -20,6 +35,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     title: "E-commerce Solutions",
     tagline: "Sell. Grow. Scale.",
     badge: "Marketplace & Growth",
+    category: "E-commerce",
     shortDesc: "End-to-end management and scaling for Amazon, Flipkart, and direct-to-consumer digital storefronts.",
     iconName: "ShoppingCart",
     features: [
@@ -62,6 +78,202 @@ export const SERVICES_DATA: ServiceItem[] = [
       {
         q: "Do you handle account suspension issues?",
         a: "Yes, our team assists with Plan of Action (POA) documentation and policy compliance to restore suspended ASINs or seller privileges.",
+      },
+    ],
+  },
+  {
+    id: "amazon-account-management",
+    slug: "amazon-account-management",
+    title: "Amazon Seller Account Management",
+    tagline: "Launch. Rank #1. Dominate.",
+    badge: "Amazon Partner & FBA",
+    isSubService: true,
+    category: "E-commerce",
+    shortDesc: "Full-funnel Amazon Seller Central management in India and globally. FBA logistics, Buy Box defense, listing SEO, policy compliance, and revenue scaling.",
+    iconName: "ShoppingCart",
+    features: [
+      "Amazon Seller Central daily account operations & monitoring",
+      "Amazon Brand Registry & storefront design",
+      "FBA inventory forecasting & shipment creation",
+      "Buy Box monitoring & automated repricing strategy",
+      "Negative review management & customer feedback compliance",
+      "Account health defense & suppression resolution",
+    ],
+    deliverables: [
+      "Fully Optimized ASIN Titles, 5 Bullets & Search Terms",
+      "A+ Brand Story & EBC Enhanced Content Design",
+      "Weekly Account Health & Buy Box Share Reports",
+      "FBA Restock Limits & Inwarding Management",
+      "Competitor Price Tracking & Hijacker Elimination",
+    ],
+    benefits: [
+      "Consistent 95%+ Buy Box retention across high-velocity ASINs",
+      "Zero unaddressed policy flags or unexpected listing suppressions",
+      "Top organic rank on high-volume Indian search queries",
+      "Dedicated Amazon marketplace manager with direct communication channels",
+    ],
+    workflow: [
+      { step: "01", title: "Account & ASIN Audit", desc: "Deep diagnostic of account health, suppressed listings, indexation, and competitor pricing." },
+      { step: "02", title: "Listing & Brand Overhaul", desc: "Restructuring titles, bullet points, backend search terms, and Brand Registry assets." },
+      { step: "03", title: "FBA & Inventory Sync", desc: "Calibrating stock levels, setting up FBA shipments, and configuring price defense." },
+      { step: "04", title: "Scale & Market Defense", desc: "Continuous Buy Box tracking, review acquisition, and quarterly business reviews." },
+    ],
+    faqs: [
+      {
+        q: "Do you manage Amazon accounts outside India (US, UK, UAE)?",
+        a: "Yes, our team actively manages Amazon accounts across Amazon.in, Amazon.com (US), Amazon.co.uk, and Amazon.ae, including Global Selling tax and shipping workflows.",
+      },
+      {
+        q: "Can you help restore a suspended Amazon seller account or blocked ASIN?",
+        a: "Yes. We analyze the root cause cited by Seller Performance, draft a comprehensive Plan of Action (POA), and assist with appeal submission.",
+      },
+      {
+        q: "How do you coordinate with our warehouse or inventory team?",
+        a: "We establish shared inventory dashboards, set automated low-stock threshold alerts, and assist with FBA inbound shipment labeling.",
+      },
+    ],
+  },
+  {
+    id: "flipkart-account-management",
+    slug: "flipkart-account-management",
+    title: "Flipkart Seller Account Management",
+    tagline: "Grow. Scale. Win Big Billion Days.",
+    badge: "Flipkart Marketplace",
+    isSubService: true,
+    category: "E-commerce",
+    shortDesc: "Complete Flipkart seller portal management for Indian retail brands. Catalog onboarding, Flipkart Fulfillment (FBF), tier upgrades, and festive sales campaigns.",
+    iconName: "ShoppingCart",
+    features: [
+      "Flipkart Seller Hub setup and daily operational management",
+      "Flipkart Fulfillment (FBF) inwarding and SLA adherence",
+      "Tier upgrade strategies (Bronze to Silver to Gold/Platinum)",
+      "Flipkart Product Listing Ads (PLA) and SmartROI management",
+      "Return rate minimization and customer dispute handling",
+      "Big Billion Days (BBD) and festive sale preparation",
+    ],
+    deliverables: [
+      "Flipkart-Compliant Catalog Sheets & Attribute Mapping",
+      "SmartROI Campaign Setup & Bid Dayparting",
+      "Tier Upgrade Tracking & SLA Scorecard Optimization",
+      "Flipkart Brand Mall & SuperCoin Promotion Setup",
+      "Weekly Settlement Reconciliation & Dispute Filings",
+    ],
+    benefits: [
+      "Upgrade to Gold/Platinum tiers for lower commission fees and higher search placement",
+      "Eliminate order cancellation penalties and late dispatch flags",
+      "Multiplied sales volume during Big Billion Days and Grand Kitchen/Fashion days",
+      "Seamless integration between Flipkart and your domestic fulfillment centers",
+    ],
+    workflow: [
+      { step: "01", title: "Seller Hub Diagnostic", desc: "Auditing seller tier status, dispatch breaches, return metrics, and catalog errors." },
+      { step: "02", title: "Catalog Clean-Up", desc: "Fixing invalid vertical attributes, brand approvals, and missing quality score inputs." },
+      { step: "03", title: "FBF & Logistics Optimization", desc: "Onboarding products to Flipkart Fulfillment to unlock the F-Assured badge." },
+      { step: "04", title: "Promotions & Paid Acceleration", desc: "Participating in exclusive Flipkart promotions and running high-ROI ad campaigns." },
+    ],
+    faqs: [
+      {
+        q: "How important is the Flipkart F-Assured badge?",
+        a: "The F-Assured badge signals reliability to buyers and significantly boosts product click-through and conversion rates, often resulting in 30% to 50% sales lift.",
+      },
+      {
+        q: "How do you help manage high return rates on Flipkart?",
+        a: "We audit sizing charts, product imagery clarity, and customer return reasons, updating listing descriptions to eliminate buyer confusion.",
+      },
+    ],
+  },
+  {
+    id: "amazon-ppc-management",
+    slug: "amazon-ppc-management",
+    title: "Amazon PPC & Marketplace Advertising",
+    tagline: "Lower ACoS. Maximize ROAS. Scale Profits.",
+    badge: "Marketplace Ads",
+    isSubService: true,
+    category: "E-commerce",
+    shortDesc: "Data-backed advertising operations across Amazon and marketplaces. Sponsored Products, Sponsored Brands Video, Sponsored Display, and aggressive ACoS reduction.",
+    iconName: "ShoppingCart",
+    features: [
+      "Sponsored Products (Automatic, Broad, Phrase, Exact campaigns)",
+      "Sponsored Brands & high-converting Sponsored Brands Video (SBV)",
+      "Sponsored Display audience targeting & competitor ASIN conquesting",
+      "Negative keyword harvesting & budget leak elimination",
+      "Dynamic bid placement multipliers (Top of Search vs Rest of Search)",
+      "Total ACoS (TACoS) monitoring and profit margin defense",
+    ],
+    deliverables: [
+      "Custom Campaign Architecture (Discovery, Target, Defense, Conquest)",
+      "Weekly Search Term Mining & Negative Keyword List Updates",
+      "Bid Adjustment Logs & ROAS Benchmark Dashboard",
+      "Creative Assets for Video Ads and Storefront Headers",
+      "Monthly Profitability & Blended Organic/Paid Impact Reports",
+    ],
+    benefits: [
+      "Drastic drop in wasted ad spend through systematic negative keyword pruning",
+      "Top-of-search dominance for your category's most profitable search terms",
+      "Balanced TACoS ensuring advertising expands organic ranking without draining margins",
+      "Proactive defense of your own product detail pages from competitor ad placements",
+    ],
+    workflow: [
+      { step: "01", title: "Search Term & Ad Audit", desc: "Analyzing past 90 days of ad reports to isolate bleeding keywords and high-performing targets." },
+      { step: "02", title: "Architecture Rebuild", desc: "Structuring isolated campaigns by match type and ASIN velocity to prevent cross-bidding." },
+      { step: "03", title: "Bid Optimization & Negatives", desc: "Implementing daily bid refinements, dayparting adjustments, and negative phrase additions." },
+      { step: "04", title: "Scale High-Performing ASINs", desc: "Expanding into Sponsored Brands Video and category conquesting as profitability stabilizes." },
+    ],
+    faqs: [
+      {
+        q: "What is a realistic target ACoS for Amazon sellers in India?",
+        a: "Depending on your gross profit margin and category competition, healthy target ACoS typically ranges from 15% to 25% for mature products, with higher targets accepted during initial launch phases.",
+      },
+      {
+        q: "How does Amazon PPC impact organic ranking?",
+        a: "Paid conversions generate sales velocity on specific search queries, which directly improves organic search placement in Amazon's search algorithm.",
+      },
+    ],
+  },
+  {
+    id: "ecommerce-catalog-management",
+    slug: "ecommerce-catalog-management",
+    title: "E-commerce Catalog Management & Listing Optimization",
+    tagline: "Structure. Optimize. Convert.",
+    badge: "Listing & Catalog",
+    isSubService: true,
+    category: "E-commerce",
+    shortDesc: "End-to-end catalog taxonomy, flat file bulk uploads, listing SEO optimization, and parent-child variation architecture for hundreds of SKUs.",
+    iconName: "ShoppingCart",
+    features: [
+      "Comprehensive listing SEO: titles, bullet points, backend search terms",
+      "Parent-child variation grouping (color, size, multipack combinations)",
+      "Category taxonomy mapping and classification tree alignment",
+      "Flat file creation, bulk error fixing (8541, 8040, 5665 brand authorization)",
+      "Suppressed listing identification and immediate restoration",
+      "Cross-marketplace catalog synchronization (Amazon, Flipkart, Meesho, Shopify)",
+    ],
+    deliverables: [
+      "Master Cleaned Product Catalog with Standardized Attributes",
+      "Keyword-Optimized Listing Copy tailored to Buyer Search Intent",
+      "Parent-Child Relationship Architecture across All Variations",
+      "Error-Free Category Flat Files Ready for Marketplace Ingestion",
+      "Monthly Catalog Health & Suppressed ASIN Audit",
+    ],
+    benefits: [
+      "Higher search discoverability through complete, rich attribute indexing",
+      "Consolidate scattered customer reviews into unified variation listings",
+      "Rapid time-to-market when launching new seasonal collections or SKUs",
+      "Zero revenue loss from suppressed listings sitting unnoticed in your dashboard",
+    ],
+    workflow: [
+      { step: "01", title: "Catalog Discovery & Scrape", desc: "Exporting existing catalog files to flag missing attributes, formatting bugs, and suppressions." },
+      { step: "02", title: "Keyword & Taxonomy Research", desc: "Mapping high-intent category keywords and identifying the optimal browse nodes." },
+      { step: "03", title: "Bulk Optimization & Upload", desc: "Crafting persuasive listing copy, assembling parent-child trees, and uploading flat files." },
+      { step: "04", title: "Quality Verification", desc: "Verifying live indexing on marketplace search pages and resolving any ingest flags." },
+    ],
+    faqs: [
+      {
+        q: "Can you fix Amazon error 8541 (single-matching error)?",
+        a: "Yes. Error 8541 happens when your submitted attribute conflicts with existing Amazon catalog data. We resolve these with flat-file partial updates or brand support tickets.",
+      },
+      {
+        q: "How many SKUs can your catalog team handle?",
+        a: "Our team regularly handles catalogs ranging from single-digit flagship SKUs to comprehensive 10,000+ SKU multi-category inventory feeds.",
       },
     ],
   },
@@ -207,8 +419,8 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
   },
   {
-    id: "graphic-designing",
-    slug: "graphic-designing",
+    id: "graphic-design",
+    slug: "graphic-design",
     title: "Graphic Designing",
     tagline: "Create. Communicate.",
     badge: "Creative & Visuals",
@@ -339,6 +551,28 @@ export const PROCESS_STEPS = [
   },
 ];
 
+export interface ProjectMetric {
+  label: string;
+  value: string;
+}
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  serviceCategory: string;
+  client: string;
+  description: string;
+  vercelUrl: string;
+  githubUrl?: string;
+  mediaType: "image" | "video";
+  mediaUrl: string;
+  technologies: string[];
+  impact: string;
+  metrics: ProjectMetric[];
+  featured?: boolean;
+  createdAt?: string;
+}
+
 export const FEATURED_PROJECTS = [
   {
     id: "apex-commerce",
@@ -461,7 +695,22 @@ export const INDUSTRIES_DATA = [
   },
 ];
 
-export const TESTIMONIALS_DATA = [
+export interface TestimonialItem {
+  id: string;
+  name: string;
+  handle?: string;
+  role: string;
+  company: string;
+  avatar: string;
+  quote: string;
+  rating: number;
+  tag: string;
+  platform?: "linkedin" | "twitter" | "verified";
+  isUserSubmitted?: boolean;
+  createdAt?: string;
+}
+
+export const TESTIMONIALS_DATA: TestimonialItem[] = [
   {
     id: "1",
     name: "Vikram Singhania",

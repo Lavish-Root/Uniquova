@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/"],
+      disallow: ["/api/", "/uniq_up", "/uniq_up/"],
     },
     sitemap: "https://uniquova.com/sitemap.xml",
   };

@@ -29,6 +29,10 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# runtime cache & temporary OTP data
+.otp_cache.json
+src/data/.otp_cache.json
+
 # vercel
 .vercel
 

@@ -76,7 +76,10 @@ export default function WhyChooseUs() {
                   {bgImage && (
                     <img
                       src={bgImage}
-                      alt={pillar.title}
+                      alt={`${pillar.title} — UNIQUOVA Strategic Capability`}
+                      width={600}
+                      height={400}
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.08] brightness-[1.02] opacity-20 group-hover:opacity-60 scale-100 group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-700 ease-out"
                     />
                   )}

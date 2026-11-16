@@ -8,7 +8,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:opacity-80 transition-opacity shrink-0">
           <img
             src="/images/clients/praansewa.png"
-            alt="PraanSewa"
+            alt="PraanSewa — Healthcare &amp; Wellness Partner of UNIQUOVA"
+            width={120}
+            height={32}
+            loading="lazy"
             className="h-7 sm:h-8 w-auto object-contain"
           />
         </div>
@@ -20,7 +23,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:scale-105 transition-transform shrink-0">
           <img
             src="/images/clients/verastra_clean.png"
-            alt="VERASTRA"
+            alt="VERASTRA — High-Growth D2C Brand Scaled by UNIQUOVA"
+            width={130}
+            height={36}
+            loading="lazy"
             className="h-8 sm:h-9 w-auto object-contain"
           />
         </div>
@@ -32,7 +38,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:opacity-85 transition-opacity shrink-0">
           <img
             src="/images/clients/syaahi.png"
-            alt="Syaahi"
+            alt="Syaahi — Lifestyle &amp; Design Client Partner of UNIQUOVA"
+            width={100}
+            height={28}
+            loading="lazy"
             className="h-6 sm:h-7 w-auto object-contain"
           />
         </div>
@@ -44,7 +53,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:scale-105 transition-transform shrink-0">
           <img
             src="/images/clients/cloudguard.png"
-            alt="CLOUDGUARD AI"
+            alt="CloudGuard AI — Enterprise Software Partner of UNIQUOVA"
+            width={140}
+            height={36}
+            loading="lazy"
             className="h-8 sm:h-9 w-auto object-contain"
           />
         </div>
@@ -56,7 +68,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:opacity-85 transition-opacity shrink-0">
           <img
             src="/images/clients/loopago.png"
-            alt="Loopago"
+            alt="Loopago — Digital Logistics Partner of UNIQUOVA"
+            width={110}
+            height={28}
+            loading="lazy"
             className="h-6 sm:h-7 w-auto object-contain"
           />
         </div>
@@ -103,7 +118,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:opacity-90 transition-opacity shrink-0">
           <img
             src="/images/clients/flipkart_clean.svg"
-            alt="Flipkart"
+            alt="Flipkart — Marketplace Partner Channel Managed by UNIQUOVA"
+            width={120}
+            height={28}
+            loading="lazy"
             className="h-6 sm:h-7 w-auto object-contain"
           />
         </div>
@@ -115,7 +133,10 @@ export default function TrustedBy() {
         <div className="flex items-center hover:opacity-90 transition-opacity shrink-0">
           <img
             src="/images/clients/meesho.png"
-            alt="Meesho"
+            alt="Meesho — Social Commerce Marketplace Integration by UNIQUOVA"
+            width={120}
+            height={32}
+            loading="lazy"
             className="h-7 sm:h-8 w-auto object-contain rounded-xl shadow-xs"
           />
         </div>

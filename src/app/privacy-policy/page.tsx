@@ -1,10 +1,31 @@
 import React from "react";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { getBreadcrumbSchema } from "@/lib/schema";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "UNIQUOVA's commitment to data protection, client confidentiality, and intellectual property safety.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function PrivacyPolicyPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Privacy Policy", url: "/privacy-policy" },
+  ]);
+
   return (
     <main className="min-h-screen bg-white text-dark flex flex-col">
+      <JsonLd data={breadcrumbSchema} />
       <Navbar />
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20 purple-mesh-bg">
@@ -32,7 +53,7 @@ export default function PrivacyPolicyPage() {
             The collected information is solely used to prepare custom project proposals, schedule discovery calls, deliver contracted services, and provide customer support. We never sell, rent, or lease client information to third parties.
           </p>
 
-          <h2 className="text-xl font-bold text-dark pt-4">3. Data Protection & Confidentiality</h2>
+          <h2 className="text-xl font-bold text-dark pt-4">3. Data Protection &amp; Confidentiality</h2>
           <p>
             All client proprietary details, software repositories, marketplace credentials, and branding assets are safeguarded under strict internal access controls and standard Non-Disclosure Agreements (NDAs).
           </p>
@@ -48,4 +69,3 @@ export default function PrivacyPolicyPage() {
     </main>
   );
 }
-

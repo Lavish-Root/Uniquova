@@ -1,16 +1,37 @@
 import React from "react";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { getBreadcrumbSchema } from "@/lib/schema";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description: "Terms and conditions governing professional digital agency engagements and website usage at UNIQOVA.",
+  alternates: {
+    canonical: "/terms-and-conditions",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function TermsAndConditionsPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Terms & Conditions", url: "/terms-and-conditions" },
+  ]);
+
   return (
     <main className="min-h-screen bg-white text-dark flex flex-col">
+      <JsonLd data={breadcrumbSchema} />
       <Navbar />
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-20 purple-mesh-bg">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-extrabold text-dark tracking-tight mb-4">
-            Terms & Conditions
+            Terms &amp; Conditions
           </h1>
           <p className="text-sm text-dark-muted">Last Updated: November 2026</p>
         </div>
@@ -19,7 +40,7 @@ export default function TermsAndConditionsPage() {
       <section className="py-16 bg-white flex-1">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-purple text-dark-muted space-y-6">
           <p>
-            Welcome to <strong>UNIQUOVA</strong>. By accessing our website or retaining our digital agency services, you agree to comply with and be bound by the following Terms & Conditions.
+            Welcome to <strong>UNIQUOVA</strong>. By accessing our website or retaining our digital agency services, you agree to comply with and be bound by the following Terms &amp; Conditions.
           </p>
 
           <h2 className="text-xl font-bold text-dark pt-4">1. Scope of Services</h2>
@@ -43,4 +64,3 @@ export default function TermsAndConditionsPage() {
     </main>
   );
 }
-

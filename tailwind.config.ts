@@ -28,8 +28,8 @@ const config: Config = {
         dark: {
           DEFAULT: "#151323",
           surface: "#1E1A33",
-          muted: "#6F6A80",
-          light: "#9A95AA",
+          muted: "#262433", // Light black / crisp charcoal font (replaced grey #6F6A80)
+          light: "#4B475C",
         },
         border: {
           DEFAULT: "#EAE6F4",

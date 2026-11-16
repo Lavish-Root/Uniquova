@@ -57,6 +57,11 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
                 href="https://wa.me/919876543210?text=Hello%20UNIQUOVA%2C%20I%20would%20like%20to%20discuss%20a%20digital%20project."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (typeof window !== "undefined" && typeof (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+                    (window as unknown as { gtag: (...args: unknown[]) => void }).gtag("event", "whatsapp_click", { location: "contact_cta" });
+                  }
+                }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-base px-8 py-4 rounded-full border border-white/20 backdrop-blur-md transition-all duration-200"
               >
                 <MessageSquare className="w-5 h-5 text-emerald-400" />

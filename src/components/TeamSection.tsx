@@ -153,7 +153,10 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
         <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-softBg mb-4">
           <img
             src={member.image}
-            alt={member.name}
+            alt={`${member.name} — ${member.role} at UNIQUOVA`}
+            width={400}
+            height={500}
+            loading="lazy"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 filter contrast-[1.02]"
           />
 

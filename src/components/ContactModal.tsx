@@ -84,6 +84,14 @@ export default function ContactModal({
 
       setSuccessData({ message: data.message, leadId: data.leadId });
 
+      if (typeof window !== "undefined" && typeof (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+        (window as unknown as { gtag: (...args: unknown[]) => void }).gtag("event", "generate_lead", {
+          lead_id: data.leadId,
+          service_requested: service,
+          source: "contact_modal",
+        });
+      }
+
       // Trigger celebratory confetti
       confetti({
         particleCount: 80,
