@@ -1,5 +1,31 @@
 [
   {
+    "id": "UQ-MWKREV7Y",
+    "name": "lavish chouhan",
+    "email": "lavishchouhan56@gmail.com",
+    "phone": "7014264008",
+    "company": "vertus",
+    "service": "E-commerce Solutions",
+    "description": "i need urgent",
+    "source": "contact_modal",
+    "status": "new",
+    "notes": "",
+    "receivedAt": "2026-11-17T14:00:11.662Z"
+  },
+  {
+    "id": "WA-MWKRE636",
+    "name": "Direct WhatsApp Visitor",
+    "email": "whatsapp.lead@uniquova.com",
+    "phone": "Pending conversation",
+    "company": "Direct WhatsApp Inquirer",
+    "service": "Direct WhatsApp Project Chat",
+    "description": "Visitor clicked 'Chat on WhatsApp' from 'Have an Idea? Let's Make It Happen' CTA section.",
+    "source": "whatsapp_cta",
+    "status": "contacted",
+    "notes": "Initiated via WhatsApp button.",
+    "receivedAt": "2026-11-17T13:59:39.090Z"
+  },
+  {
     "id": "UQ-L9X8A1",
     "name": "Aarav Sharma",
     "email": "aarav.sharma@example.com",
@@ -21,7 +47,7 @@
     "service": "Website Development",
     "description": "Need a high-performance Next.js 14 web application redesign with animated UI components, CMS integration, and sub-second load times.",
     "source": "contact_page",
-    "status": "contacted",
+    "status": "closed",
     "notes": "Sent initial scope audit proposal via email.",
     "receivedAt": "2026-11-17T09:15:00.000Z"
   },

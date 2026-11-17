@@ -4,7 +4,7 @@
   "primaryPhone": "+91 7014264008",
   "primaryPhoneLabel": "Mon – Sun 8:00 AM – 10:00 PM IST",
   "secondaryPhone": "+91 81079 26165",
-  "secondaryPhoneLabel": "Mon – Sat  9:30 AM – 10:00 PM IST",
+  "secondaryPhoneLabel": "Mon – Sun  9:30 AM – 10:00 PM IST",
   "whatsappNumber": "+91 7014264008",
   "whatsappMessage": "Hello UNIQUOVA, I would like to discuss a digital project.",
   "officeName": "UNIQUOVA Digital HQ",
@@ -28,5 +28,5 @@
       "enabled": true
     }
   },
-  "lastUpdated": "2026-11-17T12:35:02.726Z"
+  "lastUpdated": "2026-11-17T14:23:25.820Z"
 }
