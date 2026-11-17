@@ -938,3 +938,18 @@ export function formatWhatsAppUrl(number: string, message?: string): string {
   return `https://wa.me/${cleanDigits}?text=${encodeURIComponent(defaultMsg)}`;
 }
 
+export interface ClientQuery {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  service: string;
+  description: string;
+  source: "contact_modal" | "contact_page" | "whatsapp_cta" | "direct" | string;
+  status: "new" | "contacted" | "in_progress" | "closed";
+  notes?: string;
+  receivedAt: string;
+}
+
+

@@ -146,3 +146,65 @@ export async function sendOtpEmail({
     message: `OTP generated for ${toEmail}.`,
   };
 }
+
+export async function sendLeadNotificationEmail({
+  toEmail,
+  lead,
+}: {
+  toEmail: string;
+  lead: {
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    service: string;
+    description: string;
+    source?: string;
+  };
+}): Promise<void> {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "UNIQOVA Security <onboarding@resend.dev>";
+  if (!resendApiKey) return;
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+      <body style="background-color: #0E0C15; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px;">
+        <div style="max-width: 550px; margin: 0 auto; background: #151323; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px;">
+          <h2 style="color: #7545F5; margin-top: 0; font-size: 20px;">🚀 New Project Inquiry Received!</h2>
+          <p style="font-size: 13px; color: #a1a1aa; margin-top: 4px;">Reference ID: <strong>${lead.id}</strong></p>
+          <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 16px 0;" />
+          <p style="font-size: 14px; margin: 8px 0;"><strong>Client:</strong> ${lead.name} (${lead.company || "Direct Client"})</p>
+          <p style="font-size: 14px; margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${lead.email}" style="color: #9E76FB;">${lead.email}</a></p>
+          <p style="font-size: 14px; margin: 8px 0;"><strong>Phone:</strong> <a href="tel:${lead.phone}" style="color: #9E76FB;">${lead.phone || "Not provided"}</a></p>
+          <p style="font-size: 14px; margin: 8px 0;"><strong>Service:</strong> <span style="background: rgba(117,69,245,0.2); color: #9E76FB; padding: 3px 8px; border-radius: 6px; font-weight: bold;">${lead.service}</span></p>
+          <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 8px; margin-top: 14px;">
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #e4e4e7;">${lead.description}</p>
+          </div>
+          <div style="margin-top: 22px; text-align: center;">
+            <a href="https://uniquova.com/uniq_up" style="display: inline-block; background: #7545F5; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 13px; padding: 12px 24px; border-radius: 8px;">View in UNIQOVA CMS →</a>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: toEmail,
+        subject: `[New Inquiry] ${lead.name} — ${lead.service} (${lead.id})`,
+        html: emailHtml,
+      }),
+    });
+  } catch (err) {
+    console.error("[Lead Notification Dispatch Error]:", err);
+  }
+}

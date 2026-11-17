@@ -9,6 +9,7 @@ import {
   BrandPartnerItem,
   CapabilityItem,
   CompanyInfo,
+  ClientQuery,
   DEFAULT_COMPANY_INFO,
   formatWhatsAppUrl,
 } from "@/data/agencyData";
@@ -55,6 +56,11 @@ import {
   MessageCircle,
   Save,
   Share2,
+  Inbox,
+  User,
+  Building,
+  Copy,
+  FileText,
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -200,8 +206,8 @@ export default function AdminClient() {
   // Registered Admin Email
   const [adminEmail, setAdminEmail] = useState("lavishchouhan56@gmail.com");
 
-  // Navigation tab: "projects" or "reviews" or "brands" or "capabilities" or "company"
-  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "brands" | "capabilities" | "company">("projects");
+  // Navigation tab: "projects" or "reviews" or "queries" or "brands" or "capabilities" or "company"
+  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "queries" | "brands" | "capabilities" | "company">("projects");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ==========================================
@@ -281,6 +287,20 @@ export default function AdminClient() {
   });
 
   // ==========================================
+  // CLIENT QUERIES & LEADS STATE
+  // ==========================================
+  const [queries, setQueries] = useState<ClientQuery[]>([]);
+  const [isLoadingQueries, setIsLoadingQueries] = useState(false);
+  const [querySearch, setQuerySearch] = useState("");
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>("all");
+  const [selectedSourceFilter, setSelectedSourceFilter] = useState<string>("all");
+  const [selectedQueryServiceFilter, setSelectedQueryServiceFilter] = useState<string>("All");
+  const [deleteQueryConfirmId, setDeleteQueryConfirmId] = useState<string | null>(null);
+  const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
+  const [tempNotes, setTempNotes] = useState<string>("");
+  const [isUpdatingStatusId, setIsUpdatingStatusId] = useState<string | null>(null);
+
+  // ==========================================
   // BRANDS STATE (Trusted By leading brands & businesses)
   // ==========================================
   const [brands, setBrands] = useState<BrandPartnerItem[]>([]);
@@ -347,6 +367,7 @@ export default function AdminClient() {
       setIsAuthenticated(true);
       fetchProjects();
       fetchReviews();
+      fetchQueries(savedKey);
       fetchBrands();
       fetchCapabilities();
       fetchCompanyInfo();
@@ -390,6 +411,7 @@ export default function AdminClient() {
         setIsAuthenticated(true);
         fetchProjects();
         fetchReviews();
+        fetchQueries(loginInput);
         fetchBrands();
         fetchCapabilities();
         fetchCompanyInfo();
@@ -1150,6 +1172,150 @@ export default function AdminClient() {
   };
 
   // -------------------------------------------------------------
+  // CLIENT QUERIES & LEADS API METHODS
+  // -------------------------------------------------------------
+  const fetchQueries = async (overrideKey?: string) => {
+    setIsLoadingQueries(true);
+    try {
+      const key = overrideKey || adminPassword || (typeof window !== "undefined" ? sessionStorage.getItem("uniq_admin_key") || "" : "");
+      const headers: Record<string, string> = {};
+      if (key) headers["x-admin-password"] = key;
+      const res = await fetch(`/api/contact?t=${Date.now()}`, {
+        headers,
+        cache: "no-store",
+      });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.queries)) {
+        setQueries(data.queries);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve client inquiries");
+    } finally {
+      setIsLoadingQueries(false);
+    }
+  };
+
+  const handleUpdateQueryStatus = async (
+    id: string,
+    newStatus: "new" | "contacted" | "in_progress" | "closed"
+  ) => {
+    setIsUpdatingStatusId(id);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setQueries((prev) =>
+          prev.map((q) => (q.id === id ? { ...q, status: newStatus } : q))
+        );
+        showToast("success", `Lead status updated to ${newStatus.replace("_", " ")}`);
+      } else {
+        showToast("error", data.message || "Failed to update query status");
+      }
+    } catch {
+      showToast("error", "Network error updating inquiry status");
+    } finally {
+      setIsUpdatingStatusId(null);
+    }
+  };
+
+  const handleSaveQueryNotes = async (id: string, notes: string) => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ id, notes }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setQueries((prev) =>
+          prev.map((q) => (q.id === id ? { ...q, notes } : q))
+        );
+        setEditingNotesId(null);
+        showToast("success", "Admin internal note saved");
+      } else {
+        showToast("error", data.message || "Failed to save note");
+      }
+    } catch {
+      showToast("error", "Network error saving note");
+    }
+  };
+
+  const handleDeleteQuery = async (id: string) => {
+    try {
+      const res = await fetch(`/api/contact?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          "x-admin-password": adminPassword,
+        },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setQueries((prev) => prev.filter((q) => q.id !== id));
+        setDeleteQueryConfirmId(null);
+        showToast("success", "Inquiry removed from CMS database");
+      } else {
+        showToast("error", data.message || "Failed to delete inquiry");
+      }
+    } catch {
+      showToast("error", "Network error while deleting inquiry");
+    }
+  };
+
+  const openWhatsAppForClient = (query: ClientQuery) => {
+    const rawPhone = query.phone || "";
+    const cleanPhone = rawPhone.replace(/\D/g, "");
+    const clientName = query.name && query.name !== "Direct WhatsApp Visitor" ? query.name : "there";
+    const serviceName = query.service ? ` regarding ${query.service}` : "";
+
+    if (cleanPhone.length >= 7) {
+      const msg = encodeURIComponent(
+        `Hello ${clientName}, this is UNIQOVA Operations${serviceName}. We reviewed your inquiry and would love to discuss next steps. When is a good time to connect?`
+      );
+      window.open(`https://wa.me/${cleanPhone}?text=${msg}`, "_blank");
+    } else {
+      const agencyWhatsApp = (companyInfo.whatsappNumber || "917014264008").replace(/\D/g, "");
+      const msg = encodeURIComponent(
+        `[Lead Follow-up: ${query.id}] ${query.name} (${query.email}) - Service: ${query.service || "Inquiry"}`
+      );
+      window.open(`https://wa.me/${agencyWhatsApp}?text=${msg}`, "_blank");
+    }
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    if (!text) return;
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      showToast("success", `Copied ${label} to clipboard: ${text}`);
+    }
+  };
+
+  const formatQueryDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  // -------------------------------------------------------------
   // COMPANY CONTACT & BRAND SETTINGS API METHODS
   // -------------------------------------------------------------
   const fetchCompanyInfo = async () => {
@@ -1498,6 +1664,41 @@ export default function AdminClient() {
     return matchesTrack && matchesCategory && matchesQuery;
   });
 
+  // Calculate query / lead statistics
+  const queryStats = {
+    total: queries.length,
+    newCount: queries.filter((q) => q.status === "new").length,
+    contactedCount: queries.filter((q) => q.status === "contacted").length,
+    inProgressCount: queries.filter((q) => q.status === "in_progress").length,
+    closedCount: queries.filter((q) => q.status === "closed").length,
+    whatsappCount: queries.filter((q) => q.source === "whatsapp_cta").length,
+  };
+
+  // Filtered queries by search, status, source, and service
+  const filteredQueries = queries.filter((q) => {
+    const matchesStatus =
+      selectedStatusFilter === "all" || q.status === selectedStatusFilter;
+    const matchesSource =
+      selectedSourceFilter === "all" ||
+      (selectedSourceFilter === "whatsapp" ? q.source === "whatsapp_cta" : q.source !== "whatsapp_cta");
+    const matchesService =
+      selectedQueryServiceFilter === "All" ||
+      (q.service && q.service.toLowerCase().includes(selectedQueryServiceFilter.toLowerCase()));
+    const s = querySearch.toLowerCase().trim();
+    const matchesSearch =
+      !s ||
+      q.id.toLowerCase().includes(s) ||
+      q.name.toLowerCase().includes(s) ||
+      q.email.toLowerCase().includes(s) ||
+      (q.phone && q.phone.toLowerCase().includes(s)) ||
+      (q.company && q.company.toLowerCase().includes(s)) ||
+      (q.service && q.service.toLowerCase().includes(s)) ||
+      q.description.toLowerCase().includes(s) ||
+      (q.notes && q.notes.toLowerCase().includes(s));
+
+    return matchesStatus && matchesSource && matchesService && matchesSearch;
+  });
+
   // Format countdown minutes:seconds
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -1836,6 +2037,51 @@ export default function AdminClient() {
                 </span>
               </button>
 
+              {/* Tab 3: Client Queries & Leads */}
+              <button
+                onClick={() => {
+                  setCurrentTab("queries");
+                  fetchQueries();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                  currentTab === "queries"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${
+                      currentTab === "queries"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                    }`}
+                  >
+                    <Inbox className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">Client Queries</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {queryStats.newCount > 0 && (
+                    <span
+                      className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-900 animate-pulse shadow-xs"
+                      title={`${queryStats.newCount} unread new leads`}
+                    >
+                      {queryStats.newCount} NEW
+                    </span>
+                  )}
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
+                      currentTab === "queries"
+                        ? "bg-white/25 text-white"
+                        : "bg-primary-light text-primary"
+                    }`}
+                  >
+                    {queries.length}
+                  </span>
+                </div>
+              </button>
+
               {/* Tab 3: Trusted Brands & Marquee */}
               <button
                 onClick={() => {
@@ -2142,6 +2388,34 @@ export default function AdminClient() {
 
                   <button
                     onClick={() => {
+                      setCurrentTab("queries");
+                      fetchQueries();
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                      currentTab === "queries"
+                        ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
+                        : "text-dark-muted hover:bg-softBg border border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Inbox className="w-4 h-4" />
+                      <span className="text-sm font-bold">Client Queries</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {queryStats.newCount > 0 && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-900">
+                          {queryStats.newCount} NEW
+                        </span>
+                      )}
+                      <span className="px-2 py-0.5 rounded-full text-[11px] font-black bg-white/20">
+                        {queries.length}
+                      </span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
                       setCurrentTab("brands");
                       if (brands.length === 0) fetchBrands();
                       setIsSidebarOpen(false);
@@ -2306,6 +2580,11 @@ export default function AdminClient() {
                     <MessageSquare className="w-4 h-4 text-primary" />
                     <span>Client Reviews &amp; Testimonials</span>
                   </>
+                ) : currentTab === "queries" ? (
+                  <>
+                    <Inbox className="w-4 h-4 text-primary" />
+                    <span>Client Inquiries &amp; Project Leads</span>
+                  </>
                 ) : currentTab === "brands" ? (
                   <>
                     <Award className="w-4 h-4 text-primary" />
@@ -2348,6 +2627,16 @@ export default function AdminClient() {
                 <span>Live Testimonials</span>
                 <ExternalLink className="w-3 h-3 text-dark-muted/50" />
               </Link>
+            ) : currentTab === "queries" ? (
+              <Link
+                href="/contact"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Mail className="w-3.5 h-3.5 text-primary" />
+                <span>Live /contact</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
             ) : currentTab === "brands" ? (
               <Link
                 href="/"
@@ -2387,6 +2676,8 @@ export default function AdminClient() {
                   ? fetchProjects
                   : currentTab === "reviews"
                   ? fetchReviews
+                  : currentTab === "queries"
+                  ? () => fetchQueries()
                   : currentTab === "brands"
                   ? fetchBrands
                   : currentTab === "capabilities"
@@ -2398,6 +2689,8 @@ export default function AdminClient() {
                   ? isLoadingProjects
                   : currentTab === "reviews"
                   ? isLoadingReviews
+                  : currentTab === "queries"
+                  ? isLoadingQueries
                   : currentTab === "brands"
                   ? isLoadingBrands
                   : currentTab === "capabilities"
@@ -2413,6 +2706,8 @@ export default function AdminClient() {
                     ? isLoadingProjects
                     : currentTab === "reviews"
                     ? isLoadingReviews
+                    : currentTab === "queries"
+                    ? isLoadingQueries
                     : currentTab === "brands"
                     ? isLoadingBrands
                     : currentTab === "capabilities"
@@ -2443,6 +2738,18 @@ export default function AdminClient() {
                 <span className="hidden sm:inline">Add New Review</span>
                 <span className="sm:hidden">New Review</span>
               </button>
+            ) : currentTab === "queries" ? (
+              <a
+                href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                title="Open WhatsApp with pre-configured concierge message"
+              >
+                <MessageCircle className="w-4 h-4 fill-white/20" />
+                <span className="hidden sm:inline">Open Agency WhatsApp</span>
+                <span className="sm:hidden">WhatsApp</span>
+              </a>
             ) : currentTab === "brands" ? (
               <button
                 onClick={openAddBrandModal}
@@ -3070,6 +3377,452 @@ export default function AdminClient() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: CLIENT INQUIRIES & LEADS MANAGEMENT                  */}
+        {/* ========================================================= */}
+        {currentTab === "queries" && (
+          <div className="space-y-8 animate-in fade-in duration-300">
+            {/* Banner with Stats & Refresh Button */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-border">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
+                  <Inbox className="w-3.5 h-3.5" />
+                  <span>Lead Pipeline &amp; Client Inquiries</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                  Client Inquiries, RFPs &amp; WhatsApp Leads
+                </h1>
+                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                  Every project inquiry submitted via the website contact form, modal, or &ldquo;Chat on WhatsApp&rdquo; CTA button is captured here. Reply directly on WhatsApp, email, or telephone with one click.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={() => fetchQueries()}
+                  disabled={isLoadingQueries}
+                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                  title="Refresh inquiries from server"
+                >
+                  <RefreshCw className={`w-5 h-5 ${isLoadingQueries ? "animate-spin text-primary" : ""}`} />
+                </button>
+
+                <a
+                  href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white/20" />
+                  <span>Test WhatsApp Concierge</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Inquiries</p>
+                  <Inbox className="w-4 h-4 text-primary" />
+                </div>
+                <p className="text-2xl font-black text-dark mt-2">{queryStats.total}</p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">Recorded across all touchpoints</p>
+              </div>
+
+              <div className="bg-white border border-amber-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-amber-50/40">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-wider text-amber-700 font-bold">New / Uncontacted</p>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                </div>
+                <p className="text-2xl font-black text-amber-900 mt-2">{queryStats.newCount}</p>
+                <p className="text-[11px] text-amber-700/80 mt-0.5">Awaiting initial response</p>
+              </div>
+
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">In Progress / Contacted</p>
+                  <Sparkles className="w-4 h-4 text-blue-600" />
+                </div>
+                <p className="text-2xl font-black text-dark mt-2">{queryStats.contactedCount + queryStats.inProgressCount}</p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">Active client discussions</p>
+              </div>
+
+              <div className="bg-white border border-emerald-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-emerald-50/40">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-wider text-emerald-800 font-bold">WhatsApp CTA Leads</p>
+                  <MessageCircle className="w-4 h-4 text-emerald-600" />
+                </div>
+                <p className="text-2xl font-black text-emerald-900 mt-2">{queryStats.whatsappCount}</p>
+                <p className="text-[11px] text-emerald-700/80 mt-0.5">From &ldquo;Chat on WhatsApp&rdquo; CTA</p>
+              </div>
+            </div>
+
+            {/* Filter and Search Bar */}
+            <div className="bg-white border border-border rounded-2xl p-4 shadow-card space-y-3">
+              <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                {/* Search Bar */}
+                <div className="relative flex-1">
+                  <Search className="w-4 h-4 text-dark-muted/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={querySearch}
+                    onChange={(e) => setQuerySearch(e.target.value)}
+                    placeholder="Search client name, email, phone, company, service or requirements..."
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-softBg text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:bg-white transition-all font-medium"
+                  />
+                  {querySearch && (
+                    <button
+                      onClick={() => setQuerySearch("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs p-1"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Source Filter */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider shrink-0">Source:</span>
+                  <select
+                    value={selectedSourceFilter}
+                    onChange={(e) => setSelectedSourceFilter(e.target.value)}
+                    className="px-3 py-2 rounded-xl border border-border bg-white text-xs font-semibold text-dark focus:outline-hidden focus:border-primary cursor-pointer"
+                  >
+                    <option value="all">All Sources ({queries.length})</option>
+                    <option value="forms">Website Forms &amp; Modal</option>
+                    <option value="whatsapp">💬 WhatsApp CTA Clicks ({queryStats.whatsappCount})</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Status Pills */}
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/60">
+                <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider mr-1">Status:</span>
+                {[
+                  { key: "all", label: "All Inquiries", count: queries.length },
+                  { key: "new", label: "New", count: queryStats.newCount },
+                  { key: "contacted", label: "Contacted", count: queryStats.contactedCount },
+                  { key: "in_progress", label: "In Progress", count: queryStats.inProgressCount },
+                  { key: "closed", label: "Closed", count: queryStats.closedCount },
+                ].map((pill) => (
+                  <button
+                    key={pill.key}
+                    onClick={() => setSelectedStatusFilter(pill.key)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedStatusFilter === pill.key
+                        ? "bg-dark text-white border-dark shadow-xs"
+                        : "bg-white text-dark-muted border-border hover:bg-softBg hover:text-dark"
+                    }`}
+                  >
+                    <span>{pill.label}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
+                        selectedStatusFilter === pill.key ? "bg-white/20 text-white" : "bg-softBg text-dark-muted"
+                      }`}
+                    >
+                      {pill.count}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Inquiries Cards Grid */}
+            {isLoadingQueries ? (
+              <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
+                <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto" />
+                <p className="text-sm font-bold text-dark">Syncing client inquiries &amp; WhatsApp leads...</p>
+              </div>
+            ) : filteredQueries.length === 0 ? (
+              <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
+                <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center">
+                  <Inbox className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold text-dark">No inquiries found</h3>
+                <p className="text-xs sm:text-sm text-dark-muted max-w-md mx-auto">
+                  {querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all"
+                    ? "No inquiries match your current search or filter criteria. Try clearing filters."
+                    : "No client inquiries have been submitted yet. Inquiries from the website contact forms and WhatsApp buttons will appear here in real time."}
+                </p>
+                {(querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all") && (
+                  <button
+                    onClick={() => {
+                      setQuerySearch("");
+                      setSelectedStatusFilter("all");
+                      setSelectedSourceFilter("all");
+                      setSelectedQueryServiceFilter("All");
+                    }}
+                    className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5">
+                {filteredQueries.map((query) => {
+                  const isWhatsAppLead = query.source === "whatsapp_cta";
+                  const statusColors: Record<string, { bg: string; text: string; border: string }> = {
+                    new: { bg: "bg-amber-50", text: "text-amber-800", border: "border-amber-300" },
+                    contacted: { bg: "bg-blue-50", text: "text-blue-800", border: "border-blue-300" },
+                    in_progress: { bg: "bg-purple-50", text: "text-purple-800", border: "border-purple-300" },
+                    closed: { bg: "bg-emerald-50", text: "text-emerald-800", border: "border-emerald-300" },
+                  };
+                  const currentStatusStyle = statusColors[query.status] || statusColors.new;
+
+                  return (
+                    <div
+                      key={query.id}
+                      className={`bg-white border rounded-3xl p-6 shadow-card hover:shadow-card-hover transition-all space-y-5 ${
+                        query.status === "new" ? "border-amber-300/80 ring-1 ring-amber-300/40" : "border-border"
+                      }`}
+                    >
+                      {/* Top Bar: ID, Date, Source, and Status Dropdown */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border/70">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-softBg border border-border text-dark">
+                            #{query.id}
+                          </span>
+
+                          {isWhatsAppLead ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-extrabold">
+                              <MessageCircle className="w-3.5 h-3.5 fill-emerald-600/20 text-emerald-600" />
+                              <span>WhatsApp CTA Lead</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[11px] font-extrabold">
+                              <Mail className="w-3.5 h-3.5" />
+                              <span>{query.source === "contact_page" ? "Contact Page" : "Modal Lead"}</span>
+                            </span>
+                          )}
+
+                          <span className="text-[11px] text-dark-muted font-medium flex items-center gap-1 ml-1">
+                            <Clock className="w-3.5 h-3.5 text-dark-muted/60" />
+                            <span>{formatQueryDate(query.receivedAt)}</span>
+                          </span>
+                        </div>
+
+                        {/* Status Selector Dropdown */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] uppercase font-bold text-dark-muted tracking-wider">Status:</span>
+                          <select
+                            value={query.status}
+                            disabled={isUpdatingStatusId === query.id}
+                            onChange={(e) =>
+                              handleUpdateQueryStatus(
+                                query.id,
+                                e.target.value as "new" | "contacted" | "in_progress" | "closed"
+                              )
+                            }
+                            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-primary/20 ${currentStatusStyle.bg} ${currentStatusStyle.text} ${currentStatusStyle.border}`}
+                          >
+                            <option value="new">🟡 New Inquiry</option>
+                            <option value="contacted">🔵 Contacted</option>
+                            <option value="in_progress">🟣 In Progress</option>
+                            <option value="closed">🟢 Closed / Won</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Main Details: Client Information & Requested Service */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Client Identity Block */}
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-2xl bg-primary-light text-primary flex items-center justify-center shrink-0 font-bold text-sm">
+                              <User className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <h4 className="text-base font-extrabold text-dark tracking-tight">{query.name}</h4>
+                              {query.company && (
+                                <p className="text-xs text-dark-muted flex items-center gap-1 mt-0.5 font-medium">
+                                  <Building className="w-3 h-3 text-dark-muted/70" />
+                                  <span>{query.company}</span>
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 pt-2 text-xs">
+                            {/* Email with copy */}
+                            <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
+                              <a
+                                href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
+                                className="font-semibold text-primary hover:underline truncate flex items-center gap-1.5"
+                                title="Send email"
+                              >
+                                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+                                <span className="truncate">{query.email}</span>
+                              </a>
+                              <button
+                                onClick={() => copyToClipboard(query.email, "email")}
+                                className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
+                                title="Copy email address"
+                              >
+                                <Copy className="w-3 h-3" />
+                              </button>
+                            </div>
+
+                            {/* Phone with copy */}
+                            {query.phone && (
+                              <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
+                                <a
+                                  href={`tel:${query.phone}`}
+                                  className="font-mono font-semibold text-dark hover:text-primary transition-colors truncate flex items-center gap-1.5"
+                                  title="Dial phone"
+                                >
+                                  <Phone className="w-3.5 h-3.5 text-dark-muted shrink-0" />
+                                  <span className="truncate">{query.phone}</span>
+                                </a>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={() => copyToClipboard(query.phone || "", "phone number")}
+                                    className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
+                                    title="Copy phone number"
+                                  >
+                                    <Copy className="w-3 h-3" />
+                                  </button>
+                                  <button
+                                    onClick={() => openWhatsAppForClient(query)}
+                                    className="p-1 hover:bg-emerald-100 rounded-lg text-emerald-700 transition-colors cursor-pointer"
+                                    title="Chat with client on WhatsApp"
+                                  >
+                                    <MessageCircle className="w-3 h-3 fill-emerald-600/30" />
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Project Brief & Service Required Block */}
+                        <div className="md:col-span-2 space-y-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold">
+                              <Sparkles className="w-3 h-3 text-purple-600" />
+                              <span>{query.service}</span>
+                            </span>
+                          </div>
+
+                          <div className="p-4 rounded-2xl bg-softBg/80 border border-border/80">
+                            <p className="text-xs uppercase font-extrabold text-dark-muted/70 tracking-wider mb-1.5 flex items-center gap-1">
+                              <FileText className="w-3 h-3" />
+                              <span>Project Scope &amp; Client Brief:</span>
+                            </p>
+                            <p className="text-xs sm:text-sm text-dark leading-relaxed whitespace-pre-wrap font-medium">
+                              {query.description}
+                            </p>
+                          </div>
+
+                          {/* Admin Internal Notes */}
+                          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <span className="text-[11px] font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-1">
+                                <Edit3 className="w-3 h-3" />
+                                <span>Internal Operations Note:</span>
+                              </span>
+                              {editingNotesId !== query.id && (
+                                <button
+                                  onClick={() => {
+                                    setEditingNotesId(query.id);
+                                    setTempNotes(query.notes || "");
+                                  }}
+                                  className="text-[11px] text-primary hover:underline font-bold cursor-pointer"
+                                >
+                                  {query.notes ? "Edit Note" : "+ Add Note"}
+                                </button>
+                              )}
+                            </div>
+
+                            {editingNotesId === query.id ? (
+                              <div className="space-y-2">
+                                <textarea
+                                  value={tempNotes}
+                                  onChange={(e) => setTempNotes(e.target.value)}
+                                  placeholder="Add internal notes on calls, pricing, or next steps..."
+                                  rows={2}
+                                  className="w-full p-2.5 rounded-xl border border-amber-300 bg-white text-xs text-dark focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+                                />
+                                <div className="flex items-center justify-end gap-2">
+                                  <button
+                                    onClick={() => setEditingNotesId(null)}
+                                    className="px-3 py-1 rounded-lg border border-border text-xs font-semibold hover:bg-white text-dark-muted cursor-pointer"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    onClick={() => handleSaveQueryNotes(query.id, tempNotes)}
+                                    className="px-3 py-1 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
+                                  >
+                                    Save Note
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-xs text-dark-muted font-medium italic">
+                                {query.notes || "No internal notes recorded yet."}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card Action Footer Bar */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-border/70">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {/* 1-Click WhatsApp Chat Button */}
+                          <button
+                            type="button"
+                            onClick={() => openWhatsAppForClient(query)}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-extrabold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                          >
+                            <MessageCircle className="w-4 h-4 fill-white/20" />
+                            <span>Chat on WhatsApp</span>
+                            <ExternalLink className="w-3 h-3 opacity-70" />
+                          </button>
+
+                          {/* Email Client */}
+                          <a
+                            href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition-all cursor-pointer"
+                          >
+                            <Mail className="w-3.5 h-3.5" />
+                            <span>Email</span>
+                          </a>
+
+                          {/* Call Client if phone available */}
+                          {query.phone && (
+                            <a
+                              href={`tel:${query.phone}`}
+                              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-softBg hover:bg-slate-200 text-dark border border-border text-xs font-bold transition-all cursor-pointer"
+                            >
+                              <Phone className="w-3.5 h-3.5 text-primary" />
+                              <span>Call</span>
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Delete Inquiry Button */}
+                        <button
+                          type="button"
+                          onClick={() => setDeleteQueryConfirmId(query.id)}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 text-xs font-bold transition-all cursor-pointer"
+                          title="Delete inquiry from CMS"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -4255,6 +5008,56 @@ export default function AdminClient() {
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
+
+                {/* Homepage CTA Live Mirror Preview */}
+                <div className="mt-6 pt-6 border-t border-border">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-dark flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      <span>Homepage CTA &ldquo;Chat on WhatsApp&rdquo; Mirror</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      Auto-Tracks Inquiries in CMS
+                    </span>
+                  </div>
+
+                  <div className="rounded-3xl bg-gradient-to-br from-[#120e24] via-[#1a1438] to-[#0d091e] p-6 sm:p-8 text-white border border-purple-500/20 shadow-xl relative overflow-hidden">
+                    <div className="text-center space-y-3 relative z-10">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-purple-200 uppercase tracking-wider">
+                        <Sparkles className="w-3 h-3 text-purple-300" />
+                        <span>Let&apos;s Build Something Iconic</span>
+                      </div>
+                      <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                        Have an Idea? <br className="hidden sm:inline" />Let&apos;s Make It Happen.
+                      </h4>
+                      <p className="text-xs text-purple-200/80 max-w-lg mx-auto">
+                        From e-commerce marketplaces to custom web and mobile apps, our team is ready to scale your vision.
+                      </p>
+
+                      <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                        <div className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-xs opacity-90 shadow-glow-sm">
+                          Start Your Project &rarr;
+                        </div>
+                        <a
+                          href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-5 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Chat on WhatsApp</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-dark-muted mt-2.5 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>
+                      When visitors click &ldquo;Chat on WhatsApp&rdquo; on the homepage CTA banner, a lead inquiry is automatically stored in your <strong className="text-dark">Client Queries</strong> tab with source <code>whatsapp_cta</code>.
+                    </span>
+                  </p>
+                </div>
               </div>
 
               {/* CARD 4: Physical Office & Headquarters Address */}
@@ -5316,6 +6119,37 @@ export default function AdminClient() {
                 className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
               >
                 Yes, Delete Review
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL: DELETE CLIENT INQUIRY CONFIRMATION MODAL               */}
+      {/* ------------------------------------------------------------- */}
+      {deleteQueryConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Inquiry #{deleteQueryConfirmId}?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This lead and its associated client brief and internal notes will be permanently removed from the CMS database.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteQueryConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteQuery(deleteQueryConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                Yes, Delete Inquiry
               </button>
             </div>
           </div>

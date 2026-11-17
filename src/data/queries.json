@@ -1,0 +1,41 @@
+[
+  {
+    "id": "UQ-L9X8A1",
+    "name": "Aarav Sharma",
+    "email": "aarav.sharma@example.com",
+    "phone": "+91 98290 12345",
+    "company": "Kira Living D2C",
+    "service": "Amazon Seller Account Management",
+    "description": "Looking to scale our Amazon store from 15L/month to 50L/month with full-funnel PPC management and A+ catalog redesign.",
+    "source": "contact_modal",
+    "status": "new",
+    "notes": "High priority D2C brand inquiry.",
+    "receivedAt": "2026-11-17T11:30:00.000Z"
+  },
+  {
+    "id": "UQ-L9X8B2",
+    "name": "Meera Patel",
+    "email": "meera@zenithtech.io",
+    "phone": "+91 98765 43210",
+    "company": "Zenith Cloud Solutions",
+    "service": "Website Development",
+    "description": "Need a high-performance Next.js 14 web application redesign with animated UI components, CMS integration, and sub-second load times.",
+    "source": "contact_page",
+    "status": "contacted",
+    "notes": "Sent initial scope audit proposal via email.",
+    "receivedAt": "2026-11-17T09:15:00.000Z"
+  },
+  {
+    "id": "UQ-L9X8C3",
+    "name": "Direct WhatsApp Visitor",
+    "email": "whatsapp.lead@uniquova.com",
+    "phone": "+91 98111 22334",
+    "company": "Organic Heritage Co.",
+    "service": "E-commerce Solutions",
+    "description": "Client initiated direct chat via 'Have an Idea? Chat on WhatsApp' CTA banner on homepage.",
+    "source": "whatsapp_cta",
+    "status": "in_progress",
+    "notes": "Chatting on WhatsApp regarding Flipkart onboarding.",
+    "receivedAt": "2026-11-16T16:45:00.000Z"
+  }
+]
