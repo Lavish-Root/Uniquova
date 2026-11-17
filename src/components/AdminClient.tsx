@@ -359,23 +359,43 @@ export default function AdminClient() {
     return () => clearInterval(interval);
   }, [otpCountdown]);
 
-  // Check existing session & fetch registered admin email
+  // Strictly enforce password requirement on every visit to /uniq_up
   useEffect(() => {
-    const savedKey = sessionStorage.getItem("uniq_admin_key");
-    if (savedKey) {
-      setAdminPassword(savedKey);
-      setIsAuthenticated(true);
-      fetchProjects();
-      fetchReviews();
-      fetchQueries(savedKey);
-      fetchBrands();
-      fetchCapabilities();
-      fetchCompanyInfo();
-      fetchAdminEmail(savedKey);
-    } else {
-      fetchAdminEmail();
+    // Clear any residual session tokens on mount so the password gate is always enforced
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("uniq_admin_key");
+      localStorage.removeItem("uniq_admin_key");
     }
+    setIsAuthenticated(false);
+    setAdminPassword("");
+    setLoginInput("");
+    fetchAdminEmail();
   }, []);
+
+  // Auto-lock CMS session after 20 minutes of inactivity for security
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsAuthenticated(false);
+        setAdminPassword("");
+        setLoginInput("");
+        showToast("error", "CMS locked due to inactivity. Enter password to continue.");
+      }, 20 * 60 * 1000);
+    };
+
+    const activityEvents = ["mousedown", "keydown", "scroll", "touchstart"];
+    activityEvents.forEach((event) => window.addEventListener(event, resetTimer));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      activityEvents.forEach((event) => window.removeEventListener(event, resetTimer));
+    };
+  }, [isAuthenticated]);
 
   const fetchAdminEmail = async (authKey?: string) => {
     try {
@@ -407,7 +427,9 @@ export default function AdminClient() {
 
       if (res.ok && data.success) {
         setAdminPassword(loginInput);
-        sessionStorage.setItem("uniq_admin_key", loginInput);
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("uniq_admin_key");
+        }
         setIsAuthenticated(true);
         fetchProjects();
         fetchReviews();
@@ -428,10 +450,14 @@ export default function AdminClient() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("uniq_admin_key");
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("uniq_admin_key");
+      localStorage.removeItem("uniq_admin_key");
+    }
     setIsAuthenticated(false);
     setAdminPassword("");
     setLoginInput("");
+    showToast("success", "CMS Gateway locked. Master password required to re-enter.");
   };
 
   // -------------------------------------------------------------
@@ -1177,7 +1203,7 @@ export default function AdminClient() {
   const fetchQueries = async (overrideKey?: string) => {
     setIsLoadingQueries(true);
     try {
-      const key = overrideKey || adminPassword || (typeof window !== "undefined" ? sessionStorage.getItem("uniq_admin_key") || "" : "");
+      const key = overrideKey || adminPassword || "";
       const headers: Record<string, string> = {};
       if (key) headers["x-admin-password"] = key;
       const res = await fetch(`/api/contact?t=${Date.now()}`, {
@@ -1544,7 +1570,10 @@ export default function AdminClient() {
         showToast("success", "Admin password successfully updated!");
         setIsPasswordModalOpen(false);
         setAdminPassword(newPassword);
-        sessionStorage.setItem("uniq_admin_key", newPassword);
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("uniq_admin_key");
+          localStorage.removeItem("uniq_admin_key");
+        }
         setIsAuthenticated(true);
       } else {
         setPwError(data.message || "Failed to update password.");
