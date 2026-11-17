@@ -14,7 +14,6 @@ import {
 } from "@/data/agencyData";
 import CapabilityIcon, { CAPABILITY_ICON_OPTIONS } from "./CapabilityIcon";
 import {
-  Lock,
   Eye,
   EyeOff,
   Plus,
@@ -48,9 +47,7 @@ import {
   Palette,
   PenTool,
   Layers,
-  ChevronRight,
   ChevronDown,
-  Filter,
   Building2,
   Phone,
   PhoneCall,

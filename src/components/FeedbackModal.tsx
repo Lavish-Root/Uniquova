@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Star, CheckCircle2, ShieldCheck, Sparkles, Building, Briefcase, User, KeyRound, Upload, Trash2 } from "lucide-react";
+import { X, Star, CheckCircle2, ShieldCheck, Sparkles, Building, Briefcase, User, KeyRound, Upload } from "lucide-react";
 
 interface FeedbackModalProps {
   isOpen: boolean;
