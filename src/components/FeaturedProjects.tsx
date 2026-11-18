@@ -45,15 +45,15 @@ export default function FeaturedProjects() {
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar">
+        <div className="flex flex-wrap items-center gap-2.5 mb-10">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
+              className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 activeCategory === cat
-                  ? "bg-primary text-white shadow-glow-sm"
-                  : "bg-softBg text-dark-muted hover:text-dark border border-border"
+                  ? "bg-primary text-white shadow-glow-sm scale-102"
+                  : "bg-softBg text-dark-muted hover:text-dark border border-border hover:border-primary/40"
               }`}
             >
               {cat}

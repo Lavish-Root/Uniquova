@@ -50,6 +50,15 @@ export default function OurWorkClient() {
     { name: "Branding", icon: PenTool },
   ];
 
+  const categoryDescriptions: Record<string, string> = {
+    "All Projects": "Comprehensive production showcase across full-stack web platforms, mobile apps, marketplace stores, and brand identity systems.",
+    "Web Development": "High-performance full-stack web applications, scalable Next.js architectures, secure cloud APIs, and live Vercel deployments.",
+    "Mobile App Development": "Native iOS, Android, and cross-platform mobile digital products engineered for conversion and fluid user experience.",
+    "E-commerce Solutions": "Multi-channel marketplace scaling across Amazon & Flipkart, A+ Brand Story design, listing SEO, and PPC revenue optimization.",
+    "Graphic Designing": "High-CTR social ad creatives, 3D visual mockups, Meta & Google display assets, and conversion-focused creative testing.",
+    "Branding": "End-to-end brand identity architecture, custom logo typography, design guideline systems, and retail packaging.",
+  };
+
   const getCategoryCount = (catName: string) => {
     if (catName === "All Projects") return projects.length;
     return projects.filter(
@@ -145,56 +154,94 @@ export default function OurWorkClient() {
       <section className="py-16 lg:py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Controls Bar: Category Navigation & Search */}
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 mb-12">
-            {/* Category Filter Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-3 lg:pb-0 scrollbar-none">
-              {categories.map((cat) => {
-                const Icon = cat.icon;
-                const count = getCategoryCount(cat.name);
-                const isActive = activeCategory === cat.name;
-
-                return (
+          <div className="bg-[#FAF9FF] border border-border/80 rounded-3xl p-5 sm:p-7 mb-12 shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-border/60">
+              {/* Left: Active Status Indicator */}
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-dark">
+                  Portfolio Disciplines
+                </span>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white text-primary border border-border shadow-2xs">
+                  {filteredProjects.length} {filteredProjects.length === 1 ? "Project" : "Projects"}
+                </span>
+                {(activeCategory !== "All Projects" || searchQuery) && (
                   <button
-                    key={cat.name}
-                    onClick={() => setActiveCategory(cat.name)}
-                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
-                      isActive
-                        ? "bg-primary text-white shadow-glow-sm"
-                        : "bg-softBg text-dark-muted hover:text-dark hover:bg-primary-light/30 border border-border"
-                    }`}
+                    onClick={() => {
+                      setActiveCategory("All Projects");
+                      setSearchQuery("");
+                    }}
+                    className="text-[11px] font-bold text-dark-muted hover:text-primary underline ml-1 cursor-pointer transition-colors"
                   >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-primary"}`} />
-                    <span>{cat.name}</span>
-                    <span
-                      className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                        isActive ? "bg-white/20 text-white" : "bg-dark/5 text-dark-muted"
-                      }`}
-                    >
-                      {count}
-                    </span>
+                    Reset Filter
                   </button>
-                );
-              })}
+                )}
+              </div>
+
+              {/* Right: Modern Integrated Search */}
+              <div className="relative w-full md:w-80">
+                <Search className="w-4 h-4 text-dark-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by tech, client, keyword..."
+                  className="w-full bg-white border border-border rounded-full pl-10 pr-9 py-2 text-xs sm:text-sm text-dark placeholder-dark-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all shadow-2xs"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full hover:bg-softBg transition-colors"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Keyword Search */}
-            <div className="relative min-w-[280px]">
-              <Search className="w-4 h-4 text-dark-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search projects by tech, client..."
-                className="w-full bg-softBg border border-border rounded-full pl-10 pr-8 py-2.5 text-xs sm:text-sm text-dark placeholder-dark-muted/60 focus:outline-none focus:border-primary transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs font-bold"
-                >
-                  ✕
-                </button>
-              )}
+            {/* Category Filter Tabs: Responsive Wrapped Pills - NO SCROLLER BAR */}
+            <div className="pt-5">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                {categories.map((cat) => {
+                  const Icon = cat.icon;
+                  const count = getCategoryCount(cat.name);
+                  const isActive = activeCategory === cat.name;
+
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => setActiveCategory(cat.name)}
+                      className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? "bg-gradient-to-r from-primary to-[#8A5CF6] text-white shadow-[0_8px_20px_rgba(117,69,245,0.3)] scale-[1.02] border border-transparent font-bold"
+                          : "bg-white text-dark-muted hover:text-dark hover:bg-white/90 border border-border/80 shadow-2xs hover:border-primary/40 hover:-translate-y-0.5"
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-primary"}`} />
+                      <span>{cat.name}</span>
+                      <span
+                        className={`text-[11px] font-bold px-2 py-0.5 rounded-full transition-colors ${
+                          isActive
+                            ? "bg-white/20 text-white"
+                            : "bg-softBg text-dark-muted border border-border/60"
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Dynamic Discipline Context Strip */}
+              <div className="mt-4 pt-3.5 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-dark-muted">
+                <p className="line-clamp-1 italic">
+                  💡 {categoryDescriptions[activeCategory] || categoryDescriptions["All Projects"]}
+                </p>
+                <span className="hidden sm:inline font-mono text-[11px] shrink-0 text-primary font-bold">
+                  Verified Production Deliverables
+                </span>
+              </div>
             </div>
           </div>
 
@@ -204,69 +251,81 @@ export default function OurWorkClient() {
               <Layers className="w-12 h-12 text-primary/40 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-dark mb-1">No Projects Found</h3>
               <p className="text-sm text-dark-muted max-w-md mx-auto mb-6">
-                No projects matched your criteria in &quot;{activeCategory}&quot;. Try selecting another service category.
+                No projects matched your criteria in &quot;{activeCategory}&quot;. Try selecting another service category or clearing your search.
               </p>
               <button
                 onClick={() => {
                   setActiveCategory("All Projects");
                   setSearchQuery("");
                 }}
-                className="px-6 py-2.5 rounded-full bg-primary text-white text-xs font-bold shadow-glow-sm"
+                className="px-6 py-2.5 rounded-full bg-primary text-white text-xs font-bold shadow-glow-sm hover:bg-primary-dark transition-all cursor-pointer"
               >
-                Reset Filters
+                Reset All Filters
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
               {filteredProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="group bg-[#FAF9FF] rounded-3xl border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                  className="group bg-white rounded-3xl border border-border/80 hover:border-primary/50 shadow-xs hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] transition-all duration-500 overflow-hidden flex flex-col justify-between hover:-translate-y-1"
                 >
                   <div>
                     {/* Visual Showcase Banner */}
-                    <div className="relative h-60 sm:h-64 bg-slate-900 overflow-hidden border-b border-border/60">
+                    <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-slate-950 overflow-hidden border-b border-border/60">
                       <img
                         src={project.mediaUrl || "/images/services/web_dev_bg.jpg"}
                         alt={project.title}
                         loading="lazy"
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-95"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-[0.96] contrast-[1.03]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/35 to-transparent" />
 
-                      {/* Header Badges */}
-                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-                        <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-primary shadow-xs">
+                      {/* Floating Header Badges */}
+                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 z-10">
+                        <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary shadow-xs border border-white/40">
                           {project.serviceCategory}
                         </span>
-                        <span className="text-xs font-bold px-3 py-1 rounded-full bg-dark/85 backdrop-blur-md text-white shadow-xs">
-                          {project.impact}
-                        </span>
+
+                        <div className="flex items-center gap-2">
+                          {project.vercelUrl && (
+                            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40 shadow-xs">
+                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                              Live Production
+                            </span>
+                          )}
+                          <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-dark/85 backdrop-blur-md text-white border border-white/10 shadow-xs">
+                            {project.impact}
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Client Highlight Overlay */}
+                      {/* Client Highlight & Title Overlay on Banner */}
                       <div className="absolute bottom-4 left-4 right-4 z-10">
-                        <p className="text-xs font-extrabold uppercase tracking-widest text-primary-light">
-                          {project.client}
-                        </p>
-                        <h3 className="text-xl sm:text-2xl font-black text-white leading-tight mt-0.5">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary-300" />
+                          <p className="text-xs font-black uppercase tracking-widest text-purple-200">
+                            {project.client}
+                          </p>
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
                           {project.title}
                         </h3>
                       </div>
                     </div>
 
                     {/* Project Body */}
-                    <div className="p-6 sm:p-8 bg-white">
-                      <p className="text-sm text-dark-muted leading-relaxed mb-6">
+                    <div className="p-6 sm:p-8">
+                      <p className="text-sm text-dark-muted leading-relaxed line-clamp-3 mb-6">
                         {project.description}
                       </p>
 
                       {/* Technologies Chips */}
-                      <div className="flex flex-wrap gap-1.5 mb-6">
+                      <div className="flex flex-wrap gap-2 mb-6">
                         {(project.technologies || []).map((t, idx) => (
                           <span
                             key={idx}
-                            className="text-xs font-semibold px-2.5 py-1 rounded-md bg-softBg text-dark border border-border"
+                            className="text-xs font-semibold px-3 py-1 rounded-lg bg-[#FAF9FF] text-dark border border-border/80 hover:border-primary/40 transition-colors"
                           >
                             {t}
                           </span>
@@ -275,11 +334,11 @@ export default function OurWorkClient() {
 
                       {/* Metrics Showcase */}
                       {project.metrics && project.metrics.length > 0 && (
-                        <div className="grid grid-cols-3 gap-2 p-3.5 rounded-2xl bg-[#FAF9FF] border border-border mb-6">
+                        <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-gradient-to-br from-[#FAF9FF] to-white border border-border/80 mb-6 shadow-2xs">
                           {project.metrics.map((m, mIdx) => (
                             <div key={mIdx} className="text-center">
-                              <p className="text-sm font-black text-primary">{m.value}</p>
-                              <p className="text-[11px] text-dark-muted truncate">{m.label}</p>
+                              <p className="text-base sm:text-lg font-black text-primary">{m.value}</p>
+                              <p className="text-[11px] text-dark-muted truncate font-medium">{m.label}</p>
                             </div>
                           ))}
                         </div>
@@ -295,19 +354,21 @@ export default function OurWorkClient() {
                         href={project.vercelUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-glow-sm transition-all hover:scale-105"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-[#8A5CF6] hover:from-primary-dark hover:to-primary text-white text-xs font-bold shadow-[0_4px_14px_rgba(117,69,245,0.35)] hover:shadow-[0_6px_20px_rgba(117,69,245,0.45)] hover:scale-102 transition-all cursor-pointer"
                       >
                         <span>🚀 View Live Vercel Site</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </a>
                     ) : (
-                      <span className="text-xs text-dark-muted italic">Internal Solution</span>
+                      <span className="inline-flex items-center gap-1.5 text-xs text-dark-muted font-medium italic">
+                        <span>🔒 Enterprise Architecture</span>
+                      </span>
                     )}
 
                     {/* Secondary Case Study Button */}
                     <button
                       onClick={() => setActiveProjectModal(project)}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-dark hover:text-primary transition-colors py-1"
+                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-softBg text-dark hover:text-primary text-xs font-bold border border-border transition-all cursor-pointer shadow-2xs"
                     >
                       <span>Read Case Study</span>
                       <ExternalLink className="w-3.5 h-3.5 text-primary" />
@@ -383,9 +444,9 @@ export default function OurWorkClient() {
                   href={activeProjectModal.vercelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-2.5 rounded-full border border-primary text-primary hover:bg-primary-light/30 text-xs font-bold inline-flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-[#8A5CF6] hover:from-primary-dark hover:to-primary text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-glow-sm hover:scale-102 transition-all cursor-pointer"
                 >
-                  <span>Launch Live Vercel</span>
+                  <span>🚀 Launch Live Vercel App</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               )}

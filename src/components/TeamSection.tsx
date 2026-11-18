@@ -304,22 +304,7 @@ export default function TeamSection() {
           </div>
         </div>
 
-        {/* Helpful User Note for Easy Image Customization */}
-        <div className="mt-16 text-center text-xs text-dark-muted bg-softBg/60 border border-border/80 rounded-2xl py-3 px-6 max-w-2xl mx-auto">
-          💡 <span className="font-semibold text-dark">Developer Tip:</span> Demo portrait images are stored in{" "}
-          <code className="text-primary font-mono bg-white px-1.5 py-0.5 rounded border border-border">
-            public/images/team/team-1.jpg
-          </code>{" "}
-          through{" "}
-          <code className="text-primary font-mono bg-white px-1.5 py-0.5 rounded border border-border">
-            team-8.jpg
-          </code>
-          . Simply replace those files or update the names in{" "}
-          <code className="text-primary font-mono bg-white px-1.5 py-0.5 rounded border border-border">
-            src/components/TeamSection.tsx
-          </code>
-          .
-        </div>
+
       </div>
     </section>
   );

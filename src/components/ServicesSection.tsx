@@ -48,10 +48,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Comprehensive Solutions</span>
-          </div>
+
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4">
             Our Core <span className="gradient-text">Digital Services</span>
