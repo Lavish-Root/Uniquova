@@ -31,15 +31,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/images/logo-icon-purple.png", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-icon.png" },
-    ],
-  },
   robots: {
     index: true,
     follow: true,

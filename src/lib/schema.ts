@@ -10,7 +10,7 @@ export function getOrganizationSchema() {
     name: "UNIQUOVA",
     legalName: "UNIQUOVA",
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo-dark.png`,
+    logo: `${SITE_URL}/images/hero-reference.jpg`,
     description:
       "UNIQUOVA is a full-service digital agency empowering growing brands through integrated e-commerce solutions, high-performance web development, mobile apps, branding, and graphic designing.",
     email: "contact@uniquova.com",

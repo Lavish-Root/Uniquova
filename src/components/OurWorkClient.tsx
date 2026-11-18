@@ -42,12 +42,12 @@ export default function OurWorkClient() {
   }, []);
 
   const categories = [
-    { name: "All Projects", icon: Layers },
-    { name: "Web Development", icon: Code },
-    { name: "Mobile App Development", icon: Smartphone },
-    { name: "E-commerce Solutions", icon: ShoppingCart },
-    { name: "Graphic Designing", icon: Palette },
-    { name: "Branding", icon: PenTool },
+    { name: "All Projects", shortName: "All Projects", icon: Layers },
+    { name: "Web Development", shortName: "Web Dev", icon: Code },
+    { name: "Mobile App Development", shortName: "Mobile Apps", icon: Smartphone },
+    { name: "E-commerce Solutions", shortName: "E-Commerce", icon: ShoppingCart },
+    { name: "Graphic Designing", shortName: "Graphic Design", icon: Palette },
+    { name: "Branding", shortName: "Branding", icon: PenTool },
   ];
 
   const categoryDescriptions: Record<string, string> = {
@@ -151,27 +151,30 @@ export default function OurWorkClient() {
       </section>
 
       {/* Filter and Showcase Section */}
-      <section className="py-16 lg:py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 lg:py-24 bg-white relative overflow-hidden">
+        {/* Expanded Controls Bar Wrapper: Exceeds space left and right for seamless navigation */}
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8 mb-10 sm:mb-14">
           {/* Controls Bar: Category Navigation & Search */}
-          <div className="bg-[#FAF9FF] border border-border/80 rounded-3xl p-5 sm:p-7 mb-12 shadow-xs">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-border/60">
+          <div className="bg-gradient-to-r from-[#FAF9FF] via-[#F6F4FE]/70 to-[#FAF9FF] border border-primary/15 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-7 shadow-[0_4px_25px_rgba(117,69,245,0.04)]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3.5 sm:gap-4 pb-4 sm:pb-5 border-b border-border/60">
               {/* Left: Active Status Indicator */}
-              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-                <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider text-dark">
-                  Portfolio Disciplines
-                </span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white text-primary border border-border shadow-2xs">
-                  {filteredProjects.length} {filteredProjects.length === 1 ? "Project" : "Projects"}
-                </span>
+              <div className="flex items-center justify-between sm:justify-start gap-2.5 sm:gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-dark">
+                    Portfolio Disciplines
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-full bg-white text-primary border border-border shadow-2xs">
+                    {filteredProjects.length} {filteredProjects.length === 1 ? "Project" : "Projects"}
+                  </span>
+                </div>
                 {(activeCategory !== "All Projects" || searchQuery) && (
                   <button
                     onClick={() => {
                       setActiveCategory("All Projects");
                       setSearchQuery("");
                     }}
-                    className="text-[11px] font-bold text-dark-muted hover:text-primary underline ml-1 cursor-pointer transition-colors"
+                    className="text-[11px] font-bold text-primary hover:underline cursor-pointer transition-colors"
                   >
                     Reset Filter
                   </button>
@@ -199,9 +202,44 @@ export default function OurWorkClient() {
               </div>
             </div>
 
-            {/* Category Filter Tabs: Responsive Wrapped Pills - NO SCROLLER BAR */}
-            <div className="pt-5">
-              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            {/* Mobile View: High-End 2-Column Symmetrical Grid (sm:hidden) */}
+            <div className="grid grid-cols-2 gap-2.5 sm:hidden pt-4">
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                const count = getCategoryCount(cat.name);
+                const isActive = activeCategory === cat.name;
+
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() => setActiveCategory(cat.name)}
+                    className={`w-full flex items-center justify-between gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer active:scale-95 text-left ${isActive
+                      ? "bg-gradient-to-r from-primary to-[#8A5CF6] text-white shadow-md shadow-primary/25 font-bold border border-transparent scale-[1.01]"
+                      : "bg-white text-dark-muted hover:text-dark hover:bg-white/95 border border-border/80 shadow-2xs hover:border-primary/40"
+                      }`}
+                  >
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-white" : "text-primary"}`} />
+                      <span className="truncate text-[11px] font-semibold">
+                        {cat.shortName}
+                      </span>
+                    </div>
+                    <span
+                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${isActive
+                        ? "bg-white/20 text-white"
+                        : "bg-softBg text-dark-muted border border-border/60"
+                        }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Desktop / Tablet View: Single-Line Row (hidden sm:block) */}
+            <div className="hidden sm:block pt-5">
+              <div className="flex flex-wrap xl:flex-nowrap items-center justify-start xl:justify-between gap-2.5 xl:gap-3 overflow-visible">
                 {categories.map((cat) => {
                   const Icon = cat.icon;
                   const count = getCategoryCount(cat.name);
@@ -211,20 +249,18 @@ export default function OurWorkClient() {
                     <button
                       key={cat.name}
                       onClick={() => setActiveCategory(cat.name)}
-                      className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                        isActive
-                          ? "bg-gradient-to-r from-primary to-[#8A5CF6] text-white shadow-[0_8px_20px_rgba(117,69,245,0.3)] scale-[1.02] border border-transparent font-bold"
-                          : "bg-white text-dark-muted hover:text-dark hover:bg-white/90 border border-border/80 shadow-2xs hover:border-primary/40 hover:-translate-y-0.5"
-                      }`}
+                      className={`inline-flex items-center gap-2 px-3.5 xl:px-4.5 py-2.5 sm:py-3 rounded-2xl text-xs xl:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${isActive
+                        ? "bg-gradient-to-r from-primary to-[#8A5CF6] text-white shadow-[0_8px_20px_rgba(117,69,245,0.3)] scale-[1.02] border border-transparent font-bold"
+                        : "bg-white text-dark-muted hover:text-dark hover:bg-white/95 border border-border/80 shadow-2xs hover:border-primary/40 hover:-translate-y-0.5"
+                        }`}
                     >
-                      <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-primary"}`} />
+                      <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isActive ? "text-white" : "text-primary"}`} />
                       <span>{cat.name}</span>
                       <span
-                        className={`text-[11px] font-bold px-2 py-0.5 rounded-full transition-colors ${
-                          isActive
-                            ? "bg-white/20 text-white"
-                            : "bg-softBg text-dark-muted border border-border/60"
-                        }`}
+                        className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full transition-colors shrink-0 ${isActive
+                          ? "bg-white/20 text-white"
+                          : "bg-softBg text-dark-muted border border-border/60"
+                          }`}
                       >
                         {count}
                       </span>
@@ -232,18 +268,22 @@ export default function OurWorkClient() {
                   );
                 })}
               </div>
+            </div>
 
-              {/* Dynamic Discipline Context Strip */}
-              <div className="mt-4 pt-3.5 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-dark-muted">
-                <p className="line-clamp-1 italic">
-                  💡 {categoryDescriptions[activeCategory] || categoryDescriptions["All Projects"]}
-                </p>
-                <span className="hidden sm:inline font-mono text-[11px] shrink-0 text-primary font-bold">
-                  Verified Production Deliverables
-                </span>
-              </div>
+            {/* Dynamic Discipline Context Strip */}
+            <div className="mt-4 sm:mt-5 pt-3.5 sm:pt-4 border-t border-border/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-dark-muted">
+              <p className="line-clamp-2 sm:line-clamp-1 italic font-medium text-[11px] sm:text-xs">
+                💡 {categoryDescriptions[activeCategory] || categoryDescriptions["All Projects"]}
+              </p>
+              <span className="hidden sm:inline font-mono text-[11px] shrink-0 text-primary font-bold">
+                Verified Production Deliverables
+              </span>
             </div>
           </div>
+        </div>
+
+        {/* Projects Grid Container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Projects Grid */}
           {filteredProjects.length === 0 ? (
@@ -264,81 +304,94 @@ export default function OurWorkClient() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-9">
               {filteredProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="group bg-white rounded-3xl border border-border/80 hover:border-primary/50 shadow-xs hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] transition-all duration-500 overflow-hidden flex flex-col justify-between hover:-translate-y-1"
+                  className="group bg-white rounded-2xl sm:rounded-3xl border border-border/80 hover:border-primary/50 shadow-xs hover:shadow-[0_20px_40px_rgba(117,69,245,0.1)] transition-all duration-300 overflow-hidden flex flex-col justify-between hover:-translate-y-1"
                 >
                   <div>
                     {/* Visual Showcase Banner */}
-                    <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-slate-950 overflow-hidden border-b border-border/60">
+                    <div className="relative h-52 sm:h-60 lg:h-60 w-full bg-slate-950 overflow-hidden border-b border-border/60">
                       <img
                         src={project.mediaUrl || "/images/services/web_dev_bg.jpg"}
                         alt={project.title}
                         loading="lazy"
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-[0.96] contrast-[1.03]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/35 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent" />
 
                       {/* Floating Header Badges */}
-                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 z-10">
-                        <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary shadow-xs border border-white/40">
+                      <div className="absolute top-3.5 left-3.5 right-3.5 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between gap-2 z-10">
+                        <span className="text-[11px] sm:text-xs font-bold px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary shadow-xs border border-white/40">
                           {project.serviceCategory}
                         </span>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2">
                           {project.vercelUrl && (
-                            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40 shadow-xs">
-                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40 shadow-xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                               Live Production
                             </span>
                           )}
-                          <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-dark/85 backdrop-blur-md text-white border border-white/10 shadow-xs">
+                          <span className="text-[11px] sm:text-xs font-bold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-dark/85 backdrop-blur-md text-white border border-white/10 shadow-xs">
                             {project.impact}
                           </span>
                         </div>
                       </div>
 
                       {/* Client Highlight & Title Overlay on Banner */}
-                      <div className="absolute bottom-4 left-4 right-4 z-10">
-                        <div className="flex items-center gap-2 mb-1">
+                      <div className="absolute bottom-3.5 left-3.5 right-3.5 sm:bottom-4.5 sm:left-5 sm:right-5 z-10">
+                        <div className="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary-300" />
-                          <p className="text-xs font-black uppercase tracking-widest text-purple-200">
+                          <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-purple-200">
                             {project.client}
                           </p>
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white leading-tight">
                           {project.title}
                         </h3>
                       </div>
                     </div>
 
                     {/* Project Body */}
-                    <div className="p-6 sm:p-8">
-                      <p className="text-sm text-dark-muted leading-relaxed line-clamp-3 mb-6">
+                    <div className="p-5 sm:p-6 lg:p-7">
+                      <p className="text-xs sm:text-sm text-dark-muted leading-relaxed line-clamp-2 mb-4 sm:mb-5 font-normal">
                         {project.description}
                       </p>
 
-                      {/* Technologies Chips */}
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {(project.technologies || []).map((t, idx) => (
-                          <span
-                            key={idx}
-                            className="text-xs font-semibold px-3 py-1 rounded-lg bg-[#FAF9FF] text-dark border border-border/80 hover:border-primary/40 transition-colors"
-                          >
-                            {t}
-                          </span>
-                        ))}
+                      {/* Technologies Chips with Clean Deliverables Header */}
+                      <div className="mb-4 sm:mb-5">
+                        <div className="flex items-center justify-between text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-2.5">
+                          <span>Architecture & Stack</span>
+                          <span className="text-[10px] text-primary font-mono lowercase">verified build</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {(project.technologies || []).map((t, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#FAF9FF] text-dark border border-border/80 hover:border-primary/40 hover:bg-white transition-all shadow-2xs"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
 
                       {/* Metrics Showcase */}
                       {project.metrics && project.metrics.length > 0 && (
-                        <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-gradient-to-br from-[#FAF9FF] to-white border border-border/80 mb-6 shadow-2xs">
+                        <div className="grid grid-cols-3 gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-2xl bg-gradient-to-br from-[#FAF9FF] to-white border border-border/80 mb-2 shadow-2xs">
                           {project.metrics.map((m, mIdx) => (
-                            <div key={mIdx} className="text-center">
-                              <p className="text-base sm:text-lg font-black text-primary">{m.value}</p>
-                              <p className="text-[11px] text-dark-muted truncate font-medium">{m.label}</p>
+                            <div
+                              key={mIdx}
+                              className="text-center px-1 border-r border-border/50 last:border-r-0"
+                            >
+                              <p className="text-sm sm:text-lg font-black text-primary font-mono">
+                                {m.value}
+                              </p>
+                              <p className="text-[9.5px] sm:text-[11px] text-dark-muted font-medium leading-tight mt-0.5">
+                                {m.label}
+                              </p>
                             </div>
                           ))}
                         </div>
@@ -346,33 +399,35 @@ export default function OurWorkClient() {
                     </div>
                   </div>
 
-                  {/* Card Actions Footer */}
-                  <div className="px-6 sm:px-8 py-5 bg-[#FAF9FF] border-t border-border flex flex-wrap items-center justify-between gap-3">
-                    {/* Live Vercel Button */}
-                    {project.vercelUrl ? (
-                      <a
-                        href={project.vercelUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-[#8A5CF6] hover:from-primary-dark hover:to-primary text-white text-xs font-bold shadow-[0_4px_14px_rgba(117,69,245,0.35)] hover:shadow-[0_6px_20px_rgba(117,69,245,0.45)] hover:scale-102 transition-all cursor-pointer"
-                      >
-                        <span>🚀 View Live Vercel Site</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 text-xs text-dark-muted font-medium italic">
-                        <span>🔒 Enterprise Architecture</span>
-                      </span>
-                    )}
+                  {/* Card Actions Footer: Full-Width Symmetrical Action Bar */}
+                  <div className="px-5 sm:px-6 lg:px-7 py-4 sm:py-4.5 bg-[#FAF9FF] border-t border-border/80">
+                    <div className="flex items-center gap-3 sm:gap-3.5 w-full">
+                      {/* Primary Live Site Button (Expands across available space) */}
+                      {project.vercelUrl ? (
+                        <a
+                          href={project.vercelUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 sm:px-5 rounded-xl bg-gradient-to-r from-primary to-[#8A5CF6] hover:from-primary-dark hover:to-primary text-white text-xs sm:text-sm font-bold shadow-[0_4px_14px_rgba(117,69,245,0.25)] hover:shadow-[0_6px_20px_rgba(117,69,245,0.35)] hover:scale-[1.01] transition-all cursor-pointer text-center"
+                        >
+                          <span>🚀 Launch Live App</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                        </a>
+                      ) : (
+                        <div className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 sm:px-5 rounded-xl bg-softBg text-dark-muted text-xs font-semibold border border-border/70 text-center">
+                          <span>🔒 Enterprise Client</span>
+                        </div>
+                      )}
 
-                    {/* Secondary Case Study Button */}
-                    <button
-                      onClick={() => setActiveProjectModal(project)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-softBg text-dark hover:text-primary text-xs font-bold border border-border transition-all cursor-pointer shadow-2xs"
-                    >
-                      <span>Read Case Study</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-primary" />
-                    </button>
+                      {/* Secondary Case Study Button */}
+                      <button
+                        onClick={() => setActiveProjectModal(project)}
+                        className="inline-flex items-center justify-center gap-1.5 py-3 px-4 sm:px-5 rounded-xl bg-white hover:bg-softBg text-dark hover:text-primary text-xs sm:text-sm font-bold border border-border/80 transition-all cursor-pointer shadow-2xs text-center shrink-0"
+                      >
+                        <span>Case Study</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

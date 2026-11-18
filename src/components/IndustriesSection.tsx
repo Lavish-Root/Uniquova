@@ -49,32 +49,71 @@ export default function IndustriesSection() {
             return (
               <div
                 key={ind.id}
-                className="bg-white rounded-3xl p-8 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl p-6 sm:p-7 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between group overflow-hidden"
               >
                 <div>
-                  <div className="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 shadow-sm">
-                    <Icon className="w-7 h-7" />
+                  {/* Visual Image Header */}
+                  <div className="h-44 sm:h-48 rounded-2xl overflow-hidden mb-6 relative border border-border/70 shadow-2xs bg-softBg">
+                    <img
+                      src={ind.image}
+                      alt={`${ind.title} Showcase`}
+                      width={600}
+                      height={400}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent pointer-events-none" />
+                    
+                    {/* Floating Sector Tag */}
+                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-dark shadow-xs border border-white/40">
+                      {ind.tag}
+                    </div>
+
+                    {/* Floating Corner Metric */}
+                    {ind.floatingBadges?.[0] && (
+                      <div className="absolute bottom-3 right-3 bg-dark/85 backdrop-blur-md px-2.5 py-1 rounded-xl text-[11px] font-bold text-white shadow-md border border-white/10">
+                        {ind.floatingBadges[0].text}
+                      </div>
+                    )}
                   </div>
 
-                  <h3 className="text-xl font-bold text-dark group-hover:text-primary transition-colors mb-3">
-                    {ind.title}
-                  </h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-primary group-hover:text-white shadow-xs">
+                      <Icon className="w-5 h-5" />
+                    </div>
+
+                    <h3 className="text-xl font-bold text-dark group-hover:text-primary transition-colors">
+                      {ind.title}
+                    </h3>
+                  </div>
 
                   <p className="text-sm text-dark-muted leading-relaxed mb-6">
                     {ind.description}
                   </p>
                 </div>
 
-                <div className="pt-5 border-t border-border/70 space-y-2">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-dark-muted mb-2">
+                <div className="pt-5 border-t border-border/70 space-y-3">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-dark-muted">
                     Key Deliverables
                   </p>
-                  {ind.solutions.map((sol) => (
-                    <div key={sol} className="flex items-center gap-2 text-xs text-dark font-medium">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
-                      <span>{sol}</span>
-                    </div>
-                  ))}
+                  <div className="grid grid-cols-2 gap-2">
+                    {ind.solutions.slice(0, 4).map((sol) => (
+                      <div key={sol} className="flex items-center gap-1.5 text-xs text-dark font-medium">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <span className="truncate">{sol}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-2">
+                    <Link
+                      href={`/industries#${ind.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform"
+                    >
+                      <span>Explore Sector Solutions</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             );

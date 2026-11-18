@@ -8,7 +8,7 @@ interface LogoProps {
   className?: string;
   showTagline?: boolean;
   showText?: boolean;
-  variant?: "default" | "white" | "purple";
+  variant?: "default" | "white";
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
   tagline?: string;
 }
@@ -22,7 +22,6 @@ export default function Logo({
   tagline: customTagline,
 }: LogoProps) {
   const isWhite = variant === "white";
-  const isPurple = variant === "purple";
   const [activeTagline, setActiveTagline] = useState(
     customTagline || "Your Vision. Our Expertise."
   );
@@ -62,25 +61,58 @@ export default function Logo({
     "3xl": { icon: "w-24 h-24", text: "text-5xl", tag: "text-base" },
   }[size];
 
-  const logoSrc = isWhite
-    ? "/images/logo-white.png"
-    : isPurple
-    ? "/images/logo-icon-purple.png"
-    : "/images/logo-dark.png";
-
   return (
     <Link
       href="/"
       title="UNIQUOVA"
       className={`inline-flex items-center gap-2.5 group transition-opacity hover:opacity-95 ${className}`}
     >
-      {/* Monogram UQ Mark with Handshake */}
+      {/* Monogram UQ Mark */}
       <div className={`relative ${sizeClasses.icon} flex items-center justify-center shrink-0`}>
-        <img
-          src={logoSrc}
-          alt="UNIQUOVA"
-          className="w-full h-full object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
-        />
+        <svg
+          viewBox="0 0 44 44"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+        >
+          <defs>
+            <linearGradient id="uqGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#7545F5" />
+              <stop offset="100%" stopColor="#5030C7" />
+            </linearGradient>
+            <linearGradient id="uqAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#9E76FB" />
+              <stop offset="100%" stopColor="#7545F5" />
+            </linearGradient>
+          </defs>
+
+          {/* Stylized rounded UQ path */}
+          {/* U path */}
+          <path
+            d="M8 12V22C8 27.5228 12.4772 32 18 32H20C21.6 32 23.1 31.6 24.4 30.9"
+            stroke="url(#uqGrad)"
+            strokeWidth="5"
+            strokeLinecap="round"
+          />
+          {/* Q loop */}
+          <circle
+            cx="28"
+            cy="21"
+            r="9"
+            stroke="url(#uqGrad)"
+            strokeWidth="5"
+            strokeLinecap="round"
+          />
+          {/* Q diagonal kick/lens */}
+          <path
+            d="M32 26L37 32"
+            stroke={isWhite ? "#9E76FB" : "#151323"}
+            strokeWidth="4.5"
+            strokeLinecap="round"
+          />
+          {/* Glowing accent point */}
+          <circle cx="10" cy="12" r="2.5" fill="#9E76FB" />
+        </svg>
       </div>
 
       {/* Brand Text & Tagline */}

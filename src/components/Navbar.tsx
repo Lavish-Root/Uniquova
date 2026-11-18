@@ -27,6 +27,38 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setServicesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setServicesOpen(false);
+    }, 280); // 280ms grace period so cursor movement between button and menu never drops
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Close menus on route change
+  useEffect(() => {
+    setServicesOpen(false);
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +76,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
         setServicesOpen(false);
       }
     }
@@ -127,13 +162,16 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                       key={link.name}
                       ref={dropdownRef}
                       className="relative"
-                      onMouseEnter={() => setServicesOpen(true)}
-                      onMouseLeave={() => setServicesOpen(false)}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <button
                         type="button"
-                        onClick={() => setServicesOpen(!servicesOpen)}
-                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                        onClick={() => {
+                          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                          setServicesOpen(!servicesOpen);
+                        }}
+                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer ${
                           servicesOpen || pathname.startsWith("/services")
                             ? "text-primary bg-primary-light/60"
                             : "text-dark/90 hover:text-primary hover:bg-softBg"
@@ -148,59 +186,68 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                         />
                       </button>
 
-                      {/* Dropdown Menu */}
+                      {/* Dropdown Menu Wrapper with Invisible Hover Bridge */}
                       {servicesOpen && (
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 bg-white/95 backdrop-blur-xl border border-border rounded-2xl shadow-[0_20px_50px_rgba(117,69,245,0.15)] p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                          <div className="px-3 py-2 border-b border-border/60 mb-1 flex items-center justify-between">
-                            <span className="text-xs font-bold uppercase tracking-wider text-dark-muted">
-                              Core Capabilities
-                            </span>
-                            <span className="text-[11px] text-primary font-medium flex items-center gap-1">
-                              <Sparkles className="w-3 h-3" /> Full Service
-                            </span>
-                          </div>
+                        <div
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 w-80"
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {/* Invisible physical bridge overlay connecting button to menu */}
+                          <div className="absolute -top-3 left-0 right-0 h-4 bg-transparent pointer-events-auto" />
 
-                          <div className="space-y-1">
-                            {servicesList.map((service) => {
-                              const ServiceIcon = service.icon;
-                              return (
-                                <Link
-                                  key={service.name}
-                                  href={service.href}
-                                  onClick={() => setServicesOpen(false)}
-                                  className="flex items-start gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-primary-light/50 group"
-                                >
-                                  <div className="w-8 h-8 rounded-lg bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-110">
-                                    <ServiceIcon className="w-4 h-4" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between">
-                                      <p className="text-sm font-semibold text-dark group-hover:text-primary transition-colors">
-                                        {service.name}
-                                      </p>
-                                      {service.badge && (
-                                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
-                                          {service.badge}
-                                        </span>
-                                      )}
+                          <div className="bg-white/95 backdrop-blur-xl border border-border rounded-2xl shadow-[0_20px_50px_rgba(117,69,245,0.15)] p-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                            <div className="px-3 py-2 border-b border-border/60 mb-1 flex items-center justify-between">
+                              <span className="text-xs font-bold uppercase tracking-wider text-dark-muted">
+                                Core Capabilities
+                              </span>
+                              <span className="text-[11px] text-primary font-medium flex items-center gap-1">
+                                <Sparkles className="w-3 h-3" /> Full Service
+                              </span>
+                            </div>
+
+                            <div className="space-y-1">
+                              {servicesList.map((service) => {
+                                const ServiceIcon = service.icon;
+                                return (
+                                  <Link
+                                    key={service.name}
+                                    href={service.href}
+                                    onClick={() => setServicesOpen(false)}
+                                    className="flex items-start gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-primary-light/50 group"
+                                  >
+                                    <div className="w-8 h-8 rounded-lg bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-110">
+                                      <ServiceIcon className="w-4 h-4" />
                                     </div>
-                                    <p className="text-xs text-dark-muted truncate mt-0.5">
-                                      {service.desc}
-                                    </p>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center justify-between">
+                                        <p className="text-sm font-semibold text-dark group-hover:text-primary transition-colors">
+                                          {service.name}
+                                        </p>
+                                        {service.badge && (
+                                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
+                                            {service.badge}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <p className="text-xs text-dark-muted truncate mt-0.5">
+                                        {service.desc}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                );
+                              })}
+                            </div>
 
-                          <div className="mt-2 pt-2 border-t border-border/60 text-center">
-                            <Link
-                              href="/services"
-                              onClick={() => setServicesOpen(false)}
-                              className="text-xs font-semibold text-primary hover:text-primary-dark inline-flex items-center gap-1 py-1"
-                            >
-                              Explore All Capabilities <ArrowRight className="w-3 h-3" />
-                            </Link>
+                            <div className="mt-2 pt-2 border-t border-border/60 text-center">
+                              <Link
+                                href="/services"
+                                onClick={() => setServicesOpen(false)}
+                                className="text-xs font-semibold text-primary hover:text-primary-dark inline-flex items-center gap-1 py-1"
+                              >
+                                Explore All Capabilities <ArrowRight className="w-3 h-3" />
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       )}
