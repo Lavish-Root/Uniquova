@@ -5,9 +5,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "fra
 import { 
   ChevronLeft, 
   ChevronRight, 
-  Sparkles, 
-  Pause, 
-  Play 
+  Sparkles 
 } from "lucide-react";
 
 // Curated showcases with high-resolution original visuals from WeGrow & UNIQOVA
@@ -82,7 +80,6 @@ export default function SelectedWorkSection() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorSide, setCursorSide] = useState<"prev" | "next">("next");
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -139,12 +136,12 @@ export default function SelectedWorkSection() {
 
   // Autoplay timer set to exactly 2 seconds (2000ms) with pause-on-hover
   useEffect(() => {
-    if (!isAutoPlaying || isHovered) return;
+    if (isHovered) return;
     const interval = setInterval(() => {
       nextSlide();
     }, 2000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, isHovered, nextSlide]);
+  }, [isHovered, nextSlide]);
 
   // Interactive Cursor tracking & 3D tilt
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -188,64 +185,17 @@ export default function SelectedWorkSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Sleek Section Header (Minimal, non-intrusive) */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-3">
-              <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-              <span>Selected Work</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight">
-              Ideas brought to life.
-            </h2>
-            <p className="text-sm sm:text-base text-dark-muted max-w-xl mt-2 font-medium">
-              Explore category-defining digital experiences crafted with strategy, technology, and design.
-            </p>
+        <div className="mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-3">
+            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+            <span>Selected Work</span>
           </div>
-
-          {/* Controls: Slide Counter + Play/Pause + Arrow Buttons */}
-          <div className="flex items-center gap-3 shrink-0">
-            {/* Slide Counter */}
-            <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white border border-border shadow-sm text-xs font-semibold text-dark">
-              <span className="text-primary font-bold text-sm">
-                {String(currentIndex + 1).padStart(2, "0")}
-              </span>
-              <span className="text-dark-muted">/</span>
-              <span className="text-dark-muted">
-                {String(total).padStart(2, "0")}
-              </span>
-            </div>
-
-            {/* Autoplay Pause / Play */}
-            <button
-              type="button"
-              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              aria-label={isAutoPlaying ? "Pause autoplay" : "Start autoplay"}
-              className="w-10 h-10 rounded-full bg-white hover:bg-primary-light text-dark hover:text-primary border border-border shadow-sm flex items-center justify-center transition-colors"
-              title={isAutoPlaying ? "Pause automatic shift" : "Play automatic shift"}
-            >
-              {isAutoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            </button>
-
-            {/* Prev / Next Buttons */}
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={prevSlide}
-                aria-label="Previous project"
-                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={nextSlide}
-                aria-label="Next project"
-                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight">
+            Ideas brought to life.
+          </h2>
+          <p className="text-sm sm:text-base text-dark-muted max-w-xl mt-2 font-medium">
+            Explore category-defining digital experiences crafted with strategy, technology, and design.
+          </p>
         </div>
 
         {/* ====================================================
@@ -376,9 +326,9 @@ export default function SelectedWorkSection() {
               <motion.div
                 key={currentIndex}
                 initial={{ width: "0%" }}
-                animate={{ width: isHovered || !isAutoPlaying ? "100%" : "100%" }}
+                animate={{ width: isHovered ? "100%" : "100%" }}
                 transition={{
-                  duration: isHovered || !isAutoPlaying ? 0 : 2.0,
+                  duration: isHovered ? 0 : 2.0,
                   ease: "linear",
                 }}
                 className="h-full bg-gradient-to-r from-primary via-purple-300 to-white shadow-[0_0_12px_rgba(117,69,245,0.8)]"
