@@ -11,6 +11,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { INDUSTRIES_DATA } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 const iconMap = {
   ShoppingBag: ShoppingBag,
@@ -26,21 +27,22 @@ export default function IndustriesSection() {
     <section id="industries" className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-primary-200">
-            <span>Specialized Domain Knowledge</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4">
-            Industries We <span className="gradient-text">Serve</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed">
-            Tailoring technology and creative strategies to the distinct operational realities,
-            compliance frameworks, and consumer behaviors of each market sector.
-          </p>
-        </div>
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          className="mb-16"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Specialized Domain Knowledge</span>
+            </div>
+          }
+          title={
+            <>
+              Industries We <span className="gradient-text">Serve</span>
+            </>
+          }
+          subtitle="Tailoring technology and creative strategies to the distinct operational realities, compliance frameworks, and consumer behaviors of each market sector."
+        />
 
         {/* 6 Industries Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">

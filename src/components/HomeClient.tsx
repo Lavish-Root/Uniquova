@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SelectedWorkSection from "@/components/SelectedWorkSection";
+import TrustedByCompanies from "@/components/TrustedByCompanies";
 import ServicesSection from "@/components/ServicesSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import WorkingProcess from "@/components/WorkingProcess";
@@ -34,6 +35,9 @@ export default function HomeClient() {
 
       {/* Selected Work: Framer-inspired Scroll-Driven Showcase Section */}
       <SelectedWorkSection />
+
+      {/* Trusted by companies Section: Founder stories & bento deliverables */}
+      <TrustedByCompanies onOpenContact={() => setIsContactOpen(true)} />
 
       {/* Section 3: Our Services */}
       <ServicesSection onSelectService={handleOpenContactWithService} />

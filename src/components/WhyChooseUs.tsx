@@ -13,6 +13,7 @@ import {
   Zap,
 } from "lucide-react";
 import { WHY_CHOOSE_US_DATA } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 const iconMap = [
   Layers,
@@ -37,28 +38,25 @@ export default function WhyChooseUs() {
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-primary-200">
+        {/* Top Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          layout="split"
+          maxWidth="max-w-none"
+          className="mb-16"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
               <Zap className="w-3.5 h-3.5" />
               <span>The UNIQUOVA Advantage</span>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight">
+          }
+          title={
+            <>
               Built Around Your <br />
               <span className="gradient-text">Business Goals.</span>
-            </h2>
-          </div>
-
-          <div className="lg:col-span-5">
-            <p className="text-base sm:text-lg text-dark-muted leading-relaxed">
-              We bridge the gap between imaginative creative design and rigorous engineering.
-              Every line of code and every brand identity is crafted with one clear objective:
-              driving measurable commercial results for your enterprise.
-            </p>
-          </div>
-        </div>
+            </>
+          }
+          subtitle="We bridge the gap between imaginative creative design and rigorous engineering. Every line of code and every brand identity is crafted with one clear objective: driving measurable commercial results for your enterprise."
+        />
 
         {/* 6 Core Pillars Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
 import { FAQ_DATA } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 interface FAQSectionProps {
   onOpenContact?: () => void;
@@ -19,22 +20,22 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
     <section id="faq" className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-primary-200">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>Got Questions?</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4">
-            Frequently Asked <span className="gradient-text">Questions</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed">
-            Everything you need to know about partnering with UNIQUOVA, our technical standards, and
-            how we bring your digital vision to life.
-          </p>
-        </div>
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          className="mb-16"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Got Questions? We Have Answers.</span>
+            </div>
+          }
+          title={
+            <>
+              Frequently Asked <span className="gradient-text">Questions</span>
+            </>
+          }
+          subtitle="Everything you need to know about partnering with UNIQUOVA, our technical standards, and how we bring your digital vision to life."
+        />
 
         {/* Accordion List */}
         <div className="space-y-4">

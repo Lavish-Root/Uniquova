@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { FEATURED_PROJECTS } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 export default function FeaturedProjects() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -19,30 +20,36 @@ export default function FeaturedProjects() {
     <section id="work" className="py-20 lg:py-28 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-primary-200">
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          layout="split"
+          maxWidth="max-w-none"
+          className="mb-12"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Selected Case Studies</span>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight">
+          }
+          title={
+            <>
               Featured <span className="gradient-text">Projects</span>
-            </h2>
-            <p className="text-sm text-dark-muted mt-2">
-              (Representative client showcase architectures demonstrating real deliverables)
-            </p>
-          </div>
-
-          <Link
-            href="/our-work"
-            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors self-start md:self-auto"
-          >
-            <span>View Full Portfolio</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
+            </>
+          }
+          subtitle="(Representative client showcase architectures demonstrating real deliverables)"
+          subtitleClassName="text-sm text-dark-muted mt-2"
+          extra={
+            <div className="flex justify-start lg:justify-end">
+              <Link
+                href="/our-work"
+                className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors"
+              >
+                <span>View Full Portfolio</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+          }
+        />
 
         {/* Category Filter Tabs */}
         <div className="flex flex-wrap items-center gap-2.5 mb-10">

@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { 
-  motion, 
-  AnimatePresence, 
-  useScroll, 
-  useTransform, 
-  useSpring, 
-  useMotionValue 
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue
 } from "framer-motion";
 import { SelectedWorkItem, DEFAULT_SELECTED_WORK } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 export default function SelectedWorkSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -158,19 +159,22 @@ export default function SelectedWorkSection() {
         }}
         className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full will-change-transform"
       >
-        {/* Sleek Section Header (Slides up together with the showcase!) */}
-        <div className="mb-6 sm:mb-8 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-3">
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-            <span>Selected Work</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight">
-            Ideas brought to life.
-          </h2>
-          <p className="text-sm sm:text-base text-dark-muted max-w-xl mt-2 font-medium">
-            Explore category-defining digital experiences crafted with strategy, technology, and design.
-          </p>
-        </div>
+        {/* Sleek Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          align="left"
+          maxWidth="max-w-3xl"
+          className="mb-6 sm:mb-8"
+          badge={
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+              <span>Selected Work</span>
+            </div>
+          }
+          title="Ideas brought to life."
+          titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-2"
+          subtitle="Explore category-defining digital experiences crafted with strategy, technology, and design."
+          subtitleClassName="text-sm sm:text-base text-dark-muted max-w-xl font-medium"
+        />
 
         {/* ====================================================
             THE CINEMA SHOWCASE CARD

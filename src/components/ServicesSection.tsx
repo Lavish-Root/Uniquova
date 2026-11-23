@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { SERVICES_DATA } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 import ServicesMarquee from "./ServicesMarquee";
 
 const iconMap = {
@@ -46,19 +47,22 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4">
-            Our Core <span className="gradient-text">Digital Services</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed">
-            From scaling high-volume marketplace stores to architecting custom web and mobile
-            applications, we deliver end-to-end digital excellence designed for scalable revenue.
-          </p>
-        </div>
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          className="mb-16"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>End-to-End Capabilities</span>
+            </div>
+          }
+          title={
+            <>
+              Our Core <span className="gradient-text">Digital Services</span>
+            </>
+          }
+          subtitle="From scaling high-volume marketplace stores to architecting custom web and mobile applications, we deliver end-to-end digital excellence designed for scalable revenue."
+        />
 
         {/* 5 Service Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Star, MessageSquare, CheckCircle2, MessageSquarePlus } from "lucide-react";
 import { TESTIMONIALS_DATA, TestimonialItem } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 export default function TestimonialsSection() {
   const [allTestimonials, setAllTestimonials] = useState<TestimonialItem[]>(TESTIMONIALS_DATA);
@@ -181,24 +182,23 @@ export default function TestimonialsSection() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-primary-200">
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Verified Client Feedback</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4">
-            Trusted by Leaders <br />
-            <span className="gradient-text">Who Value Real Growth</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed mb-6">
-            Hear directly from founders, enterprise product managers, and e-commerce leaders scaling
-            with UNIQUOVA.
-          </p>
-
-          <div className="inline-flex items-center gap-2">
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          className="mb-16"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Verified Client Feedback</span>
+            </div>
+          }
+          title={
+            <>
+              Trusted by Leaders <br />
+              <span className="gradient-text">Who Value Real Growth</span>
+            </>
+          }
+          subtitle="Hear directly from founders, enterprise product managers, and e-commerce leaders scaling with UNIQUOVA."
+          extra={
             <Link
               href="/feedback"
               className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:text-primary-dark bg-white hover:bg-primary-light/50 px-4 py-2 rounded-full border border-primary/20 shadow-xs transition-colors"
@@ -206,8 +206,8 @@ export default function TestimonialsSection() {
               <MessageSquarePlus className="w-3.5 h-3.5 text-primary" />
               <span>Are you a client? Submit your verified review</span>
             </Link>
-          </div>
-        </div>
+          }
+        />
 
         {/* 3-COLUMN VERTICAL MOVING REVIEWS MARQUEE CONTAINER */}
         <div className="relative h-[650px] sm:h-[720px] overflow-hidden">

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, MessageSquare, Sparkles } from "lucide-react";
 import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
+import ScrollHeading from "@/components/ScrollHeading";
 
 interface ContactCTAProps {
   onOpenContact?: () => void;
@@ -95,25 +96,27 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#7545f50a_1px,transparent_1px),linear-gradient(to_bottom,#7545f50a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
           <div className="relative z-10 max-w-3xl mx-auto text-center">
-            {/* Tag Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-purple-200 text-xs font-bold uppercase tracking-wider mb-6 border border-white/10 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-primary-300" />
-              <span>Let&apos;s Build Something Iconic</span>
-            </div>
-
-            {/* Headline */}
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] mb-6">
-              Have an Idea? <br />
-              <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-white bg-clip-text text-transparent">
-                Let&apos;s Make It Happen.
-              </span>
-            </h2>
-
-            {/* Supporting text */}
-            <p className="text-base sm:text-lg text-purple-200/90 font-normal leading-relaxed mb-10 max-w-2xl mx-auto">
-              Let&apos;s discuss how UNIQUOVA can help your business move forward. From e-commerce
-              marketplaces to custom web and mobile apps, our team is ready to scale your vision.
-            </p>
+            {/* Scroll-Driven Animated CTA Header */}
+            <ScrollHeading
+              className="mb-10"
+              badge={
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-purple-200 text-xs font-bold uppercase tracking-wider border border-white/10 backdrop-blur-md">
+                  <Sparkles className="w-3.5 h-3.5 text-primary-300" />
+                  <span>Let&apos;s Build Something Iconic</span>
+                </div>
+              }
+              title={
+                <>
+                  Have an Idea? <br />
+                  <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-white bg-clip-text text-transparent">
+                    Let&apos;s Make It Happen.
+                  </span>
+                </>
+              }
+              titleClassName="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] mb-6 text-white"
+              subtitle="Let's discuss how UNIQUOVA can help your business move forward. From e-commerce marketplaces to custom web and mobile apps, our team is ready to scale your vision."
+              subtitleClassName="text-base sm:text-lg text-purple-200/90 font-normal leading-relaxed max-w-2xl mx-auto"
+            />
 
             {/* Actions Row */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
