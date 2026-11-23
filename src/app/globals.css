@@ -110,6 +110,28 @@
   will-change: transform;
 }
 
+/* ====================================================
+   Framer Selected Work Section Styles
+   ==================================================== */
+.framer-1fc2iyl {
+  flex-flow: column;
+  flex: none;
+  place-content: flex-start;
+  align-items: flex-start;
+  gap: 50px;
+  width: 100%;
+  max-width: 1440px;
+  height: min-content;
+  padding: 0;
+  scroll-margin-top: 64px;
+  display: flex;
+  position: relative;
+  overflow: visible;
+  order: 0;
+  gap: 0;
+}
+
+
 .animate-marquee-down-slow {
   animation: marqueeDown 36s linear infinite;
   will-change: transform;

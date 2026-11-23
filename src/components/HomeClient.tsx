@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import SelectedWorkSection from "@/components/SelectedWorkSection";
 import ServicesSection from "@/components/ServicesSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import WorkingProcess from "@/components/WorkingProcess";
@@ -30,6 +31,9 @@ export default function HomeClient() {
 
       {/* Section 1: Hero (with Section 2: Trusted By integrated) */}
       <Hero onOpenContact={() => setIsContactOpen(true)} />
+
+      {/* Selected Work: Framer-inspired Scroll-Driven Showcase Section */}
+      <SelectedWorkSection />
 
       {/* Section 3: Our Services */}
       <ServicesSection onSelectService={handleOpenContactWithService} />
