@@ -10,7 +10,7 @@ import {
   Play 
 } from "lucide-react";
 
-// Curated showcases with high-resolution original visuals
+// Curated showcases with high-resolution original visuals from WeGrow & UNIQOVA
 export const FEATURED_SHOWCASES = [
   {
     id: "showcase-ruuster",
@@ -77,7 +77,7 @@ export const FEATURED_SHOWCASES = [
 ];
 
 export default function SelectedWorkSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -107,19 +107,35 @@ export default function SelectedWorkSection() {
     setCurrentIndex(idx);
   };
 
-  // Scroll entrance animation: when scrolling down from landing page,
-  // this section smoothly glides up with 3D perspective
+  // ====================================================================
+  // EXACT REFERENCE SCROLL-UP ENTRANCE ANIMATION (Matching Reference Video)
+  // Tracks vertical scroll progress as the user moves from Hero into Selected Work.
+  // The showcase card glides up from below, scales up, straightens its 3D angle,
+  // and smoothly locks into view with spring physics.
+  // ====================================================================
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "start start"],
+    target: containerRef,
+    offset: ["start end", "start 18%"],
   });
 
-  const sectionY = useTransform(scrollYProgress, [0, 1], [110, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 1], [0.93, 1]);
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.55], [0.4, 1]);
+  const springConfig = { stiffness: 180, damping: 24, mass: 0.25 };
 
-  const smoothY = useSpring(sectionY, { stiffness: 220, damping: 26 });
-  const smoothScale = useSpring(sectionScale, { stiffness: 220, damping: 26 });
+  // Scroll transforms:
+  // - Starts 280px down and rises smoothly to 0px
+  // - Scales up from 0.86 to 1.0
+  // - 3D Perspective rotation (rotateX: 16° -> 0°, rotateY: 8° -> 0°)
+  // - Smooth border radius transition
+  const rawY = useTransform(scrollYProgress, [0, 1], [280, 0]);
+  const rawScale = useTransform(scrollYProgress, [0, 1], [0.86, 1.0]);
+  const rawRotateX = useTransform(scrollYProgress, [0, 1], [16, 0]);
+  const rawRotateY = useTransform(scrollYProgress, [0, 1], [8, 0]);
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.45], [0.4, 1.0]);
+  const rawBorderRadius = useTransform(scrollYProgress, [0, 1], ["48px", "32px"]);
+
+  const smoothY = useSpring(rawY, springConfig);
+  const smoothScale = useSpring(rawScale, springConfig);
+  const smoothRotateX = useSpring(rawRotateX, springConfig);
+  const smoothRotateY = useSpring(rawRotateY, springConfig);
 
   // Autoplay timer set to exactly 2 seconds (2000ms) with pause-on-hover
   useEffect(() => {
@@ -130,7 +146,7 @@ export default function SelectedWorkSection() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, isHovered, nextSlide]);
 
-  // Cursor tracking & 3D tilt
+  // Interactive Cursor tracking & 3D tilt
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
@@ -139,14 +155,14 @@ export default function SelectedWorkSection() {
 
     setCursorPos({ x, y });
 
-    // Determine left or right side for cursor click
+    // Determine left or right side for cursor switch
     if (x < rect.width / 2) {
       setCursorSide("prev");
     } else {
       setCursorSide("next");
     }
 
-    // Dynamic 3D tilt calculation (-2.5deg to +2.5deg)
+    // Dynamic 3D tilt calculation (-2.2deg to +2.2deg)
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const tiltX = -((y - centerY) / centerY) * 2.2;
@@ -164,20 +180,15 @@ export default function SelectedWorkSection() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={containerRef}
       id="selected-work"
-      className="relative w-full bg-[#FAF9FF] py-12 lg:py-20 overflow-hidden"
+      style={{ perspective: "1200px" }}
+      className="relative w-full bg-[#FAF9FF] pt-8 pb-16 sm:pb-24 lg:pb-32 overflow-hidden -mt-12 sm:-mt-16 lg:-mt-24 z-20"
     >
-      <motion.div
-        style={{
-          y: smoothY,
-          scale: smoothScale,
-          opacity: sectionOpacity,
-        }}
-        className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full"
-      >
-        {/* Top Header Label & Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        
+        {/* Sleek Section Header (Minimal, non-intrusive) */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-3">
               <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
@@ -187,11 +198,11 @@ export default function SelectedWorkSection() {
               Ideas brought to life.
             </h2>
             <p className="text-sm sm:text-base text-dark-muted max-w-xl mt-2 font-medium">
-              Explore how design, technology and strategy merge to create category-defining digital experiences.
+              Explore category-defining digital experiences crafted with strategy, technology, and design.
             </p>
           </div>
 
-          {/* Controls: Counter + Navigation Buttons + Autoplay Toggle */}
+          {/* Controls: Slide Counter + Play/Pause + Arrow Buttons */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Slide Counter */}
             <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white border border-border shadow-sm text-xs font-semibold text-dark">
@@ -221,7 +232,7 @@ export default function SelectedWorkSection() {
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous project"
-                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105"
+                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -229,7 +240,7 @@ export default function SelectedWorkSection() {
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next project"
-                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105"
+                className="w-10 h-10 rounded-full bg-white hover:bg-primary text-dark hover:text-white border border-border shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -238,151 +249,169 @@ export default function SelectedWorkSection() {
         </div>
 
         {/* ====================================================
-            THE CINEMA SHOWCASE CARD
-            - ZERO text on the image
-            - Cool 3D landing animation with lens sweep
-            - Automatic 2s shift
-            - Cursor-guided switching without text
+            THE SCROLL-UP ENTRANCE MOTION WRAPPER
+            Directly translates, scales, and rotates in 3D perspective
+            as the user scrolls vertically down into this section
            ==================================================== */}
-        <div
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => {
-            setIsHovered(false);
-            setTilt({ x: 0, y: 0 });
-          }}
-          onClick={handleCardClick}
+        <motion.div
           style={{
-            transform: `perspective(1100px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-            transition: isHovered ? "transform 0.08s ease-out" : "transform 0.5s ease-out",
+            y: smoothY,
+            scale: smoothScale,
+            rotateX: smoothRotateX,
+            rotateY: smoothRotateY,
+            opacity: rawOpacity,
+            borderRadius: rawBorderRadius,
+            transformStyle: "preserve-3d",
           }}
-          className="relative w-full h-[64vh] sm:h-[72vh] lg:h-[78vh] min-h-[480px] max-h-[820px] rounded-[28px] sm:rounded-[38px] overflow-hidden bg-[#0A0910] shadow-[0_30px_90px_-20px_rgba(21,19,35,0.45)] border border-white/10 cursor-pointer select-none group"
+          className="will-change-transform"
         >
-          {/* Active Image / Video with Cool Landing Animation */}
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={current.id}
-              custom={direction}
-              initial={{
-                opacity: 0,
-                scale: 1.12,
-                x: direction > 0 ? 70 : -70,
-                filter: "brightness(1.2) blur(8px)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1.0,
-                x: 0,
-                filter: "brightness(1.0) blur(0px)",
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.94,
-                x: direction > 0 ? -70 : 70,
-                filter: "brightness(0.8) blur(6px)",
-              }}
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="absolute inset-0 w-full h-full"
-            >
-              {current.isVideo && current.videoSrc ? (
-                <video
-                  src={current.videoSrc}
-                  poster={current.src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <img
-                  src={current.src}
-                  alt={current.alt}
-                  className="w-full h-full object-cover select-none pointer-events-none"
-                  loading="eager"
-                  decoding="async"
-                />
-              )}
-
-              {/* Cool Diagonal Lens Shine Sweep on Landing */}
-              <motion.div
-                key={`shine-${current.id}`}
-                initial={{ x: "-120%", opacity: 0.8 }}
-                animate={{ x: "220%", opacity: 0 }}
-                transition={{ duration: 0.95, ease: "easeOut" }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 pointer-events-none z-10"
-              />
-            </motion.div>
-          </AnimatePresence>
-
           {/* ====================================================
-              MINIMALIST CURSOR FOLLOWER ICON (No text, pure functionality)
+              THE CINEMA SHOWCASE CARD
+              - ZERO text on the image
+              - Cool 3D landing animation with lens sweep
+              - Automatic 2s shift
+              - Cursor-guided switching without text
              ==================================================== */}
-          {isHovered && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.12 }}
-              style={{
-                left: `${cursorPos.x}px`,
-                top: `${cursorPos.y}px`,
-                transform: "translate(-50%, -50%)",
-              }}
-              className="pointer-events-none absolute z-40 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-black/75 text-white backdrop-blur-xl border border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-            >
-              {cursorSide === "prev" ? (
-                <ChevronLeft className="w-6 h-6 text-white stroke-[2.5]" />
-              ) : (
-                <ChevronRight className="w-6 h-6 text-white stroke-[2.5]" />
-              )}
-            </motion.div>
-          )}
+          <div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => {
+              setIsHovered(false);
+              setTilt({ x: 0, y: 0 });
+            }}
+            onClick={handleCardClick}
+            style={{
+              transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+              transition: isHovered ? "transform 0.08s ease-out" : "transform 0.5s ease-out",
+            }}
+            className="relative w-full h-[64vh] sm:h-[72vh] lg:h-[78vh] min-h-[480px] max-h-[820px] rounded-[32px] sm:rounded-[40px] overflow-hidden bg-[#0A0910] shadow-[0_30px_90px_-20px_rgba(21,19,35,0.45)] border border-white/10 cursor-pointer select-none group"
+          >
+            {/* Active Image / Video with Cool Landing Animation */}
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current.id}
+                custom={direction}
+                initial={{
+                  opacity: 0,
+                  scale: 1.12,
+                  x: direction > 0 ? 70 : -70,
+                  filter: "brightness(1.2) blur(8px)",
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1.0,
+                  x: 0,
+                  filter: "brightness(1.0) blur(0px)",
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.94,
+                  x: direction > 0 ? -70 : 70,
+                  filter: "brightness(0.8) blur(6px)",
+                }}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="absolute inset-0 w-full h-full"
+              >
+                {current.isVideo && current.videoSrc ? (
+                  <video
+                    src={current.videoSrc}
+                    poster={current.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={current.src}
+                    alt={current.alt}
+                    className="w-full h-full object-cover select-none pointer-events-none"
+                    loading="eager"
+                    decoding="async"
+                  />
+                )}
 
-          {/* Autoplay Progress Bar at Top (2.0s duration) */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-white/10 z-30 overflow-hidden">
-            <motion.div
-              key={currentIndex}
-              initial={{ width: "0%" }}
-              animate={{ width: isHovered || !isAutoPlaying ? "100%" : "100%" }}
-              transition={{
-                duration: isHovered || !isAutoPlaying ? 0 : 2.0,
-                ease: "linear",
-              }}
-              className="h-full bg-gradient-to-r from-primary via-purple-300 to-white shadow-[0_0_12px_rgba(117,69,245,0.8)]"
-            />
+                {/* Cool Diagonal Lens Shine Sweep on Landing */}
+                <motion.div
+                  key={`shine-${current.id}`}
+                  initial={{ x: "-120%", opacity: 0.8 }}
+                  animate={{ x: "220%", opacity: 0 }}
+                  transition={{ duration: 0.95, ease: "easeOut" }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 pointer-events-none z-10"
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            {/* ====================================================
+                MINIMALIST CURSOR FOLLOWER ICON (No text, pure arrow)
+               ==================================================== */}
+            {isHovered && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.12 }}
+                style={{
+                  left: `${cursorPos.x}px`,
+                  top: `${cursorPos.y}px`,
+                  transform: "translate(-50%, -50%)",
+                }}
+                className="pointer-events-none absolute z-40 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-black/75 text-white backdrop-blur-xl border border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+              >
+                {cursorSide === "prev" ? (
+                  <ChevronLeft className="w-6 h-6 text-white stroke-[2.5]" />
+                ) : (
+                  <ChevronRight className="w-6 h-6 text-white stroke-[2.5]" />
+                )}
+              </motion.div>
+            )}
+
+            {/* Autoplay Progress Bar at Top (2.0s duration) */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-white/10 z-30 overflow-hidden">
+              <motion.div
+                key={currentIndex}
+                initial={{ width: "0%" }}
+                animate={{ width: isHovered || !isAutoPlaying ? "100%" : "100%" }}
+                transition={{
+                  duration: isHovered || !isAutoPlaying ? 0 : 2.0,
+                  ease: "linear",
+                }}
+                className="h-full bg-gradient-to-r from-primary via-purple-300 to-white shadow-[0_0_12px_rgba(117,69,245,0.8)]"
+              />
+            </div>
+
+            {/* Side Indicator Arrows for Mobile / Touch devices */}
+            <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none md:hidden z-20">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevSlide();
+                }}
+                className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextSlide();
+                }}
+                className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
+        </motion.div>
 
-          {/* Side Indicator Arrows for Touch devices */}
-          <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none md:hidden z-20">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                prevSlide();
-              }}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                nextSlide();
-              }}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom Pagination Dots & Fast Switcher */}
+        {/* Bottom Pagination Dots & Guide */}
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-1 max-w-full">
             {FEATURED_SHOWCASES.map((item, idx) => (
@@ -404,10 +433,11 @@ export default function SelectedWorkSection() {
 
           <div className="flex items-center gap-2 text-xs font-semibold text-dark-muted">
             <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span>Move cursor over left/right side or click to switch</span>
+            <span>Hover cursor left / right or click to switch</span>
           </div>
         </div>
-      </motion.div>
+
+      </div>
     </section>
   );
 }
