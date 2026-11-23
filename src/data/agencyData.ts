@@ -1115,4 +1115,99 @@ export interface ClientQuery {
   receivedAt: string;
 }
 
+export interface SelectedWorkItem {
+  id: string;
+  title: string;
+  src: string;
+  alt: string;
+  isVideo?: boolean;
+  videoSrc?: string;
+  order?: number;
+}
+
+export const DEFAULT_SELECTED_WORK: SelectedWorkItem[] = [
+  {
+    id: "showcase-ruuster",
+    title: "Ruuster AI — Manhattan Billboard Series",
+    src: "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_2000.webp",
+    alt: "Ruuster brand identity displayed on a building billboard in New York City",
+    isVideo: false,
+    order: 1,
+  },
+  {
+    id: "showcase-euroteam",
+    title: "Euroteam — Global Logistics Digital Platform",
+    src: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp",
+    alt: "Euroteam website homepage displayed on a laptop",
+    isVideo: false,
+    order: 2,
+  },
+  {
+    id: "showcase-mark-os",
+    title: "Mark OS — AI Content Review Platform",
+    src: "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_2560.webp",
+    alt: "MarkOS website homepage design showing AI-powered content review platform",
+    isVideo: false,
+    order: 3,
+  },
+  {
+    id: "showcase-megahr",
+    title: "Mega HR — AI Hiring Subway Takeover",
+    src: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
+    alt: "Mega HR brand identity posters on subway screens showing AI hiring platform",
+    isVideo: false,
+    order: 4,
+  },
+  {
+    id: "showcase-credit-attorney",
+    title: "The Credit Attorney — Visual Identity System",
+    src: "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_1920.webp",
+    alt: "The Credit Attorney complete brand identity system showing logo and typography",
+    isVideo: false,
+    order: 5,
+  },
+  {
+    id: "showcase-tablet-ux",
+    title: "Mark OS — Tablet & Mobile Application UX",
+    src: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_2560.webp",
+    alt: "Mark OS social media profile on a tablet showing the brand avatar and cover design",
+    isVideo: false,
+    order: 6,
+  },
+  {
+    id: "showcase-delupay",
+    title: "DeluPay — 3D Fintech Payments Identity",
+    src: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_1504.webp",
+    alt: "DeluPay 3D brand visual with metallic phone on pink-purple gradient",
+    isVideo: false,
+    order: 7,
+  },
+  {
+    id: "showcase-adv",
+    title: "Advimagine — Manufacturing Art Precision",
+    src: "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_2560.webp",
+    alt: "Website hero section on deep red background with glossy black 3D arrow",
+    isVideo: false,
+    order: 8,
+  },
+  {
+    id: "showcase-twin",
+    title: "TWIN Global — Digital Trade Ecosystem",
+    src: "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_2048.webp",
+    alt: "TWIN design system showing typography, color palette, and UI components",
+    isVideo: false,
+    order: 9,
+  },
+  {
+    id: "showcase-motion",
+    title: "The Credit Attorney — Motion Experience",
+    src: "/images/selected_work/UxiCl5JNg31dqV7i7ez49Tvc4E_poster.webp",
+    videoSrc: "/images/selected_work/UxiCl5JNg31dqV7i7ez49Tvc4E_video.mp4",
+    isVideo: true,
+    alt: "Animation showing medical bills and healthcare cost challenges",
+    order: 10,
+  },
+];
+
+
 

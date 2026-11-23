@@ -1,86 +1,50 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-
-// Curated showcases with high-resolution original visuals from WeGrow & UNIQOVA
-export const FEATURED_SHOWCASES = [
-  {
-    id: "showcase-ruuster",
-    title: "Ruuster AI — Manhattan Billboard Series",
-    src: "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_2000.webp",
-    alt: "Ruuster brand identity displayed on a building billboard in New York City",
-  },
-  {
-    id: "showcase-euroteam",
-    title: "Euroteam — Global Logistics Digital Platform",
-    src: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp",
-    alt: "Euroteam website homepage displayed on a laptop",
-  },
-  {
-    id: "showcase-mark-os",
-    title: "Mark OS — AI Content Review Platform",
-    src: "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_2560.webp",
-    alt: "MarkOS website homepage design showing AI-powered content review platform",
-  },
-  {
-    id: "showcase-megahr",
-    title: "Mega HR — AI Hiring Subway Takeover",
-    src: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
-    alt: "Mega HR brand identity posters on subway screens showing AI hiring platform",
-  },
-  {
-    id: "showcase-credit-attorney",
-    title: "The Credit Attorney — Visual Identity System",
-    src: "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_1920.webp",
-    alt: "The Credit Attorney complete brand identity system showing logo and typography",
-  },
-  {
-    id: "showcase-tablet-ux",
-    title: "Mark OS — Tablet & Mobile Application UX",
-    src: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_2560.webp",
-    alt: "Mark OS social media profile on a tablet showing the brand avatar and cover design",
-  },
-  {
-    id: "showcase-delupay",
-    title: "DeluPay — 3D Fintech Payments Identity",
-    src: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_1504.webp",
-    alt: "DeluPay 3D brand visual with metallic phone on pink-purple gradient",
-  },
-  {
-    id: "showcase-adv",
-    title: "Advimagine — Manufacturing Art Precision",
-    src: "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_2560.webp",
-    alt: "Website hero section on deep red background with glossy black 3D arrow",
-  },
-  {
-    id: "showcase-twin",
-    title: "TWIN Global — Digital Trade Ecosystem",
-    src: "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_2048.webp",
-    alt: "TWIN design system showing typography, color palette, and UI components",
-  },
-  {
-    id: "showcase-motion",
-    title: "The Credit Attorney — Motion Experience",
-    src: "/images/selected_work/UxiCl5JNg31dqV7i7ez49Tvc4E_poster.webp",
-    videoSrc: "/images/selected_work/UxiCl5JNg31dqV7i7ez49Tvc4E_video.mp4",
-    isVideo: true,
-    alt: "Animation showing medical bills and healthcare cost challenges",
-  },
-];
+import { 
+  motion, 
+  AnimatePresence, 
+  useScroll, 
+  useTransform, 
+  useSpring, 
+  useMotionValue 
+} from "framer-motion";
+import { SelectedWorkItem, DEFAULT_SELECTED_WORK } from "@/data/agencyData";
 
 export default function SelectedWorkSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const [showcases, setShowcases] = useState<SelectedWorkItem[]>(DEFAULT_SELECTED_WORK);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorSide, setCursorSide] = useState<"prev" | "next">("next");
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
-  const total = FEATURED_SHOWCASES.length;
-  const current = FEATURED_SHOWCASES[currentIndex];
+  // Fetch live showcases directly from CMS
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCMSShowcases() {
+      try {
+        const res = await fetch("/api/selected-work");
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && Array.isArray(data.items) && data.items.length > 0) {
+            setShowcases(data.items);
+          }
+        }
+      } catch {
+        // Graceful fallback to default curated showcases
+      }
+    }
+    loadCMSShowcases();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const total = showcases.length;
+  const current = showcases[currentIndex] || showcases[0] || DEFAULT_SELECTED_WORK[0];
 
   // Navigation callbacks
   const nextSlide = useCallback(() => {
@@ -105,7 +69,7 @@ export default function SelectedWorkSection() {
 
   const springConfig = { stiffness: 140, damping: 22, mass: 0.3 };
 
-  // Transforms:
+  // Transforms for the entrance:
   // - Entire container slides UP from 320px down to 0px
   // - Scales from 0.88 to 1.0
   // - 3D perspective rotation (14deg -> 0deg)
@@ -120,16 +84,18 @@ export default function SelectedWorkSection() {
   const smoothRotateX = useSpring(rawRotateX, springConfig);
   const smoothOpacity = useSpring(rawOpacity, springConfig);
 
-  // Autoplay timer set to exactly 2 seconds (2000ms) with pause-on-hover
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [isHovered, nextSlide]);
+  // ====================================================================
+  // BUTTERY-SMOOTH 3D HOVER TILT ANIMATION
+  // Uses MotionValues and spring physics for GPU-accelerated motion
+  // without triggering constant React re-renders on mousemove
+  // ====================================================================
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  // Interactive Cursor tracking & 3D tilt
+  const tiltSpringConfig = { stiffness: 110, damping: 18, mass: 0.15 };
+  const smoothTiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4.5, -4.5]), tiltSpringConfig);
+  const smoothTiltY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4.5, 4.5]), tiltSpringConfig);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
@@ -137,18 +103,20 @@ export default function SelectedWorkSection() {
     const y = e.clientY - rect.top;
 
     // Determine left or right half for cursor click navigation
-    if (x < rect.width / 2) {
-      setCursorSide("prev");
-    } else {
-      setCursorSide("next");
-    }
+    setCursorSide(x < rect.width / 2 ? "prev" : "next");
 
-    // Dynamic 3D interactive tilt (-2.2deg to +2.2deg)
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const tiltX = -((y - centerY) / centerY) * 2.2;
-    const tiltY = ((x - centerX) / centerX) * 2.2;
-    setTilt({ x: tiltX, y: tiltY });
+    // Normalized coordinates from -0.5 to +0.5
+    const normX = x / rect.width - 0.5;
+    const normY = y / rect.height - 0.5;
+    mouseX.set(normX);
+    mouseY.set(normY);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    // Smoothly springs back to flat 0deg
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
   const handleCardClick = () => {
@@ -158,6 +126,15 @@ export default function SelectedWorkSection() {
       prevSlide();
     }
   };
+
+  // Autoplay timer set to exactly 2 seconds (2000ms) with pause-on-hover
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isHovered, nextSlide]);
 
   return (
     <section
@@ -197,25 +174,24 @@ export default function SelectedWorkSection() {
 
         {/* ====================================================
             THE CINEMA SHOWCASE CARD
+            - Controlled directly via CMS
             - ZERO text on the image
             - Automatic 2s shift
-            - Interactive cursor switching with glowing arrows
-            - Cool 3D landing animation with lens sweep
+            - Buttery-smooth GPU spring hover tilt
+            - Cursor click navigation (left = prev, right = next)
            ==================================================== */}
-        <div
+        <motion.div
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => {
-            setIsHovered(false);
-            setTilt({ x: 0, y: 0 });
-          }}
+          onMouseLeave={handleMouseLeave}
           onClick={handleCardClick}
           style={{
-            transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-            transition: isHovered ? "transform 0.08s ease-out" : "transform 0.5s ease-out",
+            rotateX: smoothTiltX,
+            rotateY: smoothTiltY,
+            transformStyle: "preserve-3d",
           }}
-          className="relative w-full h-[64vh] sm:h-[72vh] lg:h-[78vh] min-h-[480px] max-h-[820px] rounded-[32px] sm:rounded-[40px] overflow-hidden bg-[#0A0910] shadow-[0_30px_90px_-20px_rgba(21,19,35,0.45)] border border-white/10 cursor-pointer select-none group"
+          className="relative w-full h-[64vh] sm:h-[72vh] lg:h-[78vh] min-h-[480px] max-h-[820px] rounded-[32px] sm:rounded-[40px] overflow-hidden bg-[#0A0910] shadow-[0_30px_90px_-20px_rgba(21,19,35,0.45)] border border-white/10 cursor-pointer select-none group will-change-transform"
         >
           {/* Active Image / Video with Cool Landing Animation */}
           <AnimatePresence mode="wait" custom={direction}>
@@ -259,7 +235,7 @@ export default function SelectedWorkSection() {
               ) : (
                 <img
                   src={current.src}
-                  alt={current.alt}
+                  alt={current.alt || current.title}
                   className="w-full h-full object-cover select-none pointer-events-none"
                   loading="eager"
                   decoding="async"
@@ -290,7 +266,7 @@ export default function SelectedWorkSection() {
               className="h-full bg-gradient-to-r from-primary via-purple-300 to-white shadow-[0_0_12px_rgba(117,69,245,0.8)]"
             />
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );

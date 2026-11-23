@@ -12,6 +12,7 @@ import {
   ClientQuery,
   DEFAULT_COMPANY_INFO,
   formatWhatsAppUrl,
+  SelectedWorkItem,
 } from "@/data/agencyData";
 import CapabilityIcon, { CAPABILITY_ICON_OPTIONS } from "./CapabilityIcon";
 import {
@@ -49,6 +50,9 @@ import {
   PenTool,
   Layers,
   ChevronDown,
+  ChevronUp,
+  Video,
+  Image as ImageIcon,
   Building2,
   Phone,
   PhoneCall,
@@ -206,8 +210,8 @@ export default function AdminClient() {
   // Registered Admin Email
   const [adminEmail, setAdminEmail] = useState("lavishchouhan56@gmail.com");
 
-  // Navigation tab: "projects" or "reviews" or "queries" or "brands" or "capabilities" or "company"
-  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "queries" | "brands" | "capabilities" | "company">("projects");
+  // Navigation tab: "projects" | "reviews" | "queries" | "brands" | "capabilities" | "company" | "selected-work"
+  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "queries" | "brands" | "capabilities" | "company" | "selected-work">("projects");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ==========================================
@@ -340,6 +344,26 @@ export default function AdminClient() {
     active: true,
   });
 
+  // ==========================================
+  // SELECTED WORK SHOWCASES STATE (Ideas brought to life)
+  // ==========================================
+  const [selectedWorks, setSelectedWorks] = useState<SelectedWorkItem[]>([]);
+  const [isLoadingSelectedWorks, setIsLoadingSelectedWorks] = useState(false);
+  const [isSelectedWorkModalOpen, setIsSelectedWorkModalOpen] = useState(false);
+  const [editingSelectedWorkId, setEditingSelectedWorkId] = useState<string | null>(null);
+  const [isSavingSelectedWork, setIsSavingSelectedWork] = useState(false);
+  const [deleteSelectedWorkConfirmId, setDeleteSelectedWorkConfirmId] = useState<string | null>(null);
+
+  // Selected Work Form State
+  const [selectedWorkFormData, setSelectedWorkFormData] = useState({
+    title: "",
+    src: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp",
+    alt: "",
+    isVideo: false,
+    videoSrc: "",
+    order: 1,
+  });
+
   // Notification Toast
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
@@ -436,6 +460,7 @@ export default function AdminClient() {
         fetchQueries(loginInput);
         fetchBrands();
         fetchCapabilities();
+        fetchSelectedWorks();
         fetchCompanyInfo();
         fetchAdminEmail(loginInput);
         showToast("success", "Welcome to UNIQOVA Operations Gateway");
@@ -1194,6 +1219,199 @@ export default function AdminClient() {
       }
     } catch {
       showToast("error", "Network error while deleting capability");
+    }
+  };
+
+  // -------------------------------------------------------------
+  // SELECTED WORK API METHODS (Showcase Carousel / Cinema Screen)
+  // -------------------------------------------------------------
+  const fetchSelectedWorks = async () => {
+    setIsLoadingSelectedWorks(true);
+    try {
+      const res = await fetch("/api/selected-work");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.items)) {
+        setSelectedWorks(data.items);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve selected work showcase slides");
+    } finally {
+      setIsLoadingSelectedWorks(false);
+    }
+  };
+
+  const openAddSelectedWorkModal = () => {
+    const nextOrder =
+      selectedWorks.length > 0
+        ? Math.max(...selectedWorks.map((w) => (typeof w.order === "number" ? w.order : 0))) + 1
+        : 1;
+
+    setSelectedWorkFormData({
+      title: "",
+      src: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp",
+      alt: "",
+      isVideo: false,
+      videoSrc: "",
+      order: nextOrder,
+    });
+    setEditingSelectedWorkId(null);
+    setIsSelectedWorkModalOpen(true);
+  };
+
+  const openEditSelectedWorkModal = (item: SelectedWorkItem) => {
+    setSelectedWorkFormData({
+      title: item.title,
+      src: item.src,
+      alt: item.alt || "",
+      isVideo: Boolean(item.isVideo),
+      videoSrc: item.videoSrc || "",
+      order: item.order ?? 1,
+    });
+    setEditingSelectedWorkId(item.id);
+    setIsSelectedWorkModalOpen(true);
+  };
+
+  const handleSelectedWorkImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      showToast("error", "File is too large. Please select an image under 2MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 1920;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          setSelectedWorkFormData((prev) => ({ ...prev, src: compressed }));
+          showToast("success", "Custom showcase image loaded and compressed");
+        }
+      };
+      if (typeof event.target?.result === "string") {
+        img.src = event.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveSelectedWork = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedWorkFormData.title.trim() || !selectedWorkFormData.src.trim()) {
+      showToast("error", "Showcase title and media image URL are required.");
+      return;
+    }
+
+    setIsSavingSelectedWork(true);
+    const isEditing = !!editingSelectedWorkId;
+    const url = "/api/selected-work";
+    const method = isEditing ? "PUT" : "POST";
+
+    const payload = {
+      ...(isEditing ? { id: editingSelectedWorkId } : {}),
+      title: selectedWorkFormData.title.trim(),
+      src: selectedWorkFormData.src.trim(),
+      alt: selectedWorkFormData.alt.trim() || selectedWorkFormData.title.trim(),
+      isVideo: selectedWorkFormData.isVideo,
+      videoSrc: selectedWorkFormData.videoSrc ? selectedWorkFormData.videoSrc.trim() : undefined,
+      order: Number(selectedWorkFormData.order) || 1,
+    };
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", isEditing ? "Showcase slide updated successfully!" : "New showcase slide added!");
+        setIsSelectedWorkModalOpen(false);
+        setEditingSelectedWorkId(null);
+        fetchSelectedWorks();
+      } else {
+        showToast("error", data.message || "Failed to save showcase slide.");
+      }
+    } catch {
+      showToast("error", "Network error saving showcase slide.");
+    } finally {
+      setIsSavingSelectedWork(false);
+    }
+  };
+
+  const handleDeleteSelectedWork = async (id: string) => {
+    try {
+      const res = await fetch(`/api/selected-work?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          "x-admin-password": adminPassword,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", "Showcase slide permanently removed.");
+        setDeleteSelectedWorkConfirmId(null);
+        fetchSelectedWorks();
+      } else {
+        showToast("error", data.message || "Failed to delete showcase slide.");
+      }
+    } catch {
+      showToast("error", "Network error deleting showcase slide.");
+    }
+  };
+
+  const handleMoveSelectedWork = async (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= selectedWorks.length) return;
+
+    const reordered = [...selectedWorks];
+    const [movedItem] = reordered.splice(index, 1);
+    reordered.splice(targetIndex, 0, movedItem);
+
+    const updated = reordered.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setSelectedWorks(updated);
+
+    try {
+      const res = await fetch("/api/selected-work", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ items: updated }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast("error", "Failed to persist new order");
+        fetchSelectedWorks();
+      }
+    } catch {
+      showToast("error", "Network error reordering showcases");
+      fetchSelectedWorks();
     }
   };
 
@@ -2181,7 +2399,42 @@ export default function AdminClient() {
                 </span>
               </button>
 
-              {/* Tab 5: Contact & Brand Settings */}
+              {/* Tab 5: Selected Work Showcase */}
+              <button
+                onClick={() => {
+                  setCurrentTab("selected-work");
+                  if (selectedWorks.length === 0) fetchSelectedWorks();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                  currentTab === "selected-work"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${
+                      currentTab === "selected-work"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                    }`}
+                  >
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">Selected Work</span>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
+                    currentTab === "selected-work"
+                      ? "bg-white/25 text-white"
+                      : "bg-primary-light text-primary"
+                  }`}
+                >
+                  {selectedWorks.length}
+                </span>
+              </button>
+
+              {/* Tab 6: Contact & Brand Settings */}
               <button
                 onClick={() => {
                   setCurrentTab("company");
@@ -2485,7 +2738,29 @@ export default function AdminClient() {
                     </span>
                   </button>
 
-                  {/* Tab 5: Contact & Brand Settings */}
+                  {/* Tab 5: Selected Work Showcase */}
+                  <button
+                    onClick={() => {
+                      setCurrentTab("selected-work");
+                      if (selectedWorks.length === 0) fetchSelectedWorks();
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                      currentTab === "selected-work"
+                        ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
+                        : "text-dark-muted hover:bg-softBg border border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Layers className="w-4 h-4" />
+                      <span className="text-sm font-bold">Selected Work</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[11px] font-black bg-white/20">
+                      {selectedWorks.length}
+                    </span>
+                  </button>
+
+              {/* Tab 6: Contact & Brand Settings */}
                   <button
                     onClick={() => {
                       setCurrentTab("company");
@@ -2711,6 +2986,8 @@ export default function AdminClient() {
                   ? fetchBrands
                   : currentTab === "capabilities"
                   ? fetchCapabilities
+                  : currentTab === "selected-work"
+                  ? fetchSelectedWorks
                   : fetchCompanyInfo
               }
               disabled={
@@ -2724,6 +3001,8 @@ export default function AdminClient() {
                   ? isLoadingBrands
                   : currentTab === "capabilities"
                   ? isLoadingCapabilities
+                  : currentTab === "selected-work"
+                  ? isLoadingSelectedWorks
                   : isLoadingCompanyInfo
               }
               className="p-2 sm:p-2.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
@@ -2741,6 +3020,8 @@ export default function AdminClient() {
                     ? isLoadingBrands
                     : currentTab === "capabilities"
                     ? isLoadingCapabilities
+                    : currentTab === "selected-work"
+                    ? isLoadingSelectedWorks
                     : isLoadingCompanyInfo)
                     ? "animate-spin text-primary"
                     : ""
@@ -2796,6 +3077,15 @@ export default function AdminClient() {
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Add Capability Badge</span>
                 <span className="sm:hidden">New Badge</span>
+              </button>
+            ) : currentTab === "selected-work" ? (
+              <button
+                onClick={openAddSelectedWorkModal}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Showcase Slide</span>
+                <span className="sm:hidden">New Slide</span>
               </button>
             ) : null}
           </div>
@@ -5561,6 +5851,279 @@ export default function AdminClient() {
             </form>
           </div>
         )}
+
+        {/* ========================================================= */}
+        {/* TAB 6: SELECTED WORK SHOWCASE (Ideas brought to life)     */}
+        {/* ========================================================= */}
+        {currentTab === "selected-work" && (
+          <div className="space-y-6">
+            {/* Header Banner */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Homepage 3D Cinema Showcase</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                  Selected Work Showcase Slides
+                </h1>
+                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                  Manage the showcase cards rotating in the 3D scroll-up cinema section on the homepage.
+                  Update high-resolution images, video loops, alt descriptions, and slide sequences with instant real-time sync.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={fetchSelectedWorks}
+                  disabled={isLoadingSelectedWorks}
+                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                  title="Refresh Showcase Slides"
+                >
+                  <RefreshCw className={`w-5 h-5 ${isLoadingSelectedWorks ? "animate-spin text-primary" : ""}`} />
+                </button>
+
+                <button
+                  onClick={openAddSelectedWorkModal}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                  <span>Add Showcase Slide</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Slides</p>
+                <p className="text-2xl font-black text-dark mt-1">{selectedWorks.length}</p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured cinema showcases</p>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <p className="text-xs uppercase tracking-wider text-primary font-bold">Image Slides</p>
+                <p className="text-2xl font-black text-primary mt-1">
+                  {selectedWorks.filter((w) => !w.isVideo).length}
+                </p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">High-definition showcases</p>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Video Loops</p>
+                <p className="text-2xl font-black text-purple-600 mt-1">
+                  {selectedWorks.filter((w) => w.isVideo).length}
+                </p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">Motion backgrounds</p>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Autoplay Interval</p>
+                <p className="text-2xl font-black text-emerald-600 mt-1">2.0s</p>
+                <p className="text-[11px] text-dark-muted/60 mt-0.5">Smooth automated shift</p>
+              </div>
+            </div>
+
+            {/* Live Homepage Section Preview Strip */}
+            <div className="bg-white border border-border rounded-3xl p-6 shadow-card">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
+                    Live Homepage Showcase Order
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
+                    {selectedWorks.length} Slides in Rotation
+                  </span>
+                </div>
+                <Link
+                  href="/#selected-work"
+                  target="_blank"
+                  className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  <span>Preview Section on Homepage</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {/* Horizontal Thumbnail Strip */}
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                {selectedWorks.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    className="relative w-36 sm:w-44 h-24 rounded-2xl overflow-hidden border border-border shrink-0 bg-dark group shadow-xs"
+                  >
+                    <img
+                      src={item.src}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-mono font-bold text-white">
+                      #{String(idx + 1).padStart(2, "0")}
+                    </div>
+                    {item.isVideo && (
+                      <div className="absolute top-2 right-2 p-1 rounded-md bg-purple-600/80 text-white text-[9px]">
+                        <Video className="w-3 h-3" />
+                      </div>
+                    )}
+                    <p className="absolute bottom-1.5 left-2 right-2 text-[11px] font-bold text-white truncate">
+                      {item.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Showcase Cards Grid */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-black text-dark">
+                  All Showcase Slides ({selectedWorks.length})
+                </h2>
+                <span className="text-xs text-dark-muted font-medium">
+                  Use arrows to reorder slide sequence
+                </span>
+              </div>
+
+              {isLoadingSelectedWorks && selectedWorks.length === 0 ? (
+                <div className="p-12 text-center bg-white border border-border rounded-3xl">
+                  <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+                  <p className="text-sm font-bold text-dark">Loading showcase slides...</p>
+                </div>
+              ) : selectedWorks.length === 0 ? (
+                <div className="p-12 text-center bg-white border border-border rounded-3xl">
+                  <Layers className="w-12 h-12 text-dark-muted/40 mx-auto mb-3" />
+                  <h3 className="text-base font-bold text-dark">No showcase slides found</h3>
+                  <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
+                    Add your first showcase slide to display in the homepage 3D scroll-up showcase.
+                  </p>
+                  <button
+                    onClick={openAddSelectedWorkModal}
+                    className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-glow-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add First Slide</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedWorks.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      className="bg-white border border-border rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                    >
+                      <div className="space-y-3">
+                        {/* Slide Preview & Badges */}
+                        <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden bg-black border border-border">
+                          {item.isVideo && item.videoSrc ? (
+                            <video
+                              src={item.videoSrc}
+                              poster={item.src}
+                              muted
+                              loop
+                              playsInline
+                              autoPlay
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <img
+                              src={item.src}
+                              alt={item.alt || item.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )}
+
+                          {/* Top Badges */}
+                          <div className="absolute top-3 left-3 flex items-center gap-2">
+                            <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white font-mono text-xs font-bold border border-white/10">
+                              #{String(idx + 1).padStart(2, "0")}
+                            </span>
+                            <span
+                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${
+                                item.isVideo
+                                  ? "bg-purple-600/90 text-white"
+                                  : "bg-white/90 text-dark"
+                              }`}
+                            >
+                              {item.isVideo ? "Video Loop" : "Static Image"}
+                            </span>
+                          </div>
+
+                          {/* Reordering Controls in preview */}
+                          <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/10">
+                            <button
+                              type="button"
+                              onClick={() => handleMoveSelectedWork(idx, "up")}
+                              disabled={idx === 0}
+                              className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+                              title="Move Slide Up"
+                            >
+                              <ChevronUp className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleMoveSelectedWork(idx, "down")}
+                              disabled={idx === selectedWorks.length - 1}
+                              className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+                              title="Move Slide Down"
+                            >
+                              <ChevronDown className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Title and Media Info */}
+                        <div>
+                          <h3 className="text-base font-extrabold text-dark leading-snug">
+                            {item.title}
+                          </h3>
+                          {item.alt && (
+                            <p className="text-xs text-dark-muted line-clamp-2 mt-1 leading-relaxed">
+                              {item.alt}
+                            </p>
+                          )}
+                          <div className="mt-2 text-[11px] font-mono text-dark-muted/80 bg-softBg px-2.5 py-1.5 rounded-lg truncate border border-border/60">
+                            <span className="font-bold text-dark">Source:</span> {item.src}
+                          </div>
+                          {item.isVideo && item.videoSrc && (
+                            <div className="mt-1 text-[11px] font-mono text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg truncate border border-purple-200">
+                              <span className="font-bold">Video:</span> {item.videoSrc}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Card Action Footer */}
+                      <div className="pt-4 mt-4 border-t border-border flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-semibold text-dark-muted">
+                          Slide #{idx + 1} of {selectedWorks.length}
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openEditSelectedWorkModal(item)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary text-xs font-bold transition-all border border-border hover:border-primary/30 cursor-pointer"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setDeleteSelectedWorkConfirmId(item.id)}
+                            className="p-1.5 rounded-xl bg-softBg hover:bg-rose-50 text-dark-muted hover:text-rose-600 transition-all border border-border hover:border-rose-200 cursor-pointer"
+                            title="Delete slide"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
     </div>
 
@@ -6691,6 +7254,288 @@ export default function AdminClient() {
                 className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
               >
                 Yes, Delete Badge
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL 7: ADD / EDIT SELECTED WORK SHOWCASE MODAL              */}
+      {/* ------------------------------------------------------------- */}
+      {isSelectedWorkModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white border border-border rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8 max-h-[90vh] overflow-y-auto text-dark">
+            <button
+              onClick={() => setIsSelectedWorkModalOpen(false)}
+              className="absolute top-6 right-6 text-dark-muted hover:text-dark p-1.5 rounded-full hover:bg-softBg transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {editingSelectedWorkId ? "Modify Showcase Slide" : "New Showcase Slide"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-dark mt-1">
+                {editingSelectedWorkId ? "Edit Showcase Slide" : "Add Slide to Homepage Showcase"}
+              </h2>
+              <p className="text-xs text-dark-muted mt-1 font-medium">
+                Configure the showcase slide title, image URL, media type, and display sequence.
+              </p>
+            </div>
+
+            <form onSubmit={handleSaveSelectedWork} className="space-y-5">
+              {/* Slide Title */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Showcase Title *
+                </label>
+                <input
+                  type="text"
+                  value={selectedWorkFormData.title}
+                  onChange={(e) =>
+                    setSelectedWorkFormData((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                  placeholder="e.g. Euroteam Platform Design"
+                  required
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs"
+                />
+              </div>
+
+              {/* Media Type Selector */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Media Type
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedWorkFormData((prev) => ({ ...prev, isVideo: false }))
+                    }
+                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      !selectedWorkFormData.isVideo
+                        ? "bg-primary text-white border-primary shadow-xs"
+                        : "bg-white text-dark-muted border-border hover:bg-softBg"
+                    }`}
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    <span>Static Image</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedWorkFormData((prev) => ({ ...prev, isVideo: true }))
+                    }
+                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      selectedWorkFormData.isVideo
+                        ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                        : "bg-white text-dark-muted border-border hover:bg-softBg"
+                    }`}
+                  >
+                    <Video className="w-4 h-4" />
+                    <span>Video Loop</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Image Source URL */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark">
+                    {selectedWorkFormData.isVideo ? "Poster / Thumbnail Image URL *" : "Image Source URL *"}
+                  </label>
+                  <label className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline cursor-pointer font-bold">
+                    <Upload className="w-3 h-3" />
+                    <span>Upload Image (&lt; 2MB)</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleSelectedWorkImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  value={selectedWorkFormData.src}
+                  onChange={(e) =>
+                    setSelectedWorkFormData((prev) => ({ ...prev, src: e.target.value }))
+                  }
+                  placeholder="e.g. opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp or https://..."
+                  required
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-mono"
+                />
+
+                {/* Quick Presets */}
+                <div className="mt-2">
+                  <p className="text-[11px] text-dark-muted font-medium mb-1.5">Or choose a showcase asset:</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { label: "Euroteam", path: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp" },
+                      { label: "Mark OS Tablet", path: "opt/VoRww8rQDPyN3LNlZtvNUDqZOVE/2560.webp" },
+                      { label: "Ruuster NYC", path: "opt/lHVy2gEqT4bpJpxQsWz3JpyIDI4/2000.webp" },
+                      { label: "Credit Brandbook", path: "opt/HihuK51yaPuGKHmnXrlbzvzZM/1920.webp" },
+                      { label: "MarkOS Platform", path: "opt/uqMI3M9FIeMorIDx6YyRwRj9C8/2560.webp" },
+                      { label: "Coral UI Design", path: "opt/3mQe38NfO8x6V6pC6vC6y5T3cM/2048.webp" },
+                      { label: "Fintech Dashboard", path: "opt/kL98nVmX19zXcbNM7qWeRtYuiP/2048.webp" },
+                      { label: "AI Neural Hub", path: "opt/PqX89yMmnvTyuWqOp981ZxCvbN/2048.webp" },
+                    ].map((preset) => (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() =>
+                          setSelectedWorkFormData((prev) => ({ ...prev, src: preset.path }))
+                        }
+                        className={`text-[10px] px-2.5 py-1 rounded-lg border font-semibold transition-all cursor-pointer ${
+                          selectedWorkFormData.src === preset.path
+                            ? "bg-primary text-white border-primary shadow-xs"
+                            : "bg-softBg text-dark-muted border-border hover:text-dark hover:border-primary/40"
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Video URL (If Video) */}
+              {selectedWorkFormData.isVideo && (
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Video MP4 URL
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedWorkFormData.videoSrc || ""}
+                    onChange={(e) =>
+                      setSelectedWorkFormData((prev) => ({ ...prev, videoSrc: e.target.value }))
+                    }
+                    placeholder="https://example.com/showcase.mp4"
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-mono"
+                  />
+                </div>
+              )}
+
+              {/* Alt Description & Display Order */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Alt Text &amp; Accessibility Description
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedWorkFormData.alt}
+                    onChange={(e) =>
+                      setSelectedWorkFormData((prev) => ({ ...prev, alt: e.target.value }))
+                    }
+                    placeholder="Brief description of the design..."
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Display Sequence Order
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={selectedWorkFormData.order}
+                    onChange={(e) =>
+                      setSelectedWorkFormData((prev) => ({
+                        ...prev,
+                        order: parseInt(e.target.value) || 1,
+                      }))
+                    }
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs font-mono font-bold"
+                  />
+                </div>
+              </div>
+
+              {/* Real-time Preview in Modal */}
+              <div className="pt-2">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-dark-muted mb-2">
+                  Live Preview
+                </label>
+                <div className="relative w-full h-40 rounded-2xl overflow-hidden bg-black border border-border">
+                  {selectedWorkFormData.src ? (
+                    <img
+                      src={selectedWorkFormData.src}
+                      alt={selectedWorkFormData.title || "Preview"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-dark-muted text-xs">
+                      No image specified
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-4 right-4">
+                    <p className="text-white font-extrabold text-sm drop-shadow-sm truncate">
+                      {selectedWorkFormData.title || "Untitled Showcase"}
+                    </p>
+                    <p className="text-white/70 text-[11px] truncate">
+                      {selectedWorkFormData.alt || "No description"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Action Footer */}
+              <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsSelectedWorkModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingSelectedWork}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingSelectedWork
+                    ? "Saving..."
+                    : editingSelectedWorkId
+                    ? "Update Showcase Slide"
+                    : "Add Showcase Slide"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL 8: DELETE SELECTED WORK CONFIRMATION MODAL              */}
+      {/* ------------------------------------------------------------- */}
+      {deleteSelectedWorkConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Showcase Slide?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This showcase slide will be permanently deleted and removed from the homepage 3D cinema section.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteSelectedWorkConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteSelectedWork(deleteSelectedWorkConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                Yes, Delete Slide
               </button>
             </div>
           </div>
