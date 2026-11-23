@@ -2,10 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { 
-  ChevronLeft, 
-  ChevronRight 
-} from "lucide-react";
 
 // Curated showcases with high-resolution original visuals from WeGrow & UNIQOVA
 export const FEATURED_SHOWCASES = [
@@ -81,7 +77,6 @@ export default function SelectedWorkSection() {
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorSide, setCursorSide] = useState<"prev" | "next">("next");
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const total = FEATURED_SHOWCASES.length;
@@ -97,11 +92,6 @@ export default function SelectedWorkSection() {
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
-
-  const goToSlide = (idx: number) => {
-    setDirection(idx > currentIndex ? 1 : -1);
-    setCurrentIndex(idx);
-  };
 
   // ====================================================================
   // EXACT REFERENCE SCROLL-UP ENTRANCE ANIMATION (Matching Reference Video)
@@ -145,8 +135,6 @@ export default function SelectedWorkSection() {
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    setCursorPos({ x, y });
 
     // Determine left or right half for cursor click navigation
     if (x < rect.width / 2) {
@@ -289,30 +277,6 @@ export default function SelectedWorkSection() {
             </motion.div>
           </AnimatePresence>
 
-          {/* ====================================================
-              MINIMALIST CURSOR FOLLOWER ICON (No text, pure arrow)
-             ==================================================== */}
-          {isHovered && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.12 }}
-              style={{
-                left: `${cursorPos.x}px`,
-                top: `${cursorPos.y}px`,
-                transform: "translate(-50%, -50%)",
-              }}
-              className="pointer-events-none absolute z-40 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-black/75 text-white backdrop-blur-xl border border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-            >
-              {cursorSide === "prev" ? (
-                <ChevronLeft className="w-6 h-6 text-white stroke-[2.5]" />
-              ) : (
-                <ChevronRight className="w-6 h-6 text-white stroke-[2.5]" />
-              )}
-            </motion.div>
-          )}
-
           {/* Autoplay Progress Bar at Top (2.0s duration) */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-white/10 z-30 overflow-hidden">
             <motion.div
@@ -325,51 +289,6 @@ export default function SelectedWorkSection() {
               }}
               className="h-full bg-gradient-to-r from-primary via-purple-300 to-white shadow-[0_0_12px_rgba(117,69,245,0.8)]"
             />
-          </div>
-
-          {/* Side Indicator Arrows for Mobile / Touch devices */}
-          <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none md:hidden z-20">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                prevSlide();
-              }}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                nextSlide();
-              }}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md flex items-center justify-center border border-white/10"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom Centered Pagination Dots */}
-        <div className="mt-6 flex items-center justify-center">
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-1 max-w-full">
-            {FEATURED_SHOWCASES.map((item, idx) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => goToSlide(idx)}
-                aria-label={`Jump to slide ${idx + 1}`}
-                className={`group relative h-2.5 rounded-full transition-all duration-300 ${
-                  idx === currentIndex
-                    ? "w-8 sm:w-10 bg-primary shadow-[0_0_12px_rgba(117,69,245,0.5)]"
-                    : "w-2.5 bg-dark/20 hover:bg-dark/40"
-                }`}
-              >
-                <span className="sr-only">Slide {idx + 1}</span>
-              </button>
-            ))}
           </div>
         </div>
       </motion.div>
