@@ -164,12 +164,6 @@ export default function SelectedWorkSection() {
           align="left"
           maxWidth="max-w-3xl"
           className="mb-6 sm:mb-8"
-          badge={
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-              <span>Selected Work</span>
-            </div>
-          }
           title="Ideas brought to life."
           titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-2"
           subtitle="Explore category-defining digital experiences crafted with strategy, technology, and design."

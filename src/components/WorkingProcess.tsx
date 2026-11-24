@@ -20,11 +20,6 @@ export default function WorkingProcess() {
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
           className="mb-16 lg:mb-20"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
-              <span>A Transparent, Predictable Methodology</span>
-            </div>
-          }
           title={
             <>
               Our Working <span className="gradient-text">Process</span>

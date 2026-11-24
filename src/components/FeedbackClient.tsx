@@ -197,11 +197,6 @@ export default function FeedbackClient() {
         />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Client Reviews &amp; Testimonials</span>
-          </div>
-
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark tracking-tight leading-tight mb-6">
             Share Your <span className="gradient-text">UNIQUOVA Journey</span>
           </h1>

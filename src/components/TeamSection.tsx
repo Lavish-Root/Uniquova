@@ -210,11 +210,6 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
               )}
             </div>
           </div>
-
-          {/* Corner Department Badge */}
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-dark tracking-wide uppercase shadow-xs border border-white/40">
-            {member.category}
-          </div>
         </div>
 
         {/* Member Info */}
@@ -260,11 +255,6 @@ export default function TeamSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-xs">
-            <Users className="w-3.5 h-3.5" />
-            <span>Meet Our Team</span>
-          </div>
-
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight mb-4">
             The Minds Driving <span className="gradient-text">UNIQUOVA</span>
           </h2>

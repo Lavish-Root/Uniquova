@@ -216,12 +216,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                           <div className="absolute -top-3 left-0 right-0 h-4 bg-transparent pointer-events-auto" />
 
                           <div className="bg-white/95 backdrop-blur-xl border border-border rounded-2xl shadow-[0_20px_50px_rgba(117,69,245,0.15)] p-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                            <div className="px-3 py-2 border-b border-border/60 mb-1 flex items-center justify-between">
+                            <div className="px-3 py-2 border-b border-border/60 mb-1">
                               <span className="text-xs font-bold uppercase tracking-wider text-dark-muted">
                                 Core Capabilities
-                              </span>
-                              <span className="text-[11px] text-primary font-medium flex items-center gap-1">
-                                <Sparkles className="w-3 h-3" /> Full Service
                               </span>
                             </div>
 
