@@ -470,7 +470,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
             <div className="w-2 h-2 bg-dark rounded-[1px]" />
             <div className="w-2 h-2 bg-dark rounded-[1px]" />
             <div className="w-2 h-2 bg-dark rounded-[1px]" />
-            <div className="w-2 h-2 bg-lime-500 rounded-[1px]" />
+            <div className="w-2 h-2 bg-primary rounded-[1px]" />
           </div>
           <span className="font-extrabold text-2xl text-dark tracking-tight">MegaHR</span>
         </div>
@@ -480,8 +480,8 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
       return (
         <div className="flex items-center gap-2.5">
           <div className="relative w-5 h-5 flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full border-2 border-dashed border-dark animate-spin-slow" />
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 absolute" />
+            <div className="w-4 h-4 rounded-full border-2 border-dashed border-primary animate-spin-slow" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary absolute" />
           </div>
           <span className="font-extrabold text-2xl text-dark tracking-tight">913.ai</span>
         </div>
@@ -499,7 +499,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     }
     return (
       <div className="flex items-center gap-2">
-        <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-bold">
+        <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-bold">
           E
         </div>
         <span className="font-extrabold text-2xl text-dark tracking-tight">Euroteam</span>
@@ -516,7 +516,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
       id="trusted-by"
       ref={containerRef}
       style={{ perspective: "1400px" }}
-      className="py-12 sm:py-16 lg:py-20 bg-[#FAF9F6] relative overflow-hidden will-change-transform"
+      className="py-12 sm:py-16 lg:py-20 bg-[#FAF9FF] relative overflow-hidden will-change-transform"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -528,6 +528,11 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               out in reverse as you scroll back up!
            ==================================================== */}
         <div className="text-center mb-6 sm:mb-8 lg:mb-10 will-change-transform">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-light border border-primary-200 text-primary text-xs font-bold uppercase tracking-widest mb-3">
+            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+            <span>Client Impact</span>
+          </div>
+
           <motion.h2
             style={{
               y: smoothHeaderY,
@@ -546,7 +551,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               scale: smoothSubtitleScale,
               opacity: smoothSubtitleOpacity,
             }}
-            className="text-sm sm:text-base text-dark-muted font-normal mt-1.5 max-w-xl mx-auto will-change-transform"
+            className="text-sm sm:text-base text-dark-muted font-medium mt-1.5 max-w-xl mx-auto will-change-transform"
           >
             Straight from the founders we work with
           </motion.p>
@@ -558,6 +563,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
             - When scrolling down: rises up, scales 0.90 -> 1.0, tilts 9deg -> 0deg, fades in
             - When scrolling up: smoothly animates in reverse!
             - Aspect ratio ~3.0:1 (matching Photo 2)
+            - UNIQOVA Signature Theme: Soft Lavender Luxury Gradient with Electric Purple Accents
            ==================================================== */}
         <motion.div
           style={{
@@ -569,9 +575,13 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
           }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="relative bg-[#E3E8E3] border border-black/[0.06] rounded-[24px] sm:rounded-[32px] lg:rounded-[36px] p-4 sm:p-6 lg:p-7 xl:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] overflow-hidden will-change-transform"
+          className="relative bg-gradient-to-br from-[#F5EFFF] via-[#FAF8FF] to-[#EBE2FF] border border-primary/20 rounded-[28px] sm:rounded-[36px] lg:rounded-[40px] p-5 sm:p-7 lg:p-8 xl:p-10 shadow-[0_24px_70px_-15px_rgba(117,69,245,0.13),0_4px_24px_rgba(21,19,35,0.03)] overflow-hidden will-change-transform group"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-center">
+          {/* Ambient Lavender Radial Glow Inside Card */}
+          <div className="absolute -top-28 -right-28 w-80 h-80 bg-primary/12 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-28 -left-28 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-center">
             
             {/* ====================================================
                 LEFT COLUMN: Testimonial Quote & Founder Bio (5 cols)
@@ -593,28 +603,28 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Circular Navigation Buttons (< White and > Lime matching reference video) */}
-                <div className="flex items-center gap-1.5">
+                {/* Circular Navigation Buttons in UNIQOVA Theme (< White & > Electric Purple) */}
+                <div className="flex items-center gap-2">
                   <button
                     onClick={prevSlide}
                     aria-label="Previous Founder"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-white/90 active:scale-95 text-dark shadow-sm border border-black/[0.06] flex items-center justify-center transition-all cursor-pointer hover:shadow-md"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white hover:bg-primary-light active:scale-95 text-dark hover:text-primary shadow-xs border border-primary/20 flex items-center justify-center transition-all cursor-pointer hover:shadow-sm"
                   >
-                    <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                   </button>
 
                   <button
                     onClick={nextSlide}
                     aria-label="Next Founder"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#CEF845] hover:bg-[#bde835] active:scale-95 text-dark shadow-sm border border-black/[0.06] flex items-center justify-center transition-all cursor-pointer hover:shadow-md"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary active:scale-95 text-white shadow-glow-sm hover:shadow-glow flex items-center justify-center transition-all cursor-pointer"
                   >
-                    <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                   </button>
                 </div>
               </div>
 
               {/* Middle: Big Testimonial Quotation (Compact elegant typography) */}
-              <div className="my-auto py-1">
+              <div className="my-auto py-2">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={`quote-${current.id}`}
@@ -624,7 +634,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                     exit={{ opacity: 0, y: direction > 0 ? -15 : 15 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   >
-                    <p className="text-lg sm:text-xl lg:text-[23px] xl:text-[25px] font-semibold text-dark leading-[1.25] tracking-tight">
+                    <p className="text-xl sm:text-2xl lg:text-[25px] xl:text-[27px] font-extrabold text-dark leading-[1.28] tracking-tight">
                       {current.quote}
                     </p>
                   </motion.div>
@@ -642,7 +652,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   className="flex items-center gap-3 pt-3 sm:pt-4"
                 >
                   {/* Founder Avatar */}
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-black/10 shrink-0 bg-white shadow-sm">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-primary/25 shrink-0 bg-white shadow-sm">
                     <img
                       src={current.founderAvatar}
                       alt={current.founderName}
@@ -652,18 +662,18 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
 
                   {/* Founder Info */}
                   <div className="flex flex-col">
-                    <span className="text-xs sm:text-sm font-bold text-dark leading-tight">
+                    <span className="text-sm sm:text-base font-extrabold text-dark leading-tight">
                       {current.founderName}
                     </span>
-                    <div className="text-[11px] sm:text-xs text-dark-muted font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
+                    <div className="text-xs sm:text-sm text-dark-muted font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
                       <span>{current.founderRole}</span>
-                      <span>·</span>
+                      <span className="text-dark-muted/40">·</span>
                       <button
                         onClick={() => setSelectedStoryModal(current)}
-                        className="text-dark font-bold hover:text-primary transition-colors underline underline-offset-2 inline-flex items-center gap-1 cursor-pointer"
+                        className="text-primary font-bold hover:text-primary-dark transition-colors underline underline-offset-4 decoration-primary/40 hover:decoration-primary inline-flex items-center gap-1 cursor-pointer"
                       >
                         <span>See the project</span>
-                        <ArrowRight className="w-2.5 h-2.5 inline-block" />
+                        <ArrowRight className="w-3 h-3 inline-block" />
                       </button>
                     </div>
                   </div>
@@ -690,9 +700,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               }}
               className="lg:col-span-7 w-full h-[290px] sm:h-[330px] lg:h-[360px] overflow-hidden will-change-transform relative rounded-[20px] sm:rounded-[24px]"
             >
-              {/* Top & Bottom Soft Edge Gradient Masks */}
-              <div className="absolute inset-x-0 top-0 h-8 sm:h-10 bg-gradient-to-b from-[#E3E8E3] to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 h-8 sm:h-10 bg-gradient-to-t from-[#E3E8E3] to-transparent z-10 pointer-events-none" />
+              {/* Top & Bottom Soft Edge Gradient Masks (Color-matched to UNIQOVA theme container) */}
+              <div className="absolute inset-x-0 top-0 h-10 sm:h-12 bg-gradient-to-b from-[#F5EFFF] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-gradient-to-t from-[#EBE2FF] to-transparent z-10 pointer-events-none" />
 
               <div className="grid grid-cols-2 gap-3 sm:gap-4 h-full items-start">
                 
@@ -706,7 +716,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                       <div
                         key={`col1-${item.id}-${idx}`}
                         onClick={() => setSelectedStoryModal(item)}
-                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.08)] cursor-pointer shrink-0 transition-transform duration-300 ease-out hover:scale-[1.025]"
+                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer shrink-0 transition-all duration-300 ease-out hover:scale-[1.025]"
                       >
                         <img
                           src={item.image}
@@ -714,6 +724,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                           loading="lazy"
                           className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-700 ease-out"
                         />
+                        <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                       </div>
                     ))}
                   </div>
@@ -729,7 +740,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                       <div
                         key={`col2-${item.id}-${idx}`}
                         onClick={() => setSelectedStoryModal(item)}
-                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.08)] cursor-pointer shrink-0 transition-transform duration-300 ease-out hover:scale-[1.025]"
+                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer shrink-0 transition-all duration-300 ease-out hover:scale-[1.025]"
                       >
                         <img
                           src={item.image}
@@ -737,6 +748,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                           loading="lazy"
                           className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-700 ease-out"
                         />
+                        <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                       </div>
                     ))}
                   </div>
@@ -771,13 +783,13 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="relative w-full max-w-3xl bg-white rounded-[28px] sm:rounded-[36px] shadow-2xl border border-black/10 overflow-hidden z-10 my-8"
+              className="relative w-full max-w-3xl bg-white rounded-[28px] sm:rounded-[36px] shadow-2xl border border-border overflow-hidden z-10 my-8"
             >
               {/* Modal Header */}
-              <div className="relative p-6 sm:p-8 bg-gradient-to-br from-softBg to-white border-b border-border/80">
+              <div className="relative p-6 sm:p-8 bg-gradient-to-br from-softBg to-white border-b border-border">
                 <button
                   onClick={() => setSelectedStoryModal(null)}
-                  className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white hover:bg-slate-100 text-dark flex items-center justify-center border border-black/10 shadow-sm transition-transform active:scale-90"
+                  className="absolute top-5 right-5 w-9 h-9 rounded-full bg-softBg hover:bg-primary-light text-dark hover:text-primary flex items-center justify-center border border-border shadow-xs transition-transform active:scale-90 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -786,7 +798,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   <span className="font-extrabold text-xl text-dark">
                     {selectedStoryModal.companyName}
                   </span>
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold">
+                  <span className="text-xs px-3 py-1 rounded-full bg-primary-light text-primary font-bold border border-primary-200">
                     {"category" in selectedStoryModal
                       ? selectedStoryModal.category
                       : selectedStoryModal.companyCategory}
@@ -814,9 +826,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                     {selectedStoryModal.metrics.map((metric, i) => (
                       <div
                         key={i}
-                        className="p-4 rounded-2xl bg-softBg border border-border/80 text-center"
+                        className="p-4 rounded-2xl bg-softBg border border-border/80 text-center hover:border-primary/30 transition-colors"
                       >
-                        <div className="text-xl sm:text-2xl font-black text-dark">
+                        <div className="text-xl sm:text-2xl font-black text-primary">
                           {metric.value}
                         </div>
                         <div className="text-xs font-medium text-dark-muted mt-1">
@@ -829,7 +841,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
 
                 {/* Deliverable Image Preview */}
                 {"image" in selectedStoryModal && (
-                  <div className="h-56 sm:h-64 rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+                  <div className="h-56 sm:h-64 rounded-2xl overflow-hidden border border-border shadow-xs">
                     <img
                       src={selectedStoryModal.image}
                       alt={selectedStoryModal.title}
@@ -839,9 +851,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                 )}
 
                 {/* Modal Actions */}
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border/80">
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-100 border border-black/10 flex items-center justify-center font-bold text-dark text-sm">
+                    <div className="w-10 h-10 rounded-full bg-primary-light border border-primary/20 text-primary flex items-center justify-center font-black text-sm">
                       {selectedStoryModal.founderName.charAt(0)}
                     </div>
                     <div>
@@ -862,7 +874,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                           setSelectedStoryModal(null);
                           onOpenContact();
                         }}
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-dark text-dark hover:bg-dark hover:text-white text-sm font-bold transition-all cursor-pointer"
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white text-sm font-bold shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
                       >
                         <span>Start Similar Project</span>
                       </button>
@@ -870,7 +882,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                     <Link
                       href={selectedStoryModal.projectLink}
                       onClick={() => setSelectedStoryModal(null)}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dark hover:bg-black text-white text-sm font-bold shadow-md transition-all hover:-translate-y-0.5 active:translate-y-0"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-softBg text-dark border border-border hover:border-primary/40 text-sm font-bold shadow-xs transition-all cursor-pointer"
                     >
                       <span>Explore Case Study</span>
                       <ArrowRight className="w-4 h-4" />

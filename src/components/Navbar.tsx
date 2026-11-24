@@ -62,15 +62,21 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      const scrolled = window.scrollY > 20;
+      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleContactClick = () => {
+    if (onOpenContact) {
+      onOpenContact();
+    } else {
+      window.location.href = "/contact";
+    }
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -275,7 +281,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
           {/* Right Action Button (Let's Talk) */}
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={onOpenContact}
+              onClick={handleContactClick}
               className="group relative inline-flex items-center gap-2 bg-dark hover:bg-primary text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-300 shadow-[0_4px_16px_rgba(21,19,35,0.15)] hover:shadow-[0_8px_24px_rgba(117,69,245,0.35)] hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>Let&apos;s Talk</span>
@@ -287,7 +293,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
           <div className="flex lg:hidden items-center gap-2">
             <button
               type="button"
-              onClick={onOpenContact}
+              onClick={handleContactClick}
               className="inline-flex items-center gap-1.5 bg-dark text-white text-xs font-semibold px-3.5 py-2 rounded-full"
             >
               <span>Let&apos;s Talk</span>

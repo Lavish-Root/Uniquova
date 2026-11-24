@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CompanyInfo } from "@/data/agencyData";
+import { CompanyInfo, DEFAULT_COMPANY_INFO } from "@/data/agencyData";
 
 interface LogoProps {
   className?: string;
@@ -24,7 +24,7 @@ export default function Logo({
 }: LogoProps) {
   const isWhite = variant === "white";
   const [activeTagline, setActiveTagline] = useState(
-    customTagline || "Your Vision. Our Expertise."
+    customTagline || DEFAULT_COMPANY_INFO.tagline || "Your Vision. Our Expertise."
   );
 
   useEffect(() => {
@@ -33,19 +33,28 @@ export default function Logo({
       return;
     }
 
-    fetch("/api/company-info")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.companyInfo?.tagline) {
-          setActiveTagline(data.companyInfo.tagline);
+    // Check if tagline was cached in sessionStorage to prevent network delay
+    try {
+      const cached = sessionStorage.getItem("uniquova_company_info");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed?.tagline) {
+          setActiveTagline(parsed.tagline);
         }
-      })
-      .catch(() => {});
+      }
+    } catch {
+      // Ignore sessionStorage errors
+    }
 
     const handleUpdate = (e: Event) => {
       const customEvt = e as CustomEvent<CompanyInfo>;
       if (customEvt.detail?.tagline) {
         setActiveTagline(customEvt.detail.tagline);
+        try {
+          sessionStorage.setItem("uniquova_company_info", JSON.stringify(customEvt.detail));
+        } catch {
+          // Ignore
+        }
       }
     };
 

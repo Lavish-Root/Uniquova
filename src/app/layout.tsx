@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import FloatingFeedbackButton from "@/components/FloatingFeedbackButton";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plus-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://uniquova.com"),
@@ -72,8 +80,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="font-sans bg-white text-dark antialiased selection:bg-primary/20 selection:text-primary-dark">
+    <html lang="en" className={`scroll-smooth ${plusJakartaSans.variable}`}>
+      <body className={`${plusJakartaSans.className} font-sans bg-white text-dark antialiased selection:bg-primary/20 selection:text-primary-dark`}>
         {children}
         <FloatingFeedbackButton />
         <FloatingWhatsAppButton />
