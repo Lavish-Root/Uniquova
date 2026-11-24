@@ -10,7 +10,6 @@ import {
   Sparkles,
   MessageSquare,
 } from "lucide-react";
-import confetti from "canvas-confetti";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -92,13 +91,16 @@ export default function ContactModal({
         });
       }
 
-      // Trigger celebratory confetti
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ["#7545F5", "#5030C7", "#9E76FB", "#FFFFFF"],
-      });
+      // Trigger celebratory confetti lazily
+      import("canvas-confetti").then((module) => {
+        const confettiFn = module.default;
+        confettiFn({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#7545F5", "#5030C7", "#9E76FB", "#FFFFFF"],
+        });
+      }).catch(() => {});
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
       setErrorMsg(message);

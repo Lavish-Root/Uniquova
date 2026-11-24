@@ -27,13 +27,31 @@ export default function OurWorkClient() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [activeProjectModal, setActiveProjectModal] = useState<ProjectItem | null>(null);
 
-  // Fetch live updates from API
+  // Fetch live updates from API with instant cache
   useEffect(() => {
+    try {
+      const cached = sessionStorage.getItem("uniquova_projects");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProjects(parsed);
+          return;
+        }
+      }
+    } catch {
+      // Ignore
+    }
+
     fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.projects) && data.projects.length > 0) {
           setProjects(data.projects);
+          try {
+            sessionStorage.setItem("uniquova_projects", JSON.stringify(data.projects));
+          } catch {
+            // Ignore
+          }
         }
       })
       .catch(() => {

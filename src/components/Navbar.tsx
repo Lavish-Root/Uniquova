@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
   ArrowRight,
@@ -23,11 +23,24 @@ interface NavbarProps {
 
 export default function Navbar({ onOpenContact }: NavbarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Aggressively prefetch all core navigation routes in parallel on mount
+  useEffect(() => {
+    const coreRoutes = ["/", "/about", "/services", "/our-work", "/industries", "/contact"];
+    coreRoutes.forEach((route) => {
+      try {
+        router.prefetch(route);
+      } catch {
+        // Ignore
+      }
+    });
+  }, [router]);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -74,7 +87,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     if (onOpenContact) {
       onOpenContact();
     } else {
-      window.location.href = "/contact";
+      router.push("/contact");
     }
   };
 
@@ -219,6 +232,8 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                                   <Link
                                     key={service.name}
                                     href={service.href}
+                                    prefetch={true}
+                                    onMouseEnter={() => router.prefetch(service.href)}
                                     onClick={() => setServicesOpen(false)}
                                     className="flex items-start gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-primary-light/50 group"
                                   >
@@ -248,6 +263,8 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                             <div className="mt-2 pt-2 border-t border-border/60 text-center">
                               <Link
                                 href="/services"
+                                prefetch={true}
+                                onMouseEnter={() => router.prefetch("/services")}
                                 onClick={() => setServicesOpen(false)}
                                 className="text-xs font-semibold text-primary hover:text-primary-dark inline-flex items-center gap-1 py-1"
                               >
@@ -265,6 +282,8 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                   <Link
                     key={link.name}
                     href={link.href}
+                    prefetch={true}
+                    onMouseEnter={() => router.prefetch(link.href)}
                     className={`text-sm font-semibold transition-all duration-200 ${
                       isActive
                         ? "bg-primary text-white px-5 py-2 rounded-full shadow-[0_2px_10px_rgba(117,69,245,0.3)]"
@@ -329,6 +348,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                         <Link
                           key={s.name}
                           href={s.href}
+                          prefetch={true}
                           onClick={() => setMobileMenuOpen(false)}
                           className="flex items-center gap-2.5 text-sm font-medium text-dark-muted hover:text-primary py-1"
                         >
@@ -346,6 +366,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                 <Link
                   key={link.name}
                   href={link.href}
+                  prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`text-base font-semibold py-2 transition-colors ${
                     isActive ? "text-primary font-bold" : "text-dark hover:text-primary"

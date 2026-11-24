@@ -73,7 +73,7 @@ export default function Logo({
 
   return (
     <Link
-      href="/"
+      href="/" prefetch={true}
       title="UNIQUOVA"
       className={`inline-flex items-center gap-2.5 group transition-opacity hover:opacity-95 ${className}`}
     >

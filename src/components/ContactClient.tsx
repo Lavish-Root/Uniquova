@@ -17,7 +17,6 @@ import {
   Clock,
   ShieldCheck,
 } from "lucide-react";
-import confetti from "canvas-confetti";
 import { trackEvent } from "@/components/Analytics";
 import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
 
@@ -35,19 +34,24 @@ export default function ContactClient() {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(DEFAULT_COMPANY_INFO);
 
   useEffect(() => {
-    fetch("/api/company-info")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.companyInfo) {
-          setCompanyInfo(data.companyInfo);
-        }
-      })
-      .catch(() => {});
+    try {
+      const cached = sessionStorage.getItem("uniquova_company_info");
+      if (cached) {
+        setCompanyInfo(JSON.parse(cached));
+      }
+    } catch {
+      // Ignore
+    }
 
     const handleUpdate = (e: Event) => {
       const customEvt = e as CustomEvent<CompanyInfo>;
       if (customEvt.detail) {
         setCompanyInfo(customEvt.detail);
+        try {
+          sessionStorage.setItem("uniquova_company_info", JSON.stringify(customEvt.detail));
+        } catch {
+          // Ignore
+        }
       }
     };
 
@@ -88,12 +92,15 @@ export default function ContactClient() {
         service_requested: service,
       });
 
-      confetti({
-        particleCount: 90,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: ["#7545F5", "#5030C7", "#9E76FB", "#FFFFFF"],
-      });
+      import("canvas-confetti").then((module) => {
+        const confettiFn = module.default;
+        confettiFn({
+          particleCount: 90,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ["#7545F5", "#5030C7", "#9E76FB", "#FFFFFF"],
+        });
+      }).catch(() => {});
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "An error occurred while submitting your message.";
       setErrorMsg(message);
