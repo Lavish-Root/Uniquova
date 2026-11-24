@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import ScrollHeading from "@/components/ScrollHeading";
 import ServicesMarquee from "./ServicesMarquee";

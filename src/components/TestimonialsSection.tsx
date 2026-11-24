@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Star, MessageSquare, CheckCircle2, MessageSquarePlus } from "lucide-react";
+import { Star, CheckCircle2, MessageSquarePlus } from "lucide-react";
 import { TESTIMONIALS_DATA, TestimonialItem } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 

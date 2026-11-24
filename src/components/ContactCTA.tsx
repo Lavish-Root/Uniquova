@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowRight, MessageSquare, Sparkles } from "lucide-react";
+import { ArrowRight, MessageSquare } from "lucide-react";
 import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 

@@ -14,7 +14,6 @@ import {
   Palette,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
 } from "lucide-react";
 import { SERVICES_DATA } from "@/data/agencyData";
 import ServicesSection from "@/components/ServicesSection";

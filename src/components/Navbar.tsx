@@ -13,7 +13,6 @@ import {
   Smartphone,
   PenTool,
   Palette,
-  Sparkles,
 } from "lucide-react";
 import Logo from "./Logo";
 

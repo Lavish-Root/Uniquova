@@ -12,7 +12,6 @@ import {
   Users2,
   ArrowRight,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
 import { WHY_CHOOSE_US_DATA } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";

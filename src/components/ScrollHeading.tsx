@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, type UseScrollOptions } from "framer-motion";
 
 interface ScrollHeadingProps {
   badge?: React.ReactNode;
@@ -15,7 +15,7 @@ interface ScrollHeadingProps {
   titleClassName?: string;
   subtitleClassName?: string;
   targetRef?: React.RefObject<HTMLElement | HTMLDivElement | null>;
-  offset?: any;
+  offset?: UseScrollOptions["offset"];
   fadeOnExit?: boolean;
 }
 
@@ -42,7 +42,7 @@ export default function ScrollHeading({
   // - When scrolling down: lifts up, expands, and fades in with spring physics.
   // - When scrolling up: reverses smoothly in real time!
   // ====================================================================
-  const defaultOffset: any = fadeOnExit ? ["start 92%", "end 8%"] : ["start 92%", "start 10%"];
+  const defaultOffset: UseScrollOptions["offset"] = fadeOnExit ? ["start 92%", "end 8%"] : ["start 92%", "start 10%"];
   const { scrollYProgress } = useScroll({
     target: activeRef,
     offset: offset || defaultOffset,

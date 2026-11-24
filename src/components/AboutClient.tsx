@@ -7,7 +7,6 @@ import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
 import TeamSection from "@/components/TeamSection";
 import {
-  Sparkles,
   Target,
   Eye,
   Award,
