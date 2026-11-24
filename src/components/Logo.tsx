@@ -80,7 +80,7 @@ export default function Logo({
       {/* Monogram Emblem Mark */}
       <div className={`relative ${sizeClasses.icon} flex items-center justify-center shrink-0`}>
         <Image
-          src={isWhite ? "/images/uniquova_emblem_white.png" : "/images/uniquova_emblem.png"}
+          src={isWhite ? "/images/uniquova_emblem_white.png?v=2" : "/images/uniquova_emblem.png?v=2"}
           alt="UNIQUOVA Emblem"
           width={96}
           height={96}

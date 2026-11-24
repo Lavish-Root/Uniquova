@@ -233,26 +233,18 @@ export default function Hero({ onOpenContact }: HeroProps) {
                     {/* Animated grid lines on screen */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#7545f512_1px,transparent_1px),linear-gradient(to_bottom,#7545f512_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
 
-                    {/* UNIQUOVA UQ Monogram on Laptop Screen */}
+                    {/* UNIQUOVA Emblem on Laptop Screen with 3D Blink Glow */}
                     <div className="relative flex flex-col items-center justify-center z-10">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 mb-2 filter drop-shadow-[0_0_20px_rgba(117,69,245,0.9)] animate-pulse">
-                        <svg viewBox="0 0 44 44" fill="none" className="w-full h-full">
-                          <defs>
-                            <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="#9E76FB" />
-                              <stop offset="100%" stopColor="#7545F5" />
-                            </linearGradient>
-                          </defs>
-                          <path
-                            d="M8 12V22C8 27.5228 12.4772 32 18 32H20C21.6 32 23.1 31.6 24.4 30.9"
-                            stroke="url(#screenGrad)"
-                            strokeWidth="5"
-                            strokeLinecap="round"
-                          />
-                          <circle cx="28" cy="21" r="9" stroke="url(#screenGrad)" strokeWidth="5" strokeLinecap="round" />
-                          <path d="M32 26L37 32" stroke="#FFFFFF" strokeWidth="4.5" strokeLinecap="round" />
-                          <circle cx="10" cy="12" r="2.5" fill="#FFFFFF" />
-                        </svg>
+                      {/* Ambient 3D Volumetric Aura behind logo */}
+                      <div className="absolute top-1/2 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-primary via-[#9E76FB] to-[#C4ACFD] blur-2xl animate-aura-pulse pointer-events-none" />
+
+                      {/* Logo with 3D breathing neon blink glow */}
+                      <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2 flex items-center justify-center animate-3d-glow select-none">
+                        <img
+                          src="/images/uniquova_emblem_white.png?v=2"
+                          alt="UNIQUOVA Logo"
+                          className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+                        />
                       </div>
 
                       <div className="text-white font-extrabold text-sm sm:text-base tracking-wider flex items-center gap-1">

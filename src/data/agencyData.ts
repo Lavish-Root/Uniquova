@@ -566,6 +566,9 @@ export interface ProjectItem {
   githubUrl?: string;
   mediaType: "image" | "video";
   mediaUrl: string;
+  gallery?: string[];
+  badges?: string[];
+  tags?: string[];
   technologies: string[];
   impact: string;
   metrics: ProjectMetric[];
