@@ -1713,38 +1713,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
           </div>
         </motion.div>
 
-        {/* ====================================================
-            PAGINATION INDICATOR BAR (Image 1 from User Upload)
-            - Centered sleek dots with elongated purple active pill
-            - Smooth spring layout animation (layoutId)
-            - Click any dot to navigate directly to that founder
-           ==================================================== */}
-        <div className="flex items-center justify-center gap-2 sm:gap-2.5 mt-8 sm:mt-10">
-          {FEATURED_FOUNDERS.map((founder, idx) => {
-            const isActive = idx === currentIndex;
-            return (
-              <button
-                key={founder.id}
-                onClick={() => {
-                  setDirection(idx > currentIndex ? 1 : -1);
-                  setCurrentIndex(idx);
-                }}
-                aria-label={`Switch to ${founder.companyName}`}
-                className="relative py-2 px-1 flex items-center justify-center focus:outline-none cursor-pointer transition-transform active:scale-95"
-              >
-                {isActive ? (
-                  <motion.div
-                    layoutId="active-founder-indicator"
-                    className="w-10 sm:w-12 h-2.5 sm:h-3 rounded-full bg-gradient-to-r from-primary to-primary-dark shadow-[0_0_14px_rgba(117,69,245,0.5)]"
-                    transition={{ type: "spring", stiffness: 380, damping: 26 }}
-                  />
-                ) : (
-                  <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#B8B4C9]/60 hover:bg-primary/50 transition-colors duration-200" />
-                )}
-              </button>
-            );
-          })}
-        </div>
+
 
       </div>
 
