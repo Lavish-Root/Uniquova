@@ -10,7 +10,6 @@ import {
   Cpu,
   Maximize2,
   Users2,
-  Check,
   ArrowRight,
   ShieldCheck,
   Zap,
@@ -80,13 +79,13 @@ function LuminousPillarNode({
         </motion.div>
       </div>
 
-      {/* Alternating Luminous Strategic Pillar Card */}
+      {/* Alternating Luminous Strategic Pillar Card — Pure Headings Only */}
       <motion.div
         initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`w-full md:w-[46%] p-6 sm:p-8 rounded-3xl border border-border/80 bg-white/95 backdrop-blur-md shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40 transition-all duration-300 group overflow-hidden relative ${
+        className={`w-full md:w-[46%] p-5 sm:p-7 rounded-3xl border border-border/80 bg-white/95 backdrop-blur-md shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40 transition-all duration-300 group overflow-hidden relative ${
           index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
         }`}
       >
@@ -106,42 +105,30 @@ function LuminousPillarNode({
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
-        {/* Card Content */}
-        <div className="relative z-10 flex flex-col justify-between h-full">
-          <div>
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-primary-50 group-hover:bg-primary group-hover:text-white text-primary flex items-center justify-center border border-primary-200/60 transition-all duration-300 shadow-xs group-hover:scale-110">
+        {/* Card Content — Heading Only with Icon & Key Stat */}
+        <div className="relative z-10 flex flex-col justify-center h-full">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5 sm:gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary-50 group-hover:bg-primary group-hover:text-white text-primary flex items-center justify-center border border-primary-200/60 transition-all duration-300 shadow-xs group-hover:scale-110 shrink-0">
                 <Icon className="w-6 h-6" />
               </div>
-
-              <div className="text-right">
-                <span className="text-2xl sm:text-3xl font-black text-dark group-hover:text-primary transition-colors">
-                  {pillar.stat}
+              <div>
+                <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-widest block mb-0.5">
+                  Pillar 0{index + 1}
                 </span>
-                <p className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
-                  {pillar.statLabel}
-                </p>
+                <h3 className="text-xl sm:text-2xl font-black text-dark tracking-tight group-hover:text-primary transition-colors leading-snug">
+                  {pillar.title}
+                </h3>
               </div>
             </div>
 
-            <div className="mb-2">
-              <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-widest block mb-1">
-                Pillar 0{index + 1}
+            <div className="text-left sm:text-right shrink-0 pl-16 sm:pl-0">
+              <span className="text-2xl sm:text-3xl font-black text-dark group-hover:text-primary transition-colors">
+                {pillar.stat}
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-dark tracking-tight group-hover:text-primary transition-colors">
-                {pillar.title}
-              </h3>
-            </div>
-
-            <p className="text-xs sm:text-sm text-dark-muted font-medium leading-relaxed mb-6">
-              {pillar.description}
-            </p>
-          </div>
-
-          <div className="pt-4 border-t border-border/70 flex items-center justify-between text-xs font-semibold text-primary">
-            <span>Guaranteed Standard</span>
-            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-              <Check className="w-3 h-3 text-primary group-hover:text-white transition-colors duration-300" />
+              <p className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
+                {pillar.statLabel}
+              </p>
             </div>
           </div>
         </div>
@@ -205,7 +192,7 @@ export default function WhyChooseUs() {
           </div>
 
           {/* Luminous Milestones / Strategic Pillars */}
-          <div className="space-y-12 sm:space-y-16">
+          <div className="space-y-10 sm:space-y-14">
             {WHY_CHOOSE_US_DATA.map((pillar, idx) => (
               <LuminousPillarNode
                 key={pillar.id}
