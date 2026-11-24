@@ -4,6 +4,7 @@ import "./globals.css";
 import Analytics from "@/components/Analytics";
 import FloatingFeedbackButton from "@/components/FloatingFeedbackButton";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import MoltenCursor from "@/components/MoltenCursor";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${plusJakartaSans.variable}`}>
       <body className={`${plusJakartaSans.className} font-sans bg-white text-dark antialiased selection:bg-primary/20 selection:text-primary-dark`}>
+        <MoltenCursor color="#8b5cf6" />
         {children}
         <FloatingFeedbackButton />
         <FloatingWhatsAppButton />
