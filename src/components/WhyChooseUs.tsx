@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useSpring, useInView } from "framer-motion";
 import {
@@ -43,7 +43,17 @@ function LuminousPillarNode({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "-35% 0px -35% 0px" });
+  
+  // Trigger strictly when this specific pillar reaches the active center scroll zone
+  const isInView = useInView(ref, { margin: "-25% 0px -25% 0px" });
+  const [hasRevealed, setHasRevealed] = useState(false);
+
+  useEffect(() => {
+    if (isInView) {
+      setHasRevealed(true);
+    }
+  }, [isInView]);
+
   const Icon = iconMap[index % iconMap.length];
   const bgImage = PILLAR_BG_IMAGES[pillar.id];
 
@@ -58,9 +68,9 @@ function LuminousPillarNode({
       <div className="absolute left-3.5 md:left-1/2 -translate-x-1/2 flex items-center justify-center z-20">
         <motion.div
           animate={{
-            scale: isInView ? 1.4 : 1,
-            backgroundColor: isInView ? "#7545F5" : "#FAF9FF",
-            borderColor: isInView ? "#fff" : "#C4ACFD",
+            scale: isInView ? 1.4 : hasRevealed ? 1 : 0.85,
+            backgroundColor: isInView ? "#7545F5" : hasRevealed ? "#FAF9FF" : "#EAE6F4",
+            borderColor: isInView ? "#fff" : hasRevealed ? "#C4ACFD" : "#D4CEE8",
           }}
           transition={{ duration: 0.35, ease: "easeOut" }}
           className="w-5 h-5 rounded-full border-2 shadow-md flex items-center justify-center transition-colors duration-500"
@@ -72,19 +82,22 @@ function LuminousPillarNode({
             />
           )}
           <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              isInView ? "bg-white" : "bg-primary"
+            className={`w-1.5 h-1.5 rounded-full transition-colors ${
+              isInView ? "bg-white" : hasRevealed ? "bg-primary" : "bg-primary/30"
             }`}
           />
         </motion.div>
       </div>
 
-      {/* Alternating Luminous Strategic Pillar Card — Pure Headings Only */}
+      {/* Alternating Luminous Strategic Pillar Card — Reveals progressively only when scrolled down to */}
       <motion.div
-        initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial={false}
+        animate={{
+          opacity: hasRevealed ? 1 : 0,
+          x: hasRevealed ? 0 : index % 2 === 0 ? -60 : 60,
+          scale: hasRevealed ? 1 : 0.9,
+        }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
         className={`w-full md:w-[46%] p-5 sm:p-7 rounded-3xl border border-border/80 bg-white/95 backdrop-blur-md shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40 transition-all duration-300 group overflow-hidden relative ${
           index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
         }`}
@@ -105,7 +118,7 @@ function LuminousPillarNode({
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
-        {/* Card Content — Heading Only with Icon & Key Stat */}
+        {/* Card Content — Pure Heading Only with Icon & Key Stat */}
         <div className="relative z-10 flex flex-col justify-center h-full">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3.5 sm:gap-4">
@@ -180,8 +193,8 @@ export default function WhyChooseUs() {
           subtitle="We bridge the gap between imaginative creative design and rigorous engineering. Every line of code and every brand identity is crafted with one clear objective: driving measurable commercial results for your enterprise."
         />
 
-        {/* Luminous Timeline Scroll Beam Container */}
-        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-20">
+        {/* Luminous Timeline Scroll Beam Container with Progressive One-by-One Reveal Spacing */}
+        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-24">
           {/* Vertical Track Line */}
           <div className="absolute left-3.5 md:left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 bg-border/80 rounded-full overflow-hidden">
             {/* Luminous Animated Light Beam */}
@@ -191,8 +204,8 @@ export default function WhyChooseUs() {
             />
           </div>
 
-          {/* Luminous Milestones / Strategic Pillars */}
-          <div className="space-y-10 sm:space-y-14">
+          {/* Luminous Milestones / Strategic Pillars — Generous spacing so pillars reveal sequentially */}
+          <div className="space-y-20 sm:space-y-28">
             {WHY_CHOOSE_US_DATA.map((pillar, idx) => (
               <LuminousPillarNode
                 key={pillar.id}
