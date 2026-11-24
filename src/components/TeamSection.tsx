@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
-import { Users, Globe, ArrowUpRight } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Users, Globe, ArrowUpRight, Sparkles } from "lucide-react";
+import ScrollHeading from "@/components/ScrollHeading";
 
 // Social SVG Icons
 function LinkedInIcon({ className = "w-4 h-4 fill-current" }: { className?: string }) {
@@ -34,7 +36,8 @@ export interface TeamMember {
   role: string;
   category: "Leadership" | "Engineering" | "Design" | "Growth" | "Operations";
   bio: string;
-  image: string; // Stored in /public/images/team/team-X.jpg (easily replaceable)
+  image: string;
+  specialties: string[];
   socials: {
     linkedin?: string;
     twitter?: string;
@@ -51,6 +54,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Leadership",
     bio: "Guiding brand scaling and digital product excellence with 8+ years of agency leadership.",
     image: "/images/team/team-1.jpg",
+    specialties: ["Agency Strategy", "Product Vision"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -64,6 +68,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Leadership",
     bio: "Architecting high-performance Next.js architectures, secure cloud APIs, and scalable infrastructure.",
     image: "/images/team/team-2.jpg",
+    specialties: ["Next.js 14", "Cloud Systems"],
     socials: {
       linkedin: "https://linkedin.com",
       github: "https://github.com",
@@ -77,6 +82,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Leadership",
     bio: "Spearheading multi-channel marketplace operations across Amazon & Flipkart, driving commercial marketing strategy and customer acquisition.",
     image: "/images/team/team-3.jpg",
+    specialties: ["Amazon & Flipkart", "Marketplace Ads"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -89,6 +95,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Growth",
     bio: "Driving strategic client partnerships, agency business expansion, and enterprise relationship growth.",
     image: "/images/team/team-4.jpg",
+    specialties: ["Client Partnerships", "Venture Growth"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -101,6 +108,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Growth",
     bio: "Leading performance search optimization, technical SEO architectures, and full-funnel digital marketing campaigns to drive organic reach.",
     image: "/images/team/team-5.jpg",
+    specialties: ["Technical SEO", "Growth Funnels"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -113,6 +121,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Design",
     bio: "Directing intuitive product user interfaces, cross-platform design systems, and visually captivating commercial brand graphics.",
     image: "/images/team/team-6.jpg",
+    specialties: ["Design Systems", "Conversion UI"],
     socials: {
       linkedin: "https://linkedin.com",
       website: "https://dribbble.com",
@@ -125,6 +134,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Operations",
     bio: "Orchestrating agile project sprints, cross-functional delivery timelines, and client satisfaction for seamless digital launches.",
     image: "/images/team/team-7.jpg",
+    specialties: ["Agile Sprints", "Client Success"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -137,6 +147,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: "Growth",
     bio: "Crafting high-impact brand narratives, omnichannel content strategy, PR communications, and engaging commercial copy.",
     image: "/images/team/team-8.jpg",
+    specialties: ["Brand Storytelling", "Omnichannel Copy"],
     socials: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -145,9 +156,16 @@ export const TEAM_MEMBERS: TeamMember[] = [
 ];
 
 // Single Reusable Member Card
-function TeamMemberCard({ member }: { member: TeamMember }) {
+function TeamMemberCard({ member, index = 0 }: { member: TeamMember; index?: number }) {
   return (
-    <div className="group bg-[#FAF9FF] hover:bg-white rounded-3xl p-4 border border-border hover:border-primary/40 shadow-xs hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between h-full">
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95, y: 25 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: 20 }}
+      transition={{ duration: 0.4, delay: (index % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      className="group bg-[#FAF9FF] hover:bg-white rounded-3xl p-4 sm:p-5 border border-border hover:border-primary/50 shadow-xs hover:shadow-card-hover hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden"
+    >
       <div>
         {/* Portrait Container */}
         <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-softBg mb-4">
@@ -161,7 +179,7 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
           />
 
           {/* Gradient bottom overlay for smooth visual depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-dark/75 via-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3.5">
             {/* Social links revealed on hover */}
             <div className="flex items-center gap-2 w-full justify-center">
               {member.socials.linkedin && (
@@ -227,84 +245,111 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
             {member.role}
           </p>
 
-          <p className="text-xs text-dark-muted leading-relaxed line-clamp-3">
+          <p className="text-xs text-dark-muted leading-relaxed line-clamp-3 mb-3">
             {member.bio}
           </p>
+
+          {/* Specialty tag pills */}
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {member.specialties.map((spec) => (
+              <span
+                key={spec}
+                className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-white border border-border text-dark-muted group-hover:border-primary/30 group-hover:text-primary transition-colors"
+              >
+                {spec}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Bottom Quick Connect Accent */}
       <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-[11px] text-dark-muted px-1">
-        <span className="font-medium">UNIQUOVA Core Team</span>
+        <span className="font-medium">UNIQUOVA Core</span>
         <span className="inline-flex items-center text-primary font-semibold gap-0.5 group-hover:translate-x-0.5 transition-transform">
           <span>Connect</span>
           <ArrowUpRight className="w-3 h-3" />
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function TeamSection() {
-  // Combination: 2 in first row, after that 3, and then 3
-  const row1 = TEAM_MEMBERS.slice(0, 2); // 2 Founders (Lavish Chouhan & Sahil Meena)
-  const row2 = TEAM_MEMBERS.slice(2, 5); // 3 in second row
-  const row3 = TEAM_MEMBERS.slice(5, 8); // 3 in third row
+  const [activeFilter, setActiveFilter] = useState<"all" | "leadership" | "growth" | "design-ops">("all");
+
+  const filteredMembers = TEAM_MEMBERS.filter((m) => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "leadership") return m.category === "Leadership";
+    if (activeFilter === "growth") return m.category === "Growth";
+    if (activeFilter === "design-ops") return m.category === "Design" || m.category === "Operations";
+    return true;
+  });
 
   return (
-    <section id="our-team" className="py-24 bg-white relative overflow-hidden">
+    <section id="our-team" className="py-24 bg-white relative overflow-hidden border-t border-border/60">
       {/* Subtle background glow */}
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 -left-40 w-96 h-96 bg-primary-light/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-xs">
-            <Users className="w-3.5 h-3.5" />
-            <span>Meet Our Team</span>
-          </div>
+        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+        <ScrollHeading
+          className="mb-10 sm:mb-12"
+          badge={
+            <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-xs">
+              <Users className="w-3.5 h-3.5" />
+              <span>Meet Our Team</span>
+            </div>
+          }
+          title={
+            <>
+              The Minds Driving <span className="gradient-text">UNIQUOVA</span>
+            </>
+          }
+          subtitle="A specialized collective of digital strategists, full-stack engineers, and brand designers passionate about turning ambitious goals into market-leading reality."
+        />
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight mb-4">
-            The Minds Driving <span className="gradient-text">UNIQUOVA</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed">
-            A specialized collective of digital strategists, full-stack engineers, and brand designers
-            passionate about turning ambitious goals into market-leading reality.
-          </p>
-        </div>
-
-        {/* Team Cards: Combination of 2 -> 3 -> 3 */}
-        <div className="space-y-6 lg:space-y-8 max-w-6xl mx-auto">
-          {/* Row 1: 2 Founders (centered) */}
-          <div className="flex flex-wrap justify-center gap-6 lg:gap-8">
-            {row1.map((member) => (
-              <div
-                key={member.id}
-                className="w-full max-w-sm sm:max-w-none sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.333rem)]"
+        {/* Interactive Team Category Filter Tabs */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1.5 rounded-2xl bg-[#FAF9FF] border border-border/80 shadow-xs gap-1 sm:gap-1.5">
+            {[
+              { id: "all", label: "All Members (8)" },
+              { id: "leadership", label: "Founders & Leadership (3)" },
+              { id: "growth", label: "Growth & Marketing (3)" },
+              { id: "design-ops", label: "Design & Delivery (2)" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveFilter(tab.id as any)}
+                className={`relative px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
+                  activeFilter === tab.id ? "text-white" : "text-dark-muted hover:text-dark"
+                }`}
               >
-                <TeamMemberCard member={member} />
-              </div>
-            ))}
-          </div>
-
-          {/* Row 2: After that 3 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {row2.map((member) => (
-              <TeamMemberCard key={member.id} member={member} />
-            ))}
-          </div>
-
-          {/* Row 3: And then 3 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {row3.map((member) => (
-              <TeamMemberCard key={member.id} member={member} />
+                {activeFilter === tab.id && (
+                  <motion.div
+                    layoutId="teamFilterTab"
+                    className="absolute inset-0 bg-primary rounded-xl shadow-xs"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{tab.label}</span>
+              </button>
             ))}
           </div>
         </div>
 
-
+        {/* Dynamic Responsive Grid with Spring Layout Animation */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
+        >
+          <AnimatePresence>
+            {filteredMembers.map((member, idx) => (
+              <TeamMemberCard key={member.id} member={member} index={idx} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
