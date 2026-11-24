@@ -242,13 +242,17 @@ export default function Hero({ onOpenContact }: HeroProps) {
                     {/* Animated grid lines on screen */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#7545f512_1px,transparent_1px),linear-gradient(to_bottom,#7545f512_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
 
-                    {/* UNIQUOVA Emblem on Laptop Screen */}
+                    {/* UNIQUOVA Emblem on Laptop Screen with 3D Blink Glow */}
                     <div className="relative flex flex-col items-center justify-center z-10">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 mb-2 filter drop-shadow-[0_0_20px_rgba(117,69,245,0.7)] flex items-center justify-center">
+                      {/* Ambient 3D Volumetric Aura behind logo */}
+                      <div className="absolute top-1/2 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-primary via-[#9E76FB] to-[#C4ACFD] blur-2xl animate-aura-pulse pointer-events-none" />
+
+                      {/* Logo with 3D breathing neon blink glow */}
+                      <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2 flex items-center justify-center animate-3d-glow select-none">
                         <img
                           src="/images/uniquova_emblem_white.png?v=2"
                           alt="UNIQUOVA Logo"
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
                         />
                       </div>
 
