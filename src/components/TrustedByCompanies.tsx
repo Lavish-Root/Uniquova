@@ -17,12 +17,13 @@ import {
   X,
 } from "lucide-react";
 
-export interface DeliverableCardItem {
+export interface BrandWorkItem {
   id: string;
   companyName: string;
   category: string;
   title: string;
   image: string;
+  caption: string;
   quote: string;
   founderName: string;
   founderRole: string;
@@ -30,236 +31,6 @@ export interface DeliverableCardItem {
   summary: string;
   projectLink: string;
 }
-
-// ====================================================================
-// COLUMN 1 DELIVERABLES: Continuous motion from BOTTOM TO TOP (Upward)
-// Matches user Photo 1 (Euroteam banners, laptop, patterns, 913.ai, Ruuster)
-// ====================================================================
-export const COLUMN_1_ITEMS: DeliverableCardItem[] = [
-  {
-    id: "col1-euroteam-banners",
-    companyName: "Euroteam",
-    category: "Sustainable Global Logistics",
-    title: "Euroteam — Street Billboard Campaign",
-    image: "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_1440.webp", // Photo 1 center card
-    quote: "“The digital architecture and enterprise branding engineered by the team gave us an undeniable enterprise edge in global markets.”",
-    founderName: "Mark Van Dijk",
-    founderRole: "Managing Director, Euroteam",
-    metrics: [
-      { label: "Route Volume", value: "€120M+" },
-      { label: "Lighthouse Score", value: "100/100" },
-      { label: "Partner Conversion", value: "+64%" },
-    ],
-    summary:
-      "Enterprise logistics digital transformation, street billboard campaign takeover, sustainable brand guidelines, and international web platform.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col1-913ai-wave",
-    companyName: "913.ai",
-    category: "Domain-Specific AI Agents",
-    title: "913.ai — 3D Dimensional Brand Identity",
-    image: "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_1440.webp",
-    quote: "“A complete brand we're proud to put in front of investors and customers.”",
-    founderName: "Immo Ait Stapelfeld",
-    founderRole: "CEO & Founder, 913.ai",
-    metrics: [
-      { label: "Seed Closed", value: "$4.2M" },
-      { label: "User Acquisition", value: "+340%" },
-      { label: "Brand Recall", value: "98.4%" },
-    ],
-    summary:
-      "Comprehensive brand identity, typography architecture, 3D visual wave assets, and high-converting marketing framework for enterprise AI agents.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col1-ruuster-billboard",
-    companyName: "Ruuster",
-    category: "AI Real Estate Intelligence",
-    title: "Ruuster AI — Manhattan Building Billboard",
-    image: "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_2000.webp",
-    quote: "“UNIQUOVA transformed our vision into an iconic brand identity and platform that scaled user acquisition 300%.”",
-    founderName: "Alexander Wright",
-    founderRole: "Founder & CEO, Ruuster",
-    metrics: [
-      { label: "Active Investors", value: "24,000+" },
-      { label: "Conversion Lift", value: "+182%" },
-      { label: "P95 Speed", value: "0.42s" },
-    ],
-    summary:
-      "Large-scale Manhattan billboard campaign, scalable Next.js cloud web application, design system, and multi-platform visual guidelines.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col1-megahr-subway",
-    companyName: "MegaHR",
-    category: "AI-First Hiring Infrastructure",
-    title: "MegaHR — AI Hiring Subway Takeover",
-    image: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
-    quote: "“If you're looking for strategic thinking with fast, dependable delivery, this is it.”",
-    founderName: "Darren Bounds",
-    founderRole: "Founder & CEO, MegaHR",
-    metrics: [
-      { label: "Talent Screen Time", value: "-68%" },
-      { label: "Series A Raised", value: "$6.5M" },
-      { label: "Employer NPS", value: "94.2" },
-    ],
-    summary:
-      "Full corporate identity, metro campaign screens takeover, web design system, and multi-channel AI recruitment platform interface.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col1-euroteam-laptop",
-    companyName: "Euroteam",
-    category: "Sustainable Global Logistics",
-    title: "Euroteam — Web Platform Interface",
-    image: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp", // Photo 1 top card
-    quote: "“World-class execution, ultra-fast delivery, and an intuitive UI that our global partners praise daily.”",
-    founderName: "Mark Van Dijk",
-    founderRole: "Managing Director, Euroteam",
-    metrics: [
-      { label: "Global Coverage", value: "48 Countries" },
-      { label: "Response Time", value: "< 200ms" },
-      { label: "Client Retention", value: "99.1%" },
-    ],
-    summary:
-      "Real-time route scheduling interface, multi-currency logistics checkout, and high-performance React front-end.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col1-euroteam-patterns",
-    companyName: "Euroteam",
-    category: "Sustainable Global Logistics",
-    title: "Euroteam — Dynamic Brand Patterns",
-    image: "/images/selected_work/yylnHjpawl6cfQNJLwRB14HQ_1440.webp", // Photo 1 bottom card
-    quote: "“Every visual touchpoint reflects our commitment to sustainable forward-moving logistics.”",
-    founderName: "Mark Van Dijk",
-    founderRole: "Managing Director, Euroteam",
-    metrics: [
-      { label: "Fleet Touchpoints", value: "1,200+" },
-      { label: "Brand Equity", value: "€45M" },
-      { label: "Design Consistency", value: "100%" },
-    ],
-    summary:
-      "Generative graphic systems, vehicle wraps, physical collateral, and sustainability reporting templates.",
-    projectLink: "/our-work",
-  },
-];
-
-// ====================================================================
-// COLUMN 2 DELIVERABLES: Continuous motion from TOP TO BOTTOM (Downward)
-// Matches user Photo 2 (Mark OS web app, TWIN tote bag, Needle, DeluPay, Advimagine)
-// ====================================================================
-export const COLUMN_2_ITEMS: DeliverableCardItem[] = [
-  {
-    id: "col2-markos-web",
-    companyName: "Mark OS",
-    category: "AI Content Compliance",
-    title: "Mark OS — AI Content Review Platform",
-    image: "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_2560.webp", // Photo 2 top card
-    quote: "“Ensure your content hits the mark every time with verified compliance and brand protection.”",
-    founderName: "Sarah Jenkins",
-    founderRole: "Head of Product, Mark OS",
-    metrics: [
-      { label: "Review Accuracy", value: "99.4%" },
-      { label: "Speed Increase", value: "12x" },
-      { label: "Enterprise ARR", value: "$3.8M" },
-    ],
-    summary:
-      "Next-generation AI compliance web app, cultural sensitivities scanner, brand guideline detector, and enterprise review workspace.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col2-twin-tote",
-    companyName: "TWIN Global",
-    category: "Digital Trade Ecosystem",
-    title: "TWIN Global — Merchandise & Physical Touchpoints",
-    image: "/images/selected_work/rZy5kVEyJg6E87JFlpFNpA2BSQ_1440.webp", // Photo 2 bottom card
-    quote: "“Our brand merchandise and tangible touchpoints instantly set us apart at every international summit.”",
-    founderName: "Christian Meyer",
-    founderRole: "Co-Founder, TWIN Global",
-    metrics: [
-      { label: "Summit Attendees", value: "18,000+" },
-      { label: "Global Trade GMV", value: "$80M+" },
-      { label: "Member Net Promoter", value: "92" },
-    ],
-    summary:
-      "Corporate apparel, custom woven tote bags, summit collateral, and bespoke typography for a global digital trade network.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col2-needle-billboard",
-    companyName: "Needle",
-    category: "Healthcare & Pharmaceuticals",
-    title: "Needle — ADHD Medication Stock Finder",
-    image: "/images/selected_work/2QlElFBnG4q7Qn7iIoRrvaKfE_1400.webp",
-    quote: "“Needle finds your ADHD medications in stock so patients never waste critical hours calling pharmacies.”",
-    founderName: "Elena Rostova",
-    founderRole: "CEO & Co-Founder, Needle",
-    metrics: [
-      { label: "Pharmacies Synced", value: "14,500+" },
-      { label: "Patient Hours Saved", value: "320K hrs" },
-      { label: "Daily Queries", value: "85,000+" },
-    ],
-    summary:
-      "High-impact outdoor billboard series, empathetic mascot brand illustration, real-time pharmacy inventory lookup engine, and responsive mobile application.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col2-delupay-fintech",
-    companyName: "DeluPay",
-    category: "Next-Gen Fintech Payments",
-    title: "DeluPay — 3D Holographic Card Architecture",
-    image: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_1504.webp",
-    quote: "“World-class 3D visuals, fluid UI, and sub-second performance that helped us close our institutional round in record time.”",
-    founderName: "Nicolas Dupont",
-    founderRole: "Co-Founder & CTO, DeluPay",
-    metrics: [
-      { label: "Transaction Speed", value: "40K TPS" },
-      { label: "Seed Closed", value: "€3.5M" },
-      { label: "Uptime SLA", value: "99.99%" },
-    ],
-    summary:
-      "Holographic mobile card UI, high-throughput consumer checkout application, 3D metallic dimensional assets, and brand design system.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col2-advimagine-3d",
-    companyName: "Advimagine",
-    category: "Industrial Engineering",
-    title: "Advimagine — Precision Manufacturing 3D",
-    image: "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_2560.webp",
-    quote: "“The dark aesthetic and glossy 3D spatial visual assets transformed our industrial brand into an ultra-modern market leader.”",
-    founderName: "Jens Lindqvist",
-    founderRole: "VP Brand, Advimagine",
-    metrics: [
-      { label: "Enterprise Inquiries", value: "+210%" },
-      { label: "Session Duration", value: "+4.2 min" },
-      { label: "Award Honors", value: "Awwwards SOTD" },
-    ],
-    summary:
-      "WebGL spatial interactions, glossy aerodynamic precision hero graphics, and technical design system for precision components.",
-    projectLink: "/our-work",
-  },
-  {
-    id: "col2-913-merch",
-    companyName: "913.ai",
-    category: "Domain-Specific AI Agents",
-    title: "913.ai — Technical Apparel & Collateral",
-    image: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_1440.webp",
-    quote: "“Our team and community wear the brand with immense pride at every AI conference worldwide.”",
-    founderName: "Immo Ait Stapelfeld",
-    founderRole: "CEO & Founder, 913.ai",
-    metrics: [
-      { label: "Conference Merch", value: "5,000+" },
-      { label: "Community Growth", value: "+450%" },
-      { label: "Brand Recall", value: "98.4%" },
-    ],
-    summary:
-      "Embroidered technical outerwear, weatherproof windbreakers, hardware packaging, and investor presentation kits.",
-    projectLink: "/our-work",
-  },
-];
 
 export interface FounderStory {
   id: string;
@@ -274,6 +45,7 @@ export interface FounderStory {
   accentColor: string;
   metrics: { label: string; value: string }[];
   caseStudySummary: string;
+  workImages: BrandWorkItem[];
 }
 
 export const FEATURED_FOUNDERS: FounderStory[] = [
@@ -287,7 +59,7 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     founderRole: "Founder & CEO, MegaHR",
     founderAvatar: "/images/team/team-1.jpg",
     projectLink: "/our-work",
-    accentColor: "#CEF845", // Lime
+    accentColor: "#7545F5",
     metrics: [
       { label: "Talent Screen Time", value: "-68%" },
       { label: "Series A Raised", value: "$6.5M" },
@@ -295,6 +67,80 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     ],
     caseStudySummary:
       "Full corporate identity, metro campaign screens takeover, web design system, and multi-channel AI recruitment platform interface.",
+    workImages: [
+      {
+        id: "megahr-w1",
+        companyName: "MegaHR",
+        category: "Billboard & OOH",
+        title: "MegaHR — AI Subway Takeover Series",
+        image: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
+        caption: "Manhattan Metro Takeover",
+        quote: "“Our subway takeover series established MegaHR as the defining AI recruitment brand across NYC tech hubs.”",
+        founderName: "Darren Bounds",
+        founderRole: "Founder & CEO, MegaHR",
+        metrics: [
+          { label: "Footfall Reach", value: "2.4M" },
+          { label: "Direct Signups", value: "+340%" },
+          { label: "Brand Recall", value: "96.8%" },
+        ],
+        summary: "City-wide digital subway screens takeover showing live candidate qualification workflows.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "megahr-w2",
+        companyName: "MegaHR",
+        category: "Transit Posters",
+        title: "MegaHR — Station Poster Architecture",
+        image: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_1440.webp",
+        caption: "Subway Station Screen Series",
+        quote: "“Clean, high-converting posters that translated complex AI models into instant value propositions.”",
+        founderName: "Darren Bounds",
+        founderRole: "Founder & CEO, MegaHR",
+        metrics: [
+          { label: "Campaign CTR", value: "8.2%" },
+          { label: "Inbound Demos", value: "1,200+" },
+          { label: "CAC Reduction", value: "-42%" },
+        ],
+        summary: "High-contrast geometric posters deployed across prime tech corridor transit hubs.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "megahr-w3",
+        companyName: "MegaHR",
+        category: "Web & UI/UX",
+        title: "MegaHR — AI Hiring Web Platform",
+        image: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_2560.webp",
+        caption: "Candidate Screening Workspace",
+        quote: "“The platform interface engineered by UNIQOVA allowed recruiters to screen 10x more candidates effortlessly.”",
+        founderName: "Darren Bounds",
+        founderRole: "Founder & CEO, MegaHR",
+        metrics: [
+          { label: "P95 Latency", value: "< 240ms" },
+          { label: "Recruiter NPS", value: "94.2" },
+          { label: "Screen Velocity", value: "12x" },
+        ],
+        summary: "Responsive Next.js web application with real-time biometric candidate ranking and automated scheduling.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "megahr-w4",
+        companyName: "MegaHR",
+        category: "Brand Architecture",
+        title: "MegaHR — Visual Identity & Tokens",
+        image: "/images/selected_work/6Fiwu9F9MKkOxpv42vAlXksFU_1440.webp",
+        caption: "Brand Identity & Design Tokens",
+        quote: "“From logo geometry to color tokens, UNIQOVA created a unified brand language that scales with our enterprise growth.”",
+        founderName: "Darren Bounds",
+        founderRole: "Founder & CEO, MegaHR",
+        metrics: [
+          { label: "Brand Equity", value: "$6.5M" },
+          { label: "Design Consistency", value: "100%" },
+          { label: "Press Features", value: "18 Outlets" },
+        ],
+        summary: "Design system tokens, corporate stationery, investor pitch decks, and brand guideline documentation.",
+        projectLink: "/our-work",
+      },
+    ],
   },
   {
     id: "913-ai",
@@ -306,7 +152,7 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     founderRole: "CEO & Founder, 913.ai",
     founderAvatar: "/images/team/team-2.jpg",
     projectLink: "/our-work",
-    accentColor: "#10b981", // Emerald
+    accentColor: "#7545F5",
     metrics: [
       { label: "Seed Closed", value: "$4.2M" },
       { label: "User Acquisition", value: "+340%" },
@@ -314,6 +160,80 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     ],
     caseStudySummary:
       "Engineered comprehensive brand identity, typography architecture, 3D visual assets, and high-converting marketing framework for enterprise AI agents.",
+    workImages: [
+      {
+        id: "913-w1",
+        companyName: "913.ai",
+        category: "3D Visuals & Identity",
+        title: "913.ai — 3D Dimensional Wave Identity",
+        image: "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_1440.webp",
+        caption: "Spatial 3D Wave Dynamics",
+        quote: "“The glossy 3D wave visual assets defined our category and positioned us as an elite AI research studio.”",
+        founderName: "Immo Ait Stapelfeld",
+        founderRole: "CEO & Founder, 913.ai",
+        metrics: [
+          { label: "Investor Traction", value: "$4.2M" },
+          { label: "Session Time", value: "+3.8m" },
+          { label: "Global Mentions", value: "450+" },
+        ],
+        summary: "Photorealistic 3D particle wave simulations representing continuous AI agent intelligence.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "913-w2",
+        companyName: "913.ai",
+        category: "Web Platform UI",
+        title: "913.ai — Autonomous Agent Console",
+        image: "/images/selected_work/rjlcLH3DNif0U74oMAOCto3zT0_1440.webp",
+        caption: "AI Agent Console & Studio",
+        quote: "“Sub-second agent execution telemetry packed in an ultra-clean, distraction-free developer interface.”",
+        founderName: "Immo Ait Stapelfeld",
+        founderRole: "CEO & Founder, 913.ai",
+        metrics: [
+          { label: "Task Throughput", value: "250K/day" },
+          { label: "Dev Retention", value: "96.2%" },
+          { label: "Uptime SLA", value: "99.99%" },
+        ],
+        summary: "Real-time multi-agent orchestration console with graph-based reasoning monitors and token consumption analytics.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "913-w3",
+        companyName: "913.ai",
+        category: "Packaging & Unboxing",
+        title: "913.ai — Hardware Packaging System",
+        image: "/images/selected_work/gtavCMDLHB0d9ehFukQtVNbXeU_1440.webp",
+        caption: "Investor Presentation Kits",
+        quote: "“The physical touchpoints and packaging created by UNIQOVA left institutional investors speechless.”",
+        founderName: "Immo Ait Stapelfeld",
+        founderRole: "CEO & Founder, 913.ai",
+        metrics: [
+          { label: "Term Sheets", value: "4 Offers" },
+          { label: "Valuation Jump", value: "2.8x" },
+          { label: "Partner NPS", value: "98.4" },
+        ],
+        summary: "Matte black structural packaging, foil-stamped documentation, and custom dimensional investor kits.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "913-w4",
+        companyName: "913.ai",
+        category: "Summit Collateral",
+        title: "913.ai — Technical Apparel & Merch",
+        image: "/images/selected_work/rLOEAajcxuoSByBHZOjxaMTnzA_1440.webp",
+        caption: "Global AI Summit Collateral",
+        quote: "“Our team and community wear the brand with immense pride at every tier-1 AI conference globally.”",
+        founderName: "Immo Ait Stapelfeld",
+        founderRole: "CEO & Founder, 913.ai",
+        metrics: [
+          { label: "Conference Merch", value: "5,000+" },
+          { label: "Community Growth", value: "+450%" },
+          { label: "Organic Reach", value: "1.2M" },
+        ],
+        summary: "Embroidered technical outerwear, weatherproof windbreakers, hardware packaging, and investor kits.",
+        projectLink: "/our-work",
+      },
+    ],
   },
   {
     id: "ruuster-ai",
@@ -325,7 +245,7 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     founderRole: "Founder & CEO, Ruuster",
     founderAvatar: "/images/team/team-3.jpg",
     projectLink: "/our-work",
-    accentColor: "#f97316", // Orange
+    accentColor: "#7545F5",
     metrics: [
       { label: "Active Investors", value: "24,000+" },
       { label: "Conversion Lift", value: "+182%" },
@@ -333,6 +253,80 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     ],
     caseStudySummary:
       "Large-scale Manhattan billboard campaign, scalable Next.js cloud web application, design system, and multi-platform visual guidelines.",
+    workImages: [
+      {
+        id: "ruuster-w1",
+        companyName: "Ruuster",
+        category: "Large-Format OOH",
+        title: "Ruuster — Manhattan Building Billboard",
+        image: "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_2000.webp",
+        caption: "Manhattan Billboard Campaign",
+        quote: "“The towering Manhattan billboard campaign instantly drove enterprise credibility and institutional buy-in.”",
+        founderName: "Alexander Wright",
+        founderRole: "Founder & CEO, Ruuster",
+        metrics: [
+          { label: "Impression Count", value: "5.8M" },
+          { label: "Institutional LPs", value: "48 Funds" },
+          { label: "Direct Inbound", value: "+210%" },
+        ],
+        summary: "Iconic high-rise billboard takeover in Midtown Manhattan featuring bold brand typography.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "ruuster-w2",
+        companyName: "Ruuster",
+        category: "Cloud Web App",
+        title: "Ruuster — AI Property Intelligence Platform",
+        image: "/images/selected_work/it4cXk12EJX3M46FocEoA4IDN8_1440.webp",
+        caption: "Real-Time Valuation Engine",
+        quote: "“Our web platform processes millions of residential listings in real time with breathtaking performance.”",
+        founderName: "Alexander Wright",
+        founderRole: "Founder & CEO, Ruuster",
+        metrics: [
+          { label: "Query Speed", value: "0.42s" },
+          { label: "Listings Synced", value: "3.2M" },
+          { label: "User Retention", value: "91.4%" },
+        ],
+        summary: "High-concurrency React & Next.js cloud portal with geospatial predictive yield mapping.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "ruuster-w3",
+        companyName: "Ruuster",
+        category: "Urban OOH Advertising",
+        title: "Ruuster — Transit Hub Display Series",
+        image: "/images/selected_work/2QlElFBnG4q7Qn7iIoRrvaKfE_1400.webp",
+        caption: "Transit Hub Billboard Series",
+        quote: "“Striking visuals that cut through the noise of urban commuter hubs and generated record app signups.”",
+        founderName: "Alexander Wright",
+        founderRole: "Founder & CEO, Ruuster",
+        metrics: [
+          { label: "App Installs", value: "65,000+" },
+          { label: "Cost Per Install", value: "$1.85" },
+          { label: "Active Volume", value: "$45M+" },
+        ],
+        summary: "Multi-city digital transit screens showcasing real-time residential investment yields.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "ruuster-w4",
+        companyName: "Ruuster",
+        category: "Fintech Interface",
+        title: "Ruuster — Mobile Investor Portal",
+        image: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_1504.webp",
+        caption: "Mobile Investment App UI",
+        quote: "“Sleek holographic card architecture and fluid interactions that our high-net-worth clients praise daily.”",
+        founderName: "Alexander Wright",
+        founderRole: "Founder & CEO, Ruuster",
+        metrics: [
+          { label: "Store Rating", value: "4.9 ★" },
+          { label: "AUM Growth", value: "3.2x" },
+          { label: "Daily Sessions", value: "4.8" },
+        ],
+        summary: "Native mobile wallet and fractional real estate trading UI with instant ACH settlement.",
+        projectLink: "/our-work",
+      },
+    ],
   },
   {
     id: "euroteam-logistics",
@@ -344,7 +338,7 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     founderRole: "Managing Director, Euroteam",
     founderAvatar: "/images/team/team-4.jpg",
     projectLink: "/our-work",
-    accentColor: "#059669", // Forest Green
+    accentColor: "#7545F5",
     metrics: [
       { label: "Route Volume", value: "€120M+" },
       { label: "Lighthouse Score", value: "100/100" },
@@ -352,6 +346,80 @@ export const FEATURED_FOUNDERS: FounderStory[] = [
     ],
     caseStudySummary:
       "Enterprise digital transformation, real-time fleet scheduling dashboard, sustainable identity guidelines, and international web platform.",
+    workImages: [
+      {
+        id: "euroteam-w1",
+        companyName: "Euroteam",
+        category: "OOH & Brand Takeover",
+        title: "Euroteam — Highway 3-Banner Billboard Series",
+        image: "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_1440.webp",
+        caption: "Highway 3-Banner Billboard Series",
+        quote: "“Our sustainable green brand banners immediately elevated our prestige across major European transit freight routes.”",
+        founderName: "Mark Van Dijk",
+        founderRole: "Managing Director, Euroteam",
+        metrics: [
+          { label: "Freight Inquiries", value: "+84%" },
+          { label: "Partner Deals", value: "€32M" },
+          { label: "Brand Recall", value: "99.1%" },
+        ],
+        summary: "Highway outdoor billboard series highlighting sustainable carbon-neutral freight logistics.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "euroteam-w2",
+        companyName: "Euroteam",
+        category: "Enterprise Web App",
+        title: "Euroteam — Global Logistics Web Platform",
+        image: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp",
+        caption: "Fleet Scheduling & Route Interface",
+        quote: "“Sub-200ms route calculations and a world-class UI that our international supply chain partners praise daily.”",
+        founderName: "Mark Van Dijk",
+        founderRole: "Managing Director, Euroteam",
+        metrics: [
+          { label: "Global Coverage", value: "48 Countries" },
+          { label: "Response Time", value: "< 200ms" },
+          { label: "Client Retention", value: "99.1%" },
+        ],
+        summary: "Enterprise web application featuring real-time fleet scheduling, multi-currency checkout, and instant dispatch.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "euroteam-w3",
+        companyName: "Euroteam",
+        category: "Generative Identity",
+        title: "Euroteam — Dynamic Sustainable Patterns",
+        image: "/images/selected_work/yylnHjpawl6cfQNJLwRB14HQ_1440.webp",
+        caption: "Fleet Wraps & Dynamic Patterns",
+        quote: "“Every touchpoint—from shipping containers to digital apps—embodies our commitment to clean, forward-moving logistics.”",
+        founderName: "Mark Van Dijk",
+        founderRole: "Managing Director, Euroteam",
+        metrics: [
+          { label: "Fleet Touchpoints", value: "1,200+" },
+          { label: "Brand Equity", value: "€45M" },
+          { label: "Consistency Score", value: "100%" },
+        ],
+        summary: "Generative vector patterns applied across electric trucks, shipping containers, and environmental impact collateral.",
+        projectLink: "/our-work",
+      },
+      {
+        id: "euroteam-w4",
+        companyName: "Euroteam",
+        category: "Logistics Telemetry",
+        title: "Euroteam — Route Command Center",
+        image: "/images/selected_work/wUqQcSSSVGIKdc8JPIo7HYcBvA_1440.webp",
+        caption: "Global Operations Dashboard",
+        quote: "“Real-time telematics dashboard that gave our operations team complete clarity across European freight lanes.”",
+        founderName: "Mark Van Dijk",
+        founderRole: "Managing Director, Euroteam",
+        metrics: [
+          { label: "On-Time Dispatch", value: "99.8%" },
+          { label: "Fuel Optimization", value: "-18%" },
+          { label: "Active Routes", value: "480+" },
+        ],
+        summary: "Cloud-native mission control dashboard monitoring cargo telemetry and carbon offsets in real time.",
+        projectLink: "/our-work",
+      },
+    ],
   },
 ];
 
@@ -363,7 +431,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedStoryModal, setSelectedStoryModal] = useState<DeliverableCardItem | FounderStory | null>(null);
+  const [selectedStoryModal, setSelectedStoryModal] = useState<BrandWorkItem | FounderStory | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const bentoGridRef = useRef<HTMLDivElement>(null);
@@ -387,7 +455,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     if (isPaused) return;
     const timer = setInterval(() => {
       nextSlide();
-    }, 6000);
+    }, 7000);
     return () => clearInterval(timer);
   }, [isPaused, nextSlide]);
 
@@ -408,12 +476,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   const smoothTiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [2.5, -2.5]), tiltSpringConfig);
   const smoothTiltY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-2.5, 2.5]), tiltSpringConfig);
 
-  // ====================================================================
-  // CONTINUOUS BIDIRECTIONAL SCROLL-LINKED ENTRANCE & EXIT ANIMATION
-  // - When scrolling down: Headline, Subtitle, and Bento Card animate IN
-  //   with synchronized spring elevation, scale, 3D tilt, and fade.
-  // - When scrolling up: Everything animates in reverse in real time!
-  // ====================================================================
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 90%", "end 10%"],
@@ -421,7 +483,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
 
   const scrollSpringConfig = { stiffness: 95, damping: 19, mass: 0.25 };
 
-  // 1. Headline ("Trusted by AI founders") scroll entrance & exit
   const rawHeaderY = useTransform(scrollYProgress, [0, 0.30, 0.70, 1], [85, 0, 0, -65]);
   const rawHeaderScale = useTransform(scrollYProgress, [0, 0.30, 0.70, 1], [0.85, 1.0, 1.0, 0.88]);
   const rawHeaderOpacity = useTransform(scrollYProgress, [0, 0.24, 0.78, 1], [0, 1.0, 1.0, 0]);
@@ -429,7 +490,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   const smoothHeaderScale = useSpring(rawHeaderScale, scrollSpringConfig);
   const smoothHeaderOpacity = useSpring(rawHeaderOpacity, scrollSpringConfig);
 
-  // 2. Subtitle ("Straight from the founders we work with") staggered scroll entrance & exit
   const rawSubtitleY = useTransform(scrollYProgress, [0, 0.33, 0.68, 1], [65, 0, 0, -50]);
   const rawSubtitleScale = useTransform(scrollYProgress, [0, 0.33, 0.68, 1], [0.89, 1.0, 1.0, 0.91]);
   const rawSubtitleOpacity = useTransform(scrollYProgress, [0, 0.26, 0.76, 1], [0, 1.0, 1.0, 0]);
@@ -437,7 +497,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   const smoothSubtitleScale = useSpring(rawSubtitleScale, scrollSpringConfig);
   const smoothSubtitleOpacity = useSpring(rawSubtitleOpacity, scrollSpringConfig);
 
-  // 3. Main tactile bento card container scroll entrance & exit
   const rawCardY = useTransform(scrollYProgress, [0, 0.36, 0.66, 1], [150, 0, 0, -85]);
   const rawCardScale = useTransform(scrollYProgress, [0, 0.36, 0.66, 1], [0.86, 1.0, 1.0, 0.88]);
   const rawCardRotateX = useTransform(scrollYProgress, [0, 0.36, 0.66, 1], [12, 0, 0, -9]);
@@ -461,7 +520,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     mouseY.set(0);
   };
 
-  // Render company logo
   const renderCompanyLogo = (story: FounderStory) => {
     if (story.logoType === "megahr") {
       return (
@@ -507,10 +565,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     );
   };
 
-  // Duplicate items twice to form a seamless infinite marquee
-  const col1Double = [...COLUMN_1_ITEMS, ...COLUMN_1_ITEMS];
-  const col2Double = [...COLUMN_2_ITEMS, ...COLUMN_2_ITEMS];
-
   return (
     <section
       id="trusted-by"
@@ -520,13 +574,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* ====================================================
-            SECTION HEADER (Synchronized Scroll-Driven Parallax)
-            - Title: "Trusted by AI founders"
-            - Subtitle: "Straight from the founders we work with"
-            - Both animate into view as you scroll down, and animate
-              out in reverse as you scroll back up!
-           ==================================================== */}
+        {/* Section Header */}
         <div className="text-center mb-6 sm:mb-8 lg:mb-10 will-change-transform">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-light border border-primary-200 text-primary text-xs font-bold uppercase tracking-widest mb-3">
             <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
@@ -559,11 +607,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
 
         {/* ====================================================
             THE MAIN TACTILE BENTO CARD CONTAINER
-            - Continuous Bidirectional Scroll-Linked Entrance & Exit Animation
-            - When scrolling down: rises up, scales 0.90 -> 1.0, tilts 9deg -> 0deg, fades in
-            - When scrolling up: smoothly animates in reverse!
-            - Aspect ratio ~3.0:1 (matching Photo 2)
-            - UNIQOVA Signature Theme: Soft Lavender Luxury Gradient with Electric Purple Accents
+            - Left: Brand Owner Info, Quote, & "< >" Nav Buttons
+            - Right: Synchronized Deliverable Images of THAT Specific Brand
+            - Theme: UNIQOVA Signature Soft Lavender Luxury
            ==================================================== */}
         <motion.div
           style={{
@@ -584,12 +630,11 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-center">
             
             {/* ====================================================
-                LEFT COLUMN: Testimonial Quote & Founder Bio (5 cols)
-                Sleek compact sizing matching Photo 2
+                LEFT COLUMN: Brand Owner, Logo, Quote, & Controls
                ==================================================== */}
-            <div className="lg:col-span-5 flex flex-col justify-between h-full min-h-[240px] sm:min-h-[270px] lg:min-h-[310px]">
+            <div className="lg:col-span-5 flex flex-col justify-between h-full min-h-[260px] sm:min-h-[290px] lg:min-h-[340px]">
               
-              {/* Top Row: Company Logo & Interactive Navigation Pills */}
+              {/* Top Row: Company Logo & Interactive Navigation "< >" */}
               <div className="flex items-center justify-between gap-3 mb-3 sm:mb-4">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -603,11 +648,11 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Circular Navigation Buttons in UNIQOVA Theme (< White & > Electric Purple) */}
+                {/* Circular Navigation Buttons: "<" (White) & ">" (Electric Purple) */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={prevSlide}
-                    aria-label="Previous Founder"
+                    aria-label="Previous Brand"
                     className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white hover:bg-primary-light active:scale-95 text-dark hover:text-primary shadow-xs border border-primary/20 flex items-center justify-center transition-all cursor-pointer hover:shadow-sm"
                   >
                     <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -615,7 +660,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
 
                   <button
                     onClick={nextSlide}
-                    aria-label="Next Founder"
+                    aria-label="Next Brand"
                     className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary active:scale-95 text-white shadow-glow-sm hover:shadow-glow flex items-center justify-center transition-all cursor-pointer"
                   >
                     <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -623,7 +668,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                 </div>
               </div>
 
-              {/* Middle: Big Testimonial Quotation (Compact elegant typography) */}
+              {/* Middle: Big Testimonial Quotation */}
               <div className="my-auto py-2">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
@@ -641,7 +686,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                 </AnimatePresence>
               </div>
 
-              {/* Bottom: Founder Avatar, Name & "See the project" */}
+              {/* Bottom: Founder Avatar, Name, Role & Case Study Link */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`founder-${current.id}`}
@@ -651,7 +696,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   transition={{ duration: 0.3, delay: 0.04 }}
                   className="flex items-center gap-3 pt-3 sm:pt-4"
                 >
-                  {/* Founder Avatar */}
                   <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-primary/25 shrink-0 bg-white shadow-sm">
                     <img
                       src={current.founderAvatar}
@@ -660,7 +704,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                     />
                   </div>
 
-                  {/* Founder Info */}
                   <div className="flex flex-col">
                     <span className="text-sm sm:text-base font-extrabold text-dark leading-tight">
                       {current.founderName}
@@ -682,12 +725,10 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
             </div>
 
             {/* ====================================================
-                RIGHT BENTO DELIVERABLES GRID (7 cols)
-                DUAL OPPOSING VERTICAL ROTATING MARQUEES:
-                - Decreased height matching Photo 2 (~300px - 360px)
-                - Column 1 (Middle): Rotates from BOTTOM TO TOP (Upwards)
-                - Column 2 (Right): Rotates from TOP TO BOTTOM (Downwards)
-                - Pause on hover, click to view case study, GPU 60fps
+                RIGHT COLUMN: That Specific Brand's Work Images
+                - Synchronized to current brand owner on "< >" click
+                - Interactive 3D tilt on mousemove
+                - Smooth slide & fade transition between brand owners
                ==================================================== */}
             <motion.div
               ref={bentoGridRef}
@@ -698,63 +739,90 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                 rotateY: smoothTiltY,
                 transformStyle: "preserve-3d",
               }}
-              className="lg:col-span-7 w-full h-[290px] sm:h-[330px] lg:h-[360px] overflow-hidden will-change-transform relative rounded-[20px] sm:rounded-[24px]"
+              className="lg:col-span-7 w-full h-[310px] sm:h-[340px] lg:h-[370px] overflow-hidden will-change-transform relative rounded-[20px] sm:rounded-[24px]"
             >
-              {/* Top & Bottom Soft Edge Gradient Masks (Color-matched to UNIQOVA theme container) */}
-              <div className="absolute inset-x-0 top-0 h-10 sm:h-12 bg-gradient-to-b from-[#F5EFFF] to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-gradient-to-t from-[#EBE2FF] to-transparent z-10 pointer-events-none" />
+              {/* Soft Gradient Border Accents */}
+              <div className="absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-[#F5EFFF]/60 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#EBE2FF]/60 to-transparent z-10 pointer-events-none" />
 
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 h-full items-start">
-                
-                {/* ------------------------------------------------
-                    COLUMN 1 (Photo 1): ROTATES FROM BOTTOM TO TOP
-                    Infinite vertical conveyor moving UPWARDS
-                   ------------------------------------------------ */}
-                <div className="overflow-hidden h-full flex flex-col group/col1">
-                  <div className="animate-marquee-up pause-on-hover flex flex-col gap-3 sm:gap-3.5 will-change-transform">
-                    {col1Double.map((item, idx) => (
+              {/* Synchronized Deliverables Grid for Current Brand Owner */}
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={`work-grid-${current.id}`}
+                  custom={direction}
+                  initial={{
+                    opacity: 0,
+                    x: direction > 0 ? 32 : -32,
+                    scale: 0.98,
+                    filter: "blur(4px)",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                  }}
+                  exit={{
+                    opacity: 0,
+                    x: direction > 0 ? -32 : 32,
+                    scale: 0.98,
+                    filter: "blur(4px)",
+                  }}
+                  transition={{
+                    duration: 0.38,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="grid grid-cols-2 gap-3 sm:gap-4 h-full w-full"
+                >
+                  {/* Sub-Column 1: Left 2 Work Deliverables */}
+                  <div className="flex flex-col gap-3 sm:gap-3.5 h-full">
+                    {current.workImages.slice(0, 2).map((item) => (
                       <div
-                        key={`col1-${item.id}-${idx}`}
+                        key={item.id}
                         onClick={() => setSelectedStoryModal(item)}
-                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer shrink-0 transition-all duration-300 ease-out hover:scale-[1.025]"
+                        className="group/card relative flex-1 w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02]"
                       >
                         <img
                           src={item.image}
                           alt={item.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-700 ease-out"
+                          className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute bottom-2.5 left-2.5 right-2.5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <span className="inline-block text-[11px] font-bold text-white bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 truncate max-w-full">
+                            {item.caption}
+                          </span>
+                        </div>
                         <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                       </div>
                     ))}
                   </div>
-                </div>
 
-                {/* ------------------------------------------------
-                    COLUMN 2 (Photo 2): ROTATES FROM TOP TO BOTTOM
-                    Infinite vertical conveyor moving DOWNWARDS
-                   ------------------------------------------------ */}
-                <div className="overflow-hidden h-full flex flex-col group/col2">
-                  <div className="animate-marquee-down pause-on-hover flex flex-col gap-3 sm:gap-3.5 will-change-transform">
-                    {col2Double.map((item, idx) => (
+                  {/* Sub-Column 2: Right 2 Work Deliverables */}
+                  <div className="flex flex-col gap-3 sm:gap-3.5 h-full">
+                    {current.workImages.slice(2, 4).map((item) => (
                       <div
-                        key={`col2-${item.id}-${idx}`}
+                        key={item.id}
                         onClick={() => setSelectedStoryModal(item)}
-                        className="group/card relative w-full h-[140px] sm:h-[160px] lg:h-[175px] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer shrink-0 transition-all duration-300 ease-out hover:scale-[1.025]"
+                        className="group/card relative flex-1 w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02]"
                       >
                         <img
                           src={item.image}
                           alt={item.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-700 ease-out"
+                          className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute bottom-2.5 left-2.5 right-2.5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <span className="inline-block text-[11px] font-bold text-white bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 truncate max-w-full">
+                            {item.caption}
+                          </span>
+                        </div>
                         <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                       </div>
                     ))}
                   </div>
-                </div>
-
-              </div>
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
 
           </div>
@@ -768,7 +836,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
       <AnimatePresence>
         {selectedStoryModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -777,7 +844,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               className="fixed inset-0 bg-dark/70 backdrop-blur-md"
             />
 
-            {/* Modal Dialog */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -839,7 +905,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   </div>
                 </div>
 
-                {/* Deliverable Image Preview */}
                 {"image" in selectedStoryModal && (
                   <div className="h-56 sm:h-64 rounded-2xl overflow-hidden border border-border shadow-xs">
                     <img
