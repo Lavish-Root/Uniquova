@@ -855,6 +855,18 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   </div>
 
                   <div className="flex items-center gap-3">
+                    {onOpenContact && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedStoryModal(null);
+                          onOpenContact();
+                        }}
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-dark text-dark hover:bg-dark hover:text-white text-sm font-bold transition-all cursor-pointer"
+                      >
+                        <span>Start Similar Project</span>
+                      </button>
+                    )}
                     <Link
                       href={selectedStoryModal.projectLink}
                       onClick={() => setSelectedStoryModal(null)}
