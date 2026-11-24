@@ -44,9 +44,10 @@ function LuminousPillarNode({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   
-  // Trigger strictly when this specific pillar reaches the active center scroll zone
-  const isInView = useInView(ref, { margin: "-25% 0px -25% 0px" });
-  const [hasRevealed, setHasRevealed] = useState(false);
+  // Trigger progressively as each pillar enters the viewport when scrolling down
+  const isInView = useInView(ref, { margin: "0px 0px -15% 0px" });
+  // Pillar 01 is revealed to anchor the section, subsequent pillars reveal one-by-one on scroll
+  const [hasRevealed, setHasRevealed] = useState(index === 0);
 
   useEffect(() => {
     if (isInView) {
