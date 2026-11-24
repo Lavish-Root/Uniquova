@@ -8,7 +8,7 @@ import ContactModal from "@/components/ContactModal";
 import VerticalWorkShowcase from "@/components/VerticalWorkShowcase";
 import { ProjectItem } from "@/data/agencyData";
 import initialProjects from "@/data/projects.json";
-import { Sparkles, Layers } from "lucide-react";
+import { Layers } from "lucide-react";
 
 export default function OurWorkClient() {
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjects as ProjectItem[]);
@@ -97,11 +97,6 @@ export default function OurWorkClient() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl lg:max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Live Deliverables & Portfolio</span>
-            </div>
-
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark tracking-tight leading-tight mb-6">
               Our Work: Engineered for <br />
               <span className="gradient-text">Commercial Growth.</span>
