@@ -218,9 +218,9 @@ function ServiceCard({
           </span>
         </div>
 
-        {/* Circular Lime Green ArrowUpRight Badge in Top Right Corner */}
+        {/* Circular Lavender ArrowUpRight Badge in Top Right Corner */}
         <div className="absolute top-3.5 right-3.5 z-20">
-          <div className="w-8 h-8 rounded-full bg-[#D4FF3A] text-black flex items-center justify-center shadow-md group-hover:scale-110 group-hover:rotate-45 transition-all duration-300">
+          <div className="w-8 h-8 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center shadow-[0_4px_14px_rgba(117,69,245,0.4)] border border-white/30 group-hover:scale-110 group-hover:rotate-45 transition-all duration-300">
             <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
           </div>
         </div>
@@ -258,7 +258,7 @@ function ServiceCard({
               }`}
             >
               {isSelected && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF3A] animate-pulse shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-300 animate-pulse shrink-0" />
               )}
               <span>{tag.label}</span>
             </span>

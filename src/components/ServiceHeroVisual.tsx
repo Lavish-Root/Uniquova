@@ -277,8 +277,12 @@ export default function ServiceHeroVisual({ slug }: ServiceHeroVisualProps) {
               <div className="text-sm font-extrabold text-dark mt-0.5">Plus Jakarta Sans</div>
               <div className="text-xs text-dark-muted">Geometric &bull; Modern &bull; Global</div>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-xl shadow-glow-sm">
-              UQ
+            <div className="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-xs border border-border">
+              <img
+                src="/images/uniquova_emblem.png?v=2"
+                alt="UNIQUOVA Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
         </div>

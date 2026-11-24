@@ -242,3 +242,46 @@
   transform: scale(1.08);
 }
 
+/* ====================================================
+   3D Blinking Glow Animation for Hero Screen Logo
+   ==================================================== */
+@keyframes logo3dBlinkGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.6))
+            drop-shadow(0 0 16px rgba(117, 69, 245, 0.5))
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+    transform: scale(0.97) translateY(0px);
+    opacity: 0.88;
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(216, 180, 254, 1))
+            drop-shadow(0 0 32px rgba(117, 69, 245, 0.95))
+            drop-shadow(0 0 48px rgba(138, 92, 246, 0.8))
+            drop-shadow(0 12px 24px rgba(0, 0, 0, 0.9));
+    transform: scale(1.06) translateY(-2px);
+    opacity: 1;
+  }
+}
+
+@keyframes aura3dPulse {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.75;
+  }
+}
+
+.animate-3d-glow {
+  animation: logo3dBlinkGlow 2.8s ease-in-out infinite;
+  will-change: transform, filter, opacity;
+}
+
+.animate-aura-pulse {
+  animation: aura3dPulse 2.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+
