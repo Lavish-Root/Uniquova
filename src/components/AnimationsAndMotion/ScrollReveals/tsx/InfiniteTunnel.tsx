@@ -127,41 +127,22 @@ function TunnelCard({
           loading="lazy"
         />
 
-        {/* Ambient Gradient Overlays for Contrast and Clarity */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30 pointer-events-none" />
+        {/* Subtle Top Gradient for Badge & Arrow Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
 
-        {/* Top-Left: Domain Badge */}
+        {/* Top-Left: Domain Branding Badge */}
         <div className="absolute top-4 sm:top-6 left-4 sm:left-6 z-20">
-          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary text-xs sm:text-sm font-black shadow-md border border-white/40">
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary text-xs sm:text-sm font-black shadow-md border border-white/50">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>{item.domain}</span>
           </span>
         </div>
 
-        {/* Top-Right: Lime Green ↗ Circular Redirect Button */}
+        {/* Top-Right: Brand Lavender ↗ Circular Redirect Button */}
         <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-20">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#D4FF3A] text-black flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-45 transition-all duration-300">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#7545F5] text-white flex items-center justify-center shadow-[0_8px_25px_rgba(117,69,245,0.45)] border border-white/40 group-hover:scale-110 group-hover:bg-[#6030E4] group-hover:rotate-45 transition-all duration-300">
             <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
           </div>
-        </div>
-
-        {/* Bottom Banner: Project Name and Click to View Domain Indicator */}
-        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 z-20 flex items-end justify-between gap-4">
-          <div>
-            <h3 className="text-xl sm:text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md group-hover:text-primary-100 transition-colors">
-              {item.title}
-            </h3>
-            {item.tagline && (
-              <p className="text-xs sm:text-sm font-semibold text-purple-200/90 mt-1 drop-shadow-sm">
-                {item.tagline}
-              </p>
-            )}
-          </div>
-
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 shrink-0 group-hover:bg-white group-hover:text-primary transition-all">
-            <span>Explore {item.domain}</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </span>
         </div>
       </Link>
     </motion.div>
