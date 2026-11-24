@@ -77,8 +77,22 @@
 }
 
 /* ----------------------------------------------------
-   Continuous Vertical Review Marquee Animations
+   Continuous Horizontal & Vertical Marquee Animations
    ---------------------------------------------------- */
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marqueeLeft 42s linear infinite;
+  will-change: transform;
+}
+
 @keyframes marqueeUp {
   0% {
     transform: translateY(0);
