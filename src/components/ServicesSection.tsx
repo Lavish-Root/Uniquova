@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -136,6 +136,40 @@ function ServiceCard({
 }) {
   const [activeImage, setActiveImage] = useState<string>(service.defaultImage);
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isManualTagHover, setIsManualTagHover] = useState<boolean>(false);
+
+  // Automatic image slideshow when the card is hovered
+  useEffect(() => {
+    if (!isHovered || isManualTagHover || service.tags.length === 0) return;
+
+    let isCancelled = false;
+    let intervalId: NodeJS.Timeout | null = null;
+
+    // Gentle 500ms delay before cycling so casual mouse passing doesn't trigger rapid switches
+    const initialTimeout = setTimeout(() => {
+      if (isCancelled) return;
+
+      // Advance to first tag deliverable
+      setActiveTagIndex(0);
+      setActiveImage(service.tags[0].image);
+
+      // Cycle automatically through all deliverable images every 1.5 seconds
+      intervalId = setInterval(() => {
+        setActiveTagIndex((prev) => {
+          const next = prev === null ? 0 : (prev + 1) % service.tags.length;
+          setActiveImage(service.tags[next].image);
+          return next;
+        });
+      }, 1500);
+    }, 500);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(initialTimeout);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isHovered, isManualTagHover, service.tags]);
 
   return (
     <motion.div
@@ -144,7 +178,12 @@ function ServiceCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, ease: "easeOut" }}
       className="group flex flex-col cursor-pointer"
+      onMouseEnter={() => {
+        setIsHovered(true);
+      }}
       onMouseLeave={() => {
+        setIsHovered(false);
+        setIsManualTagHover(false);
         setActiveImage(service.defaultImage);
         setActiveTagIndex(null);
       }}
@@ -152,7 +191,8 @@ function ServiceCard({
       {/* ====================================================
           TOP IMAGE SHOWCASE
           - Rounded corners (rounded-[24px] sm:rounded-[28px])
-          - Changes image smoothly when hovering over tags
+          - Automatically cycles images on card hover
+          - Changes image instantly when hovering specific tags
           - Top-left: Domain category badge
           - Top-right: Lime-green circular button with ArrowUpRight
          ==================================================== */}
@@ -164,9 +204,9 @@ function ServiceCard({
           key={activeImage}
           src={activeImage}
           alt={service.title}
-          initial={{ opacity: 0.85, scale: 1.02 }}
+          initial={{ opacity: 0.75, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none"
           loading="eager"
         />
@@ -196,7 +236,7 @@ function ServiceCard({
         </h3>
       </Link>
 
-      {/* Pill Tags: Hovering any tag automatically changes the image above! */}
+      {/* Pill Tags: Automatically synced with auto-cycle OR manual hover */}
       <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-auto">
         {service.tags.map((tag, tIdx) => {
           const isSelected = activeTagIndex === tIdx;
@@ -204,16 +244,23 @@ function ServiceCard({
             <span
               key={tIdx}
               onMouseEnter={() => {
+                setIsManualTagHover(true);
                 setActiveImage(tag.image);
                 setActiveTagIndex(tIdx);
               }}
-              className={`text-[11px] sm:text-[12px] font-medium px-3 py-1 sm:py-1.5 rounded-full border transition-all duration-200 cursor-pointer ${
+              onMouseLeave={() => {
+                setIsManualTagHover(false);
+              }}
+              className={`text-[11px] sm:text-[12px] font-medium px-3 py-1 sm:py-1.5 rounded-full border transition-all duration-200 cursor-pointer inline-flex items-center gap-1.5 ${
                 isSelected
-                  ? "bg-slate-900 text-white border-slate-900 shadow-xs"
+                  ? "bg-slate-900 text-white border-slate-900 shadow-xs scale-105"
                   : "bg-slate-100/90 text-slate-700 border-slate-200/60 hover:bg-slate-200 hover:text-slate-900"
               }`}
             >
-              {tag.label}
+              {isSelected && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF3A] animate-pulse shrink-0" />
+              )}
+              <span>{tag.label}</span>
             </span>
           );
         })}
