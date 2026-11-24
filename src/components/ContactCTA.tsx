@@ -99,12 +99,6 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
             {/* Scroll-Driven Animated CTA Header */}
             <ScrollHeading
               className="mb-10"
-              badge={
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-purple-200 text-xs font-bold uppercase tracking-wider border border-white/10 backdrop-blur-md">
-                  <Sparkles className="w-3.5 h-3.5 text-primary-300" />
-                  <span>Let&apos;s Build Something Iconic</span>
-                </div>
-              }
               title={
                 <>
                   Have an Idea? <br />

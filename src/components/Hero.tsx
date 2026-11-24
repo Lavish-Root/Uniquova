@@ -81,15 +81,6 @@ export default function Hero({ onOpenContact }: HeroProps) {
           
           {/* LEFT COLUMN: Agency Information & Call to Actions */}
           <div className="lg:col-span-6 flex flex-col items-start z-10">
-            
-            {/* Agency Badge (from reference image) */}
-            <div className="inline-flex items-center gap-2 bg-[#F3EFFF] border border-primary-200/80 rounded-full px-4 py-1.5 shadow-sm mb-6">
-              <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs sm:text-sm font-bold text-primary tracking-wide">
-                Full-Service Digital Agency
-              </span>
-            </div>
-
             {/* Headline (from reference image) */}
             <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold tracking-tight text-dark leading-[1.12] mb-6">
               Your Vision,{" "}
