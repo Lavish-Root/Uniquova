@@ -17,6 +17,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { SERVICES_DATA } from "@/data/agencyData";
+import ServicesSection from "@/components/ServicesSection";
 
 const iconMap = {
   ShoppingCart: ShoppingCart,
@@ -69,6 +70,9 @@ export default function ServicesClient() {
           </div>
         </div>
       </section>
+
+      {/* Core Digital Services Interactive Flowing Showcase */}
+      <ServicesSection onSelectService={openInquiry} />
 
       {/* Services List with Rich Breakdown */}
       <section className="py-20 bg-white">
