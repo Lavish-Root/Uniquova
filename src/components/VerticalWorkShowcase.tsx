@@ -4,8 +4,6 @@ import React, { useEffect } from "react";
 import { ProjectItem } from "@/data/agencyData";
 import {
   ArrowLeft,
-  X,
-  ArrowUpRight,
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -71,40 +69,6 @@ export default function VerticalWorkShowcase({
               <ArrowLeft className="w-4 h-4 text-[#C4B5FD] group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
               <span>Back to Projects</span>
             </button>
-
-            {/* Middle: Title & Discipline */}
-            <div className="hidden md:flex items-center gap-3 text-center truncate">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#7545F5]/25 text-[#D8B4FE] border border-[#7545F5]/40">
-                {project.serviceCategory}
-              </span>
-              <span className="text-sm font-bold text-white/95 truncate max-w-md">
-                {project.title}
-              </span>
-            </div>
-
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {project.vercelUrl && (
-                <a
-                  href={project.vercelUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#7545F5] to-[#8B5CF6] hover:from-[#6231E8] hover:to-[#7545F5] text-white text-xs font-bold shadow-md shadow-[#7545F5]/35 hover:scale-[1.02] transition-all cursor-pointer"
-                >
-                  <span>Launch Live</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              )}
-
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-[#7545F5]/25 flex items-center justify-center text-white/80 hover:text-white transition-all duration-200 cursor-pointer border border-white/15 hover:border-[#7545F5]/40"
-                aria-label="Close vertical showcase"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
           </div>
         </header>
 
@@ -139,42 +103,9 @@ export default function VerticalWorkShowcase({
               </h1>
 
               {/* Description */}
-              <p className="text-sm sm:text-base text-white/75 max-w-3xl leading-relaxed whitespace-pre-line mb-6 font-normal">
+              <p className="text-sm sm:text-base text-white/75 max-w-3xl leading-relaxed whitespace-pre-line font-normal">
                 {project.description}
               </p>
-
-              {/* Metrics & Impact Ribbon */}
-              {project.metrics && project.metrics.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 p-4 rounded-2xl bg-white/[0.04] border border-[#7545F5]/25 max-w-2xl mb-8">
-                  {project.metrics.map((m, idx) => (
-                    <div key={idx} className="p-2 text-center sm:text-left">
-                      <p className="text-lg sm:text-2xl font-black text-[#C4B5FD] font-mono">
-                        {m.value}
-                      </p>
-                      <p className="text-[11px] sm:text-xs text-white/70 font-medium">
-                        {m.label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Technologies Tag Cloud */}
-              {project.technologies && project.technologies.length > 0 && (
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2 border-t border-white/10">
-                  <span className="text-xs font-bold text-white/40 uppercase tracking-wider mr-1">
-                    Stack:
-                  </span>
-                  {project.technologies.map((t, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs font-medium px-2.5 py-1 rounded-lg bg-[#7545F5]/10 text-white/90 border border-[#7545F5]/25"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
             </motion.div>
 
             {/* Vertical Component: Stack of All Images */}
