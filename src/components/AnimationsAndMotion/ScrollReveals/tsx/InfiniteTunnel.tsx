@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
-import { ArrowUpRight, Sparkles, Layers } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 
 export interface TunnelWorkItem {
   id: string;
@@ -187,8 +187,6 @@ export default function InfiniteTunnel({
     restDelta: 0.0001,
   });
 
-  const tunnelProgress = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-
   return (
     <div
       ref={containerRef}
@@ -248,7 +246,7 @@ export default function InfiniteTunnel({
         </div>
 
         {/* 3D Tunnel Chamber Viewport */}
-        <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden">
+        <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden pb-8">
           {items.map((item, idx) => (
             <TunnelCard
               key={item.id}
@@ -258,28 +256,6 @@ export default function InfiniteTunnel({
               smoothProgress={smoothProgress}
             />
           ))}
-        </div>
-
-        {/* Bottom Status & Scroll Hint Bar */}
-        <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 flex items-center justify-between text-xs text-dark-muted font-bold">
-          <div className="flex items-center gap-3">
-            <Layers className="w-4 h-4 text-primary animate-pulse" />
-            <span className="font-mono tracking-wider uppercase text-[11px] text-dark font-extrabold">
-              Scroll to fly through our work
-            </span>
-          </div>
-
-          {/* Tunnel Scroll Depth Progress Bar */}
-          <div className="w-36 sm:w-56 h-2 rounded-full bg-slate-200/80 overflow-hidden relative shadow-inner">
-            <motion.div
-              style={{ width: tunnelProgress }}
-              className="h-full bg-gradient-to-r from-primary to-purple-600 rounded-full"
-            />
-          </div>
-
-          <div className="hidden sm:block font-mono text-[11px] text-dark-muted font-extrabold">
-            CLICK IMAGE TO OPEN DOMAIN
-          </div>
         </div>
 
       </div>
