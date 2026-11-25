@@ -1663,12 +1663,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                             className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
                             loading="lazy"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                          <div className="absolute bottom-2.5 left-2.5 right-2.5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
-                            <span className="inline-block text-[11px] font-bold text-white bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 truncate max-w-full">
-                              {item.caption}
-                            </span>
-                          </div>
                           <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                         </div>
                       ))}
@@ -1690,12 +1684,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                             className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
                             loading="lazy"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                          <div className="absolute bottom-2.5 left-2.5 right-2.5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
-                            <span className="inline-block text-[11px] font-bold text-white bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 truncate max-w-full">
-                              {item.caption}
-                            </span>
-                          </div>
                           <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
                         </div>
                       ))}
