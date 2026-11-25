@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import ScrollHeading from "@/components/ScrollHeading";
 import ServicesMarquee from "./ServicesMarquee";
@@ -281,12 +280,6 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
           className="mb-12 sm:mb-16"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>End-to-End Capabilities</span>
-            </div>
-          }
           title={
             <>
               Our Core <span className="gradient-text">Digital Services</span>

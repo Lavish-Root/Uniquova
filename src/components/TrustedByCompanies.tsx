@@ -1456,11 +1456,6 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
         
         {/* Section Header */}
         <div className="text-center mb-6 sm:mb-8 lg:mb-10 will-change-transform">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-light border border-primary-200 text-primary text-xs font-bold uppercase tracking-widest mb-3">
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-            <span>Client Impact</span>
-          </div>
-
           <motion.h2
             style={{
               y: smoothHeaderY,

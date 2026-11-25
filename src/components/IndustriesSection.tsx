@@ -1,140 +1,137 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  ShoppingBag,
-  Cpu,
-  HeartPulse,
-  GraduationCap,
-  Sparkles,
-  Rocket,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
-import { INDUSTRIES_DATA } from "@/data/agencyData";
+import { ArrowRight } from "lucide-react";
+import { INDUSTRIES_DATA, IndustryItem } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 
-const iconMap = {
-  ShoppingBag: ShoppingBag,
-  Cpu: Cpu,
-  HeartPulse: HeartPulse,
-  GraduationCap: GraduationCap,
-  Sparkles: Sparkles,
-  Rocket: Rocket,
-};
+function IndustryCard({
+  industry,
+  onHoverStart,
+  onHoverEnd,
+}: {
+  industry: IndustryItem;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
+}) {
+  return (
+    <Link
+      href={`/industries#${industry.id}`}
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+      className="block w-[300px] sm:w-[380px] md:w-[450px] flex-shrink-0 group select-none cursor-pointer"
+    >
+      {/* CARD IMAGE CONTAINER */}
+      <div className="relative w-full aspect-[16/11] rounded-[2rem] overflow-hidden bg-white border border-border/80 shadow-[0_12px_36px_rgba(117,69,245,0.08)] group-hover:shadow-[0_24px_55px_rgba(117,69,245,0.18)] group-hover:-translate-y-1.5 transition-all duration-500">
+        <img
+          src={industry.image}
+          alt={`${industry.title} Showcase`}
+          className="w-full h-full object-cover object-center filter contrast-[1.04] brightness-[1.01] group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
+        />
+        {/* Subtle inner ambient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/15 via-transparent to-transparent pointer-events-none" />
+      </div>
+
+      {/* MAIN TITLE ONLY (CENTERED) */}
+      <div className="pt-4 px-2 text-center">
+        <h3 className="text-xl sm:text-2xl font-black text-dark group-hover:text-primary transition-colors duration-300 tracking-tight text-center">
+          {industry.title}
+        </h3>
+      </div>
+    </Link>
+  );
+}
 
 export default function IndustriesSection() {
+  const [isPaused, setIsPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Resume animation when user scrolls down or moves cursor away
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsPaused(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section id="industries" className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header with Continuous Bidirectional Scroll Animation */}
+    <section
+      id="industries"
+      ref={sectionRef}
+      className="relative w-full py-20 sm:py-28 bg-[#FAF9FF] text-dark overflow-hidden"
+    >
+      {/* Ambient Bokeh Accent Lighting */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/10 w-96 h-96 bg-primary-100/50 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/10 w-96 h-96 bg-purple-100/60 rounded-full blur-[120px]" />
+      </div>
+
+      {/* Section Header with Continuous Scroll-Linked Animation */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mb-10 sm:mb-14">
         <ScrollHeading
-          className="mb-16"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Specialized Domain Knowledge</span>
-            </div>
-          }
+          align="left"
+          maxWidth="max-w-3xl"
+          fadeOnExit={false}
           title={
             <>
               Industries We <span className="gradient-text">Serve</span>
             </>
           }
-          subtitle="Tailoring technology and creative strategies to the distinct operational realities, compliance frameworks, and consumer behaviors of each market sector."
+          titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-3"
+          subtitle="Tailoring technology and creative strategies to each market sector with precision and depth."
+          subtitleClassName="text-base sm:text-lg text-dark-muted font-normal leading-relaxed max-w-2xl"
         />
+      </div>
 
-        {/* 6 Industries Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
-          {INDUSTRIES_DATA.map((ind) => {
-            const Icon = iconMap[ind.icon as keyof typeof iconMap] || Rocket;
-            return (
-              <div
-                key={ind.id}
-                className="bg-white rounded-3xl p-6 sm:p-7 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between group overflow-hidden"
-              >
-                <div>
-                  {/* Visual Image Header */}
-                  <div className="h-44 sm:h-48 rounded-2xl overflow-hidden mb-6 relative border border-border/70 shadow-2xs bg-softBg">
-                    <img
-                      src={ind.image}
-                      alt={`${ind.title} Showcase`}
-                      width={600}
-                      height={400}
-                      loading="lazy"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent pointer-events-none" />
-                    
-                    {/* Floating Sector Tag */}
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-dark shadow-xs border border-white/40">
-                      {ind.tag}
-                    </div>
-
-                    {/* Floating Corner Metric */}
-                    {ind.floatingBadges?.[0] && (
-                      <div className="absolute bottom-3 right-3 bg-dark/85 backdrop-blur-md px-2.5 py-1 rounded-xl text-[11px] font-bold text-white shadow-md border border-white/10">
-                        {ind.floatingBadges[0].text}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-primary group-hover:text-white shadow-xs">
-                      <Icon className="w-5 h-5" />
-                    </div>
-
-                    <h3 className="text-xl font-bold text-dark group-hover:text-primary transition-colors">
-                      {ind.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-sm text-dark-muted leading-relaxed mb-6">
-                    {ind.description}
-                  </p>
-                </div>
-
-                <div className="pt-5 border-t border-border/70 space-y-3">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-dark-muted">
-                    Key Deliverables
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {ind.solutions.slice(0, 4).map((sol) => (
-                      <div key={sol} className="flex items-center gap-1.5 text-xs text-dark font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
-                        <span className="truncate">{sol}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-2">
-                    <Link
-                      href={`/industries#${ind.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform"
-                    >
-                      <span>Explore Sector Solutions</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* Continuous Right-to-Left Marquee Slider */}
+      <div
+        className="relative w-full overflow-hidden py-4 z-10"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+      >
+        {/* Continuous Running Track (Right to Left) */}
+        <div
+          className="flex w-max animate-marquee-left"
+          style={{
+            animationPlayState: isPaused ? "paused" : "running",
+          }}
+        >
+          {/* 4 Identical sets of items for seamless 100% infinite looping without empty gaps */}
+          {[0, 1, 2, 3].map((setIndex) => (
+            <div
+              key={setIndex}
+              className="flex gap-6 sm:gap-8 pr-6 sm:pr-8"
+              aria-hidden={setIndex > 0 ? "true" : undefined}
+            >
+              {INDUSTRIES_DATA.map((ind) => (
+                <IndustryCard
+                  key={`${setIndex}-${ind.id}`}
+                  industry={ind}
+                  onHoverStart={() => setIsPaused(true)}
+                  onHoverEnd={() => setIsPaused(false)}
+                />
+              ))}
+            </div>
+          ))}
         </div>
+      </div>
 
-        {/* Bottom Callout */}
-        <div className="text-center">
-          <Link
-            href="/industries"
-            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors"
-          >
-            <span>Explore Custom Industry Solutions</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
+      {/* Bottom Directory Link */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mt-10 sm:mt-12 flex items-center justify-end">
+        <Link
+          href="/industries"
+          className="inline-flex items-center gap-2 text-sm sm:text-base font-bold text-primary hover:text-primary-dark transition-colors group"
+        >
+          <span>View All Industry Frameworks</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+        </Link>
       </div>
     </section>
   );
 }
-

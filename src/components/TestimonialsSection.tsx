@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Star, MessageSquare, CheckCircle2, MessageSquarePlus } from "lucide-react";
+import { Star, CheckCircle2, MessageSquarePlus } from "lucide-react";
 import { TESTIMONIALS_DATA, TestimonialItem } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 
@@ -185,12 +185,6 @@ export default function TestimonialsSection() {
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
           className="mb-16"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Verified Client Feedback</span>
-            </div>
-          }
           title={
             <>
               Trusted by Leaders <br />

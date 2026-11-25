@@ -7,25 +7,12 @@ import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
 import {
-  ShoppingCart,
-  Code,
-  Smartphone,
-  PenTool,
-  Palette,
   ArrowRight,
   CheckCircle2,
   Layers,
   TrendingUp,
 } from "lucide-react";
 import { ServiceItem, SERVICE_BG_IMAGES } from "@/data/agencyData";
-
-const iconMap = {
-  ShoppingCart: ShoppingCart,
-  Code: Code,
-  Smartphone: Smartphone,
-  PenTool: PenTool,
-  Palette: Palette,
-};
 
 interface IndividualServiceClientProps {
   service: ServiceItem;
@@ -34,7 +21,6 @@ interface IndividualServiceClientProps {
 export default function IndividualServiceClient({ service }: IndividualServiceClientProps) {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const IconComponent = iconMap[service.iconName] || ShoppingCart;
   const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecom_laptop_cart.jpg";
 
   return (
@@ -100,12 +86,6 @@ export default function IndividualServiceClient({ service }: IndividualServiceCl
                 <li className="font-semibold text-primary">{service.title}</li>
               </ol>
             </nav>
-
-            {/* Category Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 shadow-xs">
-              <IconComponent className="w-3.5 h-3.5" />
-              <span>{service.badge}</span>
-            </div>
 
             {/* Title - Exactly One H1 */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark tracking-tight leading-tight mb-4">

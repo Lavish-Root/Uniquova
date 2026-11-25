@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { FAQ_DATA } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 
@@ -23,12 +23,6 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
           className="mb-16"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200">
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>Got Questions? We Have Answers.</span>
-            </div>
-          }
           title={
             <>
               Frequently Asked <span className="gradient-text">Questions</span>

@@ -3,7 +3,8 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import ScrollHeading from "@/components/ScrollHeading";
 
 export interface TunnelWorkItem {
   id: string;
@@ -203,16 +204,22 @@ export default function InfiniteTunnel({
           </div>
         </div>
 
-        {/* Top Header Overlay Bar */}
+        {/* Top Header Overlay Bar with Continuous Scroll-Linked Animation */}
         <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 flex items-center justify-between">
           <div>
-            <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Scroll-Reveal • Infinite Tunnel</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-dark tracking-tight">
-              Featured <span className="gradient-text">Work Showcase</span>
-            </h2>
+            <ScrollHeading
+              align="left"
+              maxWidth="max-w-xl"
+              targetRef={containerRef}
+              fadeOnExit={false}
+              offset={["start 92%", "start 10%"]}
+              title={
+                <>
+                  Featured <span className="gradient-text">Work Showcase</span>
+                </>
+              }
+              titleClassName="text-2xl sm:text-3xl lg:text-4xl font-black text-dark tracking-tight leading-tight mb-0"
+            />
           </div>
 
           <div className="hidden sm:flex items-center gap-4">

@@ -12,7 +12,6 @@ import {
   Users2,
   ArrowRight,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
 import { WHY_CHOOSE_US_DATA } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
@@ -179,12 +178,6 @@ export default function WhyChooseUs() {
           layout="split"
           maxWidth="max-w-none"
           className="mb-16 sm:mb-20"
-          badge={
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-primary-200 shadow-xs">
-              <Zap className="w-3.5 h-3.5" />
-              <span>The UNIQUOVA Advantage</span>
-            </div>
-          }
           title={
             <>
               Built Around Your <br />
