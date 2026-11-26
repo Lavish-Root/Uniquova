@@ -99,9 +99,8 @@ function LuminousPillarNode({
   return (
     <div
       ref={ref}
-      className={`relative flex items-center sm:h-[120px] ${
-        index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-      } flex-row pl-10 md:pl-0`}
+      className={`relative flex items-center ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+        } flex-row pl-10 md:pl-0`}
     >
       {/* Center Milestone Node on the Vertical Beam */}
       <div
@@ -132,11 +131,10 @@ function LuminousPillarNode({
                 : "#D4CEE8",
           }}
           transition={{ type: "spring", stiffness: 280, damping: 22 }}
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center relative ${
-            isHoveredByBeam
-              ? "shadow-[0_0_18px_4px_rgba(117,69,245,0.55)]"
-              : "shadow-md"
-          }`}
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center relative ${isHoveredByBeam
+            ? "shadow-[0_0_18px_4px_rgba(117,69,245,0.55)]"
+            : "shadow-md"
+            }`}
         >
           <span
             className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${isHoveredByBeam
@@ -164,13 +162,11 @@ function LuminousPillarNode({
           y: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
           scale: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
         }}
-        className={`w-full sm:h-full md:w-[46%] p-4 sm:px-6 sm:py-4 rounded-3xl border bg-white/95 backdrop-blur-md transition-[border-color,box-shadow] duration-[400ms] ease-out group overflow-hidden relative ${
-          index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
-        } ${
-          isHoveredByBeam
+        className={`w-full md:w-[46%] p-5 sm:p-7 rounded-3xl border bg-white/95 backdrop-blur-md transition-[border-color,box-shadow] duration-[400ms] ease-out group overflow-hidden relative ${index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+          } ${isHoveredByBeam
             ? "border-primary/50 shadow-[0_22px_50px_rgba(117,69,245,0.18)]"
             : "border-border/80 shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40"
-        }`}
+          }`}
       >
         {/* Subtle Background Pillar Visual Layer */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0">
@@ -380,7 +376,7 @@ export default function WhyChooseUs() {
         <ScrollHeading
           layout="split"
           maxWidth="max-w-none"
-          className="mb-14 sm:mb-16"
+          className="mb-16 sm:mb-20"
           title={
             <>
               Built Around Your <br />
@@ -390,8 +386,8 @@ export default function WhyChooseUs() {
           subtitle="We bridge the gap between imaginative creative design and rigorous engineering. Every line of code and every brand identity is crafted with one clear objective: driving measurable commercial results for your enterprise."
         />
 
-        {/* Luminous Timeline Scroll Beam Container with Sequential Touch-Activated Hover & One-Way Latching */}
-        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-16 sm:mb-20">
+        {/* Luminous Timeline Scroll Beam Container with Sequential Touch-Activated Hover */}
+        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-24">
           {/* Vertical Track & Unclipped Light Aura */}
           <div
             ref={trackRef}
@@ -424,8 +420,8 @@ export default function WhyChooseUs() {
             </motion.div>
           </div>
 
-          {/* Luminous Milestones / Strategic Pillars — Equal dot spacing & compact clean gap */}
-          <div className="space-y-5 sm:space-y-6">
+          {/* Milestones / Strategic Pillars */}
+          <div className="space-y-20 sm:space-y-28">
             {WHY_CHOOSE_US_DATA.map((pillar, idx) => (
               <LuminousPillarNode
                 key={pillar.id}
