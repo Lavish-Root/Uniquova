@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  Sparkles,
   Clock,
   ShieldCheck,
 } from "lucide-react";

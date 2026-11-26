@@ -16,7 +16,6 @@ import {
   User,
   KeyRound,
   ArrowRight,
-  MessageSquare,
   Send,
   Upload,
   Trash2,

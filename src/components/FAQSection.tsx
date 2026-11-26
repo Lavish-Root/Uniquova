@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { FAQ_DATA } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
 

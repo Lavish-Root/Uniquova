@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Users, Globe, ArrowUpRight } from "lucide-react";
+import { Globe, ArrowUpRight } from "lucide-react";
 
 // Social SVG Icons
 function LinkedInIcon({ className = "w-4 h-4 fill-current" }: { className?: string }) {
