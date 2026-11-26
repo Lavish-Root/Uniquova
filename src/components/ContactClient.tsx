@@ -17,6 +17,9 @@ import {
   ShieldCheck,
   Star,
   MessageSquarePlus,
+  User,
+  Building2,
+  Sparkles,
 } from "lucide-react";
 import FeedbackModal from "@/components/FeedbackModal";
 import { trackEvent } from "@/components/Analytics";
@@ -338,20 +341,24 @@ export default function ContactClient() {
             </div>
 
             {/* Right: Lead Inquiry Form */}
+            {/*
+              From Uiverse.io by Praashoo7 - https://uiverse.io/Praashoo7/brave-moose-56
+              MIT License, Copyright (c) Praashoo7 (Prashant)
+            */}
             <div className="lg:col-span-7">
-              <div className="bg-[#FAF9FF] border border-border rounded-3xl p-8 sm:p-10 shadow-sm relative">
+              <div className="bg-[#171717] border border-black/80 rounded-[25px] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-400 ease-in-out hover:scale-[1.01] hover:border-black relative group">
                 {successData ? (
                   <div className="text-center py-12 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                    <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-inner">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
 
-                    <h3 className="text-2xl font-extrabold text-dark">Thank You!</h3>
-                    <p className="text-base text-dark-muted max-w-md mx-auto leading-relaxed">
+                    <h3 className="text-2xl font-extrabold text-white">Thank You!</h3>
+                    <p className="text-base text-[#d3d3d3] max-w-md mx-auto leading-relaxed">
                       {successData.message}
                     </p>
 
-                    <div className="bg-white border border-border rounded-xl p-3 inline-block text-xs font-mono text-primary font-bold">
+                    <div className="bg-[#252525] border border-white/10 rounded-xl p-3 inline-block text-xs font-mono text-purple-300 font-bold">
                       Reference ID: {successData.leadId}
                     </div>
 
@@ -365,141 +372,183 @@ export default function ContactClient() {
                           setCompany("");
                           setDescription("");
                         }}
-                        className="bg-primary hover:bg-primary-dark text-white font-semibold text-sm px-8 py-3 rounded-full transition-colors"
+                        className="bg-[#252525] hover:bg-black text-white font-semibold text-sm px-8 py-3 rounded-[8px] border border-white/15 transition-all duration-400"
                       >
                         Submit Another Inquiry
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <h3 className="text-xl font-extrabold text-dark mb-1">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <div className="text-center sm:text-left mb-2">
+                      <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-1.5 tracking-tight">
                         Project Brief Details
                       </h3>
-                      <p className="text-xs text-dark-muted">
-                        Please provide as much context as possible.
+                      <p className="text-xs text-[#a3a3a3]">
+                        Please provide as much context as possible for your inquiry.
                       </p>
                     </div>
 
                     {errorMsg && (
-                      <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-                        <AlertCircle className="w-5 h-5 shrink-0" />
+                      <div className="flex items-center gap-3 p-4 rounded-[16px] bg-red-950/50 border border-red-500/30 text-red-200 text-sm">
+                        <AlertCircle className="w-5 h-5 shrink-0 text-red-400" />
                         <span>{errorMsg}</span>
                       </div>
                     )}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Full Name */}
                       <div>
-                        <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
+                        <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
                           Full Name <span className="text-primary">*</span>
                         </label>
-                        <input
-                          type="text"
-                          required
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          placeholder="e.g. Maya Sharma"
-                          className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                        />
+                        <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                          <User className="w-5 h-5 text-white shrink-0" />
+                          <input
+                            type="text"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="e.g. Maya Sharma"
+                            className="bg-transparent border-none outline-none w-full text-[#d3d3d3] placeholder:text-[#666666] text-sm"
+                          />
+                        </div>
                       </div>
 
+                      {/* Work Email */}
                       <div>
-                        <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
+                        <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
                           Work Email <span className="text-primary">*</span>
                         </label>
-                        <input
-                          type="email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="maya@brand.com"
-                          className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                        />
+                        <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                          <svg className="w-5 h-5 text-white shrink-0 fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                            <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z" />
+                          </svg>
+                          <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="maya@brand.com"
+                            className="bg-transparent border-none outline-none w-full text-[#d3d3d3] placeholder:text-[#666666] text-sm"
+                          />
+                        </div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Phone / WhatsApp */}
                       <div>
-                        <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                          Phone / WhatsApp <span className="text-dark-muted font-normal">(Optional)</span>
+                        <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
+                          Phone / WhatsApp <span className="text-[#888888] font-normal">(Optional)</span>
                         </label>
-                        <input
-                          type="tel"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+91 98765 43210"
-                          className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                        />
+                        <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                          <Phone className="w-5 h-5 text-white shrink-0" />
+                          <input
+                            type="tel"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="+91 98765 43210"
+                            className="bg-transparent border-none outline-none w-full text-[#d3d3d3] placeholder:text-[#666666] text-sm"
+                          />
+                        </div>
                       </div>
 
+                      {/* Company / Brand Name */}
                       <div>
-                        <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                          Company / Brand Name <span className="text-dark-muted font-normal">(Optional)</span>
+                        <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
+                          Company / Brand Name <span className="text-[#888888] font-normal">(Optional)</span>
                         </label>
-                        <input
-                          type="text"
-                          value={company}
-                          onChange={(e) => setCompany(e.target.value)}
-                          placeholder="Aurora Retail"
-                          className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                        />
+                        <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                          <Building2 className="w-5 h-5 text-white shrink-0" />
+                          <input
+                            type="text"
+                            value={company}
+                            onChange={(e) => setCompany(e.target.value)}
+                            placeholder="Aurora Retail"
+                            className="bg-transparent border-none outline-none w-full text-[#d3d3d3] placeholder:text-[#666666] text-sm"
+                          />
+                        </div>
                       </div>
                     </div>
 
+                    {/* Core Service Required */}
                     <div>
-                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
+                      <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
                         Core Service Required <span className="text-primary">*</span>
                       </label>
-                      <select
-                        value={service}
-                        onChange={(e) => setService(e.target.value)}
-                        className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark text-sm outline-none transition-all"
-                      >
-                        <option value="Amazon Account Management">Amazon Seller Account Management</option>
-                        <option value="Flipkart Account Management">Flipkart Seller Account Management</option>
-                        <option value="Amazon PPC Management">Amazon PPC &amp; Marketplace Advertising</option>
-                        <option value="Catalog Management">Catalog Management &amp; Listing Optimization</option>
-                        <option value="E-commerce Solutions">E-commerce Solutions (Multi-Channel Overview)</option>
-                        <option value="Website Development">Website Development (Next.js, Headless E-com, Custom Web Apps)</option>
-                        <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
-                        <option value="Branding">Branding (Identity, Strategy, Logo, Design Systems)</option>
-                        <option value="Graphic Designing">Graphic Designing (Social Media, Performance Ads, Collaterals)</option>
-                        <option value="Integrated Agency Package">All-In-One Integrated Growth Partnership</option>
-                      </select>
+                      <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                        <Sparkles className="w-5 h-5 text-white shrink-0" />
+                        <select
+                          value={service}
+                          onChange={(e) => setService(e.target.value)}
+                          className="bg-transparent border-none outline-none w-full text-[#d3d3d3] text-sm cursor-pointer [&>option]:bg-[#171717] [&>option]:text-white"
+                        >
+                          <option value="Amazon Account Management">Amazon Seller Account Management</option>
+                          <option value="Flipkart Account Management">Flipkart Seller Account Management</option>
+                          <option value="Amazon PPC Management">Amazon PPC &amp; Marketplace Advertising</option>
+                          <option value="Catalog Management">Catalog Management &amp; Listing Optimization</option>
+                          <option value="E-commerce Solutions">E-commerce Solutions (Multi-Channel Overview)</option>
+                          <option value="Website Development">Website Development (Next.js, Headless E-com, Custom Web Apps)</option>
+                          <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
+                          <option value="Branding">Branding (Identity, Strategy, Logo, Design Systems)</option>
+                          <option value="Graphic Designing">Graphic Designing (Social Media, Performance Ads, Collaterals)</option>
+                          <option value="Integrated Agency Package">All-In-One Integrated Growth Partnership</option>
+                        </select>
+                      </div>
                     </div>
 
+                    {/* Project Overview & Goals */}
                     <div>
-                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
+                      <label className="block text-[11px] font-bold text-[#d3d3d3] uppercase tracking-wider mb-2">
                         Project Overview &amp; Goals <span className="text-primary">*</span>
                       </label>
-                      <textarea
-                        required
-                        rows={5}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Tell us about your brand, current challenges, expected milestones, budget range, and timeline..."
-                        className="w-full px-4 py-3.5 rounded-xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all resize-none"
-                      />
+                      <div className="flex items-start gap-3 rounded-[22px] px-4 py-3.5 bg-[#171717] text-white shadow-[inset_2px_5px_10px_rgb(5,5,5)] border border-transparent focus-within:border-white/20 transition-all duration-300">
+                        <MessageSquare className="w-5 h-5 text-white shrink-0 mt-0.5" />
+                        <textarea
+                          required
+                          rows={4}
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          placeholder="Tell us about your brand, current challenges, expected milestones, budget range, and timeline..."
+                          className="bg-transparent border-none outline-none w-full text-[#d3d3d3] placeholder:text-[#666666] text-sm resize-none"
+                        />
+                      </div>
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white font-bold text-base py-4 rounded-full shadow-glow-sm disabled:opacity-70 transition-all duration-200"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Submitting Inquiry...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Send Project Inquiry</span>
-                          <Send className="w-4 h-4" />
-                        </>
-                      )}
-                    </button>
+                    {/* Buttons in Brave-Moose Uiverse Style */}
+                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-3">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-[#252525] hover:bg-black text-white font-bold text-sm py-3.5 px-6 rounded-[8px] border border-white/10 hover:border-white/25 shadow-md transition-all duration-400 ease-in-out cursor-pointer active:scale-95 disabled:opacity-70"
+                      >
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin text-white" />
+                            <span>Submitting Inquiry...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Send Project Inquiry</span>
+                            <Send className="w-4 h-4 text-white" />
+                          </>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setName("");
+                          setEmail("");
+                          setPhone("");
+                          setCompany("");
+                          setDescription("");
+                        }}
+                        className="w-full sm:w-auto inline-flex items-center justify-center bg-[#252525] hover:bg-black text-[#d3d3d3] hover:text-white font-semibold text-xs py-3.5 px-5 rounded-[8px] border border-white/10 transition-all duration-400 ease-in-out cursor-pointer active:scale-95"
+                      >
+                        Clear
+                      </button>
+                    </div>
                   </form>
                 )}
               </div>
