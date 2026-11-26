@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useSpring, useInView, useMotionValue } from "framer-motion";
 import {
   Layers,
   TrendingUp,
@@ -61,7 +61,7 @@ function LuminousPillarNode({
   return (
     <div
       ref={ref}
-      className={`relative flex items-center ${
+      className={`relative flex items-center sm:h-[120px] ${
         index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
       } flex-row pl-10 md:pl-0`}
     >
@@ -74,17 +74,11 @@ function LuminousPillarNode({
             borderColor: isInView ? "#fff" : hasRevealed ? "#C4ACFD" : "#D4CEE8",
           }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="w-5 h-5 rounded-full border-2 shadow-md flex items-center justify-center transition-colors duration-500"
+          className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-300"
         >
-          {isInView && (
-            <motion.div
-              layoutId="luminous-pulse"
-              className="absolute inset-0 rounded-full bg-primary/40 blur-md animate-pulse"
-            />
-          )}
           <span
             className={`w-1.5 h-1.5 rounded-full transition-colors ${
-              isInView ? "bg-white" : hasRevealed ? "bg-primary" : "bg-primary/30"
+              isInView ? "bg-white animate-pulse" : hasRevealed ? "bg-primary" : "bg-primary/30"
             }`}
           />
         </motion.div>
@@ -99,7 +93,7 @@ function LuminousPillarNode({
           scale: hasRevealed ? 1 : 0.9,
         }}
         transition={{ duration: 0.55, ease: "easeOut" }}
-        className={`w-full md:w-[46%] p-5 sm:p-7 rounded-3xl border border-border/80 bg-white/95 backdrop-blur-md shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40 transition-all duration-300 group overflow-hidden relative ${
+        className={`w-full sm:h-full md:w-[46%] p-4 sm:px-6 sm:py-4 rounded-3xl border border-border/80 bg-white/95 backdrop-blur-md shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40 transition-all duration-300 group overflow-hidden relative ${
           index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
         }`}
       >
@@ -154,13 +148,30 @@ function LuminousPillarNode({
 export default function WhyChooseUs() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll beam spring progression
+  // Scroll beam progression
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start center", "end end"],
+    offset: ["start 60%", "end 85%"],
   });
 
-  const scaleY = useSpring(scrollYProgress, {
+  // Track progress: animates smoothly with scroll until user passes the section, then locks static at 100%
+  const progress = useMotionValue(0);
+  const isCompletedRef = useRef(false);
+
+  useEffect(() => {
+    return scrollYProgress.on("change", (latest) => {
+      if (isCompletedRef.current) return;
+
+      if (latest >= 0.99) {
+        progress.set(1);
+        isCompletedRef.current = true;
+      } else {
+        progress.set(latest);
+      }
+    });
+  }, [scrollYProgress, progress]);
+
+  const scaleY = useSpring(progress, {
     stiffness: 90,
     damping: 25,
     restDelta: 0.001,
@@ -178,7 +189,7 @@ export default function WhyChooseUs() {
         <ScrollHeading
           layout="split"
           maxWidth="max-w-none"
-          className="mb-16 sm:mb-20"
+          className="mb-14 sm:mb-16"
           title={
             <>
               Built Around Your <br />
@@ -188,19 +199,19 @@ export default function WhyChooseUs() {
           subtitle="We bridge the gap between imaginative creative design and rigorous engineering. Every line of code and every brand identity is crafted with one clear objective: driving measurable commercial results for your enterprise."
         />
 
-        {/* Luminous Timeline Scroll Beam Container with Progressive One-by-One Reveal Spacing */}
-        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-24">
+        {/* Luminous Timeline Scroll Beam Container with One-Way Latching Progression */}
+        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-16 sm:mb-20">
           {/* Vertical Track Line */}
           <div className="absolute left-3.5 md:left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 bg-border/80 rounded-full overflow-hidden">
             {/* Luminous Animated Light Beam */}
             <motion.div
               style={{ scaleY, transformOrigin: "top" }}
-              className="w-full h-full bg-gradient-to-b from-primary via-purple-500 to-indigo-600 shadow-[0_0_20px_rgba(117,69,245,0.7)]"
+              className="w-full h-full bg-gradient-to-b from-primary via-purple-500 to-indigo-600"
             />
           </div>
 
-          {/* Luminous Milestones / Strategic Pillars — Generous spacing so pillars reveal sequentially */}
-          <div className="space-y-20 sm:space-y-28">
+          {/* Luminous Milestones / Strategic Pillars — Equal dot spacing & compact clean gap */}
+          <div className="space-y-5 sm:space-y-6">
             {WHY_CHOOSE_US_DATA.map((pillar, idx) => (
               <LuminousPillarNode
                 key={pillar.id}
