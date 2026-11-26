@@ -69,7 +69,7 @@
   }
 
   .purple-mesh-bg {
-    background-image: 
+    background-image:
       radial-gradient(circle at 10% 20%, rgba(117, 69, 245, 0.07) 0%, transparent 45%),
       radial-gradient(circle at 85% 30%, rgba(80, 48, 199, 0.09) 0%, transparent 50%),
       radial-gradient(circle at 50% 85%, rgba(243, 239, 255, 0.7) 0%, transparent 60%);
@@ -146,7 +146,6 @@
   order: 0;
   gap: 0;
 }
-
 
 .animate-marquee-down-slow {
   animation: marqueeDown 36s linear infinite;
@@ -298,4 +297,372 @@
   will-change: transform, opacity;
 }
 
+/* ----------------------------------------------------
+   Infinite Horizontal Marquee for Selected Work
+   ---------------------------------------------------- */
+@keyframes marqueeHorizontal {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
 
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-horizontal {
+  animation: marqueeHorizontal var(--marquee-speed, 42s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-container:hover .animate-marquee-horizontal,
+.marquee-container[data-paused="true"] .animate-marquee-horizontal {
+  animation-play-state: paused;
+}
+
+/* ====================================================
+   UNIQUOVA Kinetic Loader Animation Suite (U <-> I Bounce)
+   ==================================================== */
+
+/* Horizontal track: Holds at I (96%-8%), flies smoothly I->U (8%-46%), holds at U (46%-58%), returns U->I (58%-96%) */
+@keyframes uqDotTrackX {
+
+  0%,
+  8% {
+    transform: translate3d(var(--uq-half, 46px), 0, 0);
+    animation-timing-function: linear;
+  }
+
+  46%,
+  58% {
+    transform: translate3d(calc(var(--uq-half, 46px) * -1), 0, 0);
+    animation-timing-function: linear;
+  }
+
+  96%,
+  100% {
+    transform: translate3d(var(--uq-half, 46px), 0, 0);
+  }
+
+}
+
+/* Vertical ballistic parabola: true gravity easing up to apex at 27% & 77% and impact compression at 0% & 50% */
+@keyframes uqDotBallY {
+  0% {
+    transform: translate3d(0, 16px, 0) scale(1.18, 0.72);
+    animation-timing-function: ease-out;
+  }
+
+  4% {
+    transform: translate3d(0, 21px, 0) scale(1.24, 0.65);
+    animation-timing-function: cubic-bezier(0.3, 0.8, 0.4, 1);
+  }
+
+  8% {
+    transform: translate3d(0, -2px, 0) scale(0.88, 1.24);
+    animation-timing-function: cubic-bezier(0.22, 0.68, 0.42, 1);
+  }
+
+  27% {
+    transform: translate3d(0, -46px, 0) scale(1.02, 0.98);
+    animation-timing-function: cubic-bezier(0.58, 0, 0.78, 0.32);
+  }
+
+  46% {
+    transform: translate3d(0, 4px, 0) scale(0.88, 1.22);
+    animation-timing-function: ease-in;
+  }
+
+  50% {
+    transform: translate3d(0, 21px, 0) scale(1.26, 0.62);
+    animation-timing-function: cubic-bezier(0.3, 0.8, 0.4, 1);
+  }
+
+  54% {
+    transform: translate3d(0, 13px, 0) scale(1.06, 0.9);
+    animation-timing-function: ease-out;
+  }
+
+  58% {
+    transform: translate3d(0, -2px, 0) scale(0.88, 1.24);
+    animation-timing-function: cubic-bezier(0.22, 0.68, 0.42, 1);
+  }
+
+  77% {
+    transform: translate3d(0, -46px, 0) scale(1.02, 0.98);
+    animation-timing-function: cubic-bezier(0.58, 0, 0.78, 0.32);
+  }
+
+  96% {
+    transform: translate3d(0, 4px, 0) scale(0.88, 1.22);
+    animation-timing-function: ease-in;
+  }
+
+
+  100% {
+    transform: translate3d(0, 16px, 0) scale(1.18, 0.72);
+  }
+}
+
+/* 'U' squashes smoothly on ball impact (50%), then springs upward (58%) to bounce the ball back to 'I' */
+@keyframes uqUBounce {
+
+  0%,
+  44%,
+  74%,
+  100% {
+    transform: scale(1, 1);
+    text-shadow: 0 2px 14px rgba(117, 69, 245, 0.22);
+  }
+
+  46% {
+    transform: scale(1.06, 0.82);
+    text-shadow: 0 0 22px rgba(117, 69, 245, 0.45);
+  }
+
+  50% {
+    transform: scale(1.22, 0.34);
+    text-shadow: 0 0 34px rgba(117, 69, 245, 0.9), 0 0 56px rgba(168, 85, 247, 0.55);
+  }
+
+  54% {
+    transform: scale(1.1, 0.66);
+    text-shadow: 0 0 28px rgba(117, 69, 245, 0.7);
+  }
+
+  59% {
+    transform: scale(0.9, 1.28);
+    text-shadow: 0 0 24px rgba(117, 69, 245, 0.55);
+  }
+
+  65% {
+    transform: scale(1.04, 0.94);
+    text-shadow: 0 2px 16px rgba(117, 69, 245, 0.32);
+  }
+
+  69% {
+    transform: scale(0.98, 1.02);
+  }
+}
+
+/* 'I' absorbs the ball (96%-4%), stretches upward (8%-12%) to launch it toward 'U' */
+@keyframes uqILaunch {
+  0% {
+    transform: scale(1.16, 0.46);
+    text-shadow: 0 0 30px rgba(117, 69, 245, 0.8), 0 0 50px rgba(168, 85, 247, 0.45);
+  }
+
+  4% {
+    transform: scale(1.2, 0.36);
+    text-shadow: 0 0 34px rgba(117, 69, 245, 0.9), 0 0 56px rgba(168, 85, 247, 0.55);
+  }
+
+  9% {
+    transform: scale(0.9, 1.28);
+    text-shadow: 0 0 24px rgba(117, 69, 245, 0.55);
+  }
+
+  16% {
+    transform: scale(1.04, 0.94);
+    text-shadow: 0 2px 16px rgba(117, 69, 245, 0.32);
+  }
+
+  21% {
+    transform: scale(0.98, 1.02);
+  }
+
+  26%,
+  94% {
+    transform: scale(1, 1);
+    text-shadow: 0 2px 14px rgba(117, 69, 245, 0.22);
+  }
+
+  96% {
+    transform: scale(1.06, 0.82);
+    text-shadow: 0 0 22px rgba(117, 69, 245, 0.45);
+  }
+
+  100% {
+    transform: scale(1.16, 0.46);
+    text-shadow: 0 0 30px rgba(117, 69, 245, 0.8), 0 0 50px rgba(168, 85, 247, 0.45);
+  }
+}
+
+/* Subtle violet energy reflection on 'N' as the orb passes directly overhead (27% & 77%) */
+@keyframes uqNHighlight {
+
+  0%,
+  15%,
+  39%,
+  65%,
+  89%,
+  100% {
+    color: #151323;
+    text-shadow: none;
+  }
+
+  27%,
+  77% {
+    color: #3D249E;
+    text-shadow: 0 -4px 18px rgba(117, 69, 245, 0.35);
+  }
+}
+
+/* Expanding electric purple shockwave ripple upon impact with U (50%) and I (4%) */
+@keyframes uqRippleU {
+
+  0%,
+  48% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.85;
+  }
+
+  74%,
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes uqRippleI {
+
+  0%,
+  2% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0.75;
+  }
+
+  4% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.85;
+  }
+
+  28%,
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Soft circular contact aura beneath 'U' and 'I' (deepens on impact) */
+@keyframes uqContactAuraU {
+  0%, 44%, 72%, 100% {
+    transform: translate(-50%, 0) scale(0.75);
+    opacity: 0.22;
+  }
+  50% {
+    transform: translate(-50%, 0) scale(1.35);
+    opacity: 0.75;
+  }
+}
+
+@keyframes uqContactAuraI {
+  0%, 100% {
+    transform: translate(-50%, 0) scale(1.25);
+    opacity: 0.65;
+  }
+  4% {
+    transform: translate(-50%, 0) scale(1.35);
+    opacity: 0.75;
+  }
+  26%, 92% {
+    transform: translate(-50%, 0) scale(0.75);
+    opacity: 0.22;
+  }
+}
+
+@keyframes uqWordEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-uq-dot-x {
+  animation: uqDotTrackX 1.5s linear infinite;
+  will-change: transform;
+}
+
+.animate-uq-dot-y {
+  animation: uqDotBallY 1.5s linear infinite;
+  will-change: transform;
+}
+
+.animate-uq-dot-x-trail-1 {
+  animation: uqDotTrackX 1.5s linear infinite;
+  animation-delay: -1.455s;
+  will-change: transform;
+}
+
+.animate-uq-dot-y-trail-1 {
+  animation: uqDotBallY 1.5s linear infinite;
+  animation-delay: -1.455s;
+  will-change: transform;
+}
+
+.animate-uq-dot-x-trail-2 {
+  animation: uqDotTrackX 1.5s linear infinite;
+  animation-delay: -1.41s;
+  will-change: transform;
+}
+
+.animate-uq-dot-y-trail-2 {
+  animation: uqDotBallY 1.5s linear infinite;
+  animation-delay: -1.41s;
+  will-change: transform;
+}
+
+.animate-uq-u {
+  animation: uqUBounce 1.5s ease-in-out infinite;
+  transform-origin: 50% 82%;
+  will-change: transform, text-shadow;
+}
+
+.animate-uq-i {
+  animation: uqILaunch 1.5s ease-in-out infinite;
+  transform-origin: 50% 82%;
+  will-change: transform, text-shadow;
+}
+
+.animate-uq-n {
+  animation: uqNHighlight 1.5s ease-in-out infinite;
+}
+
+.animate-uq-ripple-u {
+  animation: uqRippleU 1.5s ease-out infinite;
+}
+
+.animate-uq-ripple-u-outer {
+  animation: uqRippleU 1.5s ease-out infinite;
+  animation-delay: 0.08s;
+}
+
+.animate-uq-ripple-i {
+  animation: uqRippleI 1.5s ease-out infinite;
+}
+
+.animate-uq-ripple-i-outer {
+  animation: uqRippleI 1.5s ease-out infinite;
+  animation-delay: 0.08s;
+}
+
+.animate-uq-aura-u {
+  animation: uqContactAuraU 1.5s ease-in-out infinite;
+}
+
+.animate-uq-aura-i {
+  animation: uqContactAuraI 1.5s ease-in-out infinite;
+}
+
+.animate-uq-word-enter {
+  animation: uqWordEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

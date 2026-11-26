@@ -13,6 +13,7 @@ import {
   Star,
 } from "lucide-react";
 import TrustedBy from "./TrustedBy";
+import { MaskedAvatars } from "@/components/ui/masked-avatars";
 
 interface HeroProps {
   onOpenContact?: () => void;
@@ -138,40 +139,38 @@ export default function Hero({ onOpenContact }: HeroProps) {
             {/* Social Proof & Rating Bar (from reference image) */}
             <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-border/70 w-full sm:w-auto">
               {/* Client Avatars */}
-              <div className="flex -space-x-2.5 overflow-hidden">
-                <img
-                  className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80"
-                  alt="UNIQUOVA Client Partner — E-commerce Brand Founder"
-                  width={36}
-                  height={36}
-                  loading="lazy"
-                />
-                <img
-                  className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80"
-                  alt="UNIQUOVA Client Partner — Tech Enterprise Director"
-                  width={36}
-                  height={36}
-                  loading="lazy"
-                />
-                <img
-                  className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
-                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&auto=format&fit=crop&q=80"
-                  alt="UNIQUOVA Client Partner — D2C Brand Leader"
-                  width={36}
-                  height={36}
-                  loading="lazy"
-                />
-                <img
-                  className="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover shadow-sm"
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&auto=format&fit=crop&q=80"
-                  alt="UNIQUOVA Client Partner — Global Retail Executive"
-                  width={36}
-                  height={36}
-                  loading="lazy"
-                />
-              </div>
+              <MaskedAvatars
+                size={36}
+                border={2}
+                column={26}
+                offset={-2.5}
+                avatars={[
+                  {
+                    avatar:
+                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80",
+                    name: "Ananya",
+                    alt: "UNIQUOVA Client Partner — E-commerce Brand Founder",
+                  },
+                  {
+                    avatar:
+                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80",
+                    name: "Marcus",
+                    alt: "UNIQUOVA Client Partner — Tech Enterprise Director",
+                  },
+                  {
+                    avatar:
+                      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&auto=format&fit=crop&q=80",
+                    name: "Elena",
+                    alt: "UNIQUOVA Client Partner — D2C Brand Leader",
+                  },
+                  {
+                    avatar:
+                      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&auto=format&fit=crop&q=80",
+                    name: "Pooja",
+                    alt: "UNIQUOVA Client Partner — Global Retail Executive",
+                  },
+                ]}
+              />
 
               {/* Verified Count */}
               <div className="text-xs sm:text-sm font-semibold text-dark">

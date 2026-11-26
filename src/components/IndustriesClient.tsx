@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
+import StatsCounter from "@/components/ui/stats-counter";
 import { INDUSTRIES_DATA } from "@/data/agencyData";
 import {
   ShoppingBag,
@@ -37,6 +38,22 @@ const shortNameMap: Record<string, string> = {
   fashion: "Fashion",
   startups: "Startups",
 };
+
+function renderAnimatedMetric(raw: string, delay = 0) {
+  const match = raw.match(/^(.*?)(\d+(?:\.\d+)?)(.*)$/);
+  if (!match) return raw;
+  const [, prefix, numStr, suffix] = match;
+  const decimals = numStr.includes(".") ? numStr.split(".")[1].length : 0;
+  return (
+    <StatsCounter
+      value={Number(numStr)}
+      prefix={prefix}
+      suffix={suffix}
+      decimals={decimals}
+      delay={delay}
+    />
+  );
+}
 
 export default function IndustriesClient() {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -115,19 +132,27 @@ export default function IndustriesClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div className="border-r border-border/50">
-              <div className="text-2xl sm:text-4xl font-extrabold text-primary font-mono">6+</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-primary font-mono">
+                <StatsCounter value={6} suffix="+" delay={0} />
+              </div>
               <div className="text-[11px] sm:text-sm text-dark-muted font-medium mt-0.5">Specialized Sectors</div>
             </div>
             <div className="border-r-0 md:border-r border-border/50">
-              <div className="text-2xl sm:text-4xl font-extrabold text-dark font-mono">₹10Cr+</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-dark font-mono">
+                <StatsCounter prefix="₹" value={10} suffix="Cr+" delay={0.08} />
+              </div>
               <div className="text-[11px] sm:text-sm text-dark-muted font-medium mt-0.5">Handled Commercial Scale</div>
             </div>
             <div className="border-r border-border/50">
-              <div className="text-2xl sm:text-4xl font-extrabold text-primary font-mono">98%</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-primary font-mono">
+                <StatsCounter value={98} suffix="%" delay={0.16} />
+              </div>
               <div className="text-[11px] sm:text-sm text-dark-muted font-medium mt-0.5">On-Time Production</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-4xl font-extrabold text-dark font-mono">100%</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-dark font-mono">
+                <StatsCounter value={100} suffix="%" delay={0.24} />
+              </div>
               <div className="text-[11px] sm:text-sm text-dark-muted font-medium mt-0.5">Custom Frameworks</div>
             </div>
           </div>
@@ -314,7 +339,7 @@ export default function IndustriesClient() {
                           className="bg-[#FAF9FF] border border-border/80 rounded-xl sm:rounded-2xl p-2 sm:p-3.5 text-center transition-colors group-hover:border-primary/20"
                         >
                           <div className="text-base sm:text-2xl font-extrabold text-primary font-mono">
-                            {m.value}
+                            {renderAnimatedMetric(m.value, mIdx * 0.08)}
                           </div>
                           <div className="text-[9.5px] sm:text-xs font-semibold text-dark-muted mt-0.5 leading-tight">
                             {m.label}

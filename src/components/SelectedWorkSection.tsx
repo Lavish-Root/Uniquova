@@ -151,10 +151,10 @@ export default function SelectedWorkSection() {
       ref={containerRef}
       id="selected-work"
       style={{ perspective: "1200px" }}
-      className="relative w-full bg-[#FAF9FF] pt-10 sm:pt-12 pb-16 sm:pb-24 lg:pb-32 overflow-hidden z-20"
+      className="relative w-full bg-[#FAF9FF] pt-10 sm:pt-12 lg:pt-14 pb-16 sm:pb-24 lg:pb-32 overflow-hidden z-20"
     >
       {/* ====================================================
-          THE SCROLL-UP ENTRANCE CONTAINER (EXPANDED BREADTH)
+          THE SCROLL-UP ENTRANCE CONTAINER
          ==================================================== */}
       <motion.div
         style={{
@@ -164,7 +164,7 @@ export default function SelectedWorkSection() {
           opacity: smoothOpacity,
           transformStyle: "preserve-3d",
         }}
-        className="max-w-[1720px] w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-8 will-change-transform"
+        className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 will-change-transform"
       >
         {/* Sleek Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
@@ -183,12 +183,12 @@ export default function SelectedWorkSection() {
 
         {/* ====================================================
             THE CINEMA SHOWCASE CARD WITH WEBGL DISPLACEMENT SLIDER
-            - Increased breadth & height
+            - Compact proportions matching balanced layout framing
             - Liquid shader displacement transitions
             - Autoplay, smooth GSAP typography & pagination
            ==================================================== */}
         <div
-          className="relative w-full aspect-video rounded-[32px] sm:rounded-[40px] overflow-hidden bg-[#0A0910] shadow-[0_30px_90px_-20px_rgba(21,19,35,0.45)] border border-white/10 select-none group will-change-transform"
+          className="relative w-full h-[300px] sm:h-[420px] md:h-[510px] lg:h-[580px] xl:h-[600px] rounded-[28px] sm:rounded-[36px] overflow-hidden bg-[#0A0910] shadow-[0_24px_70px_-15px_rgba(21,19,35,0.35)] border border-white/10 select-none group will-change-transform"
         >
           <div className="absolute inset-0">
             <ImageSlider
@@ -196,10 +196,10 @@ export default function SelectedWorkSection() {
               autoPlay={true}
               interval={3500}
               accentColor="#7545F5"
-              showPagination={true}
+              showPagination={false}
               isExternalLoading={isCmsLoading}
-              fit="contain"
-              className="h-full rounded-[32px] sm:rounded-[40px]"
+              fit="cover"
+              className="h-full rounded-[28px] sm:rounded-[36px]"
             />
           </div>
         </div>
