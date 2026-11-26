@@ -1,101 +1,5 @@
 [
   {
-    "id": "mark-os",
-    "title": "Mark OS, a mark of approval",
-    "serviceCategory": "Branding",
-    "client": "Mark OS Technologies",
-    "description": "Mark OS is a breakthrough AI-powered content approval platform. Designed complete visual identity, dimensional brandmark, social marketing collateral, and high-performance web experience.",
-    "vercelUrl": "https://markos.ai",
-    "githubUrl": "",
-    "mediaType": "image",
-    "mediaUrl": "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_2560.webp",
-    "badges": ["AI", "Marketing"],
-    "tags": ["Branding", "Web", "Animation"],
-    "gallery": [
-      "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_2560.webp",
-      "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_2560.webp",
-      "/images/selected_work/l5uacj7PHrYhKwot8vkmbWa4HM_2500.webp"
-    ],
-    "technologies": ["Figma", "Next.js", "3D Blender", "Tailwind CSS", "Three.js"],
-    "impact": "3.8x Brand Engagement",
-    "metrics": [
-      { "label": "Lighthouse Score", "value": "100/100" },
-      { "label": "Brand Recall", "value": "+92%" },
-      { "label": "Conversion Rate", "value": "+48%" }
-    ],
-    "featured": true,
-    "createdAt": "2026-11-24T10:00:00.000Z"
-  },
-  {
-    "id": "euroteam",
-    "title": "Euroteam - The making of a future leader in cargo transportation",
-    "serviceCategory": "Web Development",
-    "client": "Euroteam Logistics",
-    "description": "End-to-end digital transformation for Euroteam, Europe's sustainable cargo transport carrier. Engineered enterprise logistics web portal, fleet tracking UI, and corporate green mobility branding.",
-    "vercelUrl": "https://euroteam.ro",
-    "githubUrl": "",
-    "mediaType": "image",
-    "mediaUrl": "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp",
-    "badges": ["Logistics", "Transport", "AI"],
-    "tags": ["Branding", "Web"],
-    "gallery": [
-      "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_2048.webp",
-      "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_2048.webp",
-      "/images/selected_work/yylnHjpawl6cfQNJLwRB14HQ_1920.webp"
-    ],
-    "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "Fleet API", "Mapbox"],
-    "impact": "+140% Booking Efficiency",
-    "metrics": [
-      { "label": "Daily Freight Volume", "value": "24,000T" },
-      { "label": "Portal Speed", "value": "0.6s" },
-      { "label": "Carrier Retention", "value": "98%" }
-    ],
-    "featured": true,
-    "createdAt": "2026-11-24T09:30:00.000Z"
-  },
-  {
-    "id": "proj_1794828335830_0pj4i",
-    "title": "PraanSewa — Medical Healthcare Platform",
-    "serviceCategory": "Web Development",
-    "client": "Medical Industry",
-    "description": "PraanSewa is a healthcare-focused digital platform designed to make healthcare services more accessible and convenient. Built with a user-friendly interface, the platform connects patients with digital healthcare solutions seamlessly.",
-    "vercelUrl": "https://praansewa.vercel.app/",
-    "githubUrl": "",
-    "mediaType": "image",
-    "mediaUrl": "/images/services/web_dev_bg.jpg",
-    "badges": ["Healthcare", "Platform"],
-    "tags": ["Web", "Next.js"],
-    "gallery": [
-      "/images/services/web_dev_bg.jpg",
-      "/images/portfolio/zenith_health.jpg",
-      "/images/industries/healthcare.jpg"
-    ],
-    "technologies": [
-      "MERN Stack",
-      "Next.js",
-      "Tailwind CSS",
-      "Docker",
-      "Vercel"
-    ],
-    "impact": "+150% Performance Boost",
-    "metrics": [
-      {
-        "label": "Lighthouse Score",
-        "value": "99/100"
-      },
-      {
-        "label": "Speed Index",
-        "value": "0.8s"
-      },
-      {
-        "label": "Conversions",
-        "value": "+24%"
-      }
-    ],
-    "featured": true,
-    "createdAt": "2026-11-16T11:25:35.830Z"
-  },
-  {
     "id": "proj_ecom_1",
     "title": "Apex Nutrition — Amazon & Marketplace Store Scaling",
     "serviceCategory": "E-commerce Solutions",
@@ -105,8 +9,14 @@
     "githubUrl": "",
     "mediaType": "image",
     "mediaUrl": "/images/services/ecom_digital_retail.jpg",
-    "badges": ["Amazon Growth", "Scale"],
-    "tags": ["E-Commerce", "PPC"],
+    "badges": [
+      "Amazon Growth",
+      "Scale"
+    ],
+    "tags": [
+      "E-Commerce",
+      "PPC"
+    ],
     "gallery": [
       "/images/services/ecom_digital_retail.jpg",
       "/images/portfolio/apex_ecommerce.jpg",
@@ -147,8 +57,14 @@
     "githubUrl": "",
     "mediaType": "image",
     "mediaUrl": "/images/services/graphic_design_bg.jpg?v=3",
-    "badges": ["Ad Creatives", "3D"],
-    "tags": ["Design", "Social"],
+    "badges": [
+      "Ad Creatives",
+      "3D"
+    ],
+    "tags": [
+      "Design",
+      "Social"
+    ],
     "gallery": [
       "/images/services/graphic_design_bg.jpg?v=3",
       "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_2560.webp",
@@ -188,8 +104,14 @@
     "githubUrl": "",
     "mediaType": "image",
     "mediaUrl": "/images/services/branding_bg.jpg?v=3",
-    "badges": ["Packaging", "Luxury"],
-    "tags": ["Branding", "Identity"],
+    "badges": [
+      "Packaging",
+      "Luxury"
+    ],
+    "tags": [
+      "Branding",
+      "Identity"
+    ],
     "gallery": [
       "/images/services/branding_bg.jpg?v=3",
       "/images/portfolio/lumina_brand.jpg",
@@ -229,18 +151,38 @@
     "githubUrl": "",
     "mediaType": "image",
     "mediaUrl": "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_2048.webp",
-    "badges": ["AI", "Real Estate"],
-    "tags": ["Web", "UI/UX"],
+    "badges": [
+      "AI",
+      "Real Estate"
+    ],
+    "tags": [
+      "Web",
+      "UI/UX"
+    ],
     "gallery": [
       "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_2048.webp",
       "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_2000.webp"
     ],
-    "technologies": ["React", "Next.js", "Python Fast API", "Tailwind CSS"],
+    "technologies": [
+      "React",
+      "Next.js",
+      "Python Fast API",
+      "Tailwind CSS"
+    ],
     "impact": "12.4x Deal Velocity",
     "metrics": [
-      { "label": "Portfolio Valued", "value": "$180M+" },
-      { "label": "Analysis Latency", "value": "< 1.2s" },
-      { "label": "User Growth", "value": "+210%" }
+      {
+        "label": "Portfolio Valued",
+        "value": "$180M+"
+      },
+      {
+        "label": "Analysis Latency",
+        "value": "< 1.2s"
+      },
+      {
+        "label": "User Growth",
+        "value": "+210%"
+      }
     ],
     "featured": false,
     "createdAt": "2026-11-24T06:00:00.000Z"
@@ -255,18 +197,38 @@
     "githubUrl": "",
     "mediaType": "image",
     "mediaUrl": "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
-    "badges": ["AI Hiring", "OOH"],
-    "tags": ["Branding", "Campaign"],
+    "badges": [
+      "AI Hiring",
+      "OOH"
+    ],
+    "tags": [
+      "Branding",
+      "Campaign"
+    ],
     "gallery": [
       "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_2048.webp",
       "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_1920.webp"
     ],
-    "technologies": ["OOH Media", "Motion Graphics", "Typography", "Art Direction"],
+    "technologies": [
+      "OOH Media",
+      "Motion Graphics",
+      "Typography",
+      "Art Direction"
+    ],
     "impact": "+420% Brand Awareness",
     "metrics": [
-      { "label": "Impressions", "value": "18.5M" },
-      { "label": "Inbound Inquiries", "value": "+310%" },
-      { "label": "Brand Lift", "value": "+62%" }
+      {
+        "label": "Impressions",
+        "value": "18.5M"
+      },
+      {
+        "label": "Inbound Inquiries",
+        "value": "+310%"
+      },
+      {
+        "label": "Brand Lift",
+        "value": "+62%"
+      }
     ],
     "featured": false,
     "createdAt": "2026-11-24T05:00:00.000Z"

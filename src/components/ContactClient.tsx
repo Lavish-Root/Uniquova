@@ -15,7 +15,10 @@ import {
   Loader2,
   Clock,
   ShieldCheck,
+  Star,
+  MessageSquarePlus,
 } from "lucide-react";
+import FeedbackModal from "@/components/FeedbackModal";
 import { trackEvent } from "@/components/Analytics";
 import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
 
@@ -31,6 +34,7 @@ export default function ContactClient() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<{ message: string; leadId: string } | null>(null);
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(DEFAULT_COMPANY_INFO);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -290,6 +294,34 @@ export default function ContactClient() {
                     </p>
                   </div>
                 </div>
+
+                {/* Existing Client Feedback Section */}
+                <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF9FF] via-white to-primary/[0.04] border border-primary/25 shadow-xs relative overflow-hidden group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-sm font-bold text-dark">Client Feedback</h3>
+                        <span className="text-[10px] font-bold text-primary bg-primary-light px-2 py-0.5 rounded-full">
+                          Verified
+                        </span>
+                      </div>
+                      <p className="text-xs text-dark-muted leading-relaxed mb-3.5">
+                        Already partnered with UNIQOVA? Share your experience, project review, and feedback with our executive team.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setIsFeedbackModalOpen(true)}
+                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs hover:shadow-md transition-all active:scale-95"
+                      >
+                        <MessageSquarePlus className="w-3.5 h-3.5" />
+                        <span>Leave Client Feedback</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Assurances */}
@@ -476,6 +508,12 @@ export default function ContactClient() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Client Feedback Modal */}
+      <FeedbackModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => setIsFeedbackModalOpen(false)}
+      />
 
       <Footer />
     </main>

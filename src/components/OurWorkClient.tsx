@@ -21,19 +21,18 @@ export default function OurWorkClient() {
       const cached = sessionStorage.getItem("uniquova_projects_v2");
       if (cached) {
         const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           setProjects(parsed);
-          return;
         }
       }
     } catch {
       // Ignore
     }
 
-    fetch("/api/projects")
+    fetch(`/api/projects?t=${Date.now()}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.projects) && data.projects.length > 0) {
+        if (data.success && Array.isArray(data.projects)) {
           setProjects(data.projects);
           try {
             sessionStorage.setItem("uniquova_projects_v2", JSON.stringify(data.projects));
