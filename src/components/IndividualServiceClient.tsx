@@ -21,7 +21,7 @@ interface IndividualServiceClientProps {
 export default function IndividualServiceClient({ service }: IndividualServiceClientProps) {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecom_laptop_cart.jpg";
+  const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecommerce_solution_bg.jpg";
   const isWebDev = service.slug === "web-development";
 
   return (
