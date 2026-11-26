@@ -21,24 +21,34 @@ export default function FloatingWhatsAppButton() {
 
   // Fetch live company info and subscribe to CMS updates
   useEffect(() => {
-    fetch("/api/company-info")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.companyInfo) {
-          setCompany(data.companyInfo);
-        }
-      })
-      .catch(() => {});
+    const fetchInfo = () => {
+      fetch(`/api/company-info?t=${Date.now()}`, { cache: "no-store" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.companyInfo) {
+            setCompany(data.companyInfo);
+          }
+        })
+        .catch(() => { });
+    };
+
+    fetchInfo();
 
     const handleUpdate = (e: Event) => {
       const customEvt = e as CustomEvent<CompanyInfo>;
       if (customEvt.detail) {
         setCompany(customEvt.detail);
+      } else {
+        fetchInfo();
       }
     };
 
     window.addEventListener("companyInfoUpdated", handleUpdate);
-    return () => window.removeEventListener("companyInfoUpdated", handleUpdate);
+    window.addEventListener("focus", fetchInfo);
+    return () => {
+      window.removeEventListener("companyInfoUpdated", handleUpdate);
+      window.removeEventListener("focus", fetchInfo);
+    };
   }, []);
 
   // Do not show on CMS / admin routes

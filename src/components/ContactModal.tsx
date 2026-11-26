@@ -9,6 +9,10 @@ import {
   Loader2,
   Sparkles,
   MessageSquare,
+  User,
+  Mail,
+  Phone,
+  Building2,
 } from "lucide-react";
 
 interface ContactModalProps {
@@ -153,19 +157,27 @@ export default function ContactModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-8 overflow-y-auto">
+        {/*
+          From Uiverse.io by Praashoo7 - https://uiverse.io/Praashoo7/brave-moose-56
+          MIT License, Copyright (c) Praashoo7 (Prashant)
+        */}
+        <div className="p-6 sm:p-8 overflow-y-auto bg-gradient-to-br from-white via-[#FAF9FF] to-primary/[0.03] text-dark relative overflow-hidden">
+          {/* Brand ambient glow orbs */}
+          <div className="absolute -top-24 -right-24 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-primary-200/30 rounded-full blur-3xl pointer-events-none" />
+
           {successData ? (
-            <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+            <div className="text-center py-8 space-y-4 relative z-10">
+              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-sm">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
 
-              <h4 className="text-2xl font-extrabold text-dark">Inquiry Confirmed!</h4>
-              <p className="text-sm text-dark-muted max-w-md mx-auto leading-relaxed">
+              <h4 className="text-2xl font-black text-dark">Inquiry Confirmed!</h4>
+              <p className="text-sm text-dark-muted max-w-md mx-auto leading-relaxed font-medium">
                 {successData.message}
               </p>
 
-              <div className="bg-softBg border border-border rounded-xl p-3 inline-block text-xs font-mono text-primary font-bold">
+              <div className="bg-primary-50 border border-primary-200 rounded-xl p-3 inline-block text-xs font-mono text-primary font-bold shadow-xs">
                 Reference ID: {successData.leadId}
               </div>
 
@@ -173,17 +185,17 @@ export default function ContactModal({
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="bg-primary hover:bg-primary-dark text-white font-semibold text-sm px-8 py-3 rounded-full transition-colors"
+                  className="bg-gradient-to-r from-primary via-[#6836F5] to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white font-bold text-sm px-8 py-3.5 rounded-[14px] shadow-[0_8px_25px_rgba(117,69,245,0.35)] hover:shadow-[0_12px_32px_rgba(117,69,245,0.5)] transition-all duration-300 active:scale-95 cursor-pointer"
                 >
                   Done
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative z-10">
               {errorMsg && (
-                <div className="flex items-center gap-3 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-                  <AlertCircle className="w-5 h-5 shrink-0" />
+                <div className="flex items-center gap-3 p-3.5 rounded-[16px] bg-red-50 border border-red-200 text-red-700 text-sm">
+                  <AlertCircle className="w-5 h-5 shrink-0 text-red-500" />
                   <span>{errorMsg}</span>
                 </div>
               )}
@@ -191,106 +203,124 @@ export default function ContactModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                    Your Name <span className="text-primary">*</span>
+                  <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                    Your Name <span className="text-primary font-bold">*</span>
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Alex Henderson"
-                    className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                  />
+                  <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                    <User className="w-5 h-5 text-primary shrink-0" />
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g. Alex Henderson"
+                      className="bg-transparent border-none outline-none w-full text-dark placeholder:text-dark-muted/50 text-sm font-medium"
+                    />
+                  </div>
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                    Email Address <span className="text-primary">*</span>
+                  <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                    Email Address <span className="text-primary font-bold">*</span>
                   </label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex@company.com"
-                    className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                  />
+                  <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                    <Mail className="w-5 h-5 text-primary shrink-0" />
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="alex@company.com"
+                      className="bg-transparent border-none outline-none w-full text-dark placeholder:text-dark-muted/50 text-sm font-medium"
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Phone */}
                 <div>
-                  <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                    Phone / WhatsApp <span className="text-dark-muted font-normal">(Optional)</span>
+                  <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                    Phone / WhatsApp <span className="text-dark-muted/60 font-normal">(Optional)</span>
                   </label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 98765 43210"
-                    className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                  />
+                  <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                    <Phone className="w-5 h-5 text-primary shrink-0" />
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+91 98765 43210"
+                      className="bg-transparent border-none outline-none w-full text-dark placeholder:text-dark-muted/50 text-sm font-medium"
+                    />
+                  </div>
                 </div>
 
                 {/* Company */}
                 <div>
-                  <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                    Company / Brand <span className="text-dark-muted font-normal">(Optional)</span>
+                  <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                    Company / Brand <span className="text-dark-muted/60 font-normal">(Optional)</span>
                   </label>
-                  <input
-                    type="text"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    placeholder="Acme Studios"
-                    className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all"
-                  />
+                  <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                    <Building2 className="w-5 h-5 text-primary shrink-0" />
+                    <input
+                      type="text"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      placeholder="Acme Studios"
+                      className="bg-transparent border-none outline-none w-full text-dark placeholder:text-dark-muted/50 text-sm font-medium"
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Service Required */}
               <div>
-                <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                  Service Required <span className="text-primary">*</span>
+                <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                  Service Required <span className="text-primary font-bold">*</span>
                 </label>
-                <select
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark bg-white text-sm outline-none transition-all"
-                >
-                  <option value="E-commerce Solutions">E-commerce Solutions (Amazon, Flipkart, PPC)</option>
-                  <option value="Website Development">Website Development (Next.js, Custom Web Apps)</option>
-                  <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
-                  <option value="Branding">Branding (Identity, Logo, Strategy, Guidelines)</option>
-                  <option value="Graphic Designing">Graphic Designing (Social, Ad Creatives, Collaterals)</option>
-                  <option value="Integrated Growth Package">Integrated All-In-One Growth Package</option>
-                </select>
+                <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                  <Sparkles className="w-5 h-5 text-primary shrink-0" />
+                  <select
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                    className="bg-transparent border-none outline-none w-full text-dark text-sm font-medium cursor-pointer [&>option]:bg-white [&>option]:text-dark"
+                  >
+                    <option value="E-commerce Solutions">E-commerce Solutions (Amazon, Flipkart, PPC)</option>
+                    <option value="Website Development">Website Development (Next.js, Custom Web Apps)</option>
+                    <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
+                    <option value="Branding">Branding (Identity, Logo, Strategy, Guidelines)</option>
+                    <option value="Graphic Designing">Graphic Designing (Social, Ad Creatives, Collaterals)</option>
+                    <option value="Integrated Growth Package">Integrated All-In-One Growth Package</option>
+                  </select>
+                </div>
               </div>
 
               {/* Project Description */}
               <div>
-                <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-1.5">
-                  Project Description & Goals <span className="text-primary">*</span>
+                <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
+                  Project Description &amp; Goals <span className="text-primary font-bold">*</span>
                 </label>
-                <textarea
-                  required
-                  rows={4}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Tell us about your brand, current challenges, target launch timeline, or expected metrics..."
-                  className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-dark placeholder:text-dark-muted/60 text-sm outline-none transition-all resize-none"
-                />
+                <div className="flex items-start gap-3 rounded-[22px] px-4 py-3.5 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
+                  <MessageSquare className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <textarea
+                    required
+                    rows={4}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Tell us about your brand, current challenges, target launch timeline, or expected metrics..."
+                    className="bg-transparent border-none outline-none w-full text-dark placeholder:text-dark-muted/50 text-sm font-medium resize-none"
+                  />
+                </div>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <a
                   href="https://wa.me/919876543210?text=Hello%20UNIQUOVA%2C%20I%20would%20like%20to%20discuss%20a%20project."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 hover:text-emerald-700"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Or quick-chat on WhatsApp</span>
@@ -299,17 +329,17 @@ export default function ContactModal({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white font-bold text-sm px-8 py-3.5 rounded-full shadow-glow-sm disabled:opacity-70 transition-all duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary via-[#6836F5] to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white font-bold text-sm px-8 py-3.5 rounded-[14px] shadow-[0_8px_25px_rgba(117,69,245,0.35)] hover:shadow-[0_12px_32px_rgba(117,69,245,0.5)] hover:scale-[1.01] border border-white/20 transition-all duration-300 ease-in-out cursor-pointer active:scale-95 disabled:opacity-70"
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
                       <span>Submitting...</span>
                     </>
                   ) : (
                     <>
                       <span>Send Project Inquiry</span>
-                      <Send className="w-4 h-4" />
+                      <Send className="w-4 h-4 text-white" />
                     </>
                   )}
                 </button>

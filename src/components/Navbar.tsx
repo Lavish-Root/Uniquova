@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   ChevronDown,
   ArrowRight,
@@ -13,33 +14,51 @@ import {
   Smartphone,
   PenTool,
   Palette,
+  Sparkles,
 } from "lucide-react";
 import Logo from "./Logo";
+import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   onOpenContact?: () => void;
+}
+
+/**
+ * Reusable diagonal swipe-mask fill overlay themed in UNIQUOVA's signature violet gradient.
+ */
+function SwipeMaskFill({ active = false }: { active?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute inset-0 rounded-full bg-gradient-to-tr from-[#5030C7] via-[#7545F5] to-[#9E76FB] shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        active
+          ? "translate-y-0 rotate-0 scale-100"
+          : "translate-y-[115%] rotate-[-4deg] scale-95 group-hover:translate-y-0 group-hover:rotate-0 group-hover:scale-100"
+      )}
+    />
+  );
 }
 
 export default function Navbar({ onOpenContact }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const scrollStopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleContactClick = () => {
+    if (onOpenContact) {
+      onOpenContact();
+    } else {
+      router.push("/contact");
+    }
+  };
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Aggressively prefetch all core navigation routes in parallel on mount
-  useEffect(() => {
-    const coreRoutes = ["/", "/about", "/services", "/our-work", "/industries", "/contact"];
-    coreRoutes.forEach((route) => {
-      try {
-        router.prefetch(route);
-      } catch {
-        // Ignore
-      }
-    });
-  }, [router]);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -66,29 +85,64 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     };
   }, []);
 
-  // Close menus on route change
+  // Close menus and reset navbar visibility on route change
   useEffect(() => {
     setServicesOpen(false);
     setMobileMenuOpen(false);
+    setIsNavVisible(true);
   }, [pathname]);
 
+  // Show navbar when scrolling down (or when scrolling up pauses/stops), smoothly animate away during active scroll-up
   useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY > 20;
-      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    lastScrollYRef.current = window.scrollY;
+    setIsScrolled(window.scrollY > 20);
 
-  const handleContactClick = () => {
-    if (onOpenContact) {
-      onOpenContact();
-    } else {
-      router.push("/contact");
-    }
-  };
+    const clearScrollStopTimer = () => {
+      if (scrollStopTimerRef.current) {
+        clearTimeout(scrollStopTimerRef.current);
+        scrollStopTimerRef.current = null;
+      }
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      if (servicesOpen || mobileMenuOpen || currentScrollY <= 30) {
+        clearScrollStopTimer();
+        setIsNavVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      const delta = currentScrollY - lastScrollYRef.current;
+      if (Math.abs(delta) < 6) {
+        return;
+      }
+
+      clearScrollStopTimer();
+
+      if (delta > 0) {
+        // Scrolling DOWN -> show navbar immediately
+        setIsNavVisible(true);
+      } else {
+        // Actively scrolling UP -> smoothly hide navbar, and reveal automatically once scroll stops
+        setIsNavVisible(false);
+        scrollStopTimerRef.current = setTimeout(() => {
+          setIsNavVisible(true);
+          scrollStopTimerRef.current = null;
+        }, 250);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearScrollStopTimer();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [servicesOpen, mobileMenuOpen]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -156,25 +210,43 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <motion.header
+      initial={false}
+      animate={{
+        y: isNavVisible ? "0%" : "-108%",
+        opacity: isNavVisible ? 1 : 0,
+        rotateX: isNavVisible ? 0 : 10,
+      }}
+      transition={
+        isNavVisible
+          ? { duration: 0.56, ease: [0.16, 1, 0.3, 1] }
+          : { duration: 0.44, ease: [0.32, 0.72, 0, 1] }
+      }
+      style={{ transformOrigin: "top center", transformPerspective: 1200 }}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 py-5 transition-colors duration-300 will-change-transform",
         isScrolled
-          ? "py-3 bg-white/90 backdrop-blur-md shadow-[0_4px_25px_rgba(117,69,245,0.06)] border-b border-border/70"
-          : "py-5 bg-transparent"
-      }`}
+          ? "bg-white/90 backdrop-blur-md shadow-[0_8px_32px_rgba(117,69,245,0.08)] border-b border-border/70"
+          : "bg-transparent",
+        !isNavVisible && "pointer-events-none"
+      )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Logo />
 
-          {/* Center Floating Pill Navigation - Desktop (as seen in reference design) */}
+          {/* Center Floating Pill Navigation - Desktop with Branded Swipe-Mask Animation */}
           <nav className="hidden lg:flex items-center">
-            <div className="bg-white/85 backdrop-blur-md border border-[#EAE6F4] shadow-[0_4px_24px_rgba(117,69,245,0.06)] rounded-full px-3 py-1.5 flex items-center space-x-1">
+            <div className="bg-white/90 backdrop-blur-xl border border-[#EAE6F4] shadow-[0_8px_32px_rgba(117,69,245,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] rounded-full p-1.5 flex items-center gap-0.5">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href;
+                const isActive =
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname === link.href || pathname.startsWith(`${link.href}/`);
 
                 if (link.isDropdown) {
+                  const isDropdownActive = servicesOpen || pathname.startsWith("/services");
                   return (
                     <div
                       key={link.name}
@@ -189,19 +261,28 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                           if (timeoutRef.current) clearTimeout(timeoutRef.current);
                           setServicesOpen(!servicesOpen);
                         }}
-                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                          servicesOpen || pathname.startsWith("/services")
-                            ? "text-primary bg-primary-light/60"
-                            : "text-dark/90 hover:text-primary hover:bg-softBg"
-                        }`}
+                        className={cn(
+                          "relative inline-flex items-center gap-1.5 px-4 xl:px-5 py-2 rounded-full text-sm font-semibold overflow-hidden group cursor-pointer transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(117,69,245,0.28)]",
+                          isDropdownActive && "shadow-[0_4px_16px_rgba(117,69,245,0.32)]"
+                        )}
                         aria-expanded={servicesOpen}
                       >
-                        <span>{link.name}</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                            servicesOpen ? "rotate-180 text-primary" : "text-dark-muted"
-                          }`}
-                        />
+                        <SwipeMaskFill active={isDropdownActive} />
+                        <span
+                          className={cn(
+                            "relative z-10 inline-flex items-center gap-1.5 transition-colors duration-300",
+                            isDropdownActive ? "text-white" : "text-dark/90 group-hover:text-white"
+                          )}
+                        >
+                          <span>{link.name}</span>
+                          <ChevronDown
+                            className={cn(
+                              "w-3.5 h-3.5 transition-all duration-300",
+                              servicesOpen ? "rotate-180" : "",
+                              isDropdownActive ? "text-white" : "text-dark-muted group-hover:text-white"
+                            )}
+                          />
+                        </span>
                       </button>
 
                       {/* Dropdown Menu Wrapper with Invisible Hover Bridge */}
@@ -215,9 +296,12 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                           <div className="absolute -top-3 left-0 right-0 h-4 bg-transparent pointer-events-auto" />
 
                           <div className="bg-white/95 backdrop-blur-xl border border-border rounded-2xl shadow-[0_20px_50px_rgba(117,69,245,0.15)] p-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                            <div className="px-3 py-2 border-b border-border/60 mb-1">
+                            <div className="px-3 py-2 border-b border-border/60 mb-1 flex items-center justify-between">
                               <span className="text-xs font-bold uppercase tracking-wider text-dark-muted">
                                 Core Capabilities
+                              </span>
+                              <span className="text-[11px] text-primary font-medium flex items-center gap-1">
+                                <Sparkles className="w-3 h-3" /> Full Service
                               </span>
                             </div>
 
@@ -228,8 +312,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                                   <Link
                                     key={service.name}
                                     href={service.href}
-                                    prefetch={true}
-                                    onMouseEnter={() => router.prefetch(service.href)}
                                     onClick={() => setServicesOpen(false)}
                                     className="flex items-start gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-primary-light/50 group"
                                   >
@@ -259,8 +341,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                             <div className="mt-2 pt-2 border-t border-border/60 text-center">
                               <Link
                                 href="/services"
-                                prefetch={true}
-                                onMouseEnter={() => router.prefetch("/services")}
                                 onClick={() => setServicesOpen(false)}
                                 className="text-xs font-semibold text-primary hover:text-primary-dark inline-flex items-center gap-1 py-1"
                               >
@@ -280,27 +360,35 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                     href={link.href}
                     prefetch={true}
                     onMouseEnter={() => router.prefetch(link.href)}
-                    className={`text-sm font-semibold transition-all duration-200 ${
-                      isActive
-                        ? "bg-primary text-white px-5 py-2 rounded-full shadow-[0_2px_10px_rgba(117,69,245,0.3)]"
-                        : "text-dark/90 hover:text-primary hover:bg-softBg px-4 py-2 rounded-full"
-                    }`}
+                    className={cn(
+                      "relative inline-flex items-center justify-center px-4 xl:px-5 py-2 rounded-full text-sm font-semibold overflow-hidden group transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(117,69,245,0.28)]",
+                      isActive && "shadow-[0_4px_16px_rgba(117,69,245,0.32)]"
+                    )}
                   >
-                    {link.name}
+                    <SwipeMaskFill active={isActive} />
+                    <span
+                      className={cn(
+                        "relative z-10 transition-colors duration-300",
+                        isActive ? "text-white" : "text-dark/90 group-hover:text-white"
+                      )}
+                    >
+                      {link.name}
+                    </span>
                   </Link>
                 );
               })}
             </div>
           </nav>
 
-          {/* Right Action Button (Let's Talk) */}
+          {/* Right Action Button (Let's Talk) with Matching Swipe-Mask Fill */}
           <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={handleContactClick}
-              className="group relative inline-flex items-center gap-2 bg-dark hover:bg-primary text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-300 shadow-[0_4px_16px_rgba(21,19,35,0.15)] hover:shadow-[0_8px_24px_rgba(117,69,245,0.35)] hover:-translate-y-0.5 active:translate-y-0"
+              className="group relative inline-flex items-center gap-2 bg-dark text-white text-sm font-semibold px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 shadow-[0_4px_16px_rgba(21,19,35,0.16)] hover:shadow-[0_8px_26px_rgba(117,69,245,0.38)] hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span>Let&apos;s Talk</span>
-              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+              <SwipeMaskFill />
+              <span className="relative z-10">Let&apos;s Talk</span>
+              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
           </div>
 
@@ -329,7 +417,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[65px] bg-white/95 backdrop-blur-2xl border-b border-border shadow-xl p-6 transition-all duration-300 z-50">
+        <div className="lg:hidden fixed inset-x-0 top-full bg-white/95 backdrop-blur-2xl border-b border-border shadow-xl p-6 transition-all duration-300 z-50">
           <div className="flex flex-col space-y-3">
             {navLinks.map((link) => {
               if (link.isDropdown) {
@@ -344,7 +432,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                         <Link
                           key={s.name}
                           href={s.href}
-                          prefetch={true}
                           onClick={() => setMobileMenuOpen(false)}
                           className="flex items-center gap-2.5 text-sm font-medium text-dark-muted hover:text-primary py-1"
                         >
@@ -362,11 +449,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                 <Link
                   key={link.name}
                   href={link.href}
-                  prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`text-base font-semibold py-2 transition-colors ${
-                    isActive ? "text-primary font-bold" : "text-dark hover:text-primary"
-                  }`}
+                  className={`text-base font-semibold py-2 transition-colors ${isActive ? "text-primary font-bold" : "text-dark hover:text-primary"
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -388,7 +473,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
           </div>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
 

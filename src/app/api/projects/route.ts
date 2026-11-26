@@ -4,6 +4,13 @@ import path from "path";
 import { ProjectItem } from "@/data/agencyData";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const NO_CACHE_HEADERS = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+  Pragma: "no-cache",
+  Expires: "0",
+};
 
 const PROJECTS_FILE = path.join(process.cwd(), "src", "data", "projects.json");
 const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
@@ -46,11 +53,11 @@ async function writeProjects(projects: ProjectItem[]): Promise<void> {
 export async function GET() {
   try {
     const projects = await readProjects();
-    return NextResponse.json({ success: true, projects });
+    return NextResponse.json({ success: true, projects }, { headers: NO_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: error instanceof Error ? error.message : "Failed to load projects" },
-      { status: 500 }
+      { status: 500, headers: NO_CACHE_HEADERS }
     );
   }
 }

@@ -9,18 +9,26 @@ export default function TrustedBy() {
 
   useEffect(() => {
     let isMounted = true;
-    fetch("/api/brands")
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted && data.success && Array.isArray(data.brands)) {
-          setBrands(data.brands);
-        }
-      })
-      .catch(() => {
-        // Keep initial fallback brands
-      });
+    const fetchBrands = () => {
+      fetch(`/api/brands?t=${Date.now()}`, { cache: "no-store" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted && data.success && Array.isArray(data.brands)) {
+            setBrands(data.brands);
+          }
+        })
+        .catch(() => {
+          // Keep initial fallback brands
+        });
+    };
+
+    fetchBrands();
+    window.addEventListener("brandsUpdated", fetchBrands);
+    window.addEventListener("focus", fetchBrands);
     return () => {
       isMounted = false;
+      window.removeEventListener("brandsUpdated", fetchBrands);
+      window.removeEventListener("focus", fetchBrands);
     };
   }, []);
 
@@ -31,7 +39,7 @@ export default function TrustedBy() {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 mt-6 lg:mt-10">
+    <div className="w-full max-w-6xl mt-8 lg:mt-12">
       {/* Scoped CSS animation for smooth Left-to-Right motion */}
       <style>{`
         @keyframes marqueeLeftToRight {
