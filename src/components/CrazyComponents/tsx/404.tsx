@@ -65,9 +65,9 @@ const Cactus = ({ x, y, scale, className = "" }: { x: number; y: number; scale: 
 // --- Main Canyon 404 Component (Light Theme Refined with Clear & Attractive Contrast) ---
 export default function Canyon404({
     title = "Not Found",
-    subtitle = "Sorry, there's nothing to see here but cacti :(",
+    subtitle = "Sorry, there's nothing to see here",
     homeText = "go back home",
-    searchText = "search for something",
+    searchText,
     errorCode = "404"
 }: NotFoundProps) {
 
@@ -99,13 +99,17 @@ export default function Canyon404({
                     >
                         {homeText}
                     </Link>
-                    , or{' '}
-                    <Link
-                        href="/contact"
-                        className="text-[#7545F5] hover:text-[#5030C7] font-extrabold underline decoration-2 underline-offset-4 decoration-[#7545F5]/60 hover:decoration-[#5030C7] transition-all"
-                    >
-                        {searchText}
-                    </Link>
+                    {searchText && (
+                        <>
+                            {', or '}
+                            <Link
+                                href="/contact"
+                                className="text-[#7545F5] hover:text-[#5030C7] font-extrabold underline decoration-2 underline-offset-4 decoration-[#7545F5]/60 hover:decoration-[#5030C7] transition-all"
+                            >
+                                {searchText}
+                            </Link>
+                        </>
+                    )}
                     .
                 </p>
             </div>

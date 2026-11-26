@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "404 — Page Not Found | UNIQOVA",
-  description: "Sorry, there's nothing to see here but cacti. Return to UNIQOVA homepage.",
+  description: "The page you are looking for does not exist. Return to UNIQOVA homepage.",
   robots: {
     index: false,
     follow: false,
