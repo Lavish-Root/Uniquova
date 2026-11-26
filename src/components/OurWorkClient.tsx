@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+} from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
@@ -8,12 +15,238 @@ import ContactModal from "@/components/ContactModal";
 import VerticalWorkShowcase from "@/components/VerticalWorkShowcase";
 import { ProjectItem } from "@/data/agencyData";
 import initialProjects from "@/data/projects.json";
-import { Layers } from "lucide-react";
+import { Layers, ArrowUpRight, Sparkles } from "lucide-react";
+import ScrollHeading from "@/components/ScrollHeading";
+
+interface WorkCardMotionProps {
+  project: ProjectItem;
+  side: "left" | "right";
+  onClick: () => void;
+}
+
+// ====================================================================
+// CINEMATIC AWARD-WINNING 3D SCROLL ENTRANCE & CONTINUOUS PARALLAX
+// - 3-Zone dynamic scroll runway: below viewport -> active focal zone -> gentle exit drift
+// - Left cards emerge from deep down side tilted counter-clockwise (-8.5deg -> 0deg)
+// - Right cards emerge from deep down side tilted clockwise (+8.5deg -> 0deg)
+// - Deep vertical travel (y: 280px -> 0px) with 3D tilt (rotateX: 14deg -> 0deg) & scale (0.84 -> 1.0)
+// - Static anchor wrapper eliminates scroll jitter and layout feedback loops
+// - Buttery spring physics with natural inertia for fluid deceleration
+// - Interactive 3D micro-tilt on mouse hover
+// ====================================================================
+function WorkCardMotion({ project, side, onClick }: WorkCardMotionProps) {
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  // Static target tracks the true document scroll runway continuously
+  const { scrollYProgress } = useScroll({
+    target: triggerRef,
+    offset: ["start 100%", "end 0%"],
+  });
+
+  // Soft, floaty spring physics with inertia for natural fluid deceleration
+  const springConfig = { stiffness: 65, damping: 18, mass: 0.35 };
+
+  // 1. Z-axis Rotation: Starts angled, straightens into focus, gently eases on exit
+  const initialRotate = side === "left" ? -8.5 : 8.5;
+  const exitRotate = side === "left" ? 1.5 : -1.5;
+  const rawRotateZ = useTransform(
+    scrollYProgress,
+    [0, 0.36, 0.78, 1],
+    [initialRotate, 0, 0, exitRotate]
+  );
+
+  // 2. 3D Perspective Tilt (rotateX): Leans back when rising, flattens in focus
+  const rawRotateX = useTransform(
+    scrollYProgress,
+    [0, 0.36, 0.78, 1],
+    [14, 0, 0, -4]
+  );
+
+  // 3. Deep Y-axis travel (Float up from below): y: 280px -> 0px -> -45px
+  const rawY = useTransform(
+    scrollYProgress,
+    [0, 0.38, 0.8, 1],
+    [280, 0, 0, -45]
+  );
+
+  // 4. Scale bloom: 0.84 -> 1.0 -> 0.96
+  const rawScale = useTransform(
+    scrollYProgress,
+    [0, 0.36, 0.8, 1],
+    [0.84, 1.0, 1.0, 0.96]
+  );
+
+  // 5. Opacity fade: 0 -> 1.0 -> 0.7
+  const rawOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.22, 0.85, 1],
+    [0, 1.0, 1.0, 0.7]
+  );
+
+  const smoothRotateZ = useSpring(rawRotateZ, springConfig);
+  const smoothRotateX = useSpring(rawRotateX, springConfig);
+  const smoothY = useSpring(rawY, springConfig);
+  const smoothScale = useSpring(rawScale, springConfig);
+  const smoothOpacity = useSpring(rawOpacity, springConfig);
+
+  // Interactive 3D Card Hover Tilt
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const hoverSpring = { stiffness: 140, damping: 18, mass: 0.2 };
+  const hoverTiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), hoverSpring);
+  const hoverTiltY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), hoverSpring);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const cleanMediaUrl = (project.mediaUrl || "/images/services/web_dev_bg.jpg")
+    .replace(/_(2560|2048|1920|1440|960)\.webp/, "_480.webp");
+
+  return (
+    <div ref={triggerRef} className="relative w-full">
+      <motion.div
+        style={{
+          y: smoothY,
+          rotateZ: smoothRotateZ,
+          rotateX: smoothRotateX,
+          scale: smoothScale,
+          opacity: smoothOpacity,
+          transformStyle: "preserve-3d",
+          transformOrigin: side === "left" ? "50% 60%" : "50% 60%",
+        }}
+        className="will-change-transform"
+      >
+        <motion.div
+          style={{
+            rotateX: hoverTiltX,
+            rotateY: hoverTiltY,
+            transformStyle: "preserve-3d",
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onClick={onClick}
+          className="group cursor-pointer select-none bg-white rounded-[28px] sm:rounded-[36px] p-4 sm:p-5 lg:p-6 border border-border/80 shadow-[0_6px_28px_rgba(21,19,35,0.04)] hover:shadow-[0_30px_80px_rgba(117,69,245,0.16)] hover:border-primary/45 transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden"
+        >
+          {/* Ambient Lavender Bloom on Hover */}
+          <div className="absolute -top-20 -right-20 w-56 h-56 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+          {/* Rounded Showcase Box Image Container */}
+          <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[16/11] w-full rounded-2xl sm:rounded-[26px] overflow-hidden bg-slate-950 shadow-inner mb-4 sm:mb-5">
+            <img
+              src={cleanMediaUrl}
+              alt={project.title}
+              loading="lazy"
+              className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-[0.98]"
+            />
+
+            {/* Subtle Overlay Tint on Hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-dark/50 via-dark/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Floating Top-Left Badges */}
+            <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
+              {(project.badges && project.badges.length > 0
+                ? project.badges
+                : [project.serviceCategory]
+              ).map((badge, bIdx) => (
+                <span
+                  key={bIdx}
+                  className="text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-dark shadow-sm border border-white/60"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+
+            {/* Quick Action Pill on Image (Bottom Right) */}
+            <div className="absolute bottom-3.5 right-3.5 z-10 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-dark text-xs font-bold shadow-md border border-white/60">
+                <span>View Case Study</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-primary" />
+              </span>
+            </div>
+          </div>
+
+          {/* Card Details: Title, Description, and Tags */}
+          <div className="px-1 flex flex-col relative z-10">
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-dark group-hover:text-primary transition-colors tracking-tight leading-snug">
+                {project.title}
+              </h3>
+              <span className="text-[11px] font-bold text-primary px-3 py-1 rounded-full bg-primary-light border border-primary-200/60 shrink-0 whitespace-nowrap mt-0.5">
+                {project.serviceCategory}
+              </span>
+            </div>
+
+            <p className="text-xs sm:text-sm text-dark-muted font-normal leading-relaxed line-clamp-2 mb-4">
+              {project.description}
+            </p>
+
+            {/* Tags & Explore Action */}
+            <div className="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {(project.tags && project.tags.length > 0
+                  ? project.tags
+                  : [project.serviceCategory]
+                ).map((tag, tIdx) => (
+                  <span
+                    key={tIdx}
+                    className="text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-border/80 text-dark-muted bg-[#FAF9FF] group-hover:border-primary/20 group-hover:bg-primary-light/40 group-hover:text-primary transition-colors whitespace-nowrap"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform shrink-0">
+                <span>Explore</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function OurWorkClient() {
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjects as ProjectItem[]);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Parallax differential for right column
+  const { scrollYProgress: sectionScroll } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const rawCol2Parallax = useTransform(sectionScroll, [0, 1], [0, -60]);
+  const smoothCol2Parallax = useSpring(rawCol2Parallax, { stiffness: 60, damping: 18 });
+
+  // Filter categories
+  const categories = ["All", "Web Development", "E-commerce", "Branding", "App Development"];
+
+  const filteredProjects = projects.filter((p) => {
+    if (activeCategory === "All") return true;
+    return (
+      p.serviceCategory?.toLowerCase().includes(activeCategory.toLowerCase()) ||
+      p.tags?.some((t) => t.toLowerCase().includes(activeCategory.toLowerCase()))
+    );
+  });
+
+  // Split filtered projects into 2 staggered columns
+  const col1 = filteredProjects.filter((_, idx) => idx % 2 === 0);
+  const col2 = filteredProjects.filter((_, idx) => idx % 2 === 1);
 
   // Fetch live updates from API with instant cache
   useEffect(() => {
@@ -70,7 +303,7 @@ export default function OurWorkClient() {
               width={1200}
               height={800}
               loading="lazy"
-              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.04] brightness-[1.02]"
+              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.04] brightness-[0.98]"
             />
             {/* Subtle Brand Theme Tint Overlay */}
             <div className="absolute inset-0 bg-[#7545F5]/[0.03] mix-blend-multiply" />
@@ -109,78 +342,98 @@ export default function OurWorkClient() {
         </div>
       </section>
 
-      {/* High-End Minimalist 2-Column Showcase Grid */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {projects.length === 0 ? (
-            <div className="bg-softBg border border-border rounded-3xl p-12 text-center my-8">
+      {/* High-End Minimalist 2-Column Showcase Grid with Reference Scroll-Linked Tilt & Entrance */}
+      <section
+        ref={sectionRef}
+        className="py-12 sm:py-16 lg:py-24 bg-[#FAF9FF]/50 relative overflow-hidden"
+        style={{ perspective: "1600px" }}
+      >
+        {/* Soft Background Ambient Light Gradients */}
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-primary-light/40 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Section Heading with Bidirectional Scroll Link */}
+          <ScrollHeading
+            className="mb-8 sm:mb-10 text-center"
+            badge={
+              <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-3.5 py-1 rounded-full text-xs font-bold tracking-wide border border-primary-200">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Real World Impact</span>
+              </div>
+            }
+            title={
+              <>
+                Design that lives. <span className="gradient-text">Beyond the mockups.</span>
+              </>
+            }
+            subtitle="Not mockups. Not renders. Our work on real brands, real businesses, and real places driving actual commercial results."
+          />
+
+          {/* Interactive Category Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-14 sm:mb-16">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`relative px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? "text-white shadow-glow-sm"
+                      : "text-dark-muted hover:text-dark bg-white border border-border/80 hover:border-primary/30"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeCategoryPill"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 bg-gradient-to-r from-primary to-primary-dark rounded-full -z-10"
+                    />
+                  )}
+                  <span>{cat}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {filteredProjects.length === 0 ? (
+            <div className="bg-white border border-border rounded-3xl p-12 text-center my-8 shadow-xs">
               <Layers className="w-12 h-12 text-primary/40 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-dark mb-1">No Projects Found</h3>
               <p className="text-sm text-dark-muted max-w-md mx-auto mb-6">
-                Our portfolio showcase is loading fresh deliverables.
+                No deliverables found under this category filter.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 lg:gap-x-10 lg:gap-y-16">
-              {projects.map((project) => (
-                <article
-                  key={project.id}
-                  onClick={() => setSelectedProject(project)}
-                  className="group cursor-pointer select-none flex flex-col transition-all duration-300"
-                >
-                  {/* Rounded Showcase Box Image Container */}
-                  <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[16/10] w-full rounded-2xl md:rounded-3xl overflow-hidden bg-slate-950 shadow-[0_4px_20px_rgba(0,0,0,0.06)] group-hover:shadow-[0_20px_40px_rgba(117,69,245,0.16)] transition-all duration-500">
-                    {/* Project Image */}
-                    <img
-                      src={project.mediaUrl || "/images/services/web_dev_bg.jpg"}
-                      alt={project.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-[0.98]"
-                    />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+              {/* Left Column */}
+              <div className="flex flex-col gap-10 sm:gap-14 lg:gap-20">
+                {col1.map((project) => (
+                  <WorkCardMotion
+                    key={project.id}
+                    project={project}
+                    side="left"
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ))}
+              </div>
 
-                    {/* Subtle Overlay Tint on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                    {/* Floating Top-Left Tags / Badges */}
-                    <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
-                      {(project.badges && project.badges.length > 0
-                        ? project.badges
-                        : [project.serviceCategory]
-                      ).map((badge, bIdx) => (
-                        <span
-                          key={bIdx}
-                          className="text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-dark shadow-sm border border-white/40"
-                        >
-                          {badge}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Clean Bottom Row: Title on Left, Pill Tags on Right */}
-                  <div className="mt-3.5 sm:mt-4 flex items-start justify-between gap-3 px-0.5">
-                    {/* Left: Project Title */}
-                    <h3 className="text-sm sm:text-base lg:text-lg font-bold text-dark group-hover:text-primary transition-colors leading-snug line-clamp-2">
-                      {project.title}
-                    </h3>
-
-                    {/* Right: Pill Tags */}
-                    <div className="flex items-center gap-1.5 shrink-0 pt-0.5">
-                      {(project.tags && project.tags.length > 0
-                        ? project.tags
-                        : [project.serviceCategory]
-                      ).map((tag, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className="text-[10px] sm:text-xs font-medium px-2.5 sm:px-3 py-0.5 rounded-full border border-border/80 text-dark-muted bg-white shadow-2xs whitespace-nowrap"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ))}
+              {/* Right Column (Staggered Downwards with Continuous Parallax) */}
+              <motion.div
+                style={{ y: smoothCol2Parallax }}
+                className="flex flex-col gap-10 sm:gap-14 lg:gap-20 md:pt-24 lg:pt-32"
+              >
+                {col2.map((project) => (
+                  <WorkCardMotion
+                    key={project.id}
+                    project={project}
+                    side="right"
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ))}
+              </motion.div>
             </div>
           )}
         </div>
