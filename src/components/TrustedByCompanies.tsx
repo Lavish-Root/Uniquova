@@ -1465,7 +1465,7 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
             }}
             className="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight will-change-transform"
           >
-            Trusted by AI founders
+            Trusted by <span className="gradient-text">AI founders</span>
           </motion.h2>
 
           <motion.p
