@@ -357,12 +357,6 @@ export default function OurWorkClient() {
           {/* Section Heading with Bidirectional Scroll Link */}
           <ScrollHeading
             className="mb-8 sm:mb-10 text-center"
-            badge={
-              <div className="inline-flex items-center gap-2 bg-primary-light text-primary px-3.5 py-1 rounded-full text-xs font-bold tracking-wide border border-primary-200">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Real World Impact</span>
-              </div>
-            }
             title={
               <>
                 Design that lives. <span className="gradient-text">Beyond the mockups.</span>

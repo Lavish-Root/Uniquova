@@ -300,9 +300,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                               <span className="text-xs font-bold uppercase tracking-wider text-dark-muted">
                                 Core Capabilities
                               </span>
-                              <span className="text-[11px] text-primary font-medium flex items-center gap-1">
-                                <Sparkles className="w-3 h-3" /> Full Service
-                              </span>
                             </div>
 
                             <div className="space-y-1">

@@ -385,10 +385,6 @@ export default function ContactClient() {
                 ) : (
                   <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative z-10">
                     <div className="text-center sm:text-left mb-2">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-light border border-primary-200 text-primary text-[11px] font-bold uppercase tracking-wider mb-3 shadow-xs">
-                        <Sparkles className="w-3.5 h-3.5 text-primary" />
-                        <span>Start Your Project</span>
-                      </div>
                       <h3 className="text-xl sm:text-2xl font-black text-dark mb-1.5 tracking-tight">
                         Project Brief <span className="gradient-text">Details.</span>
                       </h3>

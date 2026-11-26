@@ -143,11 +143,6 @@ export default function ContactModal({
             <X className="w-5 h-5" />
           </button>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-purple-200 text-xs font-semibold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Fast-Track Project Inquiry</span>
-          </div>
-
           <h3 className="text-2xl sm:text-3xl font-extrabold leading-tight">
             Let&apos;s Build Your Next Digital Milestone
           </h3>
