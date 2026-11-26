@@ -6,7 +6,9 @@ import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
 import TeamSection from "@/components/TeamSection";
+import StatsCounter from "@/components/ui/stats-counter";
 import {
+  Sparkles,
   Target,
   Eye,
   Award,
@@ -60,7 +62,7 @@ export default function AboutClient() {
         {/* Themed Background Image Layer */}
         <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
           {/* Studio Background Image - Positioned on the right side with True Alpha Mask */}
-          <div 
+          <div
             className="absolute inset-y-0 right-0 w-full lg:w-3/4 xl:w-7/12 h-full overflow-hidden"
             style={{
               maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)",
@@ -77,14 +79,14 @@ export default function AboutClient() {
             />
             {/* Subtle Brand Theme Tint Overlay */}
             <div className="absolute inset-0 bg-[#7545F5]/[0.03] mix-blend-multiply" />
-            
+
             {/* Top & Bottom seamless gradient transitions */}
             <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#FAF9FF] to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white via-white/60 to-transparent" />
           </div>
 
           {/* Subtle geometric dot grid for depth */}
-          <div 
+          <div
             className="absolute inset-0 opacity-[0.035]"
             style={{
               backgroundImage: `radial-gradient(#7545F5 1.5px, transparent 1.5px)`,
@@ -99,6 +101,11 @@ export default function AboutClient() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl lg:max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-primary-200 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 shadow-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>About UNIQUOVA</span>
+            </div>
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark tracking-tight leading-tight mb-6">
               Empowering Visionary Brands in the{" "}
               <span className="gradient-text">Digital Era.</span>
@@ -133,15 +140,21 @@ export default function AboutClient() {
 
               <div className="pt-4 grid grid-cols-3 gap-6 border-t border-border">
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">250+</p>
+                  <p className="text-3xl font-extrabold text-primary">
+                    <StatsCounter value={250} suffix="+" delay={0} />
+                  </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">Projects Shipped</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">99.2%</p>
+                  <p className="text-3xl font-extrabold text-primary">
+                    <StatsCounter value={99.2} decimals={1} suffix="%" delay={0.08} />
+                  </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">On-Time Delivery</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">3.4x</p>
+                  <p className="text-3xl font-extrabold text-primary">
+                    <StatsCounter value={3.4} decimals={1} suffix="x" delay={0.16} />
+                  </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">Average Client ROI</p>
                 </div>
               </div>
@@ -150,7 +163,7 @@ export default function AboutClient() {
             <div className="lg:col-span-6 relative">
               <div className="bg-gradient-to-tr from-primary-light to-white p-8 rounded-3xl border border-border/80 shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-2xl" />
-                
+
                 <h3 className="text-2xl font-bold text-dark mb-4 relative z-10">
                   Our Mission &amp; Vision
                 </h3>

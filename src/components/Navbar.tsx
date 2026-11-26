@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   ChevronDown,
   ArrowRight,
@@ -43,6 +44,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const scrollStopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleContactClick = () => {
     if (onOpenContact) {
@@ -81,23 +85,64 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     };
   }, []);
 
-  // Close menus on route change
+  // Close menus and reset navbar visibility on route change
   useEffect(() => {
     setServicesOpen(false);
     setMobileMenuOpen(false);
+    setIsNavVisible(true);
   }, [pathname]);
 
+  // Show navbar when scrolling down (or when scrolling up pauses/stops), smoothly animate away during active scroll-up
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+    lastScrollYRef.current = window.scrollY;
+    setIsScrolled(window.scrollY > 20);
+
+    const clearScrollStopTimer = () => {
+      if (scrollStopTimerRef.current) {
+        clearTimeout(scrollStopTimerRef.current);
+        scrollStopTimerRef.current = null;
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      if (servicesOpen || mobileMenuOpen || currentScrollY <= 30) {
+        clearScrollStopTimer();
+        setIsNavVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      const delta = currentScrollY - lastScrollYRef.current;
+      if (Math.abs(delta) < 6) {
+        return;
+      }
+
+      clearScrollStopTimer();
+
+      if (delta > 0) {
+        // Scrolling DOWN -> show navbar immediately
+        setIsNavVisible(true);
+      } else {
+        // Actively scrolling UP -> smoothly hide navbar, and reveal automatically once scroll stops
+        setIsNavVisible(false);
+        scrollStopTimerRef.current = setTimeout(() => {
+          setIsNavVisible(true);
+          scrollStopTimerRef.current = null;
+        }, 250);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearScrollStopTimer();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [servicesOpen, mobileMenuOpen]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -165,11 +210,26 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? "py-3 bg-white/90 backdrop-blur-md shadow-[0_4px_25px_rgba(117,69,245,0.06)] border-b border-border/70"
-        : "py-5 bg-transparent"
-        }`}
+    <motion.header
+      initial={false}
+      animate={{
+        y: isNavVisible ? "0%" : "-108%",
+        opacity: isNavVisible ? 1 : 0,
+        rotateX: isNavVisible ? 0 : 10,
+      }}
+      transition={
+        isNavVisible
+          ? { duration: 0.56, ease: [0.16, 1, 0.3, 1] }
+          : { duration: 0.44, ease: [0.32, 0.72, 0, 1] }
+      }
+      style={{ transformOrigin: "top center", transformPerspective: 1200 }}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 py-5 transition-colors duration-300 will-change-transform",
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-[0_8px_32px_rgba(117,69,245,0.08)] border-b border-border/70"
+          : "bg-transparent",
+        !isNavVisible && "pointer-events-none"
+      )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -357,7 +417,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[65px] bg-white/95 backdrop-blur-2xl border-b border-border shadow-xl p-6 transition-all duration-300 z-50">
+        <div className="lg:hidden fixed inset-x-0 top-full bg-white/95 backdrop-blur-2xl border-b border-border shadow-xl p-6 transition-all duration-300 z-50">
           <div className="flex flex-col space-y-3">
             {navLinks.map((link) => {
               if (link.isDropdown) {
@@ -413,7 +473,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
           </div>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
 
