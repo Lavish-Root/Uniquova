@@ -19,6 +19,7 @@ interface HeroProps {
   onOpenContact?: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Hero({ onOpenContact }: HeroProps) {
   const [activeCard, setActiveCard] = useState<string | null>(null);
 
@@ -124,16 +125,15 @@ export default function Hero({ onOpenContact }: HeroProps) {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>
 
-              <button
-                type="button"
-                onClick={onOpenContact}
+              <Link
+                href="/our-work"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white hover:bg-softBg text-dark font-semibold text-base px-7 py-4 rounded-full border border-border/90 shadow-card hover:shadow-card-hover transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 group"
               >
                 <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <Play className="w-3 h-3 fill-current ml-0.5" />
                 </div>
                 <span>Watch Our Work</span>
-              </button>
+              </Link>
             </div>
 
             {/* Social Proof & Rating Bar (from reference image) */}
