@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
 import EcommerceServiceClient from "@/components/EcommerceServiceClient";
+import GraphicDesignServiceClient from "@/components/GraphicDesignServiceClient";
 import {
   ArrowRight,
   CheckCircle2,
@@ -23,6 +24,11 @@ export default function IndividualServiceClient({ service }: IndividualServiceCl
   // If this is the flagship E-commerce service, render the dedicated commercial growth engine
   if (service.slug === "ecommerce") {
     return <EcommerceServiceClient />;
+  }
+
+  // If this is Graphic Designing, render the dedicated visual vector studio
+  if (service.slug === "graphic-design" || service.slug === "graphic-designing") {
+    return <GraphicDesignServiceClient />;
   }
 
   const [isContactOpen, setIsContactOpen] = useState(false);

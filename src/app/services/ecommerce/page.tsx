@@ -41,14 +41,17 @@ export const metadata: Metadata = {
 export default function EcommercePage() {
   const ecomService = SERVICES_DATA.find((s) => s.slug === "ecommerce");
 
-  const schemas = [
-    ecomService ? getServiceSchema(ecomService) : null,
+  const schemas: Record<string, unknown>[] = [];
+  if (ecomService) {
+    schemas.push(getServiceSchema(ecomService));
+  }
+  schemas.push(
     getBreadcrumbSchema([
       { name: "Home", url: "/" },
       { name: "Services", url: "/services" },
       { name: "E-commerce Solutions", url: "/services/ecommerce" },
-    ]),
-  ].filter(Boolean);
+    ])
+  );
 
   return (
     <>
