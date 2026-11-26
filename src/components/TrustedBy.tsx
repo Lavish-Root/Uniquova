@@ -9,18 +9,26 @@ export default function TrustedBy() {
 
   useEffect(() => {
     let isMounted = true;
-    fetch("/api/brands")
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted && data.success && Array.isArray(data.brands)) {
-          setBrands(data.brands);
-        }
-      })
-      .catch(() => {
-        // Keep initial fallback brands
-      });
+    const fetchBrands = () => {
+      fetch(`/api/brands?t=${Date.now()}`, { cache: "no-store" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted && data.success && Array.isArray(data.brands)) {
+            setBrands(data.brands);
+          }
+        })
+        .catch(() => {
+          // Keep initial fallback brands
+        });
+    };
+
+    fetchBrands();
+    window.addEventListener("brandsUpdated", fetchBrands);
+    window.addEventListener("focus", fetchBrands);
     return () => {
       isMounted = false;
+      window.removeEventListener("brandsUpdated", fetchBrands);
+      window.removeEventListener("focus", fetchBrands);
     };
   }, []);
 

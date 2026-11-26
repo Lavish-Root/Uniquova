@@ -9,12 +9,9 @@ export default function FloatingFeedbackButton() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Hide the floating feedback trigger completely on CMS / Admin routes
-  if (
-    pathname?.startsWith("/uniq_up") ||
-    pathname?.includes("uniq_up") ||
-    pathname?.startsWith("/admin")
-  ) {
+  // Show the floating feedback button ONLY on the contact page (/contact)
+  // Completely removed from the home page (/) and admin/CMS routes
+  if (pathname !== "/contact") {
     return null;
   }
 
