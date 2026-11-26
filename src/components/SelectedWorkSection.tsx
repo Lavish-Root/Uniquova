@@ -151,7 +151,7 @@ export default function SelectedWorkSection() {
       ref={containerRef}
       id="selected-work"
       style={{ perspective: "1200px" }}
-      className="relative w-full bg-[#FAF9FF] pt-8 pb-16 sm:pb-24 lg:pb-32 overflow-hidden -mt-10 sm:-mt-16 lg:-mt-20 z-20"
+      className="relative w-full bg-[#FAF9FF] pt-10 sm:pt-12 pb-16 sm:pb-24 lg:pb-32 overflow-hidden z-20"
     >
       {/* ====================================================
           THE SCROLL-UP ENTRANCE CONTAINER (EXPANDED BREADTH)
