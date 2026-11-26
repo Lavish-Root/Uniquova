@@ -196,7 +196,7 @@ export default function SelectedWorkSection() {
               autoPlay={true}
               interval={3500}
               accentColor="#7545F5"
-              showPagination={true}
+              showPagination={false}
               isExternalLoading={isCmsLoading}
               fit="cover"
               className="h-full rounded-[28px] sm:rounded-[36px]"

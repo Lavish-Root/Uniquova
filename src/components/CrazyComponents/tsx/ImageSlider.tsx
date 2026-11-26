@@ -133,8 +133,6 @@ export default function ImageSlider({
     autoPlay = true,
     interval = 4000,
     className = "",
-    accentColor = "#7545F5",
-    showPagination = true,
     isExternalLoading = false,
     fit = "contain",
     onAspectRatioChange
@@ -155,7 +153,6 @@ export default function ImageSlider({
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [isAnimating, setIsAnimating] = useState(false);
 
     const slidesKey = slides.map((s) => s.image).join("|");
 
@@ -168,13 +165,11 @@ export default function ImageSlider({
 
         if (!mountRef.current || !slides.length) {
             setLoading(false);
-            setIsAnimating(false);
             return;
         }
 
         let isCancelled = false;
         setLoading(true);
-        setIsAnimating(false);
         setActiveIndex(0);
         currentIndexRef.current = 0;
 
@@ -355,26 +350,30 @@ export default function ImageSlider({
         if (tweenRef.current) {
             tweenRef.current.kill();
             tweenRef.current = null;
+            if (material.uniforms.nextImage.value) {
+                material.uniforms.currentImage.value = material.uniforms.nextImage.value;
+                material.uniforms.currentAspect.value = material.uniforms.nextAspect.value;
+                material.uniforms.dispFactor.value = 0.0;
+            }
         }
 
-        setIsAnimating(true);
         const nextAsp = getTextureAspect(nextTexture);
         onAspectRatioChangeRef.current?.(nextAsp);
         material.uniforms.nextImage.value = nextTexture;
         material.uniforms.nextAspect.value = nextAsp;
+        material.uniforms.dispFactor.value = 0.0;
 
-        // WebGL Image Transition with Liquid Ripple Effect
+        // Snappy WebGL Image Transition with Liquid Ripple Effect
         tweenRef.current = gsap.to(material.uniforms.dispFactor, {
-            duration: 1.4,
+            duration: 0.8,
             value: 1,
-            ease: "expo.inOut",
+            ease: "power2.out",
             onComplete: () => {
                 if (materialRef.current === material) {
                     material.uniforms.currentImage.value = nextTexture;
                     material.uniforms.currentAspect.value = nextAsp;
                     material.uniforms.dispFactor.value = 0.0;
                     currentIndexRef.current = activeIndex;
-                    setIsAnimating(false);
                     tweenRef.current = null;
                 }
             },
@@ -395,19 +394,36 @@ export default function ImageSlider({
         }
     }, [slides.length, activeIndex]);
 
-    // 3. AUTOPLAY EFFECT
+    // 3. AUTOPLAY EFFECT (continues automatically, resets timer whenever user clicks)
     useEffect(() => {
-        if (!autoPlay || isAnimating || loading || slides.length <= 1) return;
+        if (!autoPlay || loading || slides.length <= 1) return;
         const timer = setTimeout(() => {
             setActiveIndex((prev) => (prev + 1) % slides.length);
         }, interval);
         return () => clearTimeout(timer);
-    }, [activeIndex, autoPlay, isAnimating, loading, interval, slides.length]);
+    }, [activeIndex, autoPlay, loading, interval, slides.length]);
+
+    const handleNextSlide = () => {
+        if (loading || slides.length <= 1) return;
+        setActiveIndex((prev) => (prev + 1) % slides.length);
+    };
 
     const hasCustomHeight = className.includes("h-");
 
     return (
-        <div className={`relative w-full ${hasCustomHeight ? "" : "h-screen"} bg-[#0a0a0a] overflow-hidden ${className}`}>
+        <div 
+            onClick={handleNextSlide}
+            role="button"
+            tabIndex={0}
+            aria-label="Click to advance to next showcase image"
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleNextSlide();
+                }
+            }}
+            className={`relative w-full ${hasCustomHeight ? "" : "h-screen"} bg-[#0a0a0a] overflow-hidden cursor-pointer select-none ${className}`}
+        >
             <style dangerouslySetInnerHTML={{ __html: `
                 @keyframes sliderLoading {
                     0% { transform: translateX(-100%); }
@@ -422,35 +438,9 @@ export default function ImageSlider({
                 </div>
             </div>
 
-            {/* Main Stage: Pure Visual Canvas with ZERO Text */}
+            {/* Main Stage: Pure Visual Canvas with ZERO Text or Line Overlays */}
             <main className="relative w-full h-full flex flex-col justify-end">
                 <div ref={mountRef} className="absolute inset-0 z-0" />
-
-                {/* Sleek Minimalist Line Indicators (No Text/Numbers) */}
-                {showPagination && (
-                    <div className="absolute bottom-8 sm:bottom-12 right-6 sm:right-12 z-20 flex flex-col gap-3 sm:gap-4">
-                        {slides.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setActiveIndex(i)}
-                                className="group flex items-center justify-end py-1.5 px-1 outline-none cursor-pointer"
-                                disabled={isAnimating}
-                                aria-label={`Slide ${i + 1}`}
-                            >
-                                <div
-                                    className={`h-[3px] rounded-full transition-all duration-500 ${
-                                        activeIndex === i
-                                            ? "w-10 sm:w-14 shadow-lg"
-                                            : "w-3 sm:w-4 bg-white/35 group-hover:bg-white/70"
-                                    }`}
-                                    style={{
-                                        backgroundColor: activeIndex === i ? (accentColor || "#ffffff") : undefined
-                                    }}
-                                />
-                            </button>
-                        ))}
-                    </div>
-                )}
             </main>
         </div>
     );
