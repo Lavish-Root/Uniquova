@@ -57,12 +57,12 @@ const Cactus = ({ x, y, scale, className = "" }: { x: number; y: number; scale: 
             fill="#5030C7" // UNIQOVA Primary Dark
             d="m330 139.3c15.4 3.9-12.7 14.1-18 29.7c-5.3 15.5-8 26-8 26v442.7q-13.7-0.7-27-2.4v-92.3c0 0-53.3-2.3-77-26c-49.3-49.3-48-81-48-81v-101c0 0 1.9-14.1 8-17c6.1-2.9 13-7 13-7c0 0-6.6 9-9 19c-2.4 10-1.6 77.9-1.6 99.7c0 21.8 17.5 47.3 39.1 65.4c31 26 74.5 26.9 74.5 26.9v-344c0 0 6.4-22.2 18.4-30.3c12-8.1 22.8-11.7 35.6-8.4zm33 351.7c0 0 13.5 1.7 54-14c50.9-19.8 71.2-79.5 71.2-79.5c0 0-8.4 51.7-43.2 83.5c-31.9 29.2-82 32-82 32zm97-250c0 0-8.2 5.1-13 19c-4.8 13.9-1.8 88.3-1.8 96.7c0 8.4-1.1 30.9-11.4 44c-12.4 15.7-24.1 19.5-24.1 19.5c0 0 9.3-4.9 14.3-18.2c5-13.3 6-24 6-24v-114c0 0 5.9-16.9 15-20c9.1-3.1 15-3 15-3z"
         />
-        <path fill="#26134D" d="m490.9 310.7v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5h-13.9v26.7h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5h-13.9v5.2q0 11.1-1.8 21.6h13.1c2.5 0 4.5 1.9 4.5 4.4c0 2.5-2 4.5-4.5 4.5h-14.9c-13.4 55.1-62.2 96.4-120.9 98.4v29.5h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v44q-4.4 0.7-8.9 1.2v-144.4c0-2.5 2-4.5 4.4-4.5c2.5 0 4.5 2 4.5 4.5v16.1c64.1-2.4 115.6-55.2 115.6-119.9v-119c0-13.3-10.8-24-24-24c-13.2 0-23.9 10.7-23.9 24v104.6c0 38.3-30 69.7-67.7 72v7.6c0 2.4-2 4.4-4.5 4.4c-2.4 0-4.4-2-4.4-4.4v-271.4c0-21.1-17.2-38.2-38.2-38.2c-21.1 0-38.2 17.1-38.2 38.2v301.8c0 2.5-2 4.5-4.5 4.5c-2.4 0-4.4-2-4.4-4.5v-8.2c-38.3-1.7-69-33.3-69-72v-64.9c0-13.2-10.7-24-23.9-24c-13.3 0-24 10.8-24 24v79.2c0 65.1 52.1 118.3 116.9 120v-18.4c0-2.4 2-4.4 4.4-4.4c2.5 0 4.5 2 4.5 4.4v117q-4.5-0.5-8.9-1.2v-20.3h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.5 2-4.5 4.5-4.5h13.9v-23.5c-58.6-1.4-107.6-42-121.7-96.5h-18c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h16c-1.4-7.6-2.1-15.5-2.1-23.5v-3.3h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h14.2c2.2-16.1 15.9-28.5 32.6-28.5c18.1 0 32.8 14.8 32.8 32.9v2.5h13.9c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v17.8c0 33.7 26.7 61.3 60.1 63v-30.2h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.5 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.5 2-4.5 4.5-4.5h14.1c2.2-23.9 22.4-42.6 46.9-42.6c26 0 47.1 21.1 47.1 47.1v13.4h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.4c0 2.5-2 4.5-4.4 4.5h-13.9v18.2c32.8-2.3 58.7-29.7 58.7-63v-8.8h-13.9c-2.4 0-4.4-2-4.4-4.4c0-2.5 2-4.5 4.4-4.5h13.9v-26.8h-13.9c-2.4 0-4.4-2-4.4-4.5c0-2.4 2-4.4 4.4-4.4h13.9v-26.8h-13.9c-2.4 0-4.4-2-4.4-4.5c0-2.4 2-4.4 4.4-4.4h13.9v-15.5c0-18.2 14.8-32.9 32.9-32.9c17.4 0 31.6 13.5 32.8 30.5h14c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5c0-0.1-13.9-0.1-13.9-0.1z"
+        <path fill="#26134D" d="m490.9 310.7v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5h-13.9v26.7h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5h-13.9v5.2q0 11.1-1.8 21.6h13.1c2.5 0 4.5 1.9 4.5 4.4c0 2.5-2 4.5-4.5 4.5h-14.9c-13.4 55.1-62.2 96.4-120.9 98.4v29.5h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v44q-4.4 0.7-8.9 1.2v-144.4c0-2.5 2-4.5 4.4-4.5c2.5 0 4.5 2 4.5 4.5v16.1c64.1-2.4 115.6-55.2 115.6-119.9v-119c0-13.3-10.8-24-24-24c-13.2 0-23.9 10.7-23.9 24v104.6c0 38.3-30 69.7-67.7 72v7.6c0 2.4-2 4.4-4.5 4.4c-2.4 0-4.4-2-4.4-4.4v-271.4c0-21.1-17.2-38.2-38.2-38.2c-21.1 0-38.2 17.1-38.2 38.2v301.8c0 2.5-2 4.5-4.5 4.5c-2.4 0-4.4-2-4.4-4.5v-8.2c-38.3-1.7-69-33.3-69-72v-64.9c0-13.2-10.7-24-23.9-24c-13.3 0-24 10.8-24 24v79.2c0 65.1 52.1 118.3 116.9 120v-18.4c0-2.4 2-4.4 4.4-4.4c2.5 0 4.5 2 4.5 4.4v117q-4.5-0.5-8.9-1.2v-20.3h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.5 2-4.5 4.5-4.5h13.9v-23.5c-58.6-1.4-107.6-42-121.7-96.5h-18c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h16c-1.4-7.6-2.1-15.5-2.1-23.5v-3.3h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h14.2c2.2-16.1 15.9-28.5 32.6-28.5c18.1 0 32.8 14.8 32.8 32.9v2.5h13.9c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v17.8c0 33.7 26.7 61.3 60.1 63v-30.2h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.5 2-4.5 4.5-4.5h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.4c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.4 2-4.4 4.5-4.4h13.9v-26.8h-13.9c-2.5 0-4.5-2-4.5-4.5c0-2.5 2-4.5 4.5-4.5h14.1c2.2-23.9 22.4-42.6 46.9-42.6c26 0 47.1 21.1 47.1 47.1v13.4h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.4-2 4.4-4.4 4.4h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.7h13.9c2.4 0 4.4 2 4.4 4.5c0 2.5-2 4.5-4.4 4.5h-13.9v26.8h13.9c2.4 0 4.4 2 4.4 4.4c0 2.5-2 4.5-4.4 4.5h-13.9v18.2c32.8-2.3 58.7-29.7 58.7-63v-8.8h-13.9c-2.4 0-4.4-2-4.4-4.4c0-2.5 2-4.5 4.4-4.5h13.9v-26.8h-13.9c-2.4 0-4.4-2-4.4-4.5c0-2.4 2-4.4 4.4-4.4h13.9v-26.8h-13.9c-2.4 0-4.4-2-4.4-4.5c0-2.4 2-4.4 4.4-4.4h13.9v-15.5c0-18.2 14.8-32.9 32.9-32.9c17.4 0 31.6 13.5 32.8 30.5h14c2.5 0 4.5 2 4.5 4.5c0 2.4-2 4.4-4.5 4.4h-13.9v26.8h13.9c2.5 0 4.5 2 4.5 4.5c0 2.5-2 4.5-4.5 4.5c0-0.1-13.9-0.1-13.9-0.1z"
         />
     </g>
 );
 
-// --- Main Canyon 404 Component (Light Theme Refined) ---
+// --- Main Canyon 404 Component (Light Theme Refined with Clear & Attractive Contrast) ---
 export default function Canyon404({
     title = "Not Found",
     subtitle = "Sorry, there's nothing to see here but cacti :(",
@@ -74,31 +74,35 @@ export default function Canyon404({
     const [p1, p2, p3, p4, p5, p6, p7] = useMouseParallax(-240, -150, -80, -20, 80, 150, 300);
 
     return (
-        <div className="relative w-full min-h-screen bg-[#FAF9FF] flex flex-col items-center justify-center overflow-hidden selection:bg-primary/20 selection:text-primary">
+        <div className="relative w-full min-h-screen bg-[#FAF9FF] flex flex-col items-center justify-start overflow-hidden selection:bg-primary/20 selection:text-primary">
 
-            {/* 1. Text Container (Light Theme) */}
-            <div className="relative z-[2] text-center mb-4 px-4">
+            {/* 1. Text Container (Placed in open upper space with Frosted Glass Backdrop for Perfect Clarity) */}
+            <div className="relative z-[10] text-center px-6 py-6 sm:py-8 max-w-xl mx-auto mt-10 sm:mt-14 md:mt-16 rounded-3xl bg-white/85 backdrop-blur-md border border-white/80 shadow-[0_12px_40px_rgba(117,69,245,0.08)] pointer-events-auto">
                 <h1
-                    className="text-[#151323] text-[4rem] md:text-[5rem] mb-4 font-black tracking-tight"
+                    className="text-[#151323] text-4xl sm:text-5xl md:text-6xl mb-2 font-black tracking-tight"
                     style={{ fontFamily: "'Pridi', 'Georgia', serif" }}
                 >
                     {title}
                 </h1>
-                <p className="text-[#5B5570] font-medium tracking-[0.05rem] mb-2 text-base sm:text-lg">
+                
+                {/* Subtitle - High contrast, crisp dark purple-slate typography */}
+                <p className="text-[#1E1638] font-semibold text-base sm:text-lg mb-3 tracking-normal leading-relaxed">
                     {subtitle}
                 </p>
-                <p className="text-[#5B5570] font-medium tracking-[0.05rem] text-sm sm:text-base">
+
+                {/* Navigation links - High contrast brand purple with clear underlined interactive states */}
+                <p className="text-[#261E45] font-semibold text-sm sm:text-base">
                     You can{' '}
                     <Link
                         href="/"
-                        className="text-[#7545F5] hover:text-[#5030C7] font-bold border-b-2 border-[#7545F5]/40 hover:border-[#5030C7] transition-all"
+                        className="text-[#7545F5] hover:text-[#5030C7] font-extrabold underline decoration-2 underline-offset-4 decoration-[#7545F5]/60 hover:decoration-[#5030C7] transition-all"
                     >
                         {homeText}
                     </Link>
                     , or{' '}
                     <Link
                         href="/contact"
-                        className="text-[#7545F5] hover:text-[#5030C7] font-bold border-b-2 border-[#7545F5]/40 hover:border-[#5030C7] transition-all"
+                        className="text-[#7545F5] hover:text-[#5030C7] font-extrabold underline decoration-2 underline-offset-4 decoration-[#7545F5]/60 hover:decoration-[#5030C7] transition-all"
                     >
                         {searchText}
                     </Link>
@@ -113,6 +117,21 @@ export default function Canyon404({
                     className='w-full h-full bg-[#EAE2F8]'
                     preserveAspectRatio='xMidYMid slice'
                 >
+                    <defs>
+                        {/* High-Clarity Vibrant Brand Purple Gradient for 404 Text */}
+                        <linearGradient id="text404Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#7545F5" />
+                            <stop offset="45%" stopColor="#5E2CE0" />
+                            <stop offset="100%" stopColor="#3C138E" />
+                        </linearGradient>
+
+                        {/* Attractive Multi-stage Drop Shadow for 404 Text */}
+                        <filter id="text404Shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="16" stdDeviation="20" floodColor="#7545F5" floodOpacity="0.28" />
+                            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#151323" floodOpacity="0.12" />
+                        </filter>
+                    </defs>
+
                     {/* Distant Peaks Path 1 (Soft Lavender Mountain Silhouette) */}
                     <path
                         style={{ transform: `translate(${p3.x}px,${p3.y}px)` }}
@@ -165,21 +184,27 @@ export default function Canyon404({
                     <path
                         style={{ transform: `translate(${p3.x}px,${p3.y}px)`, filter: 'blur(70px)' }}
                         fill="#E3D7F6"
-                        opacity={0.85}
+                        opacity={0.5}
                         d='m-300,400 H2400 V700 H0 z'
                     />
 
-                    {/* Layer: THE BIG 404 (p4) */}
+                    {/* Layer: THE BIG 404 (p4) - Lowered and Sized for Optimal Layout Clearance & Clarity */}
                     <text
                         style={{
                             transform: `translate(${p4.x}px,${p4.y}px)`,
-                            filter: 'drop-shadow(0 0 40px rgba(117,69,245,0.18))'
+                            fontFamily: "'Montserrat', sans-serif"
                         }}
-                        x='1000' y='550'
+                        x='1000'
+                        y='580'
                         textAnchor='middle'
-                        fill="#CBB9F6"
-                        fontSize="660px"
-                        fontWeight="800"
+                        fill="url(#text404Grad)"
+                        filter="url(#text404Shadow)"
+                        stroke="#5E2CE0"
+                        strokeWidth="2.5"
+                        strokeLinejoin="round"
+                        fontSize="560px"
+                        fontWeight="900"
+                        letterSpacing="-0.035em"
                     >
                         {errorCode}
                     </text>
@@ -216,7 +241,7 @@ export default function Canyon404({
 
             {/* Global Fonts Import (Pridi and Montserrat) */}
             <style dangerouslySetInnerHTML={{ __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&family=Pridi:wght@600&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Pridi:wght@600&display=swap');
             `}} />
         </div>
     );
