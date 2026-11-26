@@ -13,9 +13,9 @@ export default function ServicesMarquee() {
 
   const fetchCapabilities = async () => {
     try {
-      const res = await fetch("/api/capabilities");
+      const res = await fetch(`/api/capabilities?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
-      if (data.success && Array.isArray(data.capabilities) && data.capabilities.length > 0) {
+      if (data.success && Array.isArray(data.capabilities)) {
         setCapabilities(data.capabilities);
       }
     } catch {
@@ -31,8 +31,10 @@ export default function ServicesMarquee() {
     };
 
     window.addEventListener("capabilitiesUpdated", handleUpdate);
+    window.addEventListener("focus", handleUpdate);
     return () => {
       window.removeEventListener("capabilitiesUpdated", handleUpdate);
+      window.removeEventListener("focus", handleUpdate);
     };
   }, []);
 

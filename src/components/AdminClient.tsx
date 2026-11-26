@@ -357,7 +357,7 @@ export default function AdminClient() {
   // Selected Work Form State
   const [selectedWorkFormData, setSelectedWorkFormData] = useState({
     title: "",
-    src: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp",
+    src: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
     alt: "",
     isVideo: false,
     videoSrc: "",
@@ -651,8 +651,8 @@ export default function AdminClient() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      showToast("error", "File is too large. Please select an image under 2MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("error", "File is too large. Please select an image under 10MB.");
       return;
     }
 
@@ -843,8 +843,8 @@ export default function AdminClient() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      showToast("error", "File is too large. Please select an image under 2MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("error", "File is too large. Please select an image under 10MB.");
       return;
     }
 
@@ -1248,7 +1248,7 @@ export default function AdminClient() {
 
     setSelectedWorkFormData({
       title: "",
-      src: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp",
+      src: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
       alt: "",
       isVideo: false,
       videoSrc: "",
@@ -1275,8 +1275,8 @@ export default function AdminClient() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      showToast("error", "File is too large. Please select an image under 2MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("error", "File is too large. Please select an image under 10MB.");
       return;
     }
 
@@ -1352,6 +1352,9 @@ export default function AdminClient() {
         setIsSelectedWorkModalOpen(false);
         setEditingSelectedWorkId(null);
         fetchSelectedWorks();
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        window.dispatchEvent(new Event("selectedWorkUpdated"));
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
       } else {
         showToast("error", data.message || "Failed to save showcase slide.");
       }
@@ -1376,6 +1379,9 @@ export default function AdminClient() {
         showToast("success", "Showcase slide permanently removed.");
         setDeleteSelectedWorkConfirmId(null);
         fetchSelectedWorks();
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        window.dispatchEvent(new Event("selectedWorkUpdated"));
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
       } else {
         showToast("error", data.message || "Failed to delete showcase slide.");
       }
@@ -1408,6 +1414,10 @@ export default function AdminClient() {
       if (!res.ok || !data.success) {
         showToast("error", "Failed to persist new order");
         fetchSelectedWorks();
+      } else {
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        window.dispatchEvent(new Event("selectedWorkUpdated"));
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
       }
     } catch {
       showToast("error", "Network error reordering showcases");
@@ -2421,7 +2431,7 @@ export default function AdminClient() {
                   >
                     <Layers className="w-4 h-4" />
                   </div>
-                  <span className="tracking-tight text-sm font-bold">Selected Work</span>
+                  <span className="tracking-tight text-sm font-bold">Homepage Slider</span>
                 </div>
                 <span
                   className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
@@ -2753,7 +2763,7 @@ export default function AdminClient() {
                   >
                     <div className="flex items-center gap-3">
                       <Layers className="w-4 h-4" />
-                      <span className="text-sm font-bold">Selected Work</span>
+                      <span className="text-sm font-bold">Homepage Slider</span>
                     </div>
                     <span className="px-2 py-0.5 rounded-full text-[11px] font-black bg-white/20">
                       {selectedWorks.length}
@@ -7364,7 +7374,7 @@ export default function AdminClient() {
                   onChange={(e) =>
                     setSelectedWorkFormData((prev) => ({ ...prev, src: e.target.value }))
                   }
-                  placeholder="e.g. opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp or https://..."
+                  placeholder="e.g. /images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp or /images/portfolio/apex_ecommerce.jpg"
                   required
                   className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-mono"
                 />
@@ -7374,14 +7384,18 @@ export default function AdminClient() {
                   <p className="text-[11px] text-dark-muted font-medium mb-1.5">Or choose a showcase asset:</p>
                   <div className="flex flex-wrap gap-1.5">
                     {[
-                      { label: "Euroteam", path: "opt/5XLw1iOCFMkIdPcaUnzOqvhUN8M/2048.webp" },
-                      { label: "Mark OS Tablet", path: "opt/VoRww8rQDPyN3LNlZtvNUDqZOVE/2560.webp" },
-                      { label: "Ruuster NYC", path: "opt/lHVy2gEqT4bpJpxQsWz3JpyIDI4/2000.webp" },
-                      { label: "Credit Brandbook", path: "opt/HihuK51yaPuGKHmnXrlbzvzZM/1920.webp" },
-                      { label: "MarkOS Platform", path: "opt/uqMI3M9FIeMorIDx6YyRwRj9C8/2560.webp" },
-                      { label: "Coral UI Design", path: "opt/3mQe38NfO8x6V6pC6vC6y5T3cM/2048.webp" },
-                      { label: "Fintech Dashboard", path: "opt/kL98nVmX19zXcbNM7qWeRtYuiP/2048.webp" },
-                      { label: "AI Neural Hub", path: "opt/PqX89yMmnvTyuWqOp981ZxCvbN/2048.webp" },
+                      { label: "Euroteam", path: "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp" },
+                      { label: "Mark OS Tablet", path: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_480.webp" },
+                      { label: "Ruuster NYC", path: "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_480.webp" },
+                      { label: "Credit Brandbook", path: "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_480.webp" },
+                      { label: "MarkOS Platform", path: "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_480.webp" },
+                      { label: "DeluPay 3D", path: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp" },
+                      { label: "Mega HR Subway", path: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp" },
+                      { label: "Apex E-Com", path: "/images/portfolio/apex_ecommerce.jpg" },
+                      { label: "Lumina Brand", path: "/images/portfolio/lumina_brand.jpg" },
+                      { label: "NovaCloud SaaS", path: "/images/portfolio/novacloud_saas.jpg" },
+                      { label: "VaultPay Fintech", path: "/images/portfolio/vaultpay_fintech.jpg" },
+                      { label: "Zenith Health", path: "/images/portfolio/zenith_health.jpg" },
                     ].map((preset) => (
                       <button
                         key={preset.label}

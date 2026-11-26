@@ -4,6 +4,13 @@ import path from "path";
 import { BrandPartnerItem } from "@/data/agencyData";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const NO_CACHE_HEADERS = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+  Pragma: "no-cache",
+  Expires: "0",
+};
 
 const BRANDS_FILE = path.join(process.cwd(), "src", "data", "brands.json");
 const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
@@ -48,11 +55,11 @@ export async function GET() {
     const brands = await readBrands();
     // Sort by order ascending
     brands.sort((a, b) => (a.order || 0) - (b.order || 0));
-    return NextResponse.json({ success: true, brands });
+    return NextResponse.json({ success: true, brands }, { headers: NO_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: error instanceof Error ? error.message : "Failed to fetch brands" },
-      { status: 500 }
+      { status: 500, headers: NO_CACHE_HEADERS }
     );
   }
 }

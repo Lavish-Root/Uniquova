@@ -4,6 +4,13 @@ import path from "path";
 import { CapabilityItem } from "@/data/agencyData";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const NO_CACHE_HEADERS = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+  Pragma: "no-cache",
+  Expires: "0",
+};
 
 const CAPABILITIES_FILE = path.join(process.cwd(), "src", "data", "capabilities.json");
 const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
@@ -51,14 +58,14 @@ export async function GET() {
       if (a.track !== b.track) return a.track - b.track;
       return (a.order || 0) - (b.order || 0);
     });
-    return NextResponse.json({ success: true, capabilities });
+    return NextResponse.json({ success: true, capabilities }, { headers: NO_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
         message: error instanceof Error ? error.message : "Failed to fetch capabilities",
       },
-      { status: 500 }
+      { status: 500, headers: NO_CACHE_HEADERS }
     );
   }
 }
