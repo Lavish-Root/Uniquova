@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactCTA from "@/components/ContactCTA";
 import ContactModal from "@/components/ContactModal";
+import EcommerceServiceClient from "@/components/EcommerceServiceClient";
 import {
   ArrowRight,
   CheckCircle2,
@@ -19,6 +20,11 @@ interface IndividualServiceClientProps {
 }
 
 export default function IndividualServiceClient({ service }: IndividualServiceClientProps) {
+  // If this is the flagship E-commerce service, render the dedicated commercial growth engine
+  if (service.slug === "ecommerce") {
+    return <EcommerceServiceClient />;
+  }
+
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecom_laptop_cart.jpg";
