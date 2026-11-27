@@ -25,7 +25,6 @@ import {
   Layers,
   Code2,
   Lock,
-  CheckCircle2,
   Clock,
   Sparkle,
 } from "lucide-react";
@@ -383,14 +382,14 @@ export default function AboutClient() {
             <div className="lg:col-span-6 space-y-6">
               {/* Interactive Story Tab Switcher */}
               <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-[#FAF9FF] border border-border/80 w-fit">
-                {[
+                {([
                   { id: "origin", label: "Our Origin" },
                   { id: "rigor", label: "Engineering Rigor" },
                   { id: "philosophy", label: "Commercial Focus" },
-                ].map((tab) => (
+                ] as const).map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveStoryTab(tab.id as any)}
+                    onClick={() => setActiveStoryTab(tab.id)}
                     className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
                       activeStoryTab === tab.id ? "text-white" : "text-dark-muted hover:text-dark"
                     }`}
@@ -678,15 +677,15 @@ export default function AboutClient() {
           {/* Interactive Value Filter Tabs */}
           <div className="flex justify-center mb-12">
             <div className="inline-flex p-1.5 rounded-2xl bg-white border border-border/80 shadow-xs gap-1.5">
-              {[
+              {([
                 { id: "all", label: "All Values (6)" },
                 { id: "growth", label: "Commercial Growth" },
                 { id: "craft", label: "Engineering Craft" },
                 { id: "trust", label: "Trust & Security" },
-              ].map((tab) => (
+              ] as const).map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setValueFilter(tab.id as any)}
+                  onClick={() => setValueFilter(tab.id)}
                   className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
                     valueFilter === tab.id ? "text-white" : "text-dark-muted hover:text-dark"
                   }`}

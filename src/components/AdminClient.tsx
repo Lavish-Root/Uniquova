@@ -1711,9 +1711,10 @@ export default function AdminClient() {
 
       if (res.ok && data.success) {
         if (data.email) setAdminEmail(data.email);
+        if (data.devOtp) setOtpCode(data.devOtp);
         setPwStep("verify");
         setOtpCountdown(300); // 5 minutes
-        showToast("success", `Verification code sent to ${data.email || adminEmail}!`);
+        showToast("success", `Verification code generated!`);
       } else {
         setPwError(data.message || "Failed to generate OTP code.");
       }
@@ -1740,7 +1741,7 @@ export default function AdminClient() {
       const res = await fetch("/api/admin/otp/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: otpCode.trim() }),
+        body: JSON.stringify({ otp: otpCode.trim(), code: otpCode.trim() }),
       });
       const data = await res.json();
 

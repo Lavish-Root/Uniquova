@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { maskEmail } from "@/lib/email";
+import { getAdminEmail, getAdminPassword, timingSafeCompare, verifyAdminAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,20 +10,8 @@ const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
 
 export async function GET(request: Request) {
   try {
-    let email = process.env.ADMIN_EMAIL || "lavishchouhan56@gmail.com";
-    let savedPassword = process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-
-    try {
-      const data = await fs.readFile(CONFIG_FILE, "utf-8");
-      const config = JSON.parse(data);
-      if (config.adminEmail) email = config.adminEmail;
-      if (config.password) savedPassword = config.password;
-    } catch {
-      // fallback
-    }
-
-    const authHeader = request.headers.get("x-admin-password");
-    const isAuthed = authHeader === savedPassword;
+    const email = await getAdminEmail();
+    const isAuthed = await verifyAdminAuth(request);
 
     return NextResponse.json({
       success: true,
@@ -59,21 +48,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const currentPassword = await getAdminPassword();
+    const isValid = timingSafeCompare(password, currentPassword);
+
+    if (!isValid) {
+      return NextResponse.json(
+        { success: false, message: "Incorrect password. Authorization failed." },
+        { status: 401 }
+      );
+    }
+
     let currentConfig: { password?: string; adminEmail?: string; lastUpdated?: string } = {};
     try {
       const data = await fs.readFile(CONFIG_FILE, "utf-8");
       currentConfig = JSON.parse(data);
     } catch {
       // fallback
-    }
-
-    const savedPassword = currentConfig.password || process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-
-    if (password !== savedPassword) {
-      return NextResponse.json(
-        { success: false, message: "Incorrect password. Authorization failed." },
-        { status: 401 }
-      );
     }
 
     currentConfig.adminEmail = newEmail.trim();

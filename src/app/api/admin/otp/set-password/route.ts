@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { timingSafeCompare } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!otpData || !otpData.resetToken || otpData.resetToken !== resetToken) {
+    if (!otpData || !otpData.resetToken || !timingSafeCompare(otpData.resetToken, resetToken)) {
       return NextResponse.json(
         {
           success: false,

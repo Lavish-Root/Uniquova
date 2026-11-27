@@ -87,13 +87,10 @@ export async function sendOtpEmail({
     </html>
   `;
 
-  // Always log to console for dev / audit
-  console.log("=================================================");
-  console.log("🔐 [UNIQOVA CMS GATEWAY OTP GENERATED]");
-  console.log(`Recipient Email: ${toEmail}`);
-  console.log(`Verification Code (OTP): >>> ${otp} <<<`);
-  console.log(`Valid For: 5 minutes (${new Date(Date.now() + 5 * 60 * 1000).toLocaleTimeString()})`);
-  console.log("=================================================");
+  // Log audit notification (sanitized, no plaintext OTP leak)
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`[UNIQOVA Security Gateway] Verification code dispatched for ${maskEmail(toEmail)}`);
+  }
 
   // 1. Try Resend API if API Key is set
   if (resendApiKey) {

@@ -2,34 +2,13 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { TestimonialItem, TESTIMONIALS_DATA } from "@/data/agencyData";
+import { verifyAdminAuth, checkRateLimit, getClientIp } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 const VALID_CLIENT_CODE = process.env.CLIENT_FEEDBACK_CODE || "UNIQOVA2026";
 const TESTIMONIALS_FILE = path.join(process.cwd(), "src", "data", "testimonials.json");
 const USER_TESTIMONIALS_FILE = path.join(process.cwd(), "src", "data", "userTestimonials.json");
-const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
-
-async function getAdminPassword(): Promise<string> {
-  let savedPassword = process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-  try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8");
-    const config = JSON.parse(data);
-    if (config.password) {
-      savedPassword = config.password;
-    }
-  } catch {
-    // fallback
-  }
-  return savedPassword;
-}
-
-async function verifyAdminAuth(request: Request): Promise<boolean> {
-  const adminPassword = request.headers.get("x-admin-password");
-  if (!adminPassword) return false;
-  const currentPassword = await getAdminPassword();
-  return adminPassword === currentPassword;
-}
 
 async function readTestimonials(): Promise<TestimonialItem[]> {
   try {
@@ -83,6 +62,19 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const isAdmin = await verifyAdminAuth(request);
+
+    // Rate limit public review submissions: max 5 reviews per hour per IP
+    if (!isAdmin) {
+      const clientIp = getClientIp(request);
+      const rateCheck = checkRateLimit(`feedback_${clientIp}`, 5, 60 * 60 * 1000);
+      if (!rateCheck.allowed) {
+        return NextResponse.json(
+          { success: false, error: `Too many submissions. Please wait ${rateCheck.resetSeconds} seconds before submitting again.` },
+          { status: 429 }
+        );
+      }
+    }
+
     const body = await request.json();
     const { name, company, role, service, tag, rating, quote, code, avatar, platform, isUserSubmitted } = body;
 

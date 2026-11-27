@@ -3,46 +3,11 @@ import fs from "fs/promises";
 import path from "path";
 import { sendLeadNotificationEmail } from "@/lib/email";
 import { ClientQuery } from "@/data/agencyData";
+import { verifyAdminAuth, getAdminEmail, checkRateLimit, getClientIp } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 const QUERIES_FILE = path.join(process.cwd(), "src", "data", "queries.json");
-const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
-
-async function getAdminPassword(): Promise<string> {
-  let savedPassword = process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-  try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8");
-    const config = JSON.parse(data);
-    if (config.password) {
-      savedPassword = config.password;
-    }
-  } catch {
-    // fallback
-  }
-  return savedPassword;
-}
-
-async function getAdminEmail(): Promise<string> {
-  let savedEmail = process.env.ADMIN_EMAIL || "lavishchouhan56@gmail.com";
-  try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8");
-    const config = JSON.parse(data);
-    if (config.adminEmail) {
-      savedEmail = config.adminEmail;
-    }
-  } catch {
-    // fallback
-  }
-  return savedEmail;
-}
-
-async function verifyAuth(request: Request): Promise<boolean> {
-  const adminPassword = request.headers.get("x-admin-password");
-  if (!adminPassword) return false;
-  const currentPassword = await getAdminPassword();
-  return adminPassword === currentPassword;
-}
 
 async function readQueries(): Promise<ClientQuery[]> {
   try {
@@ -62,7 +27,7 @@ async function writeQueries(queries: ClientQuery[]): Promise<void> {
 // ==============================================================
 export async function GET(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Valid admin credentials required." },
@@ -85,6 +50,16 @@ export async function GET(request: Request) {
 // ==============================================================
 export async function POST(request: Request) {
   try {
+    // Rate limit public lead submission: max 5 requests per 10 minutes per IP
+    const clientIp = getClientIp(request);
+    const rateCheck = checkRateLimit(`contact_${clientIp}`, 5, 10 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: `Too many submissions. Please wait ${rateCheck.resetSeconds} seconds before submitting again or reach out directly on WhatsApp.` },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, phone, company, service, description, source } = body;
 
@@ -214,7 +189,7 @@ export async function POST(request: Request) {
 // ==============================================================
 export async function PATCH(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Valid admin credentials required." },
@@ -269,7 +244,7 @@ export async function PATCH(request: Request) {
 // ==============================================================
 export async function DELETE(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Valid admin credentials required." },

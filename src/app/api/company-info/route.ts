@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { CompanyInfo, DEFAULT_COMPANY_INFO } from "@/data/agencyData";
+import { verifyAdminAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -13,28 +14,6 @@ const NO_CACHE_HEADERS = {
 };
 
 const COMPANY_INFO_FILE = path.join(process.cwd(), "src", "data", "companyInfo.json");
-const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
-
-async function getAdminPassword(): Promise<string> {
-  let savedPassword = process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-  try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8");
-    const config = JSON.parse(data);
-    if (config.password) {
-      savedPassword = config.password;
-    }
-  } catch {
-    // fallback
-  }
-  return savedPassword;
-}
-
-async function verifyAuth(request: Request): Promise<boolean> {
-  const adminPassword = request.headers.get("x-admin-password");
-  if (!adminPassword) return false;
-  const currentPassword = await getAdminPassword();
-  return adminPassword === currentPassword;
-}
 
 async function readCompanyInfo(): Promise<CompanyInfo> {
   try {
@@ -98,7 +77,7 @@ export async function PUT(request: Request) {
 }
 
 async function handleUpdate(request: Request) {
-  const isAuthorized = await verifyAuth(request);
+  const isAuthorized = await verifyAdminAuth(request);
   if (!isAuthorized) {
     return NextResponse.json(
       { success: false, message: "Unauthorized. Invalid admin password." },

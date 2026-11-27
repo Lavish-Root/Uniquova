@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Globe, ArrowUpRight, Sparkles } from "lucide-react";
+import { Users, Globe, ArrowUpRight } from "lucide-react";
 import ScrollHeading from "@/components/ScrollHeading";
 
 // Social SVG Icons
@@ -313,15 +313,15 @@ export default function TeamSection() {
         {/* Interactive Team Category Filter Tabs */}
         <div className="flex justify-center mb-12">
           <div className="inline-flex p-1.5 rounded-2xl bg-[#FAF9FF] border border-border/80 shadow-xs gap-1 sm:gap-1.5">
-            {[
+            {([
               { id: "all", label: "All Members (8)" },
               { id: "leadership", label: "Founders & Leadership (3)" },
               { id: "growth", label: "Growth & Marketing (3)" },
               { id: "design-ops", label: "Design & Delivery (2)" },
-            ].map((tab) => (
+            ] as const).map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveFilter(tab.id as any)}
+                onClick={() => setActiveFilter(tab.id)}
                 className={`relative px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
                   activeFilter === tab.id ? "text-white" : "text-dark-muted hover:text-dark"
                 }`}

@@ -9,14 +9,15 @@ const OTP_CACHE_FILE = path.join(process.cwd(), "src", "data", ".otp_cache.json"
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { otp } = body;
+    const rawOtp = body.otp || body.code;
 
-    if (!otp || typeof otp !== "string" || otp.trim().length !== 6) {
+    if (!rawOtp || typeof rawOtp !== "string" || rawOtp.trim().length !== 6) {
       return NextResponse.json(
         { success: false, message: "Please enter a valid 6-digit verification code." },
         { status: 400 }
       );
     }
+    const otp = rawOtp.trim();
 
     let otpData: {
       otp: string;

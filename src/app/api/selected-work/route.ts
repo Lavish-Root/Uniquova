@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { SelectedWorkItem, DEFAULT_SELECTED_WORK } from "@/data/agencyData";
+import { verifyAdminAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -13,7 +14,6 @@ const NO_CACHE_HEADERS = {
 };
 
 const DATA_FILE = path.join(process.cwd(), "src", "data", "selectedWork.json");
-const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
 
 function normalizeShowcaseImagePath(src: string): string {
   if (!src) return "/images/portfolio/apex_ecommerce.jpg";
@@ -33,27 +33,6 @@ function normalizeShowcaseImagePath(src: string): string {
     p = "/" + p;
   }
   return p;
-}
-
-async function getAdminPassword(): Promise<string> {
-  let savedPassword = process.env.ADMIN_PASSWORD || "UNIQOVA_ADMIN_2026";
-  try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8");
-    const config = JSON.parse(data);
-    if (config.password) {
-      savedPassword = config.password;
-    }
-  } catch {
-    // fallback
-  }
-  return savedPassword;
-}
-
-async function verifyAuth(request: Request): Promise<boolean> {
-  const adminPassword = request.headers.get("x-admin-password");
-  if (!adminPassword) return false;
-  const currentPassword = await getAdminPassword();
-  return adminPassword === currentPassword;
 }
 
 async function readSelectedWork(): Promise<SelectedWorkItem[]> {
@@ -101,7 +80,7 @@ export async function GET() {
 // POST: Add new showcase (Admin Only)
 export async function POST(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Admin access required." },
@@ -148,7 +127,7 @@ export async function POST(request: Request) {
 // PUT: Update existing showcase or reorder (Admin Only)
 export async function PUT(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Admin access required." },
@@ -211,7 +190,7 @@ export async function PUT(request: Request) {
 // DELETE: Delete showcase (Admin Only)
 export async function DELETE(request: Request) {
   try {
-    const isAuthorized = await verifyAuth(request);
+    const isAuthorized = await verifyAdminAuth(request);
     if (!isAuthorized) {
       return NextResponse.json(
         { success: false, message: "Unauthorized. Admin access required." },
