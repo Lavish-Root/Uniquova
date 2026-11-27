@@ -53,18 +53,18 @@ export default function ScrollHeading({
   // 1. Badge transforms
   const rawBadgeY = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.28, 0.72, 1] : [0, 0.8, 1],
-    fadeOnExit ? [35, 0, 0, -25] : [35, 0, 0]
+    fadeOnExit ? [0, 0.25, 0.75, 1] : [0, 0.8, 1],
+    fadeOnExit ? [12, 0, 0, -10] : [12, 0, 0]
   );
   const rawBadgeScale = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.28, 0.72, 1] : [0, 0.8, 1],
-    fadeOnExit ? [0.88, 1.0, 1.0, 0.90] : [0.88, 1.0, 1.0]
+    fadeOnExit ? [0, 0.25, 0.75, 1] : [0, 0.8, 1],
+    fadeOnExit ? [0.94, 1.0, 1.0, 0.95] : [0.94, 1.0, 1.0]
   );
   const rawBadgeOpacity = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.22, 0.78, 1] : [0, 0.65, 1],
-    fadeOnExit ? [0, 1.0, 1.0, 0] : [0, 1.0, 1.0]
+    fadeOnExit ? [0, 0.16, 0.84, 1] : [0, 0.55, 1],
+    fadeOnExit ? [0.2, 1.0, 1.0, 0.2] : [0.2, 1.0, 1.0]
   );
   const smoothBadgeY = useSpring(rawBadgeY, springConfig);
   const smoothBadgeScale = useSpring(rawBadgeScale, springConfig);
@@ -73,38 +73,38 @@ export default function ScrollHeading({
   // 2. Title ("Our Core Digital Services", "Industries We Serve", etc.)
   const rawTitleY = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.32, 0.68, 1] : [0, 0.85, 1],
-    fadeOnExit ? [75, 0, 0, -55] : [75, 0, 0]
+    fadeOnExit ? [0, 0.28, 0.72, 1] : [0, 0.85, 1],
+    fadeOnExit ? [18, 0, 0, -14] : [18, 0, 0]
   );
   const rawTitleScale = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.32, 0.68, 1] : [0, 0.85, 1],
-    fadeOnExit ? [0.86, 1.0, 1.0, 0.88] : [0.86, 1.0, 1.0]
+    fadeOnExit ? [0, 0.28, 0.72, 1] : [0, 0.85, 1],
+    fadeOnExit ? [0.94, 1.0, 1.0, 0.95] : [0.94, 1.0, 1.0]
   );
   const rawTitleOpacity = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.24, 0.76, 1] : [0, 0.7, 1],
-    fadeOnExit ? [0, 1.0, 1.0, 0] : [0, 1.0, 1.0]
+    fadeOnExit ? [0, 0.18, 0.82, 1] : [0, 0.6, 1],
+    fadeOnExit ? [0.25, 1.0, 1.0, 0.25] : [0.25, 1.0, 1.0]
   );
   const smoothTitleY = useSpring(rawTitleY, springConfig);
   const smoothTitleScale = useSpring(rawTitleScale, springConfig);
   const smoothTitleOpacity = useSpring(rawTitleOpacity, springConfig);
 
-  // 3. Subtitle / description
+  // 3. Subtitle / description (clamped downward travel prevents overlapping elements below)
   const rawSubtitleY = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.35, 0.65, 1] : [0, 0.9, 1],
-    fadeOnExit ? [55, 0, 0, -40] : [55, 0, 0]
+    fadeOnExit ? [0, 0.3, 0.7, 1] : [0, 0.88, 1],
+    fadeOnExit ? [14, 0, 0, -10] : [14, 0, 0]
   );
   const rawSubtitleScale = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.35, 0.65, 1] : [0, 0.9, 1],
-    fadeOnExit ? [0.90, 1.0, 1.0, 0.92] : [0.90, 1.0, 1.0]
+    fadeOnExit ? [0, 0.3, 0.7, 1] : [0, 0.88, 1],
+    fadeOnExit ? [0.96, 1.0, 1.0, 0.97] : [0.96, 1.0, 1.0]
   );
   const rawSubtitleOpacity = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.26, 0.74, 1] : [0, 0.75, 1],
-    fadeOnExit ? [0, 1.0, 1.0, 0] : [0, 1.0, 1.0]
+    fadeOnExit ? [0, 0.2, 0.8, 1] : [0, 0.65, 1],
+    fadeOnExit ? [0.25, 1.0, 1.0, 0.25] : [0.25, 1.0, 1.0]
   );
   const smoothSubtitleY = useSpring(rawSubtitleY, springConfig);
   const smoothSubtitleScale = useSpring(rawSubtitleScale, springConfig);
@@ -113,13 +113,13 @@ export default function ScrollHeading({
   // 4. Extra / action row
   const rawExtraY = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.38, 0.62, 1] : [0, 0.9, 1],
-    fadeOnExit ? [40, 0, 0, -30] : [40, 0, 0]
+    fadeOnExit ? [0, 0.32, 0.68, 1] : [0, 0.88, 1],
+    fadeOnExit ? [10, 0, 0, -8] : [10, 0, 0]
   );
   const rawExtraOpacity = useTransform(
     scrollYProgress,
-    fadeOnExit ? [0, 0.28, 0.72, 1] : [0, 0.75, 1],
-    fadeOnExit ? [0, 1.0, 1.0, 0] : [0, 1.0, 1.0]
+    fadeOnExit ? [0, 0.22, 0.78, 1] : [0, 0.65, 1],
+    fadeOnExit ? [0.2, 1.0, 1.0, 0.2] : [0.2, 1.0, 1.0]
   );
   const smoothExtraY = useSpring(rawExtraY, springConfig);
   const smoothExtraOpacity = useSpring(rawExtraOpacity, springConfig);
@@ -133,7 +133,7 @@ export default function ScrollHeading({
         style={{ perspective: "1200px" }}
         className={`will-change-transform ${maxWidth} ${className}`}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5 lg:gap-8 items-end">
           <div className="lg:col-span-7">
             {badge && (
               <motion.div

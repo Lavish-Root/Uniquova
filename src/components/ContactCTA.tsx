@@ -21,7 +21,7 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
           setCompany(data.companyInfo);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
 
     // 2. Real-time sync listener when CMS updates in same tab
     const handleUpdate = (e: Event) => {
@@ -41,7 +41,7 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
               setCompany(data.companyInfo);
             }
           })
-          .catch(() => {});
+          .catch(() => { });
       }
     };
 
@@ -65,7 +65,7 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
           service: "Direct WhatsApp Project Chat",
           description: "Visitor clicked 'Chat on WhatsApp' from 'Have an Idea? Let's Make It Happen' CTA section.",
         }),
-      }).catch(() => {});
+      }).catch(() => { });
     } catch {
       // ignore
     }
@@ -84,7 +84,7 @@ export default function ContactCTA({ onOpenContact }: ContactCTAProps) {
   const whatsappHref = formatWhatsAppUrl(company.whatsappNumber, company.whatsappMessage);
 
   return (
-    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 sm:py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main CTA Card with deep purple gradient */}
         <div className="relative rounded-[2.5rem] bg-gradient-to-br from-[#120e24] via-[#1a1438] to-[#0d091e] p-8 sm:p-14 lg:p-20 text-white shadow-2xl overflow-hidden border border-purple-500/20">

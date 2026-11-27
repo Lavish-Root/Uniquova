@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import {
   motion,
   useScroll,
@@ -8,8 +9,20 @@ import {
   useSpring,
 } from "framer-motion";
 import ScrollHeading from "@/components/ScrollHeading";
-import ImageSlider, { SlideItem } from "@/src/components/CrazyComponents/tsx/ImageSlider";
+import type { SlideItem } from "@/src/components/CrazyComponents/tsx/ImageSlider";
 import { SelectedWorkItem, DEFAULT_SELECTED_WORK } from "@/data/agencyData";
+
+const ImageSlider = dynamic(
+  () => import("@/src/components/CrazyComponents/tsx/ImageSlider"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full bg-[#0A0910] flex items-center justify-center">
+        <div className="w-9 h-9 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+      </div>
+    ),
+  }
+);
 
 function normalizeImagePath(src: string): string {
   if (!src) return "/images/portfolio/apex_ecommerce.jpg";
@@ -126,20 +139,17 @@ export default function SelectedWorkSection() {
   // ====================================================================
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "start 10%"],
+    offset: ["start 95%", "start 40%"],
   });
 
-  const springConfig = { stiffness: 140, damping: 22, mass: 0.3 };
+  const springConfig = { stiffness: 180, damping: 24, mass: 0.3 };
 
   // Transforms for the entrance:
-  // - Entire container slides UP from 320px down to 0px
-  // - Scales from 0.88 to 1.0
-  // - 3D perspective rotation (14deg -> 0deg)
-  // - Smooth opacity transition
-  const rawY = useTransform(scrollYProgress, [0, 1], [320, 0]);
-  const rawScale = useTransform(scrollYProgress, [0, 1], [0.88, 1.0]);
-  const rawRotateX = useTransform(scrollYProgress, [0, 1], [14, 0]);
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.45], [0.3, 1.0]);
+  // - Smooth upward glide without leaving an empty gap below TrustedBy on mobile
+  const rawY = useTransform(scrollYProgress, [0, 1], [64, 0]);
+  const rawScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.0]);
+  const rawRotateX = useTransform(scrollYProgress, [0, 1], [8, 0]);
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.5], [0.75, 1.0]);
 
   const smoothY = useSpring(rawY, springConfig);
   const smoothScale = useSpring(rawScale, springConfig);
@@ -151,7 +161,7 @@ export default function SelectedWorkSection() {
       ref={containerRef}
       id="selected-work"
       style={{ perspective: "1200px" }}
-      className="relative w-full bg-[#FAF9FF] pt-10 sm:pt-12 lg:pt-14 pb-16 sm:pb-24 lg:pb-32 overflow-hidden z-20"
+      className="relative w-full bg-[#FAF9FF] pt-4 sm:pt-10 lg:pt-14 pb-12 sm:pb-24 lg:pb-32 overflow-hidden z-20"
     >
       {/* ====================================================
           THE SCROLL-UP ENTRANCE CONTAINER
@@ -170,13 +180,13 @@ export default function SelectedWorkSection() {
         <ScrollHeading
           align="left"
           maxWidth="max-w-3xl"
-          className="mb-6 sm:mb-8"
+          className="mb-7 sm:mb-9 relative z-10"
           title={
             <>
               Ideas brought to <span className="gradient-text">life.</span>
             </>
           }
-          titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-2"
+          titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-3"
           subtitle="Explore category-defining digital experiences crafted with strategy, technology, and design."
           subtitleClassName="text-sm sm:text-base text-dark-muted max-w-xl font-medium"
         />

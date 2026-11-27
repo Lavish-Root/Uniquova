@@ -62,7 +62,7 @@ export default function IndustriesSection() {
     <section
       id="industries"
       ref={sectionRef}
-      className="relative w-full py-20 sm:py-28 bg-[#FAF9FF] text-dark overflow-hidden"
+      className="relative w-full py-14 sm:py-28 bg-[#FAF9FF] text-dark overflow-hidden"
     >
       {/* Ambient Bokeh Accent Lighting */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -71,7 +71,7 @@ export default function IndustriesSection() {
       </div>
 
       {/* Section Header with Continuous Scroll-Linked Animation */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mb-10 sm:mb-14">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mb-8 sm:mb-14">
         <ScrollHeading
           align="left"
           maxWidth="max-w-3xl"
@@ -123,7 +123,7 @@ export default function IndustriesSection() {
       </div>
 
       {/* Bottom Directory Link */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mt-10 sm:mt-12 flex items-center justify-end">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mt-8 sm:mt-12 flex items-center justify-center md:justify-end">
         <Link
           href="/industries"
           className="inline-flex items-center gap-2 text-sm sm:text-base font-bold text-primary hover:text-primary-dark transition-colors group"

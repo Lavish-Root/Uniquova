@@ -39,7 +39,7 @@ export default function TrustedBy() {
   }
 
   return (
-    <div className="w-full max-w-6xl mt-8 lg:mt-12">
+    <div className="w-full max-w-6xl mt-4 sm:mt-8 lg:mt-12">
       {/* Scoped CSS animation for smooth Left-to-Right motion */}
       <style>{`
         @keyframes marqueeLeftToRight {

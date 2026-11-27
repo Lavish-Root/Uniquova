@@ -8,7 +8,6 @@ import ContactModal from "@/components/ContactModal";
 import TeamSection from "@/components/TeamSection";
 import StatsCounter from "@/components/ui/stats-counter";
 import {
-  Sparkles,
   Target,
   Eye,
   Award,

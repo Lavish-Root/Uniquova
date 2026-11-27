@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SelectedWorkSection from "@/components/SelectedWorkSection";
@@ -14,7 +15,10 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactCTA from "@/components/ContactCTA";
 import Footer from "@/components/Footer";
-import ContactModal from "@/components/ContactModal";
+
+const ContactModal = dynamic(() => import("@/components/ContactModal"), {
+  ssr: false,
+});
 
 export default function HomeClient() {
   const [isContactOpen, setIsContactOpen] = useState(false);

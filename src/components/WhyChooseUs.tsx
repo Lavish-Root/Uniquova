@@ -19,7 +19,6 @@ import {
   Maximize2,
   Users2,
   ArrowRight,
-  ShieldCheck,
 } from "lucide-react";
 import { WHY_CHOOSE_US_DATA } from "@/data/agencyData";
 import ScrollHeading from "@/components/ScrollHeading";
@@ -100,12 +99,12 @@ function LuminousPillarNode({
     <div
       ref={ref}
       className={`relative flex items-center ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-        } flex-row pl-10 md:pl-0`}
+        } flex-row pl-8 md:pl-0`}
     >
       {/* Center Milestone Node on the Vertical Beam */}
       <div
         ref={setDotRef}
-        className="absolute left-3.5 md:left-1/2 -translate-x-1/2 flex items-center justify-center z-20"
+        className="absolute left-3 md:left-1/2 -translate-x-1/2 flex items-center justify-center z-20"
       >
         {isHoveredByBeam && (
           <motion.span
@@ -113,7 +112,7 @@ function LuminousPillarNode({
             initial={{ scale: 0.9, opacity: 0.75 }}
             animate={{ scale: 2.3, opacity: 0 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute w-5 h-5 rounded-full bg-primary/45 pointer-events-none"
+            className="absolute w-4 h-4 md:w-5 md:h-5 rounded-full bg-primary/45 pointer-events-none"
           />
         )}
         <motion.div
@@ -131,7 +130,7 @@ function LuminousPillarNode({
                 : "#D4CEE8",
           }}
           transition={{ type: "spring", stiffness: 280, damping: 22 }}
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center relative ${isHoveredByBeam
+          className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center relative ${isHoveredByBeam
             ? "shadow-[0_0_18px_4px_rgba(117,69,245,0.55)]"
             : "shadow-md"
             }`}
@@ -162,14 +161,14 @@ function LuminousPillarNode({
           y: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
           scale: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
         }}
-        className={`w-full md:w-[46%] p-5 sm:p-7 rounded-3xl border bg-white/95 backdrop-blur-md transition-[border-color,box-shadow] duration-[400ms] ease-out group overflow-hidden relative ${index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+        className={`w-full md:w-[46%] p-3.5 sm:p-5 md:p-7 rounded-2xl md:rounded-3xl border bg-white/95 backdrop-blur-md transition-[border-color,box-shadow] duration-[400ms] ease-out group overflow-hidden relative ${index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
           } ${isHoveredByBeam
             ? "border-primary/50 shadow-[0_22px_50px_rgba(117,69,245,0.18)]"
             : "border-border/80 shadow-sm hover:shadow-[0_20px_45px_rgba(117,69,245,0.12)] hover:border-primary/40"
           }`}
       >
         {/* Subtle Background Pillar Visual Layer */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl md:rounded-3xl z-0">
           {bgImage && (
             <img
               src={bgImage}
@@ -194,22 +193,22 @@ function LuminousPillarNode({
 
         {/* Card Content — Icon, Title & Key Stat */}
         <div className="relative z-10 flex flex-col justify-center h-full">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3.5 sm:gap-4">
+          <div className="flex flex-row items-center justify-between gap-2.5 sm:gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3.5 md:gap-4 min-w-0 flex-1">
               <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 shrink-0 ${isHoveredByBeam
+                className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center border transition-all duration-300 shrink-0 ${isHoveredByBeam
                   ? "bg-primary text-white border-primary scale-110 shadow-glow-sm"
                   : "bg-primary-50 group-hover:bg-primary group-hover:text-white text-primary border-primary-200/60 shadow-xs group-hover:scale-110"
                   }`}
               >
-                <Icon className="w-6 h-6" />
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
               </div>
-              <div>
-                <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-widest block mb-0.5">
+              <div className="min-w-0">
+                <span className="text-[10px] md:text-[11px] font-mono font-bold text-primary uppercase tracking-widest block mb-0.5">
                   Pillar 0{index + 1}
                 </span>
                 <h3
-                  className={`text-xl sm:text-2xl font-black tracking-tight transition-colors duration-300 leading-snug ${isHoveredByBeam
+                  className={`text-[15px] sm:text-lg md:text-2xl font-black tracking-tight transition-colors duration-300 leading-tight md:leading-snug ${isHoveredByBeam
                     ? "text-primary"
                     : "text-dark group-hover:text-primary"
                     }`}
@@ -219,16 +218,16 @@ function LuminousPillarNode({
               </div>
             </div>
 
-            <div className="text-left sm:text-right shrink-0 pl-16 sm:pl-0">
+            <div className="text-right shrink-0">
               <span
-                className={`text-2xl sm:text-3xl font-black transition-colors duration-300 ${isHoveredByBeam
+                className={`text-lg sm:text-2xl md:text-3xl font-black transition-colors duration-300 block leading-none md:leading-normal ${isHoveredByBeam
                   ? "text-primary"
                   : "text-dark group-hover:text-primary"
                   }`}
               >
                 {renderAnimatedStat(pillar.stat, hasRevealed)}
               </span>
-              <p className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
+              <p className="text-[8.5px] sm:text-[9.5px] md:text-[10px] uppercase font-bold tracking-wider text-dark-muted max-w-[78px] sm:max-w-none leading-tight mt-0.5 ml-auto">
                 {pillar.statLabel}
               </p>
             </div>
@@ -243,10 +242,12 @@ export default function WhyChooseUs() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const nodePositionsRef = useRef<number[]>([]);
+  const nodeOffsetsRef = useRef<number[]>([]);
+  const trackHeightRef = useRef<number>(0);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [highestVisitedIndex, setHighestVisitedIndex] = useState<number>(-1);
+  const [trackHeight, setTrackHeight] = useState<number | null>(null);
   const activeIndexRef = useRef<number | null>(null);
   const highestVisitedRef = useRef<number>(-1);
 
@@ -257,53 +258,75 @@ export default function WhyChooseUs() {
   // Scroll beam spring progression (latches downward progress so scrolling up never shrinks it)
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start center", "end 82%"],
+    offset: ["start center", "end 75%"],
   });
 
   const maxProgress = useMotionValue(0);
 
-  const scaleY = useSpring(maxProgress, {
+  const beamSpring = useSpring(maxProgress, {
     stiffness: 65,
     damping: 20,
     mass: 0.9,
     restDelta: 0.0005,
   });
 
+  // Map 0..0.92 of scroll spring to 0..100% of visual beam length; 0.92..1.0 gives final dot settle window
+  const scaleY = useTransform(beamSpring, [0, 0.92], [0, 1], { clamp: true });
+
   // Glowing comet bead synchronized with the descending tip of the progress bar
   const tipTop = useTransform(scaleY, (v) => `${v * 100}%`);
-  const tipOpacity = useTransform(scaleY, [0, 0.015, 0.975, 1], [0, 1, 1, 0]);
+  const tipOpacity = useTransform(beamSpring, [0, 0.015, 0.92, 0.96], [0, 1, 1, 0]);
 
   const measureNodePositions = useCallback(() => {
     const trackEl = trackRef.current;
     if (!trackEl) return;
     const trackRect = trackEl.getBoundingClientRect();
-    if (trackRect.height <= 0) return;
 
-    nodePositionsRef.current = dotRefs.current.map((dotEl) => {
-      if (!dotEl) return 1;
+    const lastDotEl = dotRefs.current[WHY_CHOOSE_US_DATA.length - 1];
+    let effectiveHeight = trackRect.height;
+    if (lastDotEl) {
+      const lastDotRect = lastDotEl.getBoundingClientRect();
+      const lastDotCenterY = lastDotRect.top + lastDotRect.height / 2;
+      effectiveHeight = Math.max(1, lastDotCenterY - trackRect.top - 4);
+      setTrackHeight((prev) =>
+        prev !== null && Math.abs(prev - effectiveHeight) < 0.5
+          ? prev
+          : effectiveHeight
+      );
+    }
+
+    if (effectiveHeight <= 0) return;
+    trackHeightRef.current = effectiveHeight;
+
+    nodeOffsetsRef.current = dotRefs.current.map((dotEl) => {
+      if (!dotEl) return effectiveHeight;
       const dotRect = dotEl.getBoundingClientRect();
       const dotCenterY = dotRect.top + dotRect.height / 2;
-      return Math.max(0, Math.min(1, (dotCenterY - trackRect.top) / trackRect.height));
+      return Math.max(0, dotCenterY - trackRect.top);
     });
   }, []);
 
-  const syncBeamState = useCallback((beamProgress: number) => {
-    const positions = nodePositionsRef.current;
-    if (positions.length === 0) return;
+  const syncBeamState = useCallback((springVal: number) => {
+    const offsets = nodeOffsetsRef.current;
+    const height = trackHeightRef.current;
+    if (offsets.length === 0 || height <= 0) return;
 
+    const tipPx = Math.min(1, Math.max(0, springVal / 0.92)) * height;
     let nextActive: number | null = null;
     let nextHighestVisited = highestVisitedRef.current;
 
-    for (let i = 0; i < positions.length; i++) {
-      const target = positions[i];
-      const enterAt = target - 0.022;
-      const leaveAt = target + 0.032;
+    for (let i = 0; i < offsets.length; i++) {
+      const dotPx = offsets[i];
+      const isLast = i === offsets.length - 1;
+      // Only trigger once the beam tip physically reaches inside the 20px dot rim (dotPx - 7px)
+      const hasReached = tipPx >= dotPx - 7;
+      const withinWindow = isLast ? springVal <= 0.98 : tipPx <= dotPx + 36;
 
-      if (beamProgress >= enterAt) {
+      if (hasReached) {
         if (i > nextHighestVisited) {
           nextHighestVisited = i;
         }
-        if (beamProgress <= leaveAt) {
+        if (withinWindow) {
           nextActive = i;
         }
       }
@@ -326,14 +349,14 @@ export default function WhyChooseUs() {
       if (initial > maxProgress.get()) {
         maxProgress.set(initial);
       }
-      syncBeamState(scaleY.get());
+      syncBeamState(beamSpring.get());
     });
 
     const observer =
       typeof ResizeObserver !== "undefined"
         ? new ResizeObserver(() => {
           measureNodePositions();
-          syncBeamState(scaleY.get());
+          syncBeamState(beamSpring.get());
         })
         : null;
 
@@ -343,7 +366,7 @@ export default function WhyChooseUs() {
 
     const onResize = () => {
       measureNodePositions();
-      syncBeamState(scaleY.get());
+      syncBeamState(beamSpring.get());
     };
     window.addEventListener("resize", onResize);
 
@@ -352,7 +375,7 @@ export default function WhyChooseUs() {
       observer?.disconnect();
       window.removeEventListener("resize", onResize);
     };
-  }, [measureNodePositions, syncBeamState, scrollYProgress, maxProgress, scaleY]);
+  }, [measureNodePositions, syncBeamState, scrollYProgress, maxProgress, beamSpring]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (latest > maxProgress.get()) {
@@ -360,12 +383,12 @@ export default function WhyChooseUs() {
     }
   });
 
-  useMotionValueEvent(scaleY, "change", (latest) => {
+  useMotionValueEvent(beamSpring, "change", (latest) => {
     syncBeamState(latest);
   });
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
       {/* Ambient background glows */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100/50 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-200/40 rounded-full blur-3xl pointer-events-none" />
@@ -376,7 +399,7 @@ export default function WhyChooseUs() {
         <ScrollHeading
           layout="split"
           maxWidth="max-w-none"
-          className="mb-16 sm:mb-20"
+          className="mb-8 sm:mb-12 md:mb-20"
           title={
             <>
               Built Around Your <br />
@@ -387,11 +410,16 @@ export default function WhyChooseUs() {
         />
 
         {/* Luminous Timeline Scroll Beam Container with Sequential Touch-Activated Hover */}
-        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-24">
-          {/* Vertical Track & Unclipped Light Aura */}
+        <div ref={containerRef} className="max-w-5xl mx-auto relative mb-10 sm:mb-16 md:mb-24">
+          {/* Vertical Track & Unclipped Light Aura — Terminates cleanly at the final milestone dot */}
           <div
             ref={trackRef}
-            className="absolute left-3.5 md:left-1/2 top-4 bottom-2 w-1 -translate-x-1/2 pointer-events-none"
+            style={
+              trackHeight !== null
+                ? { height: `${trackHeight}px`, bottom: "auto" }
+                : undefined
+            }
+            className="absolute left-3 md:left-1/2 top-5 md:top-4 bottom-8 md:bottom-14 w-1 -translate-x-1/2 pointer-events-none"
           >
             {/* Base Track */}
             <div className="w-full h-full bg-border/80 rounded-full" />
@@ -421,7 +449,7 @@ export default function WhyChooseUs() {
           </div>
 
           {/* Milestones / Strategic Pillars */}
-          <div className="space-y-20 sm:space-y-28">
+          <div className="space-y-4 sm:space-y-6 md:space-y-28">
             {WHY_CHOOSE_US_DATA.map((pillar, idx) => (
               <LuminousPillarNode
                 key={pillar.id}
@@ -436,19 +464,15 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Highlight Banner: Dedicated Partnership */}
-        <div className="bg-gradient-to-r from-primary to-primary-dark rounded-3xl p-8 sm:p-12 text-white shadow-glow-md relative overflow-hidden">
+        <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl md:rounded-3xl p-5 sm:p-8 md:p-12 text-white shadow-glow-md relative overflow-hidden">
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center relative z-10">
             <div className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold mb-4 backdrop-blur-sm">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Zero Outsourcing Guarantee</span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold mb-3 leading-tight">
+              <h3 className="text-lg sm:text-2xl lg:text-3xl font-extrabold mb-2 sm:mb-3 leading-tight">
                 Work directly with dedicated in-house specialists.
               </h3>
-              <p className="text-sm sm:text-base text-purple-100 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-purple-100 max-w-2xl leading-relaxed">
                 No middle agents, no endless email chains. You get direct access to our senior
                 developers, marketplace managers, and brand strategists committed to your growth.
               </p>
@@ -457,7 +481,7 @@ export default function WhyChooseUs() {
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center gap-2 bg-white text-dark hover:bg-purple-50 font-bold text-sm px-6 py-4 rounded-full shadow-md transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 bg-white text-dark hover:bg-purple-50 font-bold text-xs sm:text-sm px-5 py-3 sm:px-6 sm:py-4 rounded-full shadow-md transition-all duration-200"
               >
                 <span>Learn About Our Culture</span>
                 <ArrowRight className="w-4 h-4" />

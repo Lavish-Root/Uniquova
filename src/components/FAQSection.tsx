@@ -17,12 +17,12 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
   };
 
   return (
-    <section id="faq" className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
+    <section id="faq" className="py-14 sm:py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
-          className="mb-16"
+          className="mb-10 sm:mb-14 lg:mb-16"
           title={
             <>
               Frequently Asked <span className="gradient-text">Questions</span>
@@ -41,39 +41,35 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
                 key={idx}
                 onMouseEnter={() => setOpenIndex(idx)}
                 onClick={() => toggleAccordion(idx)}
-                className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${
-                  isOpen
-                    ? "border-primary/50 shadow-[0_8px_25px_rgba(117,69,245,0.08)] ring-1 ring-primary/10"
-                    : "border-border hover:border-primary/30"
-                }`}
+                className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${isOpen
+                  ? "border-primary/50 shadow-[0_8px_25px_rgba(117,69,245,0.08)] ring-1 ring-primary/10"
+                  : "border-border hover:border-primary/30"
+                  }`}
               >
                 <div
                   className="w-full text-left px-6 py-5 sm:px-7 sm:py-6 flex items-center justify-between gap-4 select-none"
                   aria-expanded={isOpen}
                 >
                   <span
-                    className={`text-base sm:text-lg font-bold transition-colors ${
-                      isOpen ? "text-primary" : "text-dark"
-                    }`}
+                    className={`text-base sm:text-lg font-bold transition-colors ${isOpen ? "text-primary" : "text-dark"
+                      }`}
                   >
                     {item.q}
                   </span>
 
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                      isOpen
-                        ? "bg-primary text-white rotate-180"
-                        : "bg-softBg text-dark-muted"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen
+                      ? "bg-primary text-white rotate-180"
+                      : "bg-softBg text-dark-muted"
+                      }`}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </div>
 
                 <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
+                  className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
                 >
                   <div className="overflow-hidden">
                     <div className="px-6 pb-6 sm:px-7 sm:pb-7 text-sm sm:text-base text-dark-muted font-normal leading-relaxed border-t border-border/40 pt-4">
@@ -87,7 +83,7 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
         </div>
 
         {/* Additional inquiry prompt */}
-        <div className="mt-12 text-center bg-white rounded-2xl p-6 border border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-8 sm:mt-12 text-center bg-white rounded-2xl p-5 sm:p-6 border border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center shrink-0">
               <MessageCircle className="w-5 h-5" />

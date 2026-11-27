@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Compass, Lightbulb, Code2, Rocket, ArrowRight } from "lucide-react";
+import { Compass, Lightbulb, Code2, Rocket, ArrowRight, ChevronDown } from "lucide-react";
 import { PROCESS_STEPS } from "@/data/agencyData";
 
 const stepIcons = [Compass, Lightbulb, Code2, Rocket];
@@ -15,19 +15,181 @@ const STEP_IMAGES: Record<string, string> = {
 
 export default function WorkingProcess() {
   const [activePanel, setActivePanel] = useState<string>("intro");
+  const [activeMobileStep, setActiveMobileStep] = useState<string>("");
 
   const isIntroActive = activePanel === "intro";
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
       {/* Subtle ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Elastic Expansion Grid — GPU-smooth CSS flex transitions with fixed-size inner frames so images never distort */}
+        {/* MOBILE & TABLET VIEW (< lg): Compact Fluid Wave Banner + Sleek Smooth Vertical Accordion */}
+        <div className="lg:hidden max-w-3xl mx-auto space-y-4">
+          {/* Mobile Fluid Violet Header Card */}
+          <div className="relative rounded-[1.75rem] overflow-hidden border border-primary/20 shadow-[0_18px_45px_rgba(117,69,245,0.2)] p-6 sm:p-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#5224CC] via-[#7545F5] to-[#A682FF]" />
+            <div className="absolute -top-20 -left-16 w-64 h-64 rounded-full bg-[#C4ACFD]/45 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -right-12 w-72 h-72 rounded-full bg-[#3A1696]/70 blur-3xl pointer-events-none" />
+
+            <svg
+              viewBox="0 0 800 500"
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
+            >
+              <defs>
+                <linearGradient id="mobileWaveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#9E76FB" stopOpacity="0.45" />
+                  <stop offset="100%" stopColor="#4318A8" stopOpacity="0.85" />
+                </linearGradient>
+                <linearGradient id="mobileWaveGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#C4ACFD" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#5D2EE3" stopOpacity="0.7" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0,260 C180,160 360,360 560,220 C680,135 760,180 800,140 L800,500 L0,500 Z"
+                fill="url(#mobileWaveGrad1)"
+              />
+              <path
+                d="M0,340 C220,250 420,420 640,300 C720,255 770,275 800,260 L800,500 L0,500 Z"
+                fill="url(#mobileWaveGrad2)"
+              />
+            </svg>
+
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-[1.1] mb-2.5">
+                Our Working <span className="text-[#E6DCFF]">Process</span>
+              </h2>
+
+              <p className="text-white/90 text-sm sm:text-base font-normal leading-relaxed">
+                A battle-tested four-step execution framework designed to eliminate
+                guesswork, accelerate delivery, and ensure long-term commercial
+                success.
+              </p>
+            </div>
+          </div>
+
+          {/* Mobile Vertical Interactive Accordion (all steps collapsed by default) */}
+          <div className="space-y-3">
+            {PROCESS_STEPS.map((step, idx) => {
+              const StepIcon = stepIcons[idx % stepIcons.length];
+              const stepImage = STEP_IMAGES[step.number] || "/images/pillars/integrated.jpg";
+              const isSelected = activeMobileStep === step.number;
+
+              return (
+                <div
+                  key={step.number}
+                  className={`rounded-[1.5rem] bg-white border transition-all duration-300 overflow-hidden ${
+                    isSelected
+                      ? "border-primary/45 shadow-[0_18px_45px_rgba(117,69,245,0.14)]"
+                      : "border-border/80 shadow-xs hover:border-primary/35"
+                  }`}
+                >
+                  {/* Always-Visible Step Bar Header */}
+                  <button
+                    type="button"
+                    aria-expanded={isSelected}
+                    onClick={() =>
+                      setActiveMobileStep((prev) =>
+                        prev === step.number ? "" : step.number
+                      )
+                    }
+                    className="relative z-10 w-full px-4 py-3.5 sm:px-5 sm:py-4 flex items-center justify-between gap-3 text-left cursor-pointer touch-manipulation select-none"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 transition-all duration-300 ${
+                          isSelected
+                            ? "bg-primary text-white border-primary shadow-glow-sm scale-105"
+                            : "bg-primary-light/70 text-primary border-primary-200/70"
+                        }`}
+                      >
+                        <StepIcon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono font-extrabold text-primary bg-primary-light px-1.5 py-0.5 rounded-md">
+                            {step.number}
+                          </span>
+                          <h3
+                            className={`text-base sm:text-lg font-black tracking-tight truncate transition-colors ${
+                              isSelected ? "text-primary" : "text-dark"
+                            }`}
+                          >
+                            {step.title}
+                          </h3>
+                        </div>
+                        <p className="text-xs font-medium text-dark-muted truncate mt-0.5">
+                          {step.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
+                        isSelected
+                          ? "bg-primary/10 border-primary/25 text-primary rotate-180"
+                          : "bg-softBg border-border/80 text-dark-muted rotate-0"
+                      }`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </button>
+
+                  {/* Smooth CSS Grid Accordion Panel (Instant open/close toggle & preloaded artwork) */}
+                  <div
+                    className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                      isSelected
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    <div className="overflow-hidden min-h-0">
+                      <div className="px-4 pb-5 pt-1 sm:px-5 sm:pb-6 space-y-4 border-t border-border/50">
+                        <p className="text-dark-muted text-sm leading-relaxed pt-3">
+                          {step.description}
+                        </p>
+
+                        {/* Key Deliverable Tags */}
+                        {step.tags && step.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {step.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2.5 py-1 rounded-full bg-[#FAF9FF] border border-primary/15 text-[11px] font-semibold text-dark"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Clean Visual Showcase Image */}
+                        <div className="relative h-44 sm:h-52 w-full rounded-2xl overflow-hidden border border-border/70 shadow-sm bg-softBg">
+                          <img
+                            src={stepImage}
+                            alt={`${step.title} — ${step.subtitle}`}
+                            className="w-full h-full object-cover object-center filter contrast-[1.03] brightness-[1.02]"
+                            loading="eager"
+                            decoding="async"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW (lg+): Elastic Expansion Grid — GPU-smooth CSS flex transitions with fixed-size inner frames */}
         <div
           onMouseLeave={() => setActivePanel("intro")}
-          className="flex flex-col lg:flex-row gap-3 sm:gap-4 w-full lg:h-[460px]"
+          className="hidden lg:flex lg:flex-row gap-4 w-full lg:h-[460px]"
         >
           {/* LEFT WINDOW: Our Working Process with Lavender Fluid Wave Gradient */}
           <div

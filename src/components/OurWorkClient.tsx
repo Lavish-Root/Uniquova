@@ -14,7 +14,7 @@ import ContactModal from "@/components/ContactModal";
 import VerticalWorkShowcase from "@/components/VerticalWorkShowcase";
 import { ProjectItem } from "@/data/agencyData";
 import initialProjects from "@/data/projects.json";
-import { Layers, ArrowUpRight, Sparkles } from "lucide-react";
+import { Layers, ArrowUpRight } from "lucide-react";
 import ScrollHeading from "@/components/ScrollHeading";
 
 interface WorkCardMotionProps {

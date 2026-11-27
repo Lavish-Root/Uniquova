@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["lucide-react"],
+  webpack: (config) => {
+    config.output = config.output || {};
+    config.output.chunkLoadTimeout = 300000;
+    return config;
+  },
   async redirects() {
     return [
       {

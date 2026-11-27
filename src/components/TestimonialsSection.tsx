@@ -87,11 +87,10 @@ export default function TestimonialsSection() {
   const renderCard = (t: TestimonialItem, key: string) => (
     <div
       key={key}
-      className={`bg-white rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between group cursor-pointer ${
-        t.isUserSubmitted
-          ? "border-primary/40 shadow-[0_8px_25px_rgba(117,69,245,0.12)] hover:border-primary"
-          : "border-border/90 shadow-sm hover:shadow-[0_12px_30px_rgba(117,69,245,0.15)] hover:border-primary/50"
-      }`}
+      className={`bg-white rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between group cursor-pointer ${t.isUserSubmitted
+        ? "border-primary/40 shadow-[0_8px_25px_rgba(117,69,245,0.12)] hover:border-primary"
+        : "border-border/90 shadow-sm hover:shadow-[0_12px_30px_rgba(117,69,245,0.15)] hover:border-primary/50"
+        }`}
     >
       <div>
         {/* Card Header: Avatar, Name & Handle */}
@@ -146,7 +145,7 @@ export default function TestimonialsSection() {
   );
 
   return (
-    <section id="reviews" className="py-24 lg:py-32 bg-[#FAF9FF] relative overflow-hidden">
+    <section id="reviews" className="py-14 sm:py-20 lg:py-32 bg-[#FAF9FF] relative overflow-hidden">
       {/* Embedded scoped styles to guarantee animation execution */}
       <style>{`
         @keyframes marqueeUp {
@@ -184,7 +183,7 @@ export default function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Continuous Bidirectional Scroll Animation */}
         <ScrollHeading
-          className="mb-16"
+          className="mb-10 sm:mb-14 lg:mb-16"
           title={
             <>
               Trusted by Leaders <br />
@@ -253,7 +252,7 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Rating Benchmark Bottom Bar */}
-        <div className="mt-12 bg-white rounded-2xl p-6 border border-border shadow-xs text-center max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-8 sm:mt-12 bg-white rounded-2xl p-5 sm:p-6 border border-border shadow-xs text-center max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
             <div className="flex text-amber-400">
               {[...Array(5)].map((_, i) => (

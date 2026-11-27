@@ -30,7 +30,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
       title: "E-commerce Solutions",
       subtitle: "Sell. Grow. Scale.",
       icon: ShoppingCart,
-      position: "top-4 -left-6 md:top-8 md:-left-8",
+      position: "top-11 left-0 sm:top-6 sm:left-0 md:top-8 md:-left-8",
       animClass: "animate-float",
       href: "/services/ecommerce",
     },
@@ -39,7 +39,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
       title: "Website Development",
       subtitle: "Build. Perform. Excel.",
       icon: Code,
-      position: "-top-6 right-8 md:-top-4 md:right-12",
+      position: "-top-2 right-0 sm:-top-3 sm:right-6 md:-top-4 md:right-12",
       animClass: "animate-float-slow",
       href: "/services/web-development",
     },
@@ -48,7 +48,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
       title: "App Development",
       subtitle: "Innovate. Engage. Grow.",
       icon: Smartphone,
-      position: "top-1/2 -right-6 md:top-1/2 md:-right-8 -translate-y-1/2",
+      position: "top-[43%] right-0 sm:top-1/2 sm:right-0 md:-right-8 -translate-y-1/2",
       animClass: "animate-float",
       href: "/services/app-development",
     },
@@ -57,7 +57,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
       title: "Branding",
       subtitle: "Define. Differentiate.",
       icon: PenTool,
-      position: "bottom-6 -left-4 md:bottom-10 md:-left-6",
+      position: "bottom-16 left-0 sm:bottom-12 sm:left-0 md:bottom-10 md:-left-6",
       animClass: "animate-float-reverse",
       href: "/services/branding",
     },
@@ -66,20 +66,20 @@ export default function Hero({ onOpenContact }: HeroProps) {
       title: "Graphic Designing",
       subtitle: "Create. Communicate.",
       icon: Palette,
-      position: "bottom-2 right-4 md:bottom-4 md:right-10",
+      position: "bottom-1 right-0 sm:bottom-2 sm:right-4 md:bottom-4 md:right-10",
       animClass: "animate-float",
       href: "/services/graphic-design",
     },
   ];
 
   return (
-    <section className="relative pt-28 pb-12 lg:pt-36 lg:pb-16 overflow-hidden purple-mesh-bg">
+    <section className="relative pt-24 pb-6 sm:pt-28 sm:pb-12 lg:pt-36 lg:pb-16 overflow-hidden purple-mesh-bg">
       {/* Background ambient lighting orbs */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-primary/15 via-[#8F63FF]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-[400px] h-[400px] bg-primary-200/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8 items-center">
           
           {/* LEFT COLUMN: Agency Information & Call to Actions */}
           <div className="lg:col-span-6 flex flex-col items-start z-10">
@@ -196,10 +196,10 @@ export default function Hero({ onOpenContact }: HeroProps) {
           </div>
 
           {/* RIGHT COLUMN: Interactive 3D Digital Workspace Visual & Floating Service Cards */}
-          <div className="lg:col-span-6 relative flex items-center justify-center min-h-[460px] sm:min-h-[520px] lg:min-h-[560px]">
+          <div className="lg:col-span-6 relative flex items-center justify-center min-h-[420px] sm:min-h-[520px] lg:min-h-[560px]">
             
             {/* Glowing circular glass pedestal & orbital rings */}
-            <div className="relative w-full max-w-[480px] aspect-square flex items-center justify-center">
+            <div className="relative w-full max-w-[480px] min-h-[385px] sm:min-h-0 sm:aspect-square flex items-center justify-center">
               
               {/* Outer Glowing Orbital Ring */}
               <div className="absolute inset-0 rounded-full border-2 border-primary/25 shadow-[0_0_80px_rgba(117,69,245,0.18)] animate-pulse-glow" />
@@ -212,11 +212,11 @@ export default function Hero({ onOpenContact }: HeroProps) {
 
               {/* Floating 3D Isometric Purple Cubes */}
               <div className="absolute top-12 right-2 w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-primary-dark to-[#341b8a] shadow-[0_8px_20px_rgba(117,69,245,0.4)] rotate-45 transform animate-float-slow opacity-90 hidden sm:block" />
-              <div className="absolute top-1/2 -left-8 w-6 h-6 rounded-md bg-gradient-to-tr from-primary to-primary-light shadow-[0_6px_16px_rgba(117,69,245,0.35)] rotate-12 transform animate-float opacity-80" />
+              <div className="absolute top-1/2 left-1 sm:-left-8 w-6 h-6 rounded-md bg-gradient-to-tr from-primary to-primary-light shadow-[0_6px_16px_rgba(117,69,245,0.35)] rotate-12 transform animate-float opacity-80" />
               <div className="absolute bottom-16 right-0 w-7 h-7 rounded-md bg-gradient-to-br from-primary-dark to-primary shadow-[0_6px_18px_rgba(80,48,199,0.4)] -rotate-12 transform animate-float-reverse opacity-85" />
 
               {/* Central 3D Laptop with UNIQUOVA screen */}
-              <div className="relative z-10 w-[84%] max-w-[380px] transition-transform duration-500 hover:scale-[1.02]">
+              <div className="relative z-10 w-[74%] sm:w-[84%] max-w-[380px] transition-transform duration-500 hover:scale-[1.02]">
                 
                 {/* Laptop Display (Isometric Perspective Screen) */}
                 <div className="relative rounded-t-2xl bg-[#0f0d1a] border-4 border-[#24213d] shadow-[0_25px_60px_-15px_rgba(117,69,245,0.4)] p-3 pb-4">
@@ -276,23 +276,23 @@ export default function Hero({ onOpenContact }: HeroProps) {
                     className={`absolute z-20 ${card.position} ${card.animClass} group block cursor-pointer transition-transform duration-300`}
                   >
                     <div
-                      className={`glass-hero-card rounded-2xl p-3 sm:p-3.5 transition-all duration-300 flex items-center gap-3 ${
+                      className={`glass-hero-card rounded-xl sm:rounded-2xl p-2 sm:p-3.5 transition-all duration-300 flex items-center gap-2 sm:gap-3 ${
                         isHovered
                           ? "scale-105 border-primary shadow-[0_20px_45px_rgba(117,69,245,0.25)] bg-white/95"
                           : "hover:scale-105"
                       }`}
                     >
                       {/* Icon inside soft lavender box */}
-                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-110 shadow-sm">
-                        <IconComponent className="w-5 h-5" />
+                      <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-110 shadow-sm">
+                        <IconComponent className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                       </div>
 
                       {/* Card Content */}
-                      <div className="pr-1">
-                        <h2 className="text-xs sm:text-sm font-bold text-dark group-hover:text-primary transition-colors whitespace-nowrap leading-tight">
+                      <div className="pr-0.5 sm:pr-1">
+                        <h2 className="text-[11px] sm:text-sm font-bold text-dark group-hover:text-primary transition-colors whitespace-nowrap leading-tight">
                           {card.title}
                         </h2>
-                        <p className="text-[11px] text-dark-muted font-medium mt-0.5 whitespace-nowrap">
+                        <p className="text-[9.5px] sm:text-[11px] text-dark-muted font-medium mt-0.5 whitespace-nowrap">
                           {card.subtitle}
                         </p>
                       </div>
