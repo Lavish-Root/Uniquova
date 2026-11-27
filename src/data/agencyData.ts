@@ -16,7 +16,7 @@ export interface ServiceItem {
 }
 
 export const SERVICE_BG_IMAGES: Record<string, string> = {
-  ecommerce: "/images/services/ecommerce_solution_bg.jpg?v=2",
+  ecommerce: "/images/services/ecommerce_solution_bg.jpg?v=3",
   "amazon-account-management": "/images/services/ecommerce_bg_1.jpg",
   "flipkart-account-management": "/images/services/ecommerce_bg_3.jpg",
   "amazon-ppc-management": "/images/services/ecom_digital_retail.jpg",
