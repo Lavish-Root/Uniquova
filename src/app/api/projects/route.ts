@@ -45,6 +45,22 @@ async function readProjects(): Promise<ProjectItem[]> {
   }
 }
 
+async function saveBase64Image(dataUri: string, folder: string, prefix: string): Promise<string> {
+  if (!dataUri || typeof dataUri !== "string" || !dataUri.startsWith("data:image/")) {
+    return dataUri;
+  }
+  const match = dataUri.match(/^data:image\/([a-zA-Z0-9+-]+);base64,(.+)$/);
+  if (!match) return dataUri;
+  const ext = match[1] === "jpeg" ? "jpg" : match[1];
+  const filename = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+  const targetDir = path.join(process.cwd(), "public", "images", folder);
+  await fs.mkdir(targetDir, { recursive: true });
+  const targetPath = path.join(targetDir, filename);
+  const buffer = Buffer.from(match[2], "base64");
+  await fs.writeFile(targetPath, buffer);
+  return `/images/${folder}/${filename}`;
+}
+
 async function writeProjects(projects: ProjectItem[]): Promise<void> {
   await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2), "utf-8");
 }
@@ -103,6 +119,19 @@ export async function POST(request: Request) {
           ? gallery.split("\n").map((s: string) => s.trim()).filter(Boolean)
           : []);
 
+    const processedMediaUrl = await saveBase64Image(
+      mediaUrl || "/images/services/web_dev_bg.jpg",
+      "portfolio",
+      "media"
+    );
+
+    const processedGallery = await Promise.all(
+      (galleryArray.length > 0 ? galleryArray : [processedMediaUrl]).map(
+        (img: string, idx: number) =>
+          saveBase64Image(img, "portfolio", `deliverable_${String(idx + 1).padStart(2, "0")}`)
+      )
+    );
+
     const newProject: ProjectItem = {
       id: `proj_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       title: title.trim(),
@@ -112,12 +141,12 @@ export async function POST(request: Request) {
       vercelUrl: vercelUrl ? vercelUrl.trim() : "",
       githubUrl: githubUrl ? githubUrl.trim() : "",
       mediaType: mediaType === "video" ? "video" : "image",
-      mediaUrl: mediaUrl ? mediaUrl.trim() : "/images/services/web_dev_bg.jpg",
+      mediaUrl: processedMediaUrl,
       technologies: Array.isArray(technologies) ? technologies : [],
       impact: impact ? impact.trim() : "Proven Business Growth",
       metrics: Array.isArray(metrics) ? metrics : [],
       featured: Boolean(featured),
-      gallery: galleryArray.length > 0 ? galleryArray : [mediaUrl || "/images/services/web_dev_bg.jpg"],
+      gallery: processedGallery,
       createdAt: new Date().toISOString(),
     };
 
@@ -170,9 +199,21 @@ export async function PUT(request: Request) {
       );
     }
 
+    const processedUpdates = { ...updates };
+    if (processedUpdates.mediaUrl) {
+      processedUpdates.mediaUrl = await saveBase64Image(processedUpdates.mediaUrl, "portfolio", "media");
+    }
+    if (processedUpdates.gallery && Array.isArray(processedUpdates.gallery)) {
+      processedUpdates.gallery = await Promise.all(
+        processedUpdates.gallery.map((img: string, idx: number) =>
+          saveBase64Image(img, "portfolio", `deliverable_${String(idx + 1).padStart(2, "0")}`)
+        )
+      );
+    }
+
     projects[index] = {
       ...projects[index],
-      ...updates,
+      ...processedUpdates,
       id, // Preserve original ID
     };
 

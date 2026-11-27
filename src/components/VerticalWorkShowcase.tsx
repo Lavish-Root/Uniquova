@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ProjectItem } from "@/data/agencyData";
 import {
   ArrowLeft,
   ArrowUpRight,
   Sparkles,
   LayoutGrid,
+  Columns3,
   Rows3,
-  Maximize2,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  ExternalLink,
-  ShieldCheck,
+  Grid3X3,
+  CheckCircle2,
+  Layers,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -23,26 +21,16 @@ interface VerticalWorkShowcaseProps {
   onOpenContact: () => void;
 }
 
-type ViewMode = "curated" | "grid";
+type ViewMode = "bento" | "masonry-3" | "masonry-2" | "full";
 
 export default function VerticalWorkShowcase({
   project,
   onClose,
   onOpenContact,
 }: VerticalWorkShowcaseProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("curated");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("masonry-2");
 
-  // Resolve all deliverable images for this project
-  const images = useMemo(() => {
-    if (!project) return [];
-    if (project.gallery && project.gallery.length > 0) {
-      return project.gallery;
-    }
-    return [project.mediaUrl || "/images/services/web_dev_bg.jpg"];
-  }, [project]);
-
-  // Lock body scroll when showcase or lightbox is open
+  // Lock body scroll when showcase is open
   useEffect(() => {
     if (!project) return;
 
@@ -54,82 +42,86 @@ export default function VerticalWorkShowcase({
     };
   }, [project]);
 
-  // Handle keyboard events (Escape to close showcase or lightbox, Arrows for lightbox navigation)
+  // Handle Escape key to close showcase
   useEffect(() => {
     if (!project) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (lightboxIndex !== null) {
-          setLightboxIndex(null);
-        } else {
-          onClose();
-        }
-      } else if (lightboxIndex !== null) {
-        if (e.key === "ArrowLeft") {
-          setLightboxIndex((prev) =>
-            prev !== null && prev > 0 ? prev - 1 : images.length - 1
-          );
-        } else if (e.key === "ArrowRight") {
-          setLightboxIndex((prev) =>
-            prev !== null && prev < images.length - 1 ? prev + 1 : 0
-          );
-        }
+        onClose();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [project, lightboxIndex, images.length, onClose]);
+  }, [project, onClose]);
 
-  // Lightbox navigation helpers
-  const handleNext = useCallback(
-    (e?: React.MouseEvent) => {
-      e?.stopPropagation();
-      setLightboxIndex((prev) =>
-        prev !== null && prev < images.length - 1 ? prev + 1 : 0
-      );
-    },
-    [images.length]
-  );
-
-  const handlePrev = useCallback(
-    (e?: React.MouseEvent) => {
-      e?.stopPropagation();
-      setLightboxIndex((prev) =>
-        prev !== null && prev > 0 ? prev - 1 : images.length - 1
-      );
-    },
-    [images.length]
-  );
-
-  // Domain name for browser mockups
-  const displayDomain = useMemo(() => {
-    if (!project) return "uniquova.com";
-    return project.vercelUrl
-      ? project.vercelUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")
-      : `${project.client.toLowerCase().replace(/[^a-z0-9]/g, "")}.com`;
+  // Resolve all deliverable images for this project
+  const images = useMemo(() => {
+    if (!project) return [];
+    if (project.gallery && project.gallery.length > 0) {
+      return project.gallery;
+    }
+    return [project.mediaUrl || "/images/services/web_dev_bg.jpg"];
   }, [project]);
 
-  // Dynamic layout chunking engine for "curated" bento flow:
-  // Pattern rhythm:
-  // 1. Hero item (1 full-width browser mockup)
-  // 2. Pair (2 items, 2-col)
-  // 3. Triple (3 items, 3-col)
-  // 4. Asymmetric Bento (2 items, 2/3 + 1/3)
-  // 5. Panoramic (1 full-width)
-  // Repeating cycle across all images
-  const curatedSections = useMemo(() => {
+  // Parse structured case study description into readable sections
+  const parsedDescription = useMemo(() => {
+    if (!project?.description) return { leads: [], bullets: [], conclusion: "" };
+
+    const raw = project.description;
+    const lines = raw.split("\n");
+
+    const leads: string[] = [];
+    const bullets: string[] = [];
+    const closing: string[] = [];
+
+    let inScope = false;
+    let pastScope = false;
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+
+      if (trimmed.toLowerCase().includes("project scope:") || trimmed.includes("**Project Scope:**")) {
+        inScope = true;
+        continue;
+      }
+
+      if (inScope && !pastScope) {
+        if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
+          bullets.push(trimmed.replace(/^[-•*]\s*/, ""));
+          continue;
+        } else {
+          pastScope = true;
+        }
+      }
+
+      if (pastScope) {
+        closing.push(trimmed);
+      } else {
+        leads.push(trimmed);
+      }
+    }
+
+    return {
+      leads,
+      bullets,
+      conclusion: closing.join(" "),
+    };
+  }, [project?.description]);
+
+  // Standard Bento chunker
+  const bentoSections = useMemo(() => {
     if (images.length === 0) return [];
     const sections: {
-      type: "hero" | "pair" | "triple" | "asymmetric" | "panoramic";
+      type: "hero" | "pair" | "triple" | "asymmetric";
       items: { url: string; index: number }[];
     }[] = [];
 
     let currIdx = 0;
     let cycleStep = 0;
 
-    // First item is always Hero flagship
     if (currIdx < images.length) {
       sections.push({
         type: "hero",
@@ -140,10 +132,9 @@ export default function VerticalWorkShowcase({
 
     while (currIdx < images.length) {
       const remaining = images.length - currIdx;
-      const step = cycleStep % 4;
+      const step = cycleStep % 3;
 
       if (step === 0) {
-        // Pair: 2 items
         const count = Math.min(2, remaining);
         sections.push({
           type: "pair",
@@ -154,7 +145,6 @@ export default function VerticalWorkShowcase({
         });
         currIdx += count;
       } else if (step === 1) {
-        // Triple: 3 items (or 2 if only 2 remain)
         const count = remaining >= 3 ? 3 : Math.min(2, remaining);
         sections.push({
           type: "triple",
@@ -164,8 +154,7 @@ export default function VerticalWorkShowcase({
           })),
         });
         currIdx += count;
-      } else if (step === 2) {
-        // Asymmetric: 2 items (wide + tall)
+      } else {
         const count = Math.min(2, remaining);
         sections.push({
           type: "asymmetric",
@@ -175,15 +164,7 @@ export default function VerticalWorkShowcase({
           })),
         });
         currIdx += count;
-      } else {
-        // Panoramic: 1 item
-        sections.push({
-          type: "panoramic",
-          items: [{ url: images[currIdx], index: currIdx }],
-        });
-        currIdx += 1;
       }
-
       cycleStep++;
     }
 
@@ -191,6 +172,11 @@ export default function VerticalWorkShowcase({
   }, [images]);
 
   if (!project) return null;
+
+  const isSyaahi =
+    project.client.toLowerCase().includes("syaahi") ||
+    project.title.toLowerCase().includes("syaahi");
+  const logoSrc = project.logoUrl || (isSyaahi ? "/images/portfolio/syaahi_logo.png" : null);
 
   return (
     <AnimatePresence>
@@ -203,65 +189,95 @@ export default function VerticalWorkShowcase({
         </div>
 
         {/* Sticky Top Header Navigation */}
-        <header className="sticky top-0 z-30 w-full bg-[#0F021B]/90 backdrop-blur-xl border-b border-[#7545F5]/20 px-4 sm:px-8 py-3.5 sm:py-4 transition-all shadow-[0_4px_30px_rgba(15,2,27,0.8)]">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-30 w-full bg-[#0F021B]/95 backdrop-blur-xl border-b border-[#7545F5]/20 px-4 sm:px-8 py-3 sm:py-3.5 transition-all shadow-[0_4px_30px_rgba(15,2,27,0.8)]">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
             {/* Back Button */}
             <button
               onClick={onClose}
-              className="group inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-white/10 hover:bg-[#7545F5]/25 text-white/90 hover:text-white text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer border border-white/15 hover:border-[#7545F5]/40 shadow-xs"
+              className="group inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-white/10 hover:bg-[#7545F5]/25 text-white/90 hover:text-white text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer border border-white/15 hover:border-[#7545F5]/40 shadow-xs shrink-0"
               aria-label="Back to all projects"
             >
               <ArrowLeft className="w-4 h-4 text-[#C4B5FD] group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
               <span>Back to Projects</span>
             </button>
 
-            {/* Middle: Deliverables Count & View Switcher */}
-            <div className="hidden md:flex items-center gap-3">
-              <span className="text-xs font-mono font-bold px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#DDD6FE]">
+            {/* Middle: Interactive Layout Switcher & Deliverable Count */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Deliverable Counter Pill */}
+              <span className="hidden md:inline-flex text-xs font-mono font-bold px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#DDD6FE]">
                 {images.length} {images.length === 1 ? "Deliverable" : "Deliverables"}
               </span>
 
-              {/* View Mode Switcher */}
-              <div className="inline-flex items-center p-1 rounded-full bg-white/5 border border-white/10">
+              {/* Layout Switcher Segmented Control */}
+              <div className="flex items-center gap-1 p-1 rounded-full bg-white/[0.06] border border-[#7545F5]/30 backdrop-blur-md shadow-inner">
                 <button
                   type="button"
-                  onClick={() => setViewMode("curated")}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                    viewMode === "curated"
-                      ? "bg-[#7545F5] text-white shadow-xs"
-                      : "text-white/60 hover:text-white"
+                  onClick={() => setViewMode("masonry-2")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === "masonry-2"
+                      ? "bg-gradient-to-r from-primary to-[#8B5CF6] text-white shadow-md shadow-[#7545F5]/30"
+                      : "text-white/60 hover:text-white hover:bg-white/5"
                   }`}
-                  title="Auto-Arranged WeGrow Bento Layout"
+                  title="2-Column Showcase Grid (Default)"
                 >
-                  <Rows3 className="w-3.5 h-3.5" />
-                  <span>Curated Flow</span>
+                  <Columns3 className="w-3.5 h-3.5" />
+                  <span>2 Cols</span>
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => setViewMode("grid")}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                    viewMode === "grid"
-                      ? "bg-[#7545F5] text-white shadow-xs"
-                      : "text-white/60 hover:text-white"
+                  onClick={() => setViewMode("masonry-3")}
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === "masonry-3"
+                      ? "bg-gradient-to-r from-primary to-[#8B5CF6] text-white shadow-md shadow-[#7545F5]/30"
+                      : "text-white/60 hover:text-white hover:bg-white/5"
                   }`}
-                  title="Grid Gallery View"
+                  title="3-Column Grid"
+                >
+                  <Grid3X3 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">3 Cols</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setViewMode("bento")}
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === "bento"
+                      ? "bg-gradient-to-r from-primary to-[#8B5CF6] text-white shadow-md shadow-[#7545F5]/30"
+                      : "text-white/60 hover:text-white hover:bg-white/5"
+                  }`}
+                  title="Curated Bento Architecture"
                 >
                   <LayoutGrid className="w-3.5 h-3.5" />
-                  <span>Grid View</span>
+                  <span className="hidden sm:inline">Bento</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setViewMode("full")}
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === "full"
+                      ? "bg-gradient-to-r from-primary to-[#8B5CF6] text-white shadow-md shadow-[#7545F5]/30"
+                      : "text-white/60 hover:text-white hover:bg-white/5"
+                  }`}
+                  title="Full Screen Stream"
+                >
+                  <Rows3 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Full</span>
                 </button>
               </div>
             </div>
 
             {/* Right: Live Project Link */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               {project.vercelUrl && (
                 <a
                   href={project.vercelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-glow-sm transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-glow-sm transition-all cursor-pointer"
                 >
-                  <span>Live Project</span>
+                  <span className="hidden xs:inline">Live Project</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               )}
@@ -269,19 +285,19 @@ export default function VerticalWorkShowcase({
           </div>
         </header>
 
-        {/* Scrollable Gallery Stream */}
+        {/* Scrollable Gallery Stage */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-7xl mx-auto">
-            {/* Project Header & Case Study Overview Card */}
+            {/* EXECUTIVE CASE STUDY OVERVIEW WITH LIGHT LAVENDER CARD & STANDALONE BACKLIT LOGO */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="mb-10 sm:mb-14"
+              className="mb-12 sm:mb-16"
             >
-              {/* Badges Pill Row */}
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#7545F5]/30 text-[#E9D5FF] border border-[#7545F5]/50 flex items-center gap-1.5">
+              {/* Category & Badge Header Row */}
+              <div className="flex flex-wrap items-center gap-2 mb-5">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#7545F5]/30 text-[#E9D5FF] border border-[#7545F5]/50 flex items-center gap-1.5 shadow-xs">
                   <Sparkles className="w-3 h-3 text-primary-light" />
                   {project.serviceCategory}
                 </span>
@@ -298,19 +314,84 @@ export default function VerticalWorkShowcase({
                 ))}
               </div>
 
-              {/* Headline */}
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-4 max-w-4xl">
-                {project.title}
-              </h1>
+              {/* 2-COLUMN SECTION: LEFT CARD + RIGHT STANDALONE BACKLIT LOGO */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-8">
+                {/* LEFT COLUMN: LIGHT LAVENDER HIGH-CONTRAST CASE STUDY CARD */}
+                <div className="lg:col-span-7 rounded-3xl bg-gradient-to-br from-[#FAF5FF] via-[#F4EBFF] to-[#ECE1FD] text-[#1D0936] p-6 sm:p-8 lg:p-10 border border-[#C084FC]/50 shadow-[0_20px_50px_rgba(117,69,245,0.25)] relative overflow-hidden">
+                  <div className="absolute -top-20 -right-20 w-44 h-44 bg-[#A855F7]/15 rounded-full blur-2xl pointer-events-none" />
 
-              {/* Description */}
-              <p className="text-sm sm:text-base text-white/75 max-w-3xl leading-relaxed whitespace-pre-line font-normal mb-8">
-                {project.description}
-              </p>
+                  {/* Project Title */}
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1A0631] tracking-tight leading-tight mb-4">
+                    {project.title}
+                  </h1>
 
-              {/* Performance Metrics Bar (Bento Quick Strip) */}
+                  {/* Lead Overview Paragraphs */}
+                  {parsedDescription.leads.map((p, idx) => (
+                    <p
+                      key={idx}
+                      className="text-sm sm:text-base text-[#2C0E52] leading-relaxed font-medium mb-3.5 last:mb-0"
+                    >
+                      {p}
+                    </p>
+                  ))}
+
+                  {/* Scope & Capabilities Cards Grid */}
+                  {parsedDescription.bullets.length > 0 && (
+                    <div className="my-6 pt-5 border-t border-[#D8B4FE]/60">
+                      <div className="flex items-center gap-2 mb-3.5">
+                        <Layers className="w-4 h-4 text-[#7545F5]" />
+                        <h4 className="text-xs font-black uppercase tracking-wider text-[#581C87]">
+                          Key Capabilities & Engineering Scope
+                        </h4>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        {parsedDescription.bullets.map((bullet, idx) => (
+                          <div
+                            key={idx}
+                            className="bg-white/85 backdrop-blur-sm rounded-xl p-3 sm:p-3.5 border border-[#D8B4FE]/50 shadow-xs flex items-start gap-2.5 hover:border-[#9333EA] hover:bg-white transition-all group"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-[#7545F5] group-hover:text-[#9333EA] shrink-0 mt-0.5 transition-colors" />
+                            <span className="text-xs sm:text-[13px] font-semibold text-[#1F0A38] leading-snug">
+                              {bullet}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Milestone Takeaway / Conclusion */}
+                  {parsedDescription.conclusion && (
+                    <div className="mt-4 p-4 rounded-2xl bg-white/90 border border-[#7545F5]/30 text-xs sm:text-sm font-semibold text-[#2F0E5A] shadow-xs flex items-start gap-3">
+                      <Sparkles className="w-4 h-4 text-[#7545F5] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-[#1F0A38]">Strategic Objective: </span>
+                        <span>{parsedDescription.conclusion}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* RIGHT COLUMN: STANDALONE FLOATING LOGO WITH CRISP WHITE INNER BOUNDARY LINE (NO GLOW) */}
+                <div className="lg:col-span-5 flex items-center justify-center relative py-6 sm:py-10">
+                  {/* STANDALONE SYAAHI LOGO — PURE, FLOATING WITH CRISP WHITE INNER BOUNDARY LINE */}
+                  {logoSrc && (
+                    <img
+                      src={logoSrc}
+                      alt={`${project.client} Logo`}
+                      className="relative z-10 max-h-40 sm:max-h-56 w-auto object-contain select-none hover:scale-105 transition-all duration-500 cursor-default"
+                      style={{
+                        filter:
+                          "drop-shadow(1.5px 0 0 #FFFFFF) drop-shadow(-1.5px 0 0 #FFFFFF) drop-shadow(0 1.5px 0 #FFFFFF) drop-shadow(0 -1.5px 0 #FFFFFF) drop-shadow(1px 1px 0 #FFFFFF) drop-shadow(-1px -1px 0 #FFFFFF) drop-shadow(1px -1px 0 #FFFFFF) drop-shadow(-1px 1px 0 #FFFFFF) drop-shadow(0 20px 40px rgba(0,0,0,0.65))",
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Performance Metrics Bar */}
               {(project.metrics && project.metrics.length > 0) && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
                   {project.metrics.map((metric, idx) => (
                     <div
                       key={idx}
@@ -355,82 +436,62 @@ export default function VerticalWorkShowcase({
               )}
             </motion.div>
 
-            {/* Mobile View Switcher (Visible on small screens) */}
-            <div className="flex md:hidden items-center justify-between gap-2 mb-6 p-2 rounded-2xl bg-white/5 border border-white/10">
-              <span className="text-xs font-mono font-bold text-white/80 pl-2">
-                {images.length} Deliverables
-              </span>
-              <div className="inline-flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("curated")}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
-                    viewMode === "curated" ? "bg-[#7545F5] text-white" : "text-white/60"
-                  }`}
-                >
-                  Curated
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("grid")}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
-                    viewMode === "grid" ? "bg-[#7545F5] text-white" : "text-white/60"
-                  }`}
-                >
-                  Grid
-                </button>
-              </div>
-            </div>
+            {/* GALLERY SHOWCASE DISPLAY ENGINE */}
+            {/* 100% Aspect Ratio Preserved • Zero Crop • Zero Stretch • Non-Clickable */}
 
-            {/* GALLERY RENDER: CURATED WEGROW BENTO FLOW */}
-            {viewMode === "curated" ? (
-              <div className="flex flex-col gap-8 sm:gap-14">
-                {curatedSections.map((section, sIdx) => {
-                  if (section.type === "hero" || section.type === "panoramic") {
+            {/* MODE 1: DYNAMIC MASONRY WATERFALL (3 COLS / 2 COLS) */}
+            {(viewMode === "masonry-3" || viewMode === "masonry-2") && (
+              <div
+                className={
+                  viewMode === "masonry-3"
+                    ? "columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8 [column-fill:_balance]"
+                    : "columns-1 sm:columns-2 gap-6 sm:gap-8 [column-fill:_balance]"
+                }
+              >
+                {images.map((imgUrl, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.45, delay: Math.min((index % 6) * 0.05, 0.25) }}
+                    className="break-inside-avoid inline-block w-full mb-6 sm:mb-8 group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/25 hover:border-[#9333EA]/60 shadow-[0_15px_40px_rgba(10,2,18,0.7)] hover:shadow-[0_20px_50px_rgba(117,69,245,0.22)] transition-all duration-300"
+                  >
+                    <div className="relative w-full">
+                      <img
+                        src={imgUrl}
+                        alt={`${project.title} deliverable ${index + 1}`}
+                        loading={index < 4 ? "eager" : "lazy"}
+                        className="w-full h-auto block select-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            {/* MODE 2: CURATED BENTO FLOW */}
+            {viewMode === "bento" && (
+              <div className="flex flex-col gap-6 sm:gap-8 w-full">
+                {bentoSections.map((section, sIdx) => {
+                  if (section.type === "hero") {
                     const item = section.items[0];
                     return (
                       <motion.div
-                        key={`hero-${sIdx}-${item.index}`}
-                        initial={{ opacity: 0, y: 30 }}
+                        key={`hero-${sIdx}`}
+                        initial={{ opacity: 0, y: 25 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
+                        viewport={{ once: true, margin: "-40px" }}
                         transition={{ duration: 0.5 }}
-                        className="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#140224] border border-[#7545F5]/30 shadow-[0_20px_60px_rgba(10,2,18,0.8)] cursor-pointer"
-                        onClick={() => setLightboxIndex(item.index)}
+                        className="w-full group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/30 hover:border-[#9333EA]/70 shadow-[0_20px_60px_rgba(10,2,18,0.85)] hover:shadow-[0_25px_65px_rgba(117,69,245,0.25)] transition-all duration-300"
                       >
-                        {/* Browser Window Header Chrome (WeGrow style) */}
-                        <div className="w-full bg-[#1A0430] border-b border-[#7545F5]/30 px-4 py-2.5 flex items-center justify-between gap-4 select-none">
-                          <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-full bg-[#EF4444]/80 inline-block" />
-                            <span className="w-3 h-3 rounded-full bg-[#F59E0B]/80 inline-block" />
-                            <span className="w-3 h-3 rounded-full bg-[#10B981]/80 inline-block" />
-                          </div>
-                          <div className="flex items-center gap-1.5 px-4 py-1 rounded-full bg-black/40 border border-white/10 text-[11px] font-mono text-white/60 max-w-xs sm:max-w-md truncate">
-                            <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                            <span className="truncate">https://{displayDomain}/showcase</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-[11px] font-mono font-bold text-[#C4B5FD]">
-                            <span>Deliverable 0{item.index + 1}</span>
-                            <Maximize2 className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-
-                        {/* High-Resolution Screen Render */}
-                        <div className="relative w-full overflow-hidden bg-[#0D0119]">
+                        <div className="relative w-full">
                           <img
                             src={item.url}
-                            alt={`${project.title} deliverable ${item.index + 1}`}
-                            loading={item.index < 3 ? "eager" : "lazy"}
-                            className="w-full h-auto object-cover object-top group-hover:scale-[1.01] transition-transform duration-700 ease-out"
+                            alt={`${project.title} flagship deliverable`}
+                            loading="eager"
+                            className="w-full h-auto block select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                           />
-                        </div>
-
-                        {/* Subtle Hover Overlay Indicator */}
-                        <div className="absolute inset-0 bg-[#7545F5]/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center justify-center">
-                          <span className="px-4 py-2 rounded-full bg-[#0F021B]/90 backdrop-blur-md border border-[#7545F5]/50 text-xs font-bold text-white shadow-xl flex items-center gap-2">
-                            <Maximize2 className="w-3.5 h-3.5 text-primary-light" />
-                            Click to Enlarge
-                          </span>
                         </div>
                       </motion.div>
                     );
@@ -440,32 +501,23 @@ export default function VerticalWorkShowcase({
                     return (
                       <div
                         key={`pair-${sIdx}`}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
+                        className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start w-full"
                       >
                         {section.items.map((item) => (
                           <motion.div
                             key={item.index}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.5, delay: (item.index % 2) * 0.1 }}
-                            className="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#140224] border border-[#7545F5]/25 shadow-[0_15px_40px_rgba(10,2,18,0.6)] cursor-pointer flex flex-col"
-                            onClick={() => setLightboxIndex(item.index)}
+                            viewport={{ once: true, margin: "-40px" }}
+                            transition={{ duration: 0.45 }}
+                            className="w-full group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/25 hover:border-[#9333EA]/60 shadow-[0_15px_40px_rgba(10,2,18,0.7)] hover:shadow-[0_20px_50px_rgba(117,69,245,0.22)] transition-all duration-300"
                           >
-                            {/* Card Top Chrome */}
-                            <div className="w-full bg-[#1A0430]/90 px-4 py-2 border-b border-[#7545F5]/20 flex items-center justify-between text-[11px] font-mono text-[#DDD6FE]">
-                              <span className="font-bold">Deliverable 0{item.index + 1}</span>
-                              <span className="text-white/40 group-hover:text-white transition-colors flex items-center gap-1">
-                                <Maximize2 className="w-3 h-3" />
-                                Zoom
-                              </span>
-                            </div>
-                            <div className="relative w-full h-full min-h-[260px] sm:min-h-[360px] overflow-hidden bg-[#0D0119] flex items-center justify-center">
+                            <div className="relative w-full">
                               <img
                                 src={item.url}
                                 alt={`${project.title} deliverable ${item.index + 1}`}
                                 loading="lazy"
-                                className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                                className="w-full h-auto block select-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"
                               />
                             </div>
                           </motion.div>
@@ -478,28 +530,23 @@ export default function VerticalWorkShowcase({
                     return (
                       <div
                         key={`triple-${sIdx}`}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start w-full"
                       >
                         {section.items.map((item) => (
                           <motion.div
                             key={item.index}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.5, delay: (item.index % 3) * 0.08 }}
-                            className="group relative rounded-2xl overflow-hidden bg-[#140224] border border-[#7545F5]/25 shadow-lg cursor-pointer flex flex-col"
-                            onClick={() => setLightboxIndex(item.index)}
+                            viewport={{ once: true, margin: "-40px" }}
+                            transition={{ duration: 0.45 }}
+                            className="w-full group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/25 hover:border-[#9333EA]/60 shadow-[0_15px_40px_rgba(10,2,18,0.7)] hover:shadow-[0_20px_50px_rgba(117,69,245,0.22)] transition-all duration-300"
                           >
-                            <div className="w-full bg-[#1A0430]/90 px-3.5 py-1.5 border-b border-[#7545F5]/20 flex items-center justify-between text-[10px] font-mono text-[#DDD6FE]">
-                              <span className="font-bold">Deliverable 0{item.index + 1}</span>
-                              <Maximize2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                            <div className="relative w-full h-[240px] sm:h-[300px] overflow-hidden bg-[#0D0119]">
+                            <div className="relative w-full">
                               <img
                                 src={item.url}
                                 alt={`${project.title} deliverable ${item.index + 1}`}
                                 loading="lazy"
-                                className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                                className="w-full h-auto block select-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"
                               />
                             </div>
                           </motion.div>
@@ -512,54 +559,29 @@ export default function VerticalWorkShowcase({
                     return (
                       <div
                         key={`asym-${sIdx}`}
-                        className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch"
+                        className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start w-full"
                       >
-                        {section.items[0] && (
+                        {section.items.map((item, i) => (
                           <motion.div
-                            initial={{ opacity: 0, y: 30 }}
+                            key={item.index}
+                            initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.5 }}
-                            className="lg:col-span-8 group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#140224] border border-[#7545F5]/25 shadow-xl cursor-pointer flex flex-col"
-                            onClick={() => setLightboxIndex(section.items[0].index)}
+                            viewport={{ once: true, margin: "-40px" }}
+                            transition={{ duration: 0.45 }}
+                            className={`w-full ${
+                              i === 0 ? "lg:col-span-7" : "lg:col-span-5"
+                            } group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/25 hover:border-[#9333EA]/60 shadow-[0_15px_40px_rgba(10,2,18,0.7)] hover:shadow-[0_20px_50px_rgba(117,69,245,0.22)] transition-all duration-300`}
                           >
-                            <div className="w-full bg-[#1A0430]/90 px-4 py-2 border-b border-[#7545F5]/20 flex items-center justify-between text-[11px] font-mono text-[#DDD6FE]">
-                              <span className="font-bold">Deliverable 0{section.items[0].index + 1} • Key Feature</span>
-                              <Maximize2 className="w-3 h-3" />
-                            </div>
-                            <div className="relative w-full h-full min-h-[300px] sm:min-h-[420px] overflow-hidden bg-[#0D0119]">
+                            <div className="relative w-full">
                               <img
-                                src={section.items[0].url}
-                                alt={`${project.title} deliverable ${section.items[0].index + 1}`}
+                                src={item.url}
+                                alt={`${project.title} deliverable ${item.index + 1}`}
                                 loading="lazy"
-                                className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                                className="w-full h-auto block select-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"
                               />
                             </div>
                           </motion.div>
-                        )}
-                        {section.items[1] && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="lg:col-span-4 group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#140224] border border-[#7545F5]/25 shadow-xl cursor-pointer flex flex-col"
-                            onClick={() => setLightboxIndex(section.items[1].index)}
-                          >
-                            <div className="w-full bg-[#1A0430]/90 px-4 py-2 border-b border-[#7545F5]/20 flex items-center justify-between text-[11px] font-mono text-[#DDD6FE]">
-                              <span className="font-bold">Deliverable 0{section.items[1].index + 1}</span>
-                              <Maximize2 className="w-3 h-3" />
-                            </div>
-                            <div className="relative w-full h-full min-h-[300px] sm:min-h-[420px] overflow-hidden bg-[#0D0119]">
-                              <img
-                                src={section.items[1].url}
-                                alt={`${project.title} deliverable ${section.items[1].index + 1}`}
-                                loading="lazy"
-                                className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
-                              />
-                            </div>
-                          </motion.div>
-                        )}
+                        ))}
                       </div>
                     );
                   }
@@ -567,29 +589,26 @@ export default function VerticalWorkShowcase({
                   return null;
                 })}
               </div>
-            ) : (
-              /* ALTERNATIVE VIEW: CLEAN UNIFORM MASONRY/GRID VIEW */
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {images.map((imgUrl, idx) => (
+            )}
+
+            {/* MODE 3: FULL SCREEN STREAM */}
+            {viewMode === "full" && (
+              <div className="flex flex-col gap-8 sm:gap-12 lg:gap-16 w-full">
+                {images.map((imgUrl, index) => (
                   <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: (idx % 6) * 0.05 }}
-                    className="group relative rounded-2xl overflow-hidden bg-[#140224] border border-[#7545F5]/25 shadow-lg cursor-pointer flex flex-col"
-                    onClick={() => setLightboxIndex(idx)}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.25) }}
+                    className="w-full group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#18042B] to-[#0D0119] border border-[#7545F5]/25 hover:border-[#9333EA]/60 shadow-[0_20px_60px_rgba(10,2,18,0.85)] hover:shadow-[0_25px_65px_rgba(117,69,245,0.25)] transition-all duration-300"
                   >
-                    <div className="w-full bg-[#1A0430]/90 px-3.5 py-1.5 border-b border-[#7545F5]/20 flex items-center justify-between text-[11px] font-mono text-[#DDD6FE]">
-                      <span className="font-bold">Deliverable 0{idx + 1}</span>
-                      <Maximize2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="relative w-full h-[280px] sm:h-[320px] overflow-hidden bg-[#0D0119]">
+                    <div className="relative w-full">
                       <img
                         src={imgUrl}
-                        alt={`${project.title} deliverable ${idx + 1}`}
-                        loading="lazy"
-                        className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                        alt={`${project.title} deliverable ${index + 1}`}
+                        loading={index < 3 ? "eager" : "lazy"}
+                        className="w-full h-auto block select-none"
                       />
                     </div>
                   </motion.div>
@@ -615,7 +634,7 @@ export default function VerticalWorkShowcase({
                 Ready to build something iconic together?
               </h3>
               <p className="text-sm text-white/75 max-w-xl mx-auto mb-8 relative z-10">
-                Explore custom engineering, high-converting digital storefronts, and enterprise web solutions tailored for your business.
+                Explore custom engineering, high-converting digital storefronts, and enterprise solutions tailored for your business.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3 relative z-10">
                 <button
@@ -637,102 +656,6 @@ export default function VerticalWorkShowcase({
             </motion.div>
           </div>
         </div>
-
-        {/* FULLSCREEN LIGHTBOX MODAL */}
-        <AnimatePresence>
-          {lightboxIndex !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-60 bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-6 select-none"
-              onClick={() => setLightboxIndex(null)}
-            >
-              {/* Lightbox Top Bar */}
-              <div
-                className="w-full flex items-center justify-between text-white z-10"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono font-bold px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E9D5FF]">
-                    Deliverable 0{lightboxIndex + 1} of {images.length}
-                  </span>
-                  <span className="hidden sm:inline text-xs text-white/60 font-medium truncate max-w-md">
-                    {project.title}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <a
-                    href={images[lightboxIndex]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
-                    title="Open original in new tab"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                  <button
-                    onClick={() => setLightboxIndex(null)}
-                    className="p-2 rounded-full bg-white/10 hover:bg-red-500/80 text-white/80 hover:text-white transition-colors cursor-pointer"
-                    title="Close (Esc)"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Lightbox Center Image Stage */}
-              <div
-                className="relative flex-1 flex items-center justify-center my-4 overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Previous Button */}
-                <button
-                  onClick={handlePrev}
-                  className="absolute left-2 sm:left-4 z-20 p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-[#7545F5] text-white transition-all backdrop-blur-md border border-white/15 cursor-pointer shadow-lg"
-                  aria-label="Previous deliverable"
-                >
-                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
-
-                {/* Main Fullscreen Image */}
-                <motion.div
-                  key={lightboxIndex}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.25 }}
-                  className="max-h-[80vh] max-w-[92vw] overflow-auto rounded-2xl shadow-2xl border border-white/10 bg-[#0A0112]"
-                >
-                  <img
-                    src={images[lightboxIndex]}
-                    alt={`${project.title} deliverable ${lightboxIndex + 1}`}
-                    className="max-h-[80vh] max-w-[92vw] w-auto h-auto object-contain mx-auto"
-                  />
-                </motion.div>
-
-                {/* Next Button */}
-                <button
-                  onClick={handleNext}
-                  className="absolute right-2 sm:right-4 z-20 p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-[#7545F5] text-white transition-all backdrop-blur-md border border-white/15 cursor-pointer shadow-lg"
-                  aria-label="Next deliverable"
-                >
-                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
-              </div>
-
-              {/* Lightbox Bottom Info Strip */}
-              <div
-                className="w-full flex items-center justify-center text-xs font-mono text-white/50 z-10 text-center"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <span>Press ← / → keys to navigate • Esc or click outside to close</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </AnimatePresence>
   );

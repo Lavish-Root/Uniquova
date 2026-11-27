@@ -15,6 +15,22 @@ const NO_CACHE_HEADERS = {
 const DATA_FILE = path.join(process.cwd(), "src", "data", "selectedWork.json");
 const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
 
+async function saveBase64Image(dataUri: string, folder: string, prefix: string): Promise<string> {
+  if (!dataUri || typeof dataUri !== "string" || !dataUri.startsWith("data:image/")) {
+    return dataUri;
+  }
+  const match = dataUri.match(/^data:image\/([a-zA-Z0-9+-]+);base64,(.+)$/);
+  if (!match) return dataUri;
+  const ext = match[1] === "jpeg" ? "jpg" : match[1];
+  const filename = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+  const targetDir = path.join(process.cwd(), "public", "images", folder);
+  await fs.mkdir(targetDir, { recursive: true });
+  const targetPath = path.join(targetDir, filename);
+  const buffer = Buffer.from(match[2], "base64");
+  await fs.writeFile(targetPath, buffer);
+  return `/images/${folder}/${filename}`;
+}
+
 function normalizeShowcaseImagePath(src: string): string {
   if (!src) return "/images/portfolio/apex_ecommerce.jpg";
   if (src.startsWith("data:") || src.startsWith("http://") || src.startsWith("https://")) {
@@ -123,10 +139,12 @@ export async function POST(request: Request) {
     const newId = `showcase-${Date.now()}`;
     const nextOrder = items.length > 0 ? Math.max(...items.map((i) => i.order || 0)) + 1 : 1;
 
+    const savedSrc = await saveBase64Image(src.trim(), "selected_work", "showcase");
+
     const newItem: SelectedWorkItem = {
       id: newId,
       title: title.trim(),
-      src: normalizeShowcaseImagePath(src.trim()),
+      src: normalizeShowcaseImagePath(savedSrc),
       alt: (alt || title).trim(),
       isVideo: Boolean(isVideo),
       videoSrc: videoSrc ? videoSrc.trim() : undefined,
@@ -186,10 +204,16 @@ export async function PUT(request: Request) {
       );
     }
 
+    let updatedSrc = items[index].src;
+    if (src !== undefined) {
+      const saved = await saveBase64Image(src.trim(), "selected_work", "showcase");
+      updatedSrc = normalizeShowcaseImagePath(saved);
+    }
+
     items[index] = {
       ...items[index],
       title: title !== undefined ? title.trim() : items[index].title,
-      src: src !== undefined ? normalizeShowcaseImagePath(src.trim()) : items[index].src,
+      src: updatedSrc,
       alt: alt !== undefined ? alt.trim() : items[index].alt,
       isVideo: isVideo !== undefined ? Boolean(isVideo) : items[index].isVideo,
       videoSrc: videoSrc !== undefined ? videoSrc.trim() : items[index].videoSrc,
