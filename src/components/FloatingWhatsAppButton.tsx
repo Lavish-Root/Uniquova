@@ -130,8 +130,8 @@ export default function FloatingWhatsAppButton() {
 
       {/* Main Floating WhatsApp Circular Icon with Rich Animations */}
       <div className="relative group">
-        {/* Pulsing Outer Radiation Wave 1 */}
-        <span className="absolute -inset-2 rounded-full bg-emerald-500/30 animate-ping pointer-events-none" />
+        {/* Pulsing Outer Radiation Wave 1 (blinks once every 5s) */}
+        <span className="absolute -inset-2 rounded-full bg-emerald-500/30 animate-ping-5s pointer-events-none" />
 
         {/* Pulsing Outer Wave 2 (Slightly slower) */}
         <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-emerald-400 to-[#25D366] opacity-60 blur-md group-hover:opacity-100 transition-opacity pointer-events-none" />
