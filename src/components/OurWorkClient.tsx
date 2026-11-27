@@ -6,7 +6,6 @@ import {
   useScroll,
   useTransform,
   useSpring,
-  useMotionValue,
 } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -44,96 +43,68 @@ function WorkCardMotion({ project, side, onClick }: WorkCardMotionProps) {
   });
 
   // Soft, floaty spring physics with inertia for natural fluid deceleration
-  const springConfig = { stiffness: 65, damping: 18, mass: 0.35 };
+  const springConfig = { stiffness: 70, damping: 20, mass: 0.3 };
 
-  // 1. Z-axis Rotation: Starts angled, straightens into focus, gently eases on exit
-  const initialRotate = side === "left" ? -8.5 : 8.5;
-  const exitRotate = side === "left" ? 1.5 : -1.5;
+  // Soft subtle entrance angle (±3deg -> 0deg)
+  const initialRotate = side === "left" ? -3 : 3;
   const rawRotateZ = useTransform(
     scrollYProgress,
-    [0, 0.36, 0.78, 1],
-    [initialRotate, 0, 0, exitRotate]
+    [0, 0.35, 0.85, 1],
+    [initialRotate, 0, 0, 0]
   );
 
-  // 2. 3D Perspective Tilt (rotateX): Leans back when rising, flattens in focus
-  const rawRotateX = useTransform(
-    scrollYProgress,
-    [0, 0.36, 0.78, 1],
-    [14, 0, 0, -4]
-  );
-
-  // 3. Deep Y-axis travel (Float up from below): y: 280px -> 0px -> -45px
+  // Deep vertical travel with smooth deceleration
   const rawY = useTransform(
     scrollYProgress,
-    [0, 0.38, 0.8, 1],
-    [280, 0, 0, -45]
+    [0, 0.35, 0.85, 1],
+    [90, 0, 0, 0]
   );
 
-  // 4. Scale bloom: 0.84 -> 1.0 -> 0.96
+  // Scale bloom: 0.94 -> 1.0
   const rawScale = useTransform(
     scrollYProgress,
-    [0, 0.36, 0.8, 1],
-    [0.84, 1.0, 1.0, 0.96]
+    [0, 0.35, 0.85, 1],
+    [0.94, 1.0, 1.0, 1.0]
   );
 
-  // 5. Opacity fade: 0 -> 1.0 -> 0.7
+  // Opacity fade: 0 -> 1.0
   const rawOpacity = useTransform(
     scrollYProgress,
     [0, 0.22, 0.85, 1],
-    [0, 1.0, 1.0, 0.7]
+    [0, 1.0, 1.0, 1.0]
   );
 
   const smoothRotateZ = useSpring(rawRotateZ, springConfig);
-  const smoothRotateX = useSpring(rawRotateX, springConfig);
   const smoothY = useSpring(rawY, springConfig);
   const smoothScale = useSpring(rawScale, springConfig);
   const smoothOpacity = useSpring(rawOpacity, springConfig);
-
-  // Interactive 3D Card Hover Tilt
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const hoverSpring = { stiffness: 140, damping: 18, mass: 0.2 };
-  const hoverTiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), hoverSpring);
-  const hoverTiltY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), hoverSpring);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
 
   const cleanMediaUrl = (project.mediaUrl || "/images/services/web_dev_bg.jpg")
     .replace(/_(2560|2048|1920|1440|960)\.webp/, "_480.webp");
 
   return (
-    <div ref={triggerRef} className="relative w-full">
+    <div ref={triggerRef} className="relative w-full z-10 hover:z-20">
       <motion.div
         style={{
           y: smoothY,
           rotateZ: smoothRotateZ,
-          rotateX: smoothRotateX,
           scale: smoothScale,
           opacity: smoothOpacity,
-          transformStyle: "preserve-3d",
-          transformOrigin: side === "left" ? "50% 60%" : "50% 60%",
         }}
         className="will-change-transform"
       >
-        <motion.div
-          style={{
-            rotateX: hoverTiltX,
-            rotateY: hoverTiltY,
-            transformStyle: "preserve-3d",
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label={`View case study: ${project.title}`}
           onClick={onClick}
-          className="group cursor-pointer select-none bg-white rounded-[28px] sm:rounded-[36px] p-4 sm:p-5 lg:p-6 border border-border/80 shadow-[0_6px_28px_rgba(21,19,35,0.04)] hover:shadow-[0_30px_80px_rgba(117,69,245,0.16)] hover:border-primary/45 transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClick();
+            }
+          }}
+          className="group cursor-pointer select-none bg-white rounded-[28px] sm:rounded-[36px] p-4 sm:p-5 lg:p-6 border border-border/80 shadow-[0_6px_28px_rgba(21,19,35,0.04)] hover:shadow-[0_24px_60px_rgba(117,69,245,0.18)] hover:border-primary/50 hover:-translate-y-2 transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden focus:outline-hidden focus:ring-2 focus:ring-primary/40 active:scale-[0.99]"
         >
           {/* Ambient Lavender Bloom on Hover */}
           <div className="absolute -top-20 -right-20 w-56 h-56 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -144,14 +115,15 @@ function WorkCardMotion({ project, side, onClick }: WorkCardMotionProps) {
               src={cleanMediaUrl}
               alt={project.title}
               loading="lazy"
-              className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-[0.98]"
+              draggable={false}
+              className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-[0.98] pointer-events-none select-none"
             />
 
             {/* Subtle Overlay Tint on Hover */}
             <div className="absolute inset-0 bg-gradient-to-t from-dark/50 via-dark/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
             {/* Floating Top-Left Badges */}
-            <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
+            <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10 pointer-events-none">
               {(project.badges && project.badges.length > 0
                 ? project.badges
                 : [project.serviceCategory]
@@ -167,9 +139,9 @@ function WorkCardMotion({ project, side, onClick }: WorkCardMotionProps) {
 
             {/* Quick Action Pill on Image (Bottom Right) */}
             <div className="absolute bottom-3.5 right-3.5 z-10 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-dark text-xs font-bold shadow-md border border-white/60">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-bold shadow-lg shadow-primary/30 border border-white/30">
                 <span>View Case Study</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-primary" />
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </span>
             </div>
           </div>
@@ -205,13 +177,13 @@ function WorkCardMotion({ project, side, onClick }: WorkCardMotionProps) {
                 ))}
               </div>
 
-              <div className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform shrink-0">
-                <span>Explore</span>
+              <div className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:translate-x-1 transition-transform shrink-0">
+                <span>View Project</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
@@ -342,11 +314,10 @@ export default function OurWorkClient() {
         </div>
       </section>
 
-      {/* High-End Minimalist 2-Column Showcase Grid with Reference Scroll-Linked Tilt & Entrance */}
+      {/* High-End Minimalist 2-Column Showcase Grid */}
       <section
         ref={sectionRef}
         className="py-12 sm:py-16 lg:py-24 bg-[#FAF9FF]/50 relative overflow-hidden"
-        style={{ perspective: "1600px" }}
       >
         {/* Soft Background Ambient Light Gradients */}
         <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary/8 rounded-full blur-3xl pointer-events-none" />
