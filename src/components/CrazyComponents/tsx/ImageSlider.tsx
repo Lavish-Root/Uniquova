@@ -107,17 +107,44 @@ const fragmentShader = `
   }
 
   void main() {
-    float intensity = 0.6;
     vec2 cUv = getFittedUv(vUv, currentAspect, containerAspect, fitMode);
     vec2 nUv = getFittedUv(vUv, nextAspect, containerAspect, fitMode);
 
-    vec4 orig1 = sampleFitted(currentImage, cUv, fitMode);
-    vec4 orig2 = sampleFitted(nextImage, nUv, fitMode);
+    // Aspect-corrected vector from center so the water droplet ripple is circular
+    vec2 p = vUv - vec2(0.5);
+    p.x *= containerAspect;
+    float maxR = length(vec2(0.5 * containerAspect, 0.5));
+    float r = length(p) / max(maxR, 0.0001);
+    vec2 dir = length(p) > 0.0001 ? normalize(p) : vec2(0.0);
 
-    vec4 _currentImage = sampleFitted(currentImage, vec2(cUv.x, cUv.y + dispFactor * (orig2.r * intensity)), fitMode);
-    vec4 _nextImage = sampleFitted(nextImage, vec2(nUv.x, nUv.y + (1.0 - dispFactor) * (orig1.r * intensity)), fitMode);
+    // Expanding droplet wavefront
+    float progress = clamp(dispFactor, 0.0, 1.0);
+    float waveCenter = progress * 1.24 - 0.12;
+    float distToWave = r - waveCenter;
 
-    gl_FragColor = mix(_currentImage, _nextImage, dispFactor);
+    // Smooth, organic water ripple rings around the expanding droplet edge
+    float envelope = exp(-pow(distToWave * 4.5, 2.0));
+    float activeWindow = sin(progress * 3.14159265);
+    float ripple = sin(distToWave * 24.0 - progress * 5.0) * envelope * activeWindow;
+
+    // Refract UVs radially like a smooth water droplet surface
+    vec2 refraction = dir * (ripple * 0.04);
+    vec4 _currentImage = sampleFitted(currentImage, cUv - refraction, fitMode);
+    vec4 _nextImage = sampleFitted(nextImage, nUv + refraction * 0.85, fitMode);
+
+    // Silky radial droplet reveal from center outward
+    float mask = smoothstep(waveCenter + 0.14, waveCenter - 0.14, r);
+    // Ensure clean 0 -> 1 endpoints at start/end of transition
+    mask = mix(mask, 1.0, smoothstep(0.92, 1.0, progress));
+    mask = mix(0.0, mask, smoothstep(0.0, 0.08, progress));
+
+    vec4 color = mix(_currentImage, _nextImage, mask);
+
+    // Subtle specular water crest highlight along the droplet ring
+    float crest = max(0.0, ripple) * 0.10;
+    color.rgb += vec3(crest * 0.92, crest * 0.95, crest * 1.05) * color.a;
+
+    gl_FragColor = color;
   }
 `;
 
@@ -363,11 +390,11 @@ export default function ImageSlider({
         material.uniforms.nextAspect.value = nextAsp;
         material.uniforms.dispFactor.value = 0.0;
 
-        // Snappy WebGL Image Transition with Liquid Ripple Effect
+        // Smooth, unhurried WebGL Water Droplet Transition
         tweenRef.current = gsap.to(material.uniforms.dispFactor, {
-            duration: 0.8,
+            duration: 1.5,
             value: 1,
-            ease: "power2.out",
+            ease: "sine.inOut",
             onComplete: () => {
                 if (materialRef.current === material) {
                     material.uniforms.currentImage.value = nextTexture;
