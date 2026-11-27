@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SelectedWorkSection from "@/components/SelectedWorkSection";
@@ -19,6 +19,20 @@ import ContactModal from "@/components/ContactModal";
 export default function HomeClient() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState("E-commerce Solutions");
+
+  // Always start homepage at the top (Hero / "Your Vision...") on reload/refresh
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+      const raf = requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+      return () => cancelAnimationFrame(raf);
+    }
+  }, []);
 
   const handleOpenContactWithService = (serviceTitle: string) => {
     setSelectedServiceForModal(serviceTitle);
