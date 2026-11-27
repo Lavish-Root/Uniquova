@@ -1,5 +1,80 @@
 [
   {
+    "id": "proj_webdev_1",
+    "title": "Novacore Cloud & SaaS — Enterprise Web Architecture",
+    "serviceCategory": "Web Development",
+    "client": "Novacore Cloud Systems",
+    "description": "Complete end-to-end full-stack web application engineering, responsive UI/UX design system, Next.js 15 App Router architecture, headless content orchestration, and blazing-fast Lighthouse 99 performance optimization.",
+    "vercelUrl": "https://uniquova.com/services/web-development",
+    "githubUrl": "https://github.com/Lavish-Root/Uniquova",
+    "mediaType": "image",
+    "mediaUrl": "/images/portfolio/novacloud_saas.jpg",
+    "badges": [
+      "Enterprise Web",
+      "Next.js 15",
+      "Full-Stack",
+      "High Performance"
+    ],
+    "tags": [
+      "Web Development",
+      "React",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "gallery": [
+      "/images/portfolio/novacloud_saas.jpg",
+      "/images/portfolio/vaultpay_fintech.jpg",
+      "/images/portfolio/zenith_health.jpg",
+      "/images/portfolio/nexalearn_edtech.jpg",
+      "/images/services/web_dev_bg.jpg",
+      "/images/selected_work/2QlElFBnG4q7Qn7iIoRrvaKfE_480.webp",
+      "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
+      "/images/selected_work/6Fiwu9F9MKkOxpv42vAlXksFU_480.webp",
+      "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
+      "/images/selected_work/9poKWYVyKb5i4OwJGKSpWYNX44_480.webp",
+      "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_480.webp",
+      "/images/selected_work/gtavCMDLHB0d9ehFukQtVNbXeU_480.webp",
+      "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp",
+      "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_480.webp",
+      "/images/selected_work/hpcsAqyp0liwh7Ok2IW6n891fQ_480.webp",
+      "/images/selected_work/it4cXk12EJX3M46FocEoA4IDN8_480.webp",
+      "/images/selected_work/KentOs5VhgKxRvEU6cqYCY2pH7A_480.webp",
+      "/images/selected_work/l5uacj7PHrYhKwot8vkmbWa4HM_480.webp",
+      "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_480.webp",
+      "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_480.webp",
+      "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_480.webp",
+      "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_480.webp",
+      "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_480.webp",
+      "/images/selected_work/rjlcLH3DNif0U74oMAOCto3zT0_480.webp",
+      "/images/selected_work/rZy5kVEyJg6E87JFlpFNpA2BSQ_480.webp"
+    ],
+    "technologies": [
+      "Next.js 15",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Node.js",
+      "Vercel Edge"
+    ],
+    "impact": "99/100 Lighthouse Performance & +310% Conversion Growth",
+    "metrics": [
+      {
+        "label": "Page Speed",
+        "value": "0.42s"
+      },
+      {
+        "label": "Lighthouse Score",
+        "value": "99/100"
+      },
+      {
+        "label": "Core Web Vitals",
+        "value": "100% Pass"
+      }
+    ],
+    "featured": true,
+    "createdAt": "2026-11-27T18:05:12.588Z"
+  },
+  {
     "id": "proj_ecom_1",
     "title": "Apex Nutrition — Amazon & Marketplace Store Scaling",
     "serviceCategory": "E-commerce Solutions",

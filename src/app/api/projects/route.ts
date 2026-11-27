@@ -87,6 +87,7 @@ export async function POST(request: Request) {
       impact,
       metrics,
       featured,
+      gallery,
     } = body;
 
     if (!title || !serviceCategory || !client || !description) {
@@ -95,6 +96,12 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const galleryArray = Array.isArray(gallery)
+      ? gallery.filter(Boolean)
+      : (typeof gallery === "string"
+          ? gallery.split("\n").map((s: string) => s.trim()).filter(Boolean)
+          : []);
 
     const newProject: ProjectItem = {
       id: `proj_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
@@ -110,6 +117,7 @@ export async function POST(request: Request) {
       impact: impact ? impact.trim() : "Proven Business Growth",
       metrics: Array.isArray(metrics) ? metrics : [],
       featured: Boolean(featured),
+      gallery: galleryArray.length > 0 ? galleryArray : [mediaUrl || "/images/services/web_dev_bg.jpg"],
       createdAt: new Date().toISOString(),
     };
 

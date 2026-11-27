@@ -264,6 +264,8 @@ export default function AdminClient() {
     metric3Label: "Conversion Rate",
     metric3Value: "+3.8%",
     featured: true,
+    gallery: [] as string[],
+    galleryInputUrls: "",
   });
 
   // ==========================================
@@ -530,6 +532,8 @@ export default function AdminClient() {
       metric3Label: "Conversion Rate",
       metric3Value: "+3.8%",
       featured: true,
+      gallery: [],
+      galleryInputUrls: "",
     });
     setEditingProjectId(null);
     setIsProjectModalOpen(true);
@@ -554,6 +558,8 @@ export default function AdminClient() {
       metric3Label: project.metrics?.[2]?.label || "Conversion Uplift",
       metric3Value: project.metrics?.[2]?.value || "+38%",
       featured: Boolean(project.featured),
+      gallery: project.gallery || [],
+      galleryInputUrls: "",
     });
     setEditingProjectId(project.id);
     setIsProjectModalOpen(true);
@@ -591,6 +597,7 @@ export default function AdminClient() {
       impact: formData.impact,
       metrics: metricsArray,
       featured: formData.featured,
+      gallery: formData.gallery.length > 0 ? formData.gallery : [formData.mediaUrl || "/images/services/web_dev_bg.jpg"],
     };
 
     try {
@@ -686,6 +693,81 @@ export default function AdminClient() {
       img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleGalleryMultiUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    let processed = 0;
+    const newItems: string[] = [];
+
+    files.forEach((file) => {
+      if (file.size > 15 * 1024 * 1024) {
+        showToast("error", `File ${file.name} is too large (>15MB).`);
+        processed++;
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxDim = 1600;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, w, h);
+            const compressed = canvas.toDataURL("image/jpeg", 0.85);
+            newItems.push(compressed);
+          }
+          processed++;
+          if (processed === files.length) {
+            setFormData((prev) => ({
+              ...prev,
+              gallery: [...prev.gallery, ...newItems],
+            }));
+            showToast("success", `Added ${newItems.length} deliverable image(s) to gallery`);
+          }
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleAddGalleryUrls = () => {
+    if (!formData.galleryInputUrls.trim()) return;
+    const urls = formData.galleryInputUrls
+      .split(/[\n,]+/)
+      .map((u) => u.trim())
+      .filter(Boolean);
+    if (urls.length === 0) return;
+    setFormData((prev) => ({
+      ...prev,
+      gallery: [...prev.gallery, ...urls],
+      galleryInputUrls: "",
+    }));
+    showToast("success", `Added ${urls.length} image URL(s) to gallery`);
+  };
+
+  const handleRemoveGalleryImage = (indexToRemove: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      gallery: prev.gallery.filter((_, idx) => idx !== indexToRemove),
+    }));
   };
 
   // -------------------------------------------------------------
@@ -6367,6 +6449,104 @@ export default function AdminClient() {
                     </span>
                   )}
                 </div>
+              </div>
+
+              {/* Project Gallery & Deliverables (WeGrow Adaptive Layout Engine) */}
+              <div className="pt-3 border-t border-border space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Project Gallery Deliverables (WeGrow Auto-Layout)</span>
+                    </label>
+                    <p className="text-[11px] text-dark-muted font-normal mt-0.5">
+                      Attach 20+ images. They automatically arrange in our WeGrow-inspired responsive bento template with zoom lightbox.
+                    </p>
+                  </div>
+                  <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                    {formData.gallery.length} {formData.gallery.length === 1 ? "Image" : "Images"} Attached
+                  </span>
+                </div>
+
+                {/* Multiple File Upload & URL Paste Bar */}
+                <div className="p-3.5 rounded-2xl bg-[#FAF9FF] border border-border/80 space-y-2.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer shadow-xs">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Upload Multiple Images (20+ supported)</span>
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleGalleryMultiUpload}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {formData.gallery.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, gallery: [] }))}
+                        className="text-[11px] text-red-500 hover:text-red-700 font-bold cursor-pointer"
+                      >
+                        Clear All ({formData.gallery.length})
+                      </button>
+                    )}
+                  </div>
+
+                  {/* URL Paste Option */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="text"
+                      value={formData.galleryInputUrls}
+                      onChange={(e) => setFormData({ ...formData, galleryInputUrls: e.target.value })}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddGalleryUrls();
+                        }
+                      }}
+                      placeholder="Paste image URL (or comma/newline-separated URLs) and click Add..."
+                      className="flex-1 bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:ring-1 focus:ring-primary/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddGalleryUrls}
+                      className="px-3 py-1.5 rounded-xl bg-white hover:bg-softBg border border-border text-xs font-bold text-dark cursor-pointer transition-colors shrink-0"
+                    >
+                      Add URL
+                    </button>
+                  </div>
+                </div>
+
+                {/* Gallery Thumbnails Strip */}
+                {formData.gallery.length > 0 && (
+                  <div className="max-h-48 overflow-y-auto p-2 rounded-xl bg-white border border-border grid grid-cols-4 sm:grid-cols-6 gap-2">
+                    {formData.gallery.map((url, gIdx) => (
+                      <div
+                        key={gIdx}
+                        className="relative group rounded-lg overflow-hidden border border-border/80 bg-softBg aspect-video flex items-center justify-center"
+                      >
+                        <img
+                          src={url}
+                          alt={`Deliverable ${gIdx + 1}`}
+                          className="w-full h-full object-cover object-center"
+                        />
+                        <span className="absolute bottom-0.5 left-0.5 text-[9px] font-mono font-bold px-1 rounded bg-black/70 text-white">
+                          #{gIdx + 1}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveGalleryImage(gIdx)}
+                          className="absolute top-1 right-1 p-1 rounded-full bg-black/70 text-white hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer shadow-xs"
+                          title="Remove deliverable"
+                        >
+                          <X className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Featured Checkbox */}

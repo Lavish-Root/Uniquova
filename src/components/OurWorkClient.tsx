@@ -223,7 +223,7 @@ export default function OurWorkClient() {
   // Fetch live updates from API with instant cache
   useEffect(() => {
     try {
-      const cached = sessionStorage.getItem("uniquova_projects_v2");
+      const cached = sessionStorage.getItem("uniquova_projects_v3");
       if (cached) {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed)) {
@@ -240,7 +240,7 @@ export default function OurWorkClient() {
         if (data.success && Array.isArray(data.projects)) {
           setProjects(data.projects);
           try {
-            sessionStorage.setItem("uniquova_projects_v2", JSON.stringify(data.projects));
+            sessionStorage.setItem("uniquova_projects_v3", JSON.stringify(data.projects));
           } catch {
             // Ignore
           }
