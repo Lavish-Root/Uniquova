@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Star, CheckCircle2, ShieldCheck, Sparkles, Building, Briefcase, User, KeyRound, Upload } from "lucide-react";
+import { X, Star, CheckCircle2, Sparkles, Building, Briefcase, User, Upload } from "lucide-react";
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -133,11 +133,6 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
       return;
     }
 
-    if (!formData.code.trim()) {
-      setErrorMessage("Please enter your client verification code (default: UNIQOVA2026).");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -150,7 +145,7 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setErrorMessage(result.error || "Failed to submit feedback. Please check your verification code.");
+        setErrorMessage(result.error || "Failed to submit feedback. Please try again.");
         setIsSubmitting(false);
         return;
       }
@@ -408,29 +403,6 @@ export default function FeedbackModal({ isOpen, onClose, initialService }: Feedb
                   placeholder="Tell us how UNIQUOVA helped your business grow, improve conversions, or deliver technical excellence..."
                   className="w-full p-3 rounded-xl border border-border text-sm text-dark placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                 />
-              </div>
-
-              {/* Client Verification Passcode */}
-              <div className="bg-primary-light/40 p-3 rounded-xl border border-primary-200">
-                <div className="flex items-center justify-between mb-1">
-                  <label className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-                    <KeyRound className="w-3.5 h-3.5" />
-                    <span>Client Verification Code *</span>
-                  </label>
-                  <span className="text-[11px] text-dark-muted font-medium">Default: <code className="font-mono font-bold text-primary">UNIQOVA2026</code></span>
-                </div>
-                <input
-                  type="text"
-                  required
-                  value={formData.code}
-                  onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                  placeholder="Enter code (provided by UNIQOVA team, or UNIQOVA2026)"
-                  className="w-full px-3 py-1.5 rounded-lg border border-primary-200 text-xs font-mono text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                />
-                <p className="text-[10px] text-dark-muted mt-1 flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
-                  <span>Protects our client review wall against unauthorized spam and automated bots.</span>
-                </p>
               </div>
 
               {/* Submit CTA */}
