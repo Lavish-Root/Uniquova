@@ -33,7 +33,8 @@ export default function IndividualServiceClient({ service }: IndividualServiceCl
 
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecom_laptop_cart.jpg";
+  const bgImage = SERVICE_BG_IMAGES[service.slug] || "/images/services/ecommerce_solution_bg.jpg";
+  const isWebDev = service.slug === "web-development";
 
   return (
     <main className="min-h-screen bg-white text-dark flex flex-col">
@@ -43,9 +44,13 @@ export default function IndividualServiceClient({ service }: IndividualServiceCl
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 purple-mesh-bg relative overflow-hidden">
         {/* Themed Background Image Layer */}
         <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
-          {/* Service Background Image - Positioned on the right side with True Alpha Mask */}
+          {/* Service Background Image - Lightened & reduced on mobile to guarantee crystal-clear text readability, unchanged on desktop */}
           <div 
-            className="absolute inset-y-0 right-0 w-full lg:w-3/4 xl:w-7/12 h-full overflow-hidden"
+            className={`absolute inset-y-0 right-0 w-full lg:w-3/4 xl:w-7/12 h-full overflow-hidden transition-opacity duration-300 ${
+              isWebDev
+                ? "opacity-20 sm:opacity-30 lg:opacity-100"
+                : "opacity-35 sm:opacity-50 lg:opacity-100"
+            }`}
             style={{
               maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)",
               WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.85) 45%, black 65%, black 100%)"
@@ -57,8 +62,15 @@ export default function IndividualServiceClient({ service }: IndividualServiceCl
               width={1200}
               height={800}
               loading="lazy"
-              className="w-full h-full object-cover object-center lg:object-right filter contrast-[1.06] brightness-[1.02]"
+              className={`w-full h-full object-cover object-center lg:object-right filter ${
+                isWebDev
+                  ? "brightness-125 contrast-90 lg:brightness-[1.02] lg:contrast-[1.06]"
+                  : "brightness-110 contrast-95 lg:brightness-[1.02] lg:contrast-[1.06]"
+              }`}
             />
+            {/* Mobile-only softening wash overlay to ensure dark text remains sharp and highly legible */}
+            <div className="absolute inset-0 bg-white/75 sm:bg-white/60 lg:hidden pointer-events-none" />
+
             {/* Subtle Brand Theme Tint Overlay */}
             <div className="absolute inset-0 bg-[#7545F5]/[0.03] mix-blend-multiply" />
             

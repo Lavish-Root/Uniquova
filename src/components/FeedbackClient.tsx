@@ -14,7 +14,6 @@ import {
   Building,
   Briefcase,
   User,
-  KeyRound,
   ArrowRight,
   Send,
   Upload,
@@ -108,12 +107,10 @@ export default function FeedbackClient() {
 
   // Auto-fill from query params if UNIQOVA sent a direct link (e.g. ?code=UNIQOVA2026&service=Website+Development)
   useEffect(() => {
-    const codeParam = searchParams.get("code");
     const serviceParam = searchParams.get("service");
     const nameParam = searchParams.get("name");
     const companyParam = searchParams.get("company");
 
-    if (codeParam) setFormData((prev) => ({ ...prev, code: codeParam }));
     if (serviceParam && SERVICE_OPTIONS.includes(serviceParam)) {
       setFormData((prev) => ({ ...prev, service: serviceParam }));
     }
@@ -135,11 +132,6 @@ export default function FeedbackClient() {
       return;
     }
 
-    if (!formData.code.trim()) {
-      setErrorMessage("Please enter your client verification code (default: UNIQOVA2026).");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -152,7 +144,7 @@ export default function FeedbackClient() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setErrorMessage(result.error || "Failed to submit feedback. Please check your verification code.");
+        setErrorMessage(result.error || "Failed to submit feedback. Please try again.");
         setIsSubmitting(false);
         return;
       }
@@ -418,29 +410,6 @@ export default function FeedbackClient() {
                       placeholder="Describe the measurable impact: sales growth, conversion uplift, engineering quality, or communication speed..."
                       className="w-full p-4 rounded-xl border border-border text-sm text-dark bg-white placeholder:text-dark-muted/60 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
-                  </div>
-
-                  {/* Passcode Field */}
-                  <div className="bg-primary-light/50 p-5 rounded-2xl border border-primary-200">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-                        <KeyRound className="w-4 h-4" />
-                        <span>Client Verification Passcode *</span>
-                      </label>
-                      <span className="text-xs text-dark-muted font-medium">Default: <code className="font-mono font-bold text-primary">UNIQOVA2026</code></span>
-                    </div>
-                    <input
-                      type="text"
-                      required
-                      value={formData.code}
-                      onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                      placeholder="Enter the passcode provided by your UNIQOVA project manager"
-                      className="w-full px-4 py-3 rounded-xl border border-primary-200 text-sm font-mono text-dark bg-white focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                    />
-                    <p className="text-xs text-dark-muted mt-2 flex items-center gap-1.5">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>This ensures that only authentic clients can publish to our public wall.</span>
-                    </p>
                   </div>
 
                   {/* Submit Button */}
