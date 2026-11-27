@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { ProjectItem } from "@/data/agencyData";
 import {
   ArrowLeft,
+  ArrowUpRight,
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -69,6 +70,18 @@ export default function VerticalWorkShowcase({
               <ArrowLeft className="w-4 h-4 text-[#C4B5FD] group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
               <span>Back to Projects</span>
             </button>
+
+            {project.vercelUrl && (
+              <a
+                href={project.vercelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-600 hover:to-primary-800 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-glow-sm transition-all cursor-pointer"
+              >
+                <span>Live Project</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            )}
           </div>
         </header>
 

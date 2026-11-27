@@ -5,7 +5,6 @@ import { TestimonialItem, TESTIMONIALS_DATA } from "@/data/agencyData";
 
 export const dynamic = "force-dynamic";
 
-const VALID_CLIENT_CODE = process.env.CLIENT_FEEDBACK_CODE || "UNIQOVA2026";
 const TESTIMONIALS_FILE = path.join(process.cwd(), "src", "data", "testimonials.json");
 const USER_TESTIMONIALS_FILE = path.join(process.cwd(), "src", "data", "userTestimonials.json");
 const CONFIG_FILE = path.join(process.cwd(), "src", "data", "adminConfig.json");
@@ -84,22 +83,9 @@ export async function POST(request: Request) {
   try {
     const isAdmin = await verifyAdminAuth(request);
     const body = await request.json();
-    const { name, company, role, service, tag, rating, quote, code, avatar, platform, isUserSubmitted } = body;
+    const { name, company, role, service, tag, rating, quote, avatar, platform, isUserSubmitted } = body;
 
-    // 1. If not admin, require valid client code
-    if (!isAdmin) {
-      if (!code || typeof code !== "string" || code.trim().toUpperCase() !== VALID_CLIENT_CODE.toUpperCase()) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: "Invalid client verification code. Please use the code provided by your UNIQOVA account manager.",
-          },
-          { status: 401 }
-        );
-      }
-    }
-
-    // 2. Validate input fields
+    // Validate input fields
     if (!name || name.trim().length < 2) {
       return NextResponse.json(
         { success: false, error: "Please enter a valid client name." },
