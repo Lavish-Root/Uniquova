@@ -25,7 +25,10 @@ export default function WorkingProcess() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Elastic Expansion Grid — GPU-smooth CSS flex transitions with fixed-size inner frames so images never distort */}
-        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 w-full lg:h-[460px]">
+        <div
+          onMouseLeave={() => setActivePanel("intro")}
+          className="flex flex-col lg:flex-row gap-3 sm:gap-4 w-full lg:h-[460px]"
+        >
           {/* LEFT WINDOW: Our Working Process with Lavender Fluid Wave Gradient */}
           <div
             onClick={() => setActivePanel("intro")}
