@@ -388,7 +388,7 @@ export default function WhyChooseUs() {
   });
 
   return (
-    <section className="py-12 sm:py-16 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
+    <section className="pt-12 pb-10 sm:pt-16 sm:pb-12 lg:pt-28 lg:pb-16 bg-[#FAF9FF] relative overflow-hidden">
       {/* Ambient background glows */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100/50 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-200/40 rounded-full blur-3xl pointer-events-none" />

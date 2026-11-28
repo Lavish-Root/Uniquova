@@ -30,7 +30,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "ecommerce",
     slug: "ecommerce",
     domain: "E-commerce",
-    title: "E-commerce that drives real sales",
+    title: "E-commerce that drives real sales.",
     defaultImage: "/images/services/ecom_shopping_store.jpg",
     link: "/services/ecommerce",
     tags: [
@@ -46,7 +46,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "web-development",
     slug: "web-development",
     domain: "Web Development",
-    title: "Websites that close deals",
+    title: "Websites that work wonders.",
     defaultImage: "/images/services/web_dev_bg.jpg",
     link: "/services/web-development",
     tags: [
@@ -62,7 +62,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "app-development",
     slug: "app-development",
     domain: "App Development",
-    title: "Apps that users love daily",
+    title: "Apps that users love daily.",
     defaultImage: "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
     link: "/services/app-development",
     tags: [
@@ -78,7 +78,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "branding",
     slug: "branding",
     domain: "Branding",
-    title: "Brand identity that means something",
+    title: "Branding that speaks volumes.",
     defaultImage: "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp",
     link: "/services/branding",
     tags: [
@@ -94,7 +94,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "graphic-design",
     slug: "graphic-design",
     domain: "Graphic Designing",
-    title: "Creatives that stop the scroll",
+    title: "Creatives that catch your eye.",
     defaultImage: "/images/services/graphic_design_bg.jpg",
     link: "/services/graphic-design",
     tags: [
@@ -110,7 +110,7 @@ const CORE_SERVICES: ServiceCardData[] = [
     id: "growth-strategy",
     slug: "ecommerce",
     domain: "Integrated Growth",
-    title: "Growth strategy that scales brands",
+    title: "Growth strategy that scales brands.",
     defaultImage: "/images/pillars/integrated.jpg",
     link: "/contact",
     tags: [
@@ -285,7 +285,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
               Our Core <span className="gradient-text">Digital Services</span>
             </>
           }
-          subtitle="From scaling high-volume marketplace stores to architecting custom web and mobile applications, we deliver end-to-end digital excellence designed for scalable revenue."
+          subtitle="From the first idea to the final launch, we're here to bring your digital projects to life."
         />
 
         {/* 6 Cards Grid: Exactly Matching Reference Layout */}
@@ -303,10 +303,10 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
         <div className="bg-white rounded-3xl border border-border/80 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
           <div>
             <h4 className="text-lg font-black text-dark tracking-tight">
-              Not sure which service is right for your growth stage?
+              Not sure what your business needs?
             </h4>
             <p className="text-sm text-dark-muted mt-1 font-medium">
-              Our digital strategists will audit your brand presence and map out a free roadmap.
+              Our digital experts will figure out what suits your brand the best and craft a free roadmap, exclusively for you!
             </p>
           </div>
 

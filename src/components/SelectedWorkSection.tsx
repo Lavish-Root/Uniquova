@@ -186,9 +186,7 @@ export default function SelectedWorkSection() {
               Ideas brought to <span className="gradient-text">life.</span>
             </>
           }
-          titleClassName="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight mb-3"
           subtitle="Explore category-defining digital experiences crafted with strategy, technology, and design."
-          subtitleClassName="text-sm sm:text-base text-dark-muted max-w-xl font-medium"
         />
 
         {/* ====================================================

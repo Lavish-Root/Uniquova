@@ -20,7 +20,7 @@ export default function WorkingProcess() {
   const isIntroActive = activePanel === "intro";
 
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-[#FAF9FF] relative overflow-hidden">
+    <section className="py-10 sm:py-12 lg:py-16 bg-[#FAF9FF] relative overflow-hidden">
       {/* Subtle ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 

@@ -1463,9 +1463,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               opacity: smoothHeaderOpacity,
               transformStyle: "preserve-3d",
             }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-black text-dark tracking-tight leading-tight will-change-transform"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-4 will-change-transform"
           >
-            Trusted by <span className="gradient-text">AI founders</span>
+            Don&apos;t just take <span className="gradient-text">our word.</span>
           </motion.h2>
 
           <motion.p
@@ -1474,9 +1474,9 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
               scale: smoothSubtitleScale,
               opacity: smoothSubtitleOpacity,
             }}
-            className="text-sm sm:text-base text-dark-muted font-medium mt-1.5 max-w-xl mx-auto will-change-transform"
+            className="text-base sm:text-lg text-dark-muted font-normal leading-relaxed max-w-2xl mx-auto will-change-transform"
           >
-            Straight from the founders we work with
+            Hear it out from the partners we work with
           </motion.p>
         </div>
 

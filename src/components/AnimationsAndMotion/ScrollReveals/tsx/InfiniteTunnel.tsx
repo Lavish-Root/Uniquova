@@ -153,9 +153,20 @@ function TunnelCard({
 export default function InfiniteTunnel({
   items = DEFAULT_WORK_ITEMS,
 }: InfiniteTunnelProps) {
+  const headerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Bind scroll progress
+  // Header scroll-driven entrance matching "Ideas brought to life."
+  const { scrollYProgress: headerProgress } = useScroll({
+    target: headerRef,
+    offset: ["start 92%", "start 45%"],
+  });
+  const headerSpringConfig = { stiffness: 180, damping: 24, mass: 0.3 };
+  const headerY = useSpring(useTransform(headerProgress, [0, 1], [48, 0]), headerSpringConfig);
+  const headerScale = useSpring(useTransform(headerProgress, [0, 1], [0.95, 1.0]), headerSpringConfig);
+  const headerOpacity = useSpring(useTransform(headerProgress, [0, 0.55], [0.25, 1.0]), headerSpringConfig);
+
+  // Bind tunnel scroll progress
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -170,71 +181,82 @@ export default function InfiniteTunnel({
   });
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-[550vh] bg-[#FAF9FF] text-dark overflow-clip"
-    >
-      {/* Sticky Fullscreen Tunnel Chamber */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
-        
-        {/* Background Ambient Lavender Lighting & Performance-Optimized Tunnel Rings */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Top-Right Ambient Blur */}
-          <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full bg-primary-100/60 blur-[100px]" />
-          
-          {/* Central Portal Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-primary-200/35 via-purple-100/40 to-transparent blur-[110px]" />
+    <div className="relative w-full bg-[#FAF9FF] text-dark">
+      {/* Clean Header Bar sitting right at the top edge of the 3D Tunnel */}
+      <div
+        ref={headerRef}
+        className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-1 sm:pb-2 relative z-20"
+      >
+        <motion.div
+          style={{
+            y: headerY,
+            scale: headerScale,
+            opacity: headerOpacity,
+          }}
+          className="flex items-center justify-between gap-4 will-change-transform"
+        >
+          <ScrollHeading
+            align="left"
+            maxWidth="max-w-xl"
+            targetRef={headerRef}
+            fadeOnExit={false}
+            offset={["start 92%", "start 45%"]}
+            title={
+              <>
+                Featured <span className="gradient-text">Projects</span>
+              </>
+            }
+            titleClassName="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-dark tracking-tight leading-tight mb-0"
+          />
 
-          {/* Bottom-Left Ambient Blur */}
-          <div className="absolute -bottom-20 -left-20 w-[450px] h-[450px] rounded-full bg-primary-200/35 blur-[100px]" />
-
-          {/* Performance 3D Tunnel Rings (Clean vector borders without expensive multi-layer backdrop blurs) */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {[1, 2, 3, 4, 5].map((ring) => (
-              <div
-                key={ring}
-                style={{
-                  width: `${ring * 240}px`,
-                  height: `${ring * 165}px`,
-                  opacity: 0.15 + ring * 0.05,
-                }}
-                className="absolute rounded-[44px] border-2 border-primary/25 pointer-events-none"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Top Header Overlay Bar with Continuous Scroll-Linked Animation */}
-        <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 flex items-center justify-between">
-          <div>
-            <ScrollHeading
-              align="left"
-              maxWidth="max-w-xl"
-              targetRef={containerRef}
-              fadeOnExit={false}
-              offset={["start 92%", "start 10%"]}
-              title={
-                <>
-                  Featured <span className="gradient-text">Work Showcase</span>
-                </>
-              }
-              titleClassName="text-2xl sm:text-3xl lg:text-4xl font-black text-dark tracking-tight leading-tight mb-0"
-            />
-          </div>
-
-          <div className="hidden sm:flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-4 shrink-0">
             <Link
               href="/our-work"
-              className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:text-primary-dark px-5 py-2.5 rounded-full border border-primary/25 hover:border-primary/50 bg-white/95 shadow-xs transition-all"
+              className="inline-flex items-center gap-2.5 text-sm sm:text-base font-bold text-primary hover:text-primary-dark px-6 sm:px-7 py-3 rounded-full border border-primary/25 hover:border-primary/50 bg-white/95 shadow-xs transition-all"
             >
               <span>View All Projects</span>
-              <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+              <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
             </Link>
           </div>
-        </div>
+        </motion.div>
+      </div>
 
-        {/* 3D Tunnel Chamber Viewport */}
-        <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden pb-8">
+      <div
+        ref={containerRef}
+        className="relative w-full h-[550vh] bg-[#FAF9FF] text-dark overflow-clip"
+      >
+        {/* Sticky Fullscreen Tunnel Chamber */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+          
+          {/* Background Ambient Lavender Lighting & Performance-Optimized Tunnel Rings */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Top-Right Ambient Blur */}
+            <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full bg-primary-100/60 blur-[100px]" />
+            
+            {/* Central Portal Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-primary-200/35 via-purple-100/40 to-transparent blur-[110px]" />
+
+            {/* Bottom-Left Ambient Blur */}
+            <div className="absolute -bottom-20 -left-20 w-[450px] h-[450px] rounded-full bg-primary-200/35 blur-[100px]" />
+
+            {/* Performance 3D Tunnel Rings (Clean vector borders without expensive multi-layer backdrop blurs) */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {[1, 2, 3, 4, 5].map((ring) => (
+                <div
+                  key={ring}
+                  style={{
+                    width: `${ring * 240}px`,
+                    height: `${ring * 165}px`,
+                    opacity: 0.15 + ring * 0.05,
+                  }}
+                  className="absolute rounded-[44px] border-2 border-primary/25 pointer-events-none"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* 3D Tunnel Chamber Viewport */}
+          <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden pb-8">
           {items.map((item, idx) => (
             <TunnelCard
               key={item.id}
@@ -244,8 +266,8 @@ export default function InfiniteTunnel({
               smoothProgress={smoothProgress}
             />
           ))}
+          </div>
         </div>
-
       </div>
     </div>
   );
