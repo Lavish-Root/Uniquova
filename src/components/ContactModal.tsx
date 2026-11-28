@@ -7,13 +7,53 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  Sparkles,
   MessageSquare,
   User,
   Mail,
   Phone,
   Building2,
 } from "lucide-react";
+import ServiceSelect, { type ServiceSelectOption } from "@/components/ui/service-select";
+
+const MODAL_SERVICE_OPTIONS: ServiceSelectOption[] = [
+  {
+    value: "E-commerce Solutions",
+    label: "E-commerce Solutions",
+    subtitle: "Amazon, Flipkart, PPC",
+    icon: "ecommerce",
+  },
+  {
+    value: "Website Development",
+    label: "Website Development",
+    subtitle: "Next.js, Custom Web Apps",
+    icon: "web",
+  },
+  {
+    value: "App Development",
+    label: "App Development",
+    subtitle: "iOS, Android, Cross-Platform",
+    icon: "app",
+  },
+  {
+    value: "Branding",
+    label: "Branding",
+    subtitle: "Identity, Logo, Strategy, Guidelines",
+    icon: "branding",
+  },
+  {
+    value: "Graphic Designing",
+    label: "Graphic Designing",
+    subtitle: "Social, Ad Creatives, Collaterals",
+    icon: "design",
+  },
+  {
+    value: "Integrated Growth Package",
+    label: "Integrated All-In-One Growth Package",
+    subtitle: "End-to-end multi-discipline growth team",
+    badge: "Popular",
+    icon: "integrated",
+  },
+];
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -156,10 +196,12 @@ export default function ContactModal({
           From Uiverse.io by Praashoo7 - https://uiverse.io/Praashoo7/brave-moose-56
           MIT License, Copyright (c) Praashoo7 (Prashant)
         */}
-        <div className="p-6 sm:p-8 overflow-y-auto bg-gradient-to-br from-white via-[#FAF9FF] to-primary/[0.03] text-dark relative overflow-hidden">
+        <div className="p-6 sm:p-8 overflow-y-auto bg-gradient-to-br from-white via-[#FAF9FF] to-primary/[0.03] text-dark relative">
           {/* Brand ambient glow orbs */}
-          <div className="absolute -top-24 -right-24 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-primary-200/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-primary-200/30 rounded-full blur-3xl" />
+          </div>
 
           {successData ? (
             <div className="text-center py-8 space-y-4 relative z-10">
@@ -274,21 +316,11 @@ export default function ContactModal({
                 <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
                   Service Required <span className="text-primary font-bold">*</span>
                 </label>
-                <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
-                  <Sparkles className="w-5 h-5 text-primary shrink-0" />
-                  <select
-                    value={service}
-                    onChange={(e) => setService(e.target.value)}
-                    className="bg-transparent border-none outline-none w-full text-dark text-sm font-medium cursor-pointer [&>option]:bg-white [&>option]:text-dark"
-                  >
-                    <option value="E-commerce Solutions">E-commerce Solutions (Amazon, Flipkart, PPC)</option>
-                    <option value="Website Development">Website Development (Next.js, Custom Web Apps)</option>
-                    <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
-                    <option value="Branding">Branding (Identity, Logo, Strategy, Guidelines)</option>
-                    <option value="Graphic Designing">Graphic Designing (Social, Ad Creatives, Collaterals)</option>
-                    <option value="Integrated Growth Package">Integrated All-In-One Growth Package</option>
-                  </select>
-                </div>
+                <ServiceSelect
+                  value={service}
+                  onChange={setService}
+                  options={MODAL_SERVICE_OPTIONS}
+                />
               </div>
 
               {/* Project Description */}

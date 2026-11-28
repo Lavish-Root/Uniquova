@@ -114,10 +114,10 @@ export default function AboutClient() {
       </section>
 
       {/* Our Story & Origin */}
-      <section className="py-20 bg-white">
+      <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-6 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-6 space-y-5 sm:space-y-6">
               <h2 className="text-3xl sm:text-4xl font-extrabold text-dark tracking-tight leading-tight">
                 Our Story: Built on the Belief that Quality Drives Growth
               </h2>
@@ -126,27 +126,28 @@ export default function AboutClient() {
                 and traditional dev shops that neglect conversion-focused design.
               </p>
               <p className="text-base text-dark-muted leading-relaxed">
-                We assembled a world-class in-house collective of e-commerce marketplace managers,
+                We assembled a world-class in-house collective of{" "}
+                <span className="whitespace-nowrap">e-commerce</span> marketplace managers,
                 Next.js full-stack engineers, mobile app developers, and brand architects. By removing
                 intermediaries and unifying these competencies, we provide our clients with an unfair
                 competitive advantage in speed, quality, and measurable ROI.
               </p>
 
-              <div className="pt-4 grid grid-cols-3 gap-6 border-t border-border">
+              <div className="pt-4 grid grid-cols-3 gap-4 sm:gap-6 border-t border-border">
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-primary">
                     <StatsCounter value={250} suffix="+" delay={0} />
                   </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">Projects Shipped</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-primary">
                     <StatsCounter value={99.2} decimals={1} suffix="%" delay={0.08} />
                   </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">On-Time Delivery</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-primary">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-primary">
                     <StatsCounter value={3.4} decimals={1} suffix="x" delay={0.16} />
                   </p>
                   <p className="text-xs text-dark-muted mt-1 font-medium">Average Client ROI</p>
@@ -155,26 +156,27 @@ export default function AboutClient() {
             </div>
 
             <div className="lg:col-span-6 relative">
-              <div className="bg-gradient-to-tr from-primary-light to-white p-8 rounded-3xl border border-border/80 shadow-lg relative overflow-hidden">
+              <div className="bg-gradient-to-tr from-primary-light to-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/80 shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-2xl" />
 
-                <h3 className="text-2xl font-bold text-dark mb-4 relative z-10">
+                <h3 className="text-xl sm:text-2xl font-bold text-dark mb-4 relative z-10 text-center sm:text-left">
                   Our Mission &amp; Vision
                 </h3>
 
-                <div className="space-y-6 relative z-10">
-                  <div className="bg-white p-6 rounded-2xl border border-border shadow-sm">
-                    <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Our Mission</p>
-                    <p className="text-sm text-dark-muted leading-relaxed">
-                      To empower ambitious businesses worldwide with high-performing e-commerce ecosystems,
+                <div className="space-y-4 sm:space-y-6 relative z-10">
+                  <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-border shadow-sm text-left">
+                    <p className="text-xs font-bold text-primary uppercase tracking-wider mb-1.5 sm:mb-2">Our Mission</p>
+                    <p className="text-[13.5px] sm:text-sm text-dark-muted leading-relaxed text-pretty">
+                      To empower ambitious businesses worldwide with high-performing{" "}
+                      <span className="whitespace-nowrap">e-commerce</span> ecosystems,
                       bulletproof software architectures, and compelling brand storytelling that converts.
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-2xl border border-border shadow-sm">
-                    <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Our Vision</p>
-                    <p className="text-sm text-dark-muted leading-relaxed">
-                      To become the global benchmark for creative technology agencies—where aesthetic elegance,
+                  <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-border shadow-sm text-left">
+                    <p className="text-xs font-bold text-primary uppercase tracking-wider mb-1.5 sm:mb-2">Our Vision</p>
+                    <p className="text-[13.5px] sm:text-sm text-dark-muted leading-relaxed text-pretty">
+                      To become the global benchmark for creative technology agencies &mdash; where aesthetic elegance,
                       engineering brilliance, and commercial profitability operate in total harmony.
                     </p>
                   </div>
@@ -186,10 +188,10 @@ export default function AboutClient() {
       </section>
 
       {/* Core Values Grid */}
-      <section className="py-20 bg-[#FAF9FF]">
+      <section className="py-14 md:py-20 bg-[#FAF9FF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-dark tracking-tight mb-4">
+          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-dark tracking-tight mb-3 md:mb-4">
               Our Core <span className="gradient-text">Values</span>
             </h2>
             <p className="text-base text-dark-muted">
@@ -197,18 +199,22 @@ export default function AboutClient() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {coreValues.map((val) => {
               const Icon = val.icon;
               return (
                 <div
                   key={val.title}
-                  className="bg-white rounded-3xl p-8 border border-border shadow-sm hover:shadow-card-hover hover:border-primary/40 transition-all duration-300"
+                  className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-border shadow-sm hover:shadow-card-hover hover:border-primary/40 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6">
-                    <Icon className="w-6 h-6" />
+                  <div className="flex items-center gap-3.5 md:block mb-2.5 md:mb-0">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary-light text-primary flex items-center justify-center shrink-0 md:mb-6">
+                      <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold text-dark leading-snug md:mb-2">
+                      {val.title}
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-bold text-dark mb-2">{val.title}</h3>
                   <p className="text-sm text-dark-muted leading-relaxed">{val.desc}</p>
                 </div>
               );

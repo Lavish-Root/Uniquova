@@ -10,7 +10,7 @@ interface FAQSectionProps {
 }
 
 export default function FAQSection({ onOpenContact }: FAQSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleAccordion = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
@@ -39,7 +39,9 @@ export default function FAQSection({ onOpenContact }: FAQSectionProps) {
             return (
               <div
                 key={idx}
-                onMouseEnter={() => setOpenIndex(idx)}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === "mouse") setOpenIndex(idx);
+                }}
                 onClick={() => toggleAccordion(idx)}
                 className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${isOpen
                   ? "border-primary/50 shadow-[0_8px_25px_rgba(117,69,245,0.08)] ring-1 ring-primary/10"

@@ -19,18 +19,82 @@ import {
   MessageSquarePlus,
   User,
   Building2,
-  Sparkles,
 } from "lucide-react";
 import FeedbackModal from "@/components/FeedbackModal";
+import ServiceSelect, { type ServiceSelectOption } from "@/components/ui/service-select";
 import { trackEvent } from "@/components/Analytics";
 import { CompanyInfo, DEFAULT_COMPANY_INFO, formatWhatsAppUrl } from "@/data/agencyData";
+
+const CORE_SERVICE_OPTIONS: ServiceSelectOption[] = [
+  {
+    value: "Amazon Account Management",
+    label: "Amazon Seller Account Management",
+    subtitle: "Full storefront, A+ content & account health",
+    icon: "amazon",
+  },
+  {
+    value: "Flipkart Account Management",
+    label: "Flipkart Seller Account Management",
+    subtitle: "Catalog scaling & marketplace operations",
+    icon: "flipkart",
+  },
+  {
+    value: "Amazon PPC Management",
+    label: "Amazon PPC & Marketplace Advertising",
+    subtitle: "ROAS-driven sponsored ad campaigns",
+    icon: "ppc",
+  },
+  {
+    value: "Catalog Management",
+    label: "Catalog Management & Listing Optimization",
+    subtitle: "SEO titles, bullets & rich product variations",
+    icon: "catalog",
+  },
+  {
+    value: "E-commerce Solutions",
+    label: "E-commerce Solutions",
+    subtitle: "Multi-Channel Overview",
+    icon: "ecommerce",
+  },
+  {
+    value: "Website Development",
+    label: "Website Development",
+    subtitle: "Next.js, Headless E-com, Custom Web Apps",
+    icon: "web",
+  },
+  {
+    value: "App Development",
+    label: "App Development",
+    subtitle: "iOS, Android, Cross-Platform",
+    icon: "app",
+  },
+  {
+    value: "Branding",
+    label: "Branding",
+    subtitle: "Identity, Strategy, Logo, Design Systems",
+    icon: "branding",
+  },
+  {
+    value: "Graphic Designing",
+    label: "Graphic Designing",
+    subtitle: "Social Media, Performance Ads, Collaterals",
+    icon: "design",
+  },
+  {
+    value: "Integrated Agency Package",
+    label: "All-In-One Integrated Growth Partnership",
+    subtitle: "End-to-end multi-discipline agency team",
+    badge: "Popular",
+    icon: "integrated",
+  },
+];
 
 export default function ContactClient() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
-  const [service, setService] = useState("E-commerce Solutions");
+  const [service, setService] = useState("Amazon Account Management");
   const [description, setDescription] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -297,34 +361,6 @@ export default function ContactClient() {
                     </p>
                   </div>
                 </div>
-
-                {/* Existing Client Feedback Section */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF9FF] via-white to-primary/[0.04] border border-primary/25 shadow-xs relative overflow-hidden group">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                      <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm font-bold text-dark">Client Feedback</h3>
-                        <span className="text-[10px] font-bold text-primary bg-primary-light px-2 py-0.5 rounded-full">
-                          Verified
-                        </span>
-                      </div>
-                      <p className="text-xs text-dark-muted leading-relaxed mb-3.5">
-                        Already partnered with UNIQOVA? Share your experience, project review, and feedback with our executive team.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setIsFeedbackModalOpen(true)}
-                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs hover:shadow-md transition-all active:scale-95"
-                      >
-                        <MessageSquarePlus className="w-3.5 h-3.5" />
-                        <span>Leave Client Feedback</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Assurances */}
@@ -345,11 +381,13 @@ export default function ContactClient() {
               From Uiverse.io by Praashoo7 - https://uiverse.io/Praashoo7/brave-moose-56
               MIT License, Copyright (c) Praashoo7 (Prashant)
             */}
-            <div className="lg:col-span-7">
-              <div className="bg-gradient-to-br from-white via-[#FAF9FF] to-primary/[0.04] border border-primary/25 rounded-[28px] p-6 sm:p-10 shadow-[0_25px_60px_-15px_rgba(117,69,245,0.12),0_10px_25px_-5px_rgba(0,0,0,0.03)] transition-all duration-400 ease-in-out hover:scale-[1.01] hover:border-primary/45 hover:shadow-[0_30px_75px_-15px_rgba(117,69,245,0.2),0_15px_30px_-5px_rgba(0,0,0,0.05)] relative group overflow-hidden">
-                {/* Brand ambient glow orbs */}
-                <div className="absolute -top-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-primary-200/35 rounded-full blur-3xl pointer-events-none" />
+            <div className="lg:col-span-7 space-y-6">
+              <div className="bg-gradient-to-br from-white via-[#FAF9FF] to-primary/[0.04] border border-primary/25 rounded-[28px] p-6 sm:p-10 shadow-[0_25px_60px_-15px_rgba(117,69,245,0.12),0_10px_25px_-5px_rgba(0,0,0,0.03)] transition-all duration-400 ease-in-out hover:scale-[1.01] hover:border-primary/45 hover:shadow-[0_30px_75px_-15px_rgba(117,69,245,0.2),0_15px_30px_-5px_rgba(0,0,0,0.05)] relative group">
+                {/* Brand ambient glow orbs clipped cleanly to card frame */}
+                <div className="absolute inset-0 overflow-hidden rounded-[28px] pointer-events-none">
+                  <div className="absolute -top-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+                  <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-primary-200/35 rounded-full blur-3xl" />
+                </div>
 
                 {successData ? (
                   <div className="text-center py-12 space-y-4 relative z-10">
@@ -481,25 +519,11 @@ export default function ContactClient() {
                       <label className="block text-[11px] font-bold text-dark/80 uppercase tracking-wider mb-2">
                         Core Service Required <span className="text-primary font-bold">*</span>
                       </label>
-                      <div className="flex items-center gap-3 rounded-[25px] px-4 py-3 sm:py-3.5 bg-[#F8F7FD] text-dark shadow-[inset_2px_4px_8px_rgba(117,69,245,0.06),inset_-1px_-1px_3px_rgba(255,255,255,0.85)] border border-purple-200/70 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-[inset_1px_2px_4px_rgba(117,69,245,0.06),0_0_20px_rgba(117,69,245,0.15)] transition-all duration-300">
-                        <Sparkles className="w-5 h-5 text-primary shrink-0" />
-                        <select
-                          value={service}
-                          onChange={(e) => setService(e.target.value)}
-                          className="bg-transparent border-none outline-none w-full text-dark text-sm font-medium cursor-pointer [&>option]:bg-white [&>option]:text-dark"
-                        >
-                          <option value="Amazon Account Management">Amazon Seller Account Management</option>
-                          <option value="Flipkart Account Management">Flipkart Seller Account Management</option>
-                          <option value="Amazon PPC Management">Amazon PPC &amp; Marketplace Advertising</option>
-                          <option value="Catalog Management">Catalog Management &amp; Listing Optimization</option>
-                          <option value="E-commerce Solutions">E-commerce Solutions (Multi-Channel Overview)</option>
-                          <option value="Website Development">Website Development (Next.js, Headless E-com, Custom Web Apps)</option>
-                          <option value="App Development">App Development (iOS, Android, Cross-Platform)</option>
-                          <option value="Branding">Branding (Identity, Strategy, Logo, Design Systems)</option>
-                          <option value="Graphic Designing">Graphic Designing (Social Media, Performance Ads, Collaterals)</option>
-                          <option value="Integrated Agency Package">All-In-One Integrated Growth Partnership</option>
-                        </select>
-                      </div>
+                      <ServiceSelect
+                        value={service}
+                        onChange={setService}
+                        options={CORE_SERVICE_OPTIONS}
+                      />
                     </div>
 
                     {/* Project Overview & Goals */}
@@ -555,6 +579,36 @@ export default function ContactClient() {
                     </div>
                   </form>
                 )}
+              </div>
+
+              {/* Existing Client Feedback Section */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF9FF] via-white to-primary/[0.04] border border-primary/25 shadow-xs relative overflow-hidden group">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-sm font-bold text-dark">Client Feedback</h3>
+                      <span className="text-[10px] font-bold text-primary bg-primary-light px-2 py-0.5 rounded-full">
+                        Verified
+                      </span>
+                    </div>
+                    <div className="flow-root sm:flex sm:items-center sm:justify-between sm:gap-4">
+                      <p className="text-xs text-dark-muted leading-relaxed inline sm:block">
+                        Already partnered with UNIQOVA? Share your experience, project review, and feedback with our executive team.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setIsFeedbackModalOpen(true)}
+                        className="float-right sm:float-none inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs hover:shadow-md transition-all active:scale-95 ml-1.5 sm:ml-0 mt-2 sm:mt-0 shrink-0 whitespace-nowrap"
+                      >
+                        <MessageSquarePlus className="w-3.5 h-3.5" />
+                        <span>Leave Client Feedback</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
