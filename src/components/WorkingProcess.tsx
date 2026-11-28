@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import { Compass, Lightbulb, Code2, Rocket, ArrowRight, ChevronDown } from "lucide-react";
 import { PROCESS_STEPS } from "@/data/agencyData";
 
@@ -16,6 +17,8 @@ const STEP_IMAGES: Record<string, string> = {
 export default function WorkingProcess() {
   const [activePanel, setActivePanel] = useState<string>("intro");
   const [activeMobileStep, setActiveMobileStep] = useState<string>("");
+  const desktopGridRef = useRef<HTMLDivElement>(null);
+  const isDesktopInView = useInView(desktopGridRef, { once: true, amount: 0.25 });
 
   const isIntroActive = activePanel === "intro";
 
@@ -188,11 +191,27 @@ export default function WorkingProcess() {
 
         {/* DESKTOP VIEW (lg+): Elastic Expansion Grid — GPU-smooth CSS flex transitions with fixed-size inner frames */}
         <div
+          ref={desktopGridRef}
           onMouseLeave={() => setActivePanel("intro")}
           className="hidden lg:flex lg:flex-row gap-4 w-full lg:h-[460px]"
         >
           {/* LEFT WINDOW: Our Working Process with Lavender Fluid Wave Gradient */}
-          <div
+          <motion.div
+            initial={{ opacity: 0, x: 90 }}
+            animate={
+              isDesktopInView
+                ? {
+                    opacity: [0, 1, 1, 1],
+                    x: [90, -8, 3, 0],
+                    scaleX: [1, 0.98, 1.01, 1],
+                  }
+                : { opacity: 0, x: 90 }
+            }
+            transition={{
+              duration: 0.65,
+              times: [0, 0.55, 0.8, 1],
+              ease: "easeOut",
+            }}
             onClick={() => setActivePanel("intro")}
             onMouseEnter={() => setActivePanel("intro")}
             style={{
@@ -278,7 +297,7 @@ export default function WorkingProcess() {
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ELASTIC PILLAR BARS (Discover, Strategize, Create, Grow) */}
           {PROCESS_STEPS.map((step, idx) => {
@@ -287,8 +306,24 @@ export default function WorkingProcess() {
             const stepImage = STEP_IMAGES[step.number] || "/images/pillars/integrated.jpg";
 
             return (
-              <div
+              <motion.div
                 key={step.number}
+                initial={{ opacity: 0, x: 130 }}
+                animate={
+                  isDesktopInView
+                    ? {
+                        opacity: [0, 1, 1, 1],
+                        x: [130, -14, 5, 0],
+                        scaleX: [1, 0.9, 1.04, 1],
+                      }
+                    : { opacity: 0, x: 130 }
+                }
+                transition={{
+                  duration: 0.55,
+                  delay: 0.22 + idx * 0.14,
+                  times: [0, 0.52, 0.78, 1],
+                  ease: "easeOut",
+                }}
                 onClick={() => setActivePanel(step.number)}
                 onMouseEnter={() => setActivePanel(step.number)}
                 style={{
@@ -358,7 +393,7 @@ export default function WorkingProcess() {
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-transparent pointer-events-none" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
