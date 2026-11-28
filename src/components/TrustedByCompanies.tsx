@@ -1380,6 +1380,41 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
     mouseY.set(0);
   };
 
+  // 3D Sphere-Edge Bulge Motion for the Vertical Marquee Cards
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateSphereCurve = () => {
+      const stage = bentoGridRef.current;
+      if (stage) {
+        const stageRect = stage.getBoundingClientRect();
+        const stageCenterY = stageRect.top + stageRect.height / 2;
+        const halfSpan = Math.max(stageRect.height * 0.55, 1);
+
+        const cards = stage.querySelectorAll<HTMLElement>("[data-sphere-card]");
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenterY = rect.top + rect.height / 2;
+          const rawT = (cardCenterY - stageCenterY) / halfSpan;
+          const t = Math.max(-1, Math.min(1, rawT));
+          const bulge = Math.max(0, 1 - t * t);
+          const colSide = card.dataset.sphereCol === "1" ? 1 : -1;
+
+          const rotateX = (-t * 13).toFixed(2);
+          const rotateY = (colSide * 4.5).toFixed(2);
+          const translateZ = (bulge * 22).toFixed(2);
+          const scale = (0.92 + bulge * 0.08).toFixed(4);
+
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale(${scale})`;
+        });
+      }
+      rafId = requestAnimationFrame(updateSphereCurve);
+    };
+
+    rafId = requestAnimationFrame(updateSphereCurve);
+    return () => cancelAnimationFrame(rafId);
+  }, [current.id]);
+
   const renderCompanyLogo = (story: FounderStory) => {
     if (story.logoType === "megahr") {
       return (
@@ -1616,11 +1651,8 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                 rotateY: smoothTiltY,
                 transformStyle: "preserve-3d",
               }}
-              className="lg:col-span-7 w-full h-[360px] sm:h-[400px] lg:h-[430px] overflow-hidden will-change-transform relative rounded-[22px] sm:rounded-[28px] bg-[#0E0C18]/5 border border-primary/15"
+              className="lg:col-span-7 w-full h-[360px] sm:h-[400px] lg:h-[430px] overflow-hidden will-change-transform relative rounded-[22px] sm:rounded-[28px] bg-transparent px-1"
             >
-              {/* Soft Gradient Overlay Fades at Top & Bottom */}
-              <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#F5EFFF] via-[#FAF8FF]/70 to-transparent z-20 pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#EBE2FF] via-[#FAF8FF]/70 to-transparent z-20 pointer-events-none" />
 
               {/* Animated Presence for Smooth Seamless Founder Switch */}
               <AnimatePresence mode="wait" custom={direction}>
@@ -1630,17 +1662,14 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   initial={{
                     opacity: 0,
                     scale: 0.96,
-                    filter: "blur(4px)",
                   }}
                   animate={{
                     opacity: 1,
                     scale: 1,
-                    filter: "blur(0px)",
                   }}
                   exit={{
                     opacity: 0,
                     scale: 0.96,
-                    filter: "blur(4px)",
                   }}
                   transition={{
                     duration: 0.35,
@@ -1654,8 +1683,10 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                       {[...current.col1Items, ...current.col1Items].map((item, idx) => (
                         <div
                           key={`${item.id}-c1-${idx}`}
+                          data-sphere-card
+                          data-sphere-col="1"
                           onClick={() => setSelectedStoryModal(item)}
-                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
+                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-transparent border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(117,69,245,0.12)] hover:shadow-glow-sm cursor-pointer transition-[border-color,box-shadow] duration-300 ease-out shrink-0 will-change-transform"
                         >
                           <img
                             src={item.image}
@@ -1675,8 +1706,10 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                       {[...current.col2Items, ...current.col2Items].map((item, idx) => (
                         <div
                           key={`${item.id}-c2-${idx}`}
+                          data-sphere-card
+                          data-sphere-col="2"
                           onClick={() => setSelectedStoryModal(item)}
-                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
+                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-transparent border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(117,69,245,0.12)] hover:shadow-glow-sm cursor-pointer transition-[border-color,box-shadow] duration-300 ease-out shrink-0 will-change-transform"
                         >
                           <img
                             src={item.image}
