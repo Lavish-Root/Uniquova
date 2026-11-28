@@ -8,28 +8,12 @@
     "order": 1
   },
   {
-    "id": "showcase-1795685847861",
-    "title": "jhjhhjhjhj",
-    "src": "/images/selected_work/showcase_showcase-1795685847861.webp",
-    "alt": "jhjhhjhjhj",
+    "id": "showcase-1795847869018",
+    "title": "syaahi",
+    "src": "/images/selected_work/showcase_1795847869019_izljo.webp",
+    "alt": "syaahi",
     "isVideo": false,
     "order": 2
-  },
-  {
-    "id": "showcase-1795688019902",
-    "title": "ss",
-    "src": "/images/selected_work/showcase_showcase-1795688019902.webp",
-    "alt": "ss",
-    "isVideo": false,
-    "order": 3
-  },
-  {
-    "id": "showcase-1795700783375",
-    "title": "ddd",
-    "src": "/images/selected_work/showcase_showcase-1795700783375.webp",
-    "alt": "ddd",
-    "isVideo": false,
-    "order": 4
   },
   {
     "id": "showcase-1795700808835",
@@ -37,7 +21,31 @@
     "src": "/images/selected_work/showcase_showcase-1795700808835.webp",
     "alt": "vvv",
     "isVideo": false,
+    "order": 3
+  },
+  {
+    "id": "showcase-1795848007219",
+    "title": "s3",
+    "src": "/images/selected_work/showcase_1795848007219_kbgtn.webp",
+    "alt": "s3",
+    "isVideo": false,
+    "order": 4
+  },
+  {
+    "id": "showcase-1795700783375",
+    "title": "ddd",
+    "src": "/images/selected_work/showcase_showcase-1795700783375.webp",
+    "alt": "ddd",
+    "isVideo": false,
     "order": 5
+  },
+  {
+    "id": "showcase-1795847912822",
+    "title": "sy2",
+    "src": "/images/selected_work/showcase_1795847912823_29wxy.webp",
+    "alt": "sy2",
+    "isVideo": false,
+    "order": 6
   },
   {
     "id": "showcase-1795700824151",
@@ -45,6 +53,6 @@
     "src": "/images/selected_work/showcase_showcase-1795700824151.webp",
     "alt": "vvvv",
     "isVideo": false,
-    "order": 6
+    "order": 7
   }
 ]

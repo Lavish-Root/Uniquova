@@ -13,6 +13,12 @@ import {
   DEFAULT_COMPANY_INFO,
   formatWhatsAppUrl,
   SelectedWorkItem,
+  FounderStory,
+  BrandWorkItem,
+  IndustryItem,
+  CoreServiceItem,
+  FeaturedWorkItem,
+  ServiceTag,
 } from "@/data/agencyData";
 import CapabilityIcon, { CAPABILITY_ICON_OPTIONS } from "./CapabilityIcon";
 import {
@@ -62,6 +68,7 @@ import {
   Share2,
   Inbox,
   User,
+  Users,
   Building,
   Copy,
   FileText,
@@ -211,7 +218,7 @@ export default function AdminClient() {
   const [adminEmail, setAdminEmail] = useState("lavishchouhan56@gmail.com");
 
   // Navigation tab: "projects" | "reviews" | "queries" | "brands" | "capabilities" | "company" | "selected-work"
-  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "queries" | "brands" | "capabilities" | "company" | "selected-work">("projects");
+  const [currentTab, setCurrentTab] = useState<"projects" | "reviews" | "queries" | "brands" | "capabilities" | "company" | "selected-work" | "trusted-founders" | "core-services" | "featured-work" | "industries">("projects");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ==========================================
@@ -366,6 +373,121 @@ export default function AdminClient() {
     order: 1,
   });
 
+  // ==========================================
+  // TRUSTED BY AI FOUNDERS STATE
+  // ==========================================
+  const [founders, setFounders] = useState<FounderStory[]>([]);
+  const [isLoadingFounders, setIsLoadingFounders] = useState(false);
+  const [isFounderModalOpen, setIsFounderModalOpen] = useState(false);
+  const [editingFounderId, setEditingFounderId] = useState<string | null>(null);
+  const [isSavingFounder, setIsSavingFounder] = useState(false);
+  const [deleteFounderConfirmId, setDeleteFounderConfirmId] = useState<string | null>(null);
+  const [founderModalTab, setFounderModalTab] = useState<"company" | "founder" | "metrics" | "work">("company");
+
+  // ==========================================
+  // CORE DIGITAL SERVICES CMS STATE
+  // ==========================================
+  const [coreServices, setCoreServices] = useState<CoreServiceItem[]>([]);
+  const [isLoadingCoreServices, setIsLoadingCoreServices] = useState(false);
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
+  const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+  const [isSavingService, setIsSavingService] = useState(false);
+  const [deleteServiceConfirmId, setDeleteServiceConfirmId] = useState<string | null>(null);
+  const [serviceFormData, setServiceFormData] = useState<CoreServiceItem>({
+    id: "",
+    slug: "ecommerce",
+    domain: "",
+    title: "",
+    defaultImage: "",
+    link: "/services/ecommerce",
+    order: 1,
+    tags: [],
+  });
+
+  // ==========================================
+  // FEATURED WORK SHOWCASE (3D TUNNEL) CMS STATE
+  // ==========================================
+  const [featuredWorks, setFeaturedWorks] = useState<FeaturedWorkItem[]>([]);
+  const [isLoadingFeaturedWorks, setIsLoadingFeaturedWorks] = useState(false);
+  const [isFeaturedModalOpen, setIsFeaturedModalOpen] = useState(false);
+  const [editingFeaturedId, setEditingFeaturedId] = useState<string | null>(null);
+  const [isSavingFeatured, setIsSavingFeatured] = useState(false);
+  const [deleteFeaturedConfirmId, setDeleteFeaturedConfirmId] = useState<string | null>(null);
+  const [featuredFormData, setFeaturedFormData] = useState<FeaturedWorkItem>({
+    id: "",
+    title: "",
+    domain: "",
+    tagline: "",
+    image: "",
+    domainLink: "/services/ecommerce",
+    order: 1,
+  });
+
+  // ==========================================
+  // INDUSTRIES WE SERVE CMS STATE
+  // ==========================================
+  const [industriesList, setIndustriesList] = useState<IndustryItem[]>([]);
+  const [isLoadingIndustries, setIsLoadingIndustries] = useState(false);
+  const [isIndustryModalOpen, setIsIndustryModalOpen] = useState(false);
+  const [editingIndustryId, setEditingIndustryId] = useState<string | null>(null);
+  const [isSavingIndustry, setIsSavingIndustry] = useState(false);
+  const [deleteIndustryConfirmId, setDeleteIndustryConfirmId] = useState<string | null>(null);
+  const [industryFormData, setIndustryFormData] = useState<IndustryItem>({
+    id: "",
+    title: "",
+    tag: "",
+    icon: "ShoppingBag",
+    image: "",
+    accent: {
+      bg: "from-emerald-500/10 via-purple-500/5 to-transparent",
+      border: "border-emerald-500/20",
+      badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      badgeText: "text-emerald-600",
+      glow: "rgba(16, 185, 129, 0.15)",
+    },
+    description: "",
+    solutions: [],
+    metrics: [],
+    floatingBadges: [],
+    whyUniquova: [],
+  });
+
+  // Founder Form State
+  const [founderFormData, setFounderFormData] = useState<{
+    companyName: string;
+    companyCategory: string;
+    logoType: "megahr" | "913" | "ruuster" | "euroteam" | "needle" | "outset" | "custom";
+    customLogoUrl: string;
+    quote: string;
+    founderName: string;
+    founderRole: string;
+    founderAvatar: string;
+    projectLink: string;
+    accentColor: string;
+    caseStudySummary: string;
+    metrics: { label: string; value: string }[];
+    workImages: BrandWorkItem[];
+    order: number;
+  }>({
+    companyName: "",
+    companyCategory: "AI Brand Transformation",
+    logoType: "outset",
+    customLogoUrl: "",
+    quote: "",
+    founderName: "",
+    founderRole: "Founder & CEO",
+    founderAvatar: "/images/team/team-1.jpg",
+    projectLink: "/our-work",
+    accentColor: "#7545F5",
+    caseStudySummary: "",
+    metrics: [
+      { label: "Turnaround Time", value: "-60%" },
+      { label: "Client Inquiries", value: "+120%" },
+    ],
+    workImages: [],
+    order: 1,
+  });
+
   // Notification Toast
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
@@ -463,6 +585,10 @@ export default function AdminClient() {
         fetchBrands();
         fetchCapabilities();
         fetchSelectedWorks();
+        fetchFounders();
+        fetchCoreServices();
+        fetchFeaturedWorks();
+        fetchIndustries();
         fetchCompanyInfo();
         fetchAdminEmail(loginInput);
         showToast("success", "Welcome to UNIQOVA Operations Gateway");
@@ -511,8 +637,8 @@ export default function AdminClient() {
       validCatString && CATEGORIES.includes(validCatString as (typeof CATEGORIES)[number])
         ? validCatString
         : selectedCategory !== "All" && CATEGORIES.includes(selectedCategory as (typeof CATEGORIES)[number])
-        ? selectedCategory
-        : "Web Development";
+          ? selectedCategory
+          : "Web Development";
 
     setFormData({
       title: "",
@@ -1434,9 +1560,9 @@ export default function AdminClient() {
         setIsSelectedWorkModalOpen(false);
         setEditingSelectedWorkId(null);
         fetchSelectedWorks();
-        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch { }
         window.dispatchEvent(new Event("selectedWorkUpdated"));
-        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch { }
       } else {
         showToast("error", data.message || "Failed to save showcase slide.");
       }
@@ -1461,9 +1587,9 @@ export default function AdminClient() {
         showToast("success", "Showcase slide permanently removed.");
         setDeleteSelectedWorkConfirmId(null);
         fetchSelectedWorks();
-        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch { }
         window.dispatchEvent(new Event("selectedWorkUpdated"));
-        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch { }
       } else {
         showToast("error", data.message || "Failed to delete showcase slide.");
       }
@@ -1497,13 +1623,1140 @@ export default function AdminClient() {
         showToast("error", "Failed to persist new order");
         fetchSelectedWorks();
       } else {
-        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch {}
+        try { sessionStorage.removeItem("uniquova_selected_work_cache"); } catch { }
         window.dispatchEvent(new Event("selectedWorkUpdated"));
-        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch {}
+        try { localStorage.setItem("uniqova_selected_work_sync", Date.now().toString()); } catch { }
       }
     } catch {
       showToast("error", "Network error reordering showcases");
       fetchSelectedWorks();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // TRUSTED BY AI FOUNDERS API METHODS (Carousel & Work Marquee)
+  // -------------------------------------------------------------
+  const fetchFounders = async () => {
+    setIsLoadingFounders(true);
+    try {
+      const res = await fetch(`/api/trusted-founders?t=${Date.now()}`);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.stories)) {
+        setFounders(data.stories);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve AI founder stories");
+    } finally {
+      setIsLoadingFounders(false);
+    }
+  };
+
+  const openAddFounderModal = () => {
+    const nextOrder =
+      founders.length > 0
+        ? Math.max(...founders.map((f) => (typeof f.order === "number" ? f.order : 0))) + 1
+        : 1;
+
+    setFounderFormData({
+      companyName: "",
+      companyCategory: "AI Brand Transformation",
+      logoType: "custom",
+      customLogoUrl: "",
+      quote: "",
+      founderName: "",
+      founderRole: "Founder & CEO",
+      founderAvatar: "/images/team/team-1.jpg",
+      projectLink: "/our-work",
+      accentColor: "#7545F5",
+      caseStudySummary: "",
+      metrics: [
+        { label: "Growth Velocity", value: "+140%" },
+        { label: "Brand Recall", value: "98.4%" },
+      ],
+      workImages: [
+        {
+          id: `work-${Date.now()}-1`,
+          companyName: "",
+          category: "Web & UI/UX",
+          title: "AI Platform Interface",
+          image: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_480.webp",
+          caption: "Digital Experience Architecture",
+          quote: "",
+          founderName: "",
+          founderRole: "",
+          metrics: [{ label: "Efficiency", value: "+85%" }],
+          summary: "Modern web architecture and UI component library.",
+          projectLink: "/our-work",
+        },
+        {
+          id: `work-${Date.now()}-2`,
+          companyName: "",
+          category: "Brand Identity",
+          title: "Visual Design Tokens",
+          image: "/images/selected_work/6Fiwu9F9MKkOxpv42vAlXksFU_480.webp",
+          caption: "Design System & Guidelines",
+          quote: "",
+          founderName: "",
+          founderRole: "",
+          metrics: [{ label: "Consistency", value: "100%" }],
+          summary: "Complete visual identity and design tokens.",
+          projectLink: "/our-work",
+        },
+      ],
+      order: nextOrder,
+    });
+    setEditingFounderId(null);
+    setFounderModalTab("company");
+    setIsFounderModalOpen(true);
+  };
+
+  const openEditFounderModal = (story: FounderStory) => {
+    setFounderFormData({
+      companyName: story.companyName,
+      companyCategory: story.companyCategory || "AI Brand Transformation",
+      logoType: story.logoType || "custom",
+      customLogoUrl: story.customLogoUrl || "",
+      quote: story.quote,
+      founderName: story.founderName,
+      founderRole: story.founderRole,
+      founderAvatar: story.founderAvatar || "/images/team/team-1.jpg",
+      projectLink: story.projectLink || "/our-work",
+      accentColor: story.accentColor || "#7545F5",
+      caseStudySummary: story.caseStudySummary || "",
+      metrics: Array.isArray(story.metrics) ? [...story.metrics] : [],
+      workImages: Array.isArray(story.workImages)
+        ? JSON.parse(JSON.stringify(story.workImages))
+        : [],
+      order: story.order ?? 1,
+    });
+    setEditingFounderId(story.id);
+    setFounderModalTab("company");
+    setIsFounderModalOpen(true);
+  };
+
+  const handleFounderAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+      showToast("error", "Avatar file is too large. Choose an image under 8MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 800;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/webp", 0.9);
+          setFounderFormData((prev) => ({ ...prev, founderAvatar: compressed }));
+          showToast("success", "Founder portrait uploaded and optimized");
+        }
+      };
+      if (typeof event.target?.result === "string") {
+        img.src = event.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFounderCustomLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 6 * 1024 * 1024) {
+      showToast("error", "Logo file is too large. Choose an image under 6MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 600;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/png");
+          setFounderFormData((prev) => ({
+            ...prev,
+            customLogoUrl: compressed,
+            logoType: "custom",
+          }));
+          showToast("success", "Custom brand logo uploaded");
+        }
+      };
+      if (typeof event.target?.result === "string") {
+        img.src = event.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleWorkItemImageUpload = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("error", "Deliverable image is too large. Choose an image under 10MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 1600;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          setFounderFormData((prev) => {
+            const nextWork = [...prev.workImages];
+            if (nextWork[index]) {
+              nextWork[index] = { ...nextWork[index], image: compressed };
+            }
+            return { ...prev, workImages: nextWork };
+          });
+          showToast("success", "Deliverable image uploaded and compressed");
+        }
+      };
+      if (typeof event.target?.result === "string") {
+        img.src = event.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddFounderMetric = () => {
+    setFounderFormData((prev) => ({
+      ...prev,
+      metrics: [...prev.metrics, { label: "New Metric", value: "+100%" }],
+    }));
+  };
+
+  const handleRemoveFounderMetric = (index: number) => {
+    setFounderFormData((prev) => ({
+      ...prev,
+      metrics: prev.metrics.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleFounderMetricChange = (
+    index: number,
+    field: "label" | "value",
+    val: string
+  ) => {
+    setFounderFormData((prev) => {
+      const nextMetrics = [...prev.metrics];
+      if (nextMetrics[index]) {
+        nextMetrics[index] = { ...nextMetrics[index], [field]: val };
+      }
+      return { ...prev, metrics: nextMetrics };
+    });
+  };
+
+  const handleAddWorkItem = () => {
+    const newItem: BrandWorkItem = {
+      id: `work-${Date.now()}-${founderFormData.workImages.length + 1}`,
+      companyName: founderFormData.companyName || "Client Project",
+      category: "Brand Deliverable",
+      title: `${founderFormData.companyName || "Project"} Deliverable ${founderFormData.workImages.length + 1}`,
+      image: "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_480.webp",
+      caption: "Showcase Deliverable",
+      quote: founderFormData.quote,
+      founderName: founderFormData.founderName,
+      founderRole: founderFormData.founderRole,
+      metrics: [{ label: "Impact", value: "+100%" }],
+      summary: "High-resolution production deliverable showcase.",
+      projectLink: founderFormData.projectLink || "/our-work",
+    };
+    setFounderFormData((prev) => ({
+      ...prev,
+      workImages: [...prev.workImages, newItem],
+    }));
+  };
+
+  const handleRemoveWorkItem = (index: number) => {
+    setFounderFormData((prev) => ({
+      ...prev,
+      workImages: prev.workImages.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleWorkItemChange = <K extends keyof BrandWorkItem>(
+    index: number,
+    field: K,
+    val: BrandWorkItem[K]
+  ) => {
+    setFounderFormData((prev) => {
+      const nextWork = [...prev.workImages];
+      if (nextWork[index]) {
+        nextWork[index] = { ...nextWork[index], [field]: val };
+      }
+      return { ...prev, workImages: nextWork };
+    });
+  };
+
+  const handleSaveFounder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      !founderFormData.companyName.trim() ||
+      !founderFormData.founderName.trim() ||
+      !founderFormData.quote.trim()
+    ) {
+      showToast("error", "Company Name, Founder Name, and Testimonial Quote are required.");
+      return;
+    }
+
+    setIsSavingFounder(true);
+    const isEditing = !!editingFounderId;
+    const url = "/api/trusted-founders";
+    const method = isEditing ? "PUT" : "POST";
+
+    const payload = {
+      ...(isEditing ? { id: editingFounderId } : {}),
+      companyName: founderFormData.companyName.trim(),
+      companyCategory: founderFormData.companyCategory.trim() || "AI Brand Transformation",
+      logoType: founderFormData.logoType,
+      customLogoUrl: founderFormData.customLogoUrl.trim() || undefined,
+      quote: founderFormData.quote.trim(),
+      founderName: founderFormData.founderName.trim(),
+      founderRole: founderFormData.founderRole.trim() || "Founder & CEO",
+      founderAvatar: founderFormData.founderAvatar.trim() || "/images/team/team-1.jpg",
+      projectLink: founderFormData.projectLink.trim() || "/our-work",
+      accentColor: founderFormData.accentColor || "#7545F5",
+      caseStudySummary: founderFormData.caseStudySummary.trim(),
+      metrics: founderFormData.metrics.filter((m) => m.label.trim() && m.value.trim()),
+      workImages: founderFormData.workImages,
+      order: Number(founderFormData.order) || 1,
+    };
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(
+          "success",
+          isEditing ? "Founder story updated successfully!" : "New founder story created!"
+        );
+        setIsFounderModalOpen(false);
+        setEditingFounderId(null);
+        fetchFounders();
+        try {
+          sessionStorage.removeItem("uniquova_founders_v1");
+        } catch { }
+        window.dispatchEvent(new Event("foundersUpdated"));
+        try {
+          localStorage.setItem("uniquova_founders_sync", Date.now().toString());
+        } catch { }
+      } else {
+        showToast("error", data.message || "Failed to save founder story.");
+      }
+    } catch {
+      showToast("error", "Network error while saving founder story.");
+    } finally {
+      setIsSavingFounder(false);
+    }
+  };
+
+  const handleDeleteFounder = async (id: string) => {
+    try {
+      const res = await fetch(`/api/trusted-founders?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          "x-admin-password": adminPassword,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", "Founder story permanently removed.");
+        setDeleteFounderConfirmId(null);
+        fetchFounders();
+        try {
+          sessionStorage.removeItem("uniquova_founders_v1");
+        } catch { }
+        window.dispatchEvent(new Event("foundersUpdated"));
+        try {
+          localStorage.setItem("uniquova_founders_sync", Date.now().toString());
+        } catch { }
+      } else {
+        showToast("error", data.message || "Failed to delete founder story.");
+      }
+    } catch {
+      showToast("error", "Network error while deleting founder story.");
+    }
+  };
+
+  const handleMoveFounder = async (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= founders.length) return;
+
+    const reordered = [...founders];
+    const [movedItem] = reordered.splice(index, 1);
+    reordered.splice(targetIndex, 0, movedItem);
+
+    const updated = reordered.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setFounders(updated);
+
+    try {
+      const res = await fetch("/api/trusted-founders", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({
+          action: "reorder",
+          orders: updated.map((item) => ({ id: item.id, order: item.order })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast("error", "Failed to persist new founder story order");
+        fetchFounders();
+      } else {
+        try {
+          sessionStorage.removeItem("uniquova_founders_v1");
+        } catch { }
+        window.dispatchEvent(new Event("foundersUpdated"));
+        try {
+          localStorage.setItem("uniquova_founders_sync", Date.now().toString());
+        } catch { }
+      }
+    } catch {
+      showToast("error", "Network error reordering founder stories");
+      fetchFounders();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // CORE DIGITAL SERVICES API METHODS
+  // -------------------------------------------------------------
+  const fetchCoreServices = async () => {
+    setIsLoadingCoreServices(true);
+    try {
+      const res = await fetch(`/api/core-services?t=${Date.now()}`);
+      const data = await res.json();
+      const list = Array.isArray(data) ? data : data.services;
+      if (Array.isArray(list)) {
+        setCoreServices(list);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve core services");
+    } finally {
+      setIsLoadingCoreServices(false);
+    }
+  };
+
+  const openAddServiceModal = () => {
+    const nextOrder =
+      coreServices.length > 0
+        ? Math.max(...coreServices.map((s) => (typeof s.order === "number" ? s.order : 0))) + 1
+        : 1;
+
+    setServiceFormData({
+      id: `service-${Date.now()}`,
+      domain: "",
+      slug: "web-development",
+      title: "",
+      defaultImage: "/images/services/web_dev_bg.jpg",
+      link: "/services/web-development",
+      order: nextOrder,
+      tags: [
+        { label: "High-Converting UI/UX", image: "/images/services/web_dev_bg.jpg" },
+      ],
+    });
+    setEditingServiceId(null);
+    setIsServiceModalOpen(true);
+  };
+
+  const openEditServiceModal = (item: CoreServiceItem) => {
+    setServiceFormData({
+      id: item.id,
+      domain: item.domain,
+      slug: item.slug || "services",
+      title: item.title,
+      defaultImage: item.defaultImage,
+      link: item.link || "/services",
+      order: item.order || 1,
+      tags: item.tags ? [...item.tags] : [],
+    });
+    setEditingServiceId(item.id);
+    setIsServiceModalOpen(true);
+  };
+
+  const handleServiceDefaultImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 12 * 1024 * 1024) {
+      showToast("error", "Image file too large. Max size is 12MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1600;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          setServiceFormData((prev) => ({ ...prev, defaultImage: compressed }));
+          showToast("success", "Cover image compressed and ready");
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddServiceTag = () => {
+    setServiceFormData((prev) => ({
+      ...prev,
+      tags: [...prev.tags, { label: "New Capability", image: prev.defaultImage || "/images/services/web_dev_bg.jpg" }],
+    }));
+  };
+
+  const handleRemoveServiceTag = (idx: number) => {
+    setServiceFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleServiceTagChange = (idx: number, field: "label" | "image", val: string) => {
+    setServiceFormData((prev) => {
+      const nextTags = [...prev.tags];
+      nextTags[idx] = { ...nextTags[idx], [field]: val };
+      return { ...prev, tags: nextTags };
+    });
+  };
+
+  const handleServiceTagImageUpload = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1200;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          handleServiceTagChange(idx, "image", compressed);
+          showToast("success", "Deliverable preview image ready");
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!serviceFormData.title.trim() || !serviceFormData.domain.trim()) {
+      showToast("error", "Domain and Title are required");
+      return;
+    }
+    setIsSavingService(true);
+    const isEditing = !!editingServiceId;
+    const method = isEditing ? "PUT" : "POST";
+    try {
+      const res = await fetch("/api/core-services", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify(serviceFormData),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", isEditing ? "Core service updated" : "Core service created");
+        setIsServiceModalOpen(false);
+        setEditingServiceId(null);
+        fetchCoreServices();
+        try { sessionStorage.removeItem("uniquova_services_cache"); } catch { }
+        window.dispatchEvent(new Event("servicesUpdated"));
+        try { localStorage.setItem("uniquova_services_sync", Date.now().toString()); } catch { }
+      } else {
+        showToast("error", data.message || "Failed to save core service");
+      }
+    } catch {
+      showToast("error", "Network error saving core service");
+    } finally {
+      setIsSavingService(false);
+    }
+  };
+
+  const handleDeleteService = async (id: string) => {
+    try {
+      const res = await fetch(`/api/core-services?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": adminPassword },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", "Core service deleted");
+        setDeleteServiceConfirmId(null);
+        fetchCoreServices();
+        try { sessionStorage.removeItem("uniquova_services_cache"); } catch { }
+        window.dispatchEvent(new Event("servicesUpdated"));
+      } else {
+        showToast("error", data.message || "Failed to delete service");
+      }
+    } catch {
+      showToast("error", "Network error deleting service");
+    }
+  };
+
+  const handleMoveService = async (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= coreServices.length) return;
+
+    const updated = [...coreServices];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+
+    const reordered = updated.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setCoreServices(reordered);
+
+    try {
+      const res = await fetch("/api/core-services", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ services: reordered }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast("error", data.message || "Failed to update service order");
+        fetchCoreServices();
+      } else {
+        try { sessionStorage.removeItem("uniquova_services_cache"); } catch { }
+        window.dispatchEvent(new Event("servicesUpdated"));
+      }
+    } catch {
+      showToast("error", "Network error updating service order");
+      fetchCoreServices();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // FEATURED WORK SHOWCASE (3D TUNNEL) API METHODS
+  // -------------------------------------------------------------
+  const fetchFeaturedWorks = async () => {
+    setIsLoadingFeaturedWorks(true);
+    try {
+      const res = await fetch(`/api/featured-work?t=${Date.now()}`);
+      const data = await res.json();
+      const list = Array.isArray(data) ? data : data.items;
+      if (Array.isArray(list)) {
+        setFeaturedWorks(list);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve featured work items");
+    } finally {
+      setIsLoadingFeaturedWorks(false);
+    }
+  };
+
+  const openAddFeaturedModal = () => {
+    const nextOrder =
+      featuredWorks.length > 0
+        ? Math.max(...featuredWorks.map((f) => (typeof f.order === "number" ? f.order : 0))) + 1
+        : 1;
+
+    setFeaturedFormData({
+      id: `featured-${Date.now()}`,
+      title: "",
+      domain: "Website Development",
+      tagline: "High-Performance Next.js Architecture",
+      image: "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_480.webp",
+      domainLink: "/services/web-development",
+      order: nextOrder,
+    });
+    setEditingFeaturedId(null);
+    setIsFeaturedModalOpen(true);
+  };
+
+  const openEditFeaturedModal = (item: FeaturedWorkItem) => {
+    setFeaturedFormData({
+      id: item.id,
+      title: item.title,
+      domain: item.domain,
+      tagline: item.tagline || "",
+      image: item.image,
+      domainLink: item.domainLink,
+      order: item.order || 1,
+    });
+    setEditingFeaturedId(item.id);
+    setIsFeaturedModalOpen(true);
+  };
+
+  const handleFeaturedImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 12 * 1024 * 1024) {
+      showToast("error", "Image file too large. Max size is 12MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1800;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          setFeaturedFormData((prev) => ({ ...prev, image: compressed }));
+          showToast("success", "Showcase preview compressed and ready");
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveFeatured = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!featuredFormData.title.trim() || !featuredFormData.domain.trim()) {
+      showToast("error", "Title and Domain are required");
+      return;
+    }
+    setIsSavingFeatured(true);
+    try {
+      const res = await fetch("/api/featured-work", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify(featuredFormData),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", editingFeaturedId ? "Featured showcase updated" : "Featured showcase created");
+        setIsFeaturedModalOpen(false);
+        setEditingFeaturedId(null);
+        fetchFeaturedWorks();
+        try { sessionStorage.removeItem("uniquova_featured_cache"); } catch { }
+        window.dispatchEvent(new Event("featuredWorkUpdated"));
+      } else {
+        showToast("error", data.message || "Failed to save featured work");
+      }
+    } catch {
+      showToast("error", "Network error saving featured work");
+    } finally {
+      setIsSavingFeatured(false);
+    }
+  };
+
+  const handleDeleteFeatured = async (id: string) => {
+    try {
+      const res = await fetch(`/api/featured-work?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": adminPassword },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", "Showcase card deleted");
+        setDeleteFeaturedConfirmId(null);
+        fetchFeaturedWorks();
+        try { sessionStorage.removeItem("uniquova_featured_cache"); } catch { }
+        window.dispatchEvent(new Event("featuredWorkUpdated"));
+      } else {
+        showToast("error", data.message || "Failed to delete showcase");
+      }
+    } catch {
+      showToast("error", "Network error deleting showcase");
+    }
+  };
+
+  const handleMoveFeatured = async (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= featuredWorks.length) return;
+
+    const updated = [...featuredWorks];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+
+    const reordered = updated.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setFeaturedWorks(reordered);
+
+    try {
+      const res = await fetch("/api/featured-work", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ items: reordered }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast("error", data.message || "Failed to reorder showcase");
+        fetchFeaturedWorks();
+      } else {
+        try { sessionStorage.removeItem("uniquova_featured_cache"); } catch { }
+        window.dispatchEvent(new Event("featuredWorkUpdated"));
+      }
+    } catch {
+      showToast("error", "Network error reordering showcase");
+      fetchFeaturedWorks();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // INDUSTRIES WE SERVE API METHODS
+  // -------------------------------------------------------------
+  const fetchIndustries = async () => {
+    setIsLoadingIndustries(true);
+    try {
+      const res = await fetch(`/api/industries?t=${Date.now()}`);
+      const data = await res.json();
+      const list = Array.isArray(data) ? data : data.industries;
+      if (Array.isArray(list)) {
+        setIndustriesList(list);
+      }
+    } catch {
+      showToast("error", "Failed to retrieve industries");
+    } finally {
+      setIsLoadingIndustries(false);
+    }
+  };
+
+  const openAddIndustryModal = () => {
+    const nextOrder =
+      industriesList.length > 0
+        ? Math.max(...industriesList.map((ind) => (typeof ind.order === "number" ? ind.order : 0))) + 1
+        : 1;
+
+    setIndustryFormData({
+      id: `sector-${Date.now()}`,
+      title: "",
+      tag: "Specialized Sector",
+      icon: "ShoppingBag",
+      image: "/images/industries/ecommerce.jpg",
+      order: nextOrder,
+      accent: {
+        bg: "from-emerald-500/10 via-purple-500/5 to-transparent",
+        border: "border-emerald-500/20",
+        badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        badgeText: "text-emerald-600",
+        glow: "rgba(16, 185, 129, 0.15)",
+      },
+      description: "",
+      solutions: ["Enterprise Solutions", "Marketplace Optimization"],
+      metrics: [
+        { label: "Revenue Scale", value: "+180%" },
+        { label: "Target ROAS", value: "4.5x" },
+      ],
+      floatingBadges: [],
+      whyUniquova: [],
+    });
+    setEditingIndustryId(null);
+    setIsIndustryModalOpen(true);
+  };
+
+  const openEditIndustryModal = (item: IndustryItem) => {
+    setIndustryFormData({
+      id: item.id,
+      title: item.title,
+      tag: item.tag,
+      icon: item.icon,
+      image: item.image,
+      order: item.order || 1,
+      accent: item.accent || {
+        bg: "from-emerald-500/10 via-purple-500/5 to-transparent",
+        border: "border-emerald-500/20",
+        badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        badgeText: "text-emerald-600",
+        glow: "rgba(16, 185, 129, 0.15)",
+      },
+      description: item.description,
+      solutions: item.solutions ? [...item.solutions] : [],
+      metrics: item.metrics ? [...item.metrics] : [],
+      floatingBadges: item.floatingBadges ? [...item.floatingBadges] : [],
+      whyUniquova: item.whyUniquova ? [...item.whyUniquova] : [],
+    });
+    setEditingIndustryId(item.id);
+    setIsIndustryModalOpen(true);
+  };
+
+  const handleIndustryImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 12 * 1024 * 1024) {
+      showToast("error", "Image file too large. Max size is 12MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1600;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/webp", 0.88);
+          setIndustryFormData((prev) => ({ ...prev, image: compressed }));
+          showToast("success", "Industry image compressed and ready");
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddIndustrySolution = () => {
+    setIndustryFormData((prev) => ({
+      ...prev,
+      solutions: [...prev.solutions, "New Solution Offering"],
+    }));
+  };
+
+  const handleRemoveIndustrySolution = (idx: number) => {
+    setIndustryFormData((prev) => ({
+      ...prev,
+      solutions: prev.solutions.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleIndustrySolutionChange = (idx: number, val: string) => {
+    setIndustryFormData((prev) => {
+      const next = [...prev.solutions];
+      next[idx] = val;
+      return { ...prev, solutions: next };
+    });
+  };
+
+  const handleAddIndustryMetric = () => {
+    setIndustryFormData((prev) => ({
+      ...prev,
+      metrics: [...prev.metrics, { label: "KPI Metric", value: "+100%" }],
+    }));
+  };
+
+  const handleRemoveIndustryMetric = (idx: number) => {
+    setIndustryFormData((prev) => ({
+      ...prev,
+      metrics: prev.metrics.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleIndustryMetricChange = (idx: number, field: "label" | "value", val: string) => {
+    setIndustryFormData((prev) => {
+      const next = [...prev.metrics];
+      next[idx] = { ...next[idx], [field]: val };
+      return { ...prev, metrics: next };
+    });
+  };
+
+  const handleSaveIndustry = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!industryFormData.title.trim() || !industryFormData.id.trim()) {
+      showToast("error", "Sector ID and Title are required");
+      return;
+    }
+    setIsSavingIndustry(true);
+    try {
+      const res = await fetch("/api/industries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify(industryFormData),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", editingIndustryId ? "Industry framework updated" : "Industry framework created");
+        setIsIndustryModalOpen(false);
+        setEditingIndustryId(null);
+        fetchIndustries();
+        try { sessionStorage.removeItem("uniquova_industries_cache"); } catch { }
+        window.dispatchEvent(new Event("industriesUpdated"));
+      } else {
+        showToast("error", data.message || "Failed to save industry");
+      }
+    } catch {
+      showToast("error", "Network error saving industry");
+    } finally {
+      setIsSavingIndustry(false);
+    }
+  };
+
+  const handleDeleteIndustry = async (id: string) => {
+    try {
+      const res = await fetch(`/api/industries?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": adminPassword },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("success", "Industry deleted");
+        setDeleteIndustryConfirmId(null);
+        fetchIndustries();
+        try { sessionStorage.removeItem("uniquova_industries_cache"); } catch { }
+        window.dispatchEvent(new Event("industriesUpdated"));
+      } else {
+        showToast("error", data.message || "Failed to delete industry");
+      }
+    } catch {
+      showToast("error", "Network error deleting industry");
+    }
+  };
+
+  const handleMoveIndustry = async (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= industriesList.length) return;
+
+    const updated = [...industriesList];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+
+    const reordered = updated.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setIndustriesList(reordered);
+
+    try {
+      const res = await fetch("/api/industries", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({ industries: reordered }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast("error", data.message || "Failed to reorder industries");
+        fetchIndustries();
+      } else {
+        try { sessionStorage.removeItem("uniquova_industries_cache"); } catch { }
+        window.dispatchEvent(new Event("industriesUpdated"));
+      }
+    } catch {
+      showToast("error", "Network error reordering industries");
+      fetchIndustries();
     }
   };
 
@@ -2058,11 +3311,10 @@ export default function AdminClient() {
         {/* Toast Notification */}
         {toast && (
           <div
-            className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-4 ${
-              toast.type === "success"
+            className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-4 ${toast.type === "success"
                 ? "bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-100"
                 : "bg-rose-50 border-rose-200 text-rose-800 shadow-rose-100"
-            }`}
+              }`}
           >
             {toast.type === "success" ? (
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -2201,11 +3453,10 @@ export default function AdminClient() {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-4 ${
-            toast.type === "success"
+          className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-4 ${toast.type === "success"
               ? "bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-100"
               : "bg-rose-50 border-rose-200 text-rose-800 shadow-rose-100"
-          }`}
+            }`}
         >
           {toast.type === "success" ? (
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -2251,19 +3502,17 @@ export default function AdminClient() {
               >
                 <button
                   onClick={() => setCurrentTab("projects")}
-                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                    currentTab === "projects"
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "projects"
                       ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                       : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`p-2 rounded-xl transition-colors ${
-                        currentTab === "projects"
+                      className={`p-2 rounded-xl transition-colors ${currentTab === "projects"
                           ? "bg-white/20 text-white"
                           : "bg-primary-light text-primary"
-                      }`}
+                        }`}
                     >
                       <FolderKanban className="w-4 h-4" />
                     </div>
@@ -2271,40 +3520,36 @@ export default function AdminClient() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                        currentTab === "projects"
+                      className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "projects"
                           ? "bg-white/25 text-white"
                           : "bg-primary-light text-primary"
-                      }`}
+                        }`}
                     >
                       {projects.length}
                     </span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                        isProjectsMenuHovered ? "rotate-180" : ""
-                      } ${currentTab === "projects" ? "text-white" : "text-dark-muted/60"}`}
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${isProjectsMenuHovered ? "rotate-180" : ""
+                        } ${currentTab === "projects" ? "text-white" : "text-dark-muted/60"}`}
                     />
                   </div>
                 </button>
 
                 {/* Sub-menu for Portfolio Categories - reveals on hover */}
                 <div
-                  className={`ml-4 pl-3.5 border-l-2 border-primary/25 space-y-1 transition-all duration-300 ease-in-out origin-top overflow-hidden ${
-                    isProjectsMenuHovered
+                  className={`ml-4 pl-3.5 border-l-2 border-primary/25 space-y-1 transition-all duration-300 ease-in-out origin-top overflow-hidden ${isProjectsMenuHovered
                       ? "max-h-96 opacity-100 my-2 scale-y-100 visible"
                       : "max-h-0 opacity-0 my-0 scale-y-95 invisible pointer-events-none"
-                  }`}
+                    }`}
                 >
                   <button
                     onClick={() => {
                       setCurrentTab("projects");
                       setSelectedCategory("All");
                     }}
-                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                      currentTab === "projects" && selectedCategory === "All"
+                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${currentTab === "projects" && selectedCategory === "All"
                         ? "bg-primary-light text-primary font-black shadow-2xs"
                         : "text-dark-muted hover:text-dark hover:bg-softBg"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 truncate">
                       <Layers className="w-3 h-3 shrink-0" />
@@ -2324,11 +3569,10 @@ export default function AdminClient() {
                           setCurrentTab("projects");
                           setSelectedCategory(cat);
                         }}
-                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                          isCatSelected
+                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${isCatSelected
                             ? "bg-primary-light text-primary font-black shadow-2xs"
                             : "text-dark-muted hover:text-dark hover:bg-softBg"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2 truncate">
                           <IconComp className="w-3 h-3 shrink-0" />
@@ -2347,30 +3591,27 @@ export default function AdminClient() {
                   setCurrentTab("reviews");
                   if (reviews.length === 0) fetchReviews();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "reviews"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "reviews"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "reviews"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "reviews"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <MessageSquare className="w-4 h-4" />
                   </div>
                   <span className="tracking-tight text-sm font-bold">Client Reviews</span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                    currentTab === "reviews"
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "reviews"
                       ? "bg-white/25 text-white"
                       : "bg-primary-light text-primary"
-                  }`}
+                    }`}
                 >
                   {reviews.length}
                 </span>
@@ -2382,19 +3623,17 @@ export default function AdminClient() {
                   setCurrentTab("queries");
                   fetchQueries();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "queries"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "queries"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "queries"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "queries"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <Inbox className="w-4 h-4" />
                   </div>
@@ -2410,11 +3649,10 @@ export default function AdminClient() {
                     </span>
                   )}
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                      currentTab === "queries"
+                    className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "queries"
                         ? "bg-white/25 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     {queries.length}
                   </span>
@@ -2427,30 +3665,27 @@ export default function AdminClient() {
                   setCurrentTab("brands");
                   if (brands.length === 0) fetchBrands();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "brands"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "brands"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "brands"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "brands"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <Award className="w-4 h-4" />
                   </div>
                   <span className="tracking-tight text-sm font-bold">Trusted Brands</span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                    currentTab === "brands"
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "brands"
                       ? "bg-white/25 text-white"
                       : "bg-primary-light text-primary"
-                  }`}
+                    }`}
                 >
                   {brands.length}
                 </span>
@@ -2462,30 +3697,27 @@ export default function AdminClient() {
                   setCurrentTab("capabilities");
                   if (capabilities.length === 0) fetchCapabilities();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "capabilities"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "capabilities"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "capabilities"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "capabilities"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <span className="tracking-tight text-sm font-bold">Services Marquee</span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                    currentTab === "capabilities"
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "capabilities"
                       ? "bg-white/25 text-white"
                       : "bg-primary-light text-primary"
-                  }`}
+                    }`}
                 >
                   {capabilities.length}
                 </span>
@@ -2497,32 +3729,157 @@ export default function AdminClient() {
                   setCurrentTab("selected-work");
                   if (selectedWorks.length === 0) fetchSelectedWorks();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "selected-work"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "selected-work"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "selected-work"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "selected-work"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <Layers className="w-4 h-4" />
                   </div>
                   <span className="tracking-tight text-sm font-bold">Homepage Slider</span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${
-                    currentTab === "selected-work"
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "selected-work"
                       ? "bg-white/25 text-white"
                       : "bg-primary-light text-primary"
-                  }`}
+                    }`}
                 >
                   {selectedWorks.length}
+                </span>
+              </button>
+
+              {/* Tab 6: AI Founders Showcase */}
+              <button
+                onClick={() => {
+                  setCurrentTab("trusted-founders");
+                  if (founders.length === 0) fetchFounders();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "trusted-founders"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "trusted-founders"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                      }`}
+                  >
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">AI Founders Stories</span>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "trusted-founders"
+                      ? "bg-white/25 text-white"
+                      : "bg-primary-light text-primary"
+                    }`}
+                >
+                  {founders.length}
+                </span>
+              </button>
+
+              {/* Tab: Core Digital Services */}
+              <button
+                onClick={() => {
+                  setCurrentTab("core-services");
+                  if (coreServices.length === 0) fetchCoreServices();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "core-services"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "core-services"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                      }`}
+                  >
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">Core Services</span>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "core-services"
+                      ? "bg-white/25 text-white"
+                      : "bg-primary-light text-primary"
+                    }`}
+                >
+                  {coreServices.length}
+                </span>
+              </button>
+
+              {/* Tab: Featured Work Showcase */}
+              <button
+                onClick={() => {
+                  setCurrentTab("featured-work");
+                  if (featuredWorks.length === 0) fetchFeaturedWorks();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "featured-work"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "featured-work"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                      }`}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">Featured Work</span>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "featured-work"
+                      ? "bg-white/25 text-white"
+                      : "bg-primary-light text-primary"
+                    }`}
+                >
+                  {featuredWorks.length}
+                </span>
+              </button>
+
+              {/* Tab: Industries We Serve */}
+              <button
+                onClick={() => {
+                  setCurrentTab("industries");
+                  if (industriesList.length === 0) fetchIndustries();
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "industries"
+                    ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
+                    : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "industries"
+                        ? "bg-white/20 text-white"
+                        : "bg-primary-light text-primary"
+                      }`}
+                  >
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                  <span className="tracking-tight text-sm font-bold">Industries We Serve</span>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-black ${currentTab === "industries"
+                      ? "bg-white/25 text-white"
+                      : "bg-primary-light text-primary"
+                    }`}
+                >
+                  {industriesList.length}
                 </span>
               </button>
 
@@ -2532,30 +3889,27 @@ export default function AdminClient() {
                   setCurrentTab("company");
                   fetchCompanyInfo();
                 }}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  currentTab === "company"
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "company"
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm scale-[1.02]"
                     : "text-dark-muted hover:text-dark hover:bg-softBg border border-transparent hover:border-border"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-xl transition-colors ${
-                      currentTab === "company"
+                    className={`p-2 rounded-xl transition-colors ${currentTab === "company"
                         ? "bg-white/20 text-white"
                         : "bg-primary-light text-primary"
-                    }`}
+                      }`}
                   >
                     <Building2 className="w-4 h-4" />
                   </div>
                   <span className="tracking-tight text-sm font-bold">Contact &amp; Brand Info</span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                    currentTab === "company"
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${currentTab === "company"
                       ? "bg-white/25 text-white"
                       : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                  }`}
+                    }`}
                 >
                   Live
                 </span>
@@ -2684,11 +4038,10 @@ export default function AdminClient() {
                       onClick={() => {
                         setCurrentTab("projects");
                       }}
-                      className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                        currentTab === "projects"
+                      className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "projects"
                           ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                           : "text-dark-muted hover:bg-softBg border border-transparent"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <FolderKanban className="w-4 h-4" />
@@ -2706,11 +4059,10 @@ export default function AdminClient() {
                             setSelectedCategory("All");
                             setIsSidebarOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                            selectedCategory === "All"
+                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${selectedCategory === "All"
                               ? "bg-primary-light text-primary font-black"
                               : "text-dark-muted hover:text-dark hover:bg-softBg"
-                          }`}
+                            }`}
                         >
                           <span className="truncate">All Categories</span>
                           <span className="text-[10px] font-black opacity-75">{projects.length}</span>
@@ -2724,11 +4076,10 @@ export default function AdminClient() {
                                 setSelectedCategory(cat);
                                 setIsSidebarOpen(false);
                               }}
-                              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                                selectedCategory === cat
+                              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${selectedCategory === cat
                                   ? "bg-primary-light text-primary font-black"
                                   : "text-dark-muted hover:text-dark hover:bg-softBg"
-                              }`}
+                                }`}
                             >
                               <span className="truncate">{cat}</span>
                               <span className="text-[10px] font-black opacity-75">{catCount}</span>
@@ -2745,11 +4096,10 @@ export default function AdminClient() {
                       if (reviews.length === 0) fetchReviews();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "reviews"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "reviews"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <MessageSquare className="w-4 h-4" />
@@ -2766,11 +4116,10 @@ export default function AdminClient() {
                       fetchQueries();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "queries"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "queries"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Inbox className="w-4 h-4" />
@@ -2794,11 +4143,10 @@ export default function AdminClient() {
                       if (brands.length === 0) fetchBrands();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "brands"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "brands"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Award className="w-4 h-4" />
@@ -2815,11 +4163,10 @@ export default function AdminClient() {
                       if (capabilities.length === 0) fetchCapabilities();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "capabilities"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "capabilities"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Sparkles className="w-4 h-4" />
@@ -2837,11 +4184,10 @@ export default function AdminClient() {
                       if (selectedWorks.length === 0) fetchSelectedWorks();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "selected-work"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "selected-work"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Layers className="w-4 h-4" />
@@ -2852,18 +4198,38 @@ export default function AdminClient() {
                     </span>
                   </button>
 
-              {/* Tab 6: Contact & Brand Settings */}
+                  {/* Tab 6: AI Founders Showcase */}
+                  <button
+                    onClick={() => {
+                      setCurrentTab("trusted-founders");
+                      if (founders.length === 0) fetchFounders();
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "trusted-founders"
+                        ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
+                        : "text-dark-muted hover:bg-softBg border border-transparent"
+                      }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Users className="w-4 h-4" />
+                      <span className="text-sm font-bold">AI Founders Stories</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[11px] font-black bg-white/20">
+                      {founders.length}
+                    </span>
+                  </button>
+
+                  {/* Tab 6: Contact & Brand Settings */}
                   <button
                     onClick={() => {
                       setCurrentTab("company");
                       fetchCompanyInfo();
                       setIsSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentTab === "company"
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${currentTab === "company"
                         ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm"
                         : "text-dark-muted hover:bg-softBg border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Building2 className="w-4 h-4" />
@@ -2991,6 +4357,31 @@ export default function AdminClient() {
                     <Sparkles className="w-4 h-4 text-primary" />
                     <span>Services &amp; Capabilities Marquee</span>
                   </>
+                ) : currentTab === "selected-work" ? (
+                  <>
+                    <Layers className="w-4 h-4 text-primary" />
+                    <span>Homepage 3D Cinema Showcase</span>
+                  </>
+                ) : currentTab === "trusted-founders" ? (
+                  <>
+                    <Users className="w-4 h-4 text-primary" />
+                    <span>AI Founders Stories &amp; Deliverables</span>
+                  </>
+                ) : currentTab === "core-services" ? (
+                  <>
+                    <Layers className="w-4 h-4 text-primary" />
+                    <span>Our Core Digital Services</span>
+                  </>
+                ) : currentTab === "featured-work" ? (
+                  <>
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    <span>Featured Work Showcase (3D Tunnel)</span>
+                  </>
+                ) : currentTab === "industries" ? (
+                  <>
+                    <Building2 className="w-4 h-4 text-primary" />
+                    <span>Industries We Serve</span>
+                  </>
                 ) : (
                   <>
                     <Building2 className="w-4 h-4 text-primary" />
@@ -3053,6 +4444,56 @@ export default function AdminClient() {
                 <span>Live Services</span>
                 <ExternalLink className="w-3 h-3 text-dark-muted/50" />
               </Link>
+            ) : currentTab === "selected-work" ? (
+              <Link
+                href="/#selected-work"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Layers className="w-3.5 h-3.5 text-primary" />
+                <span>Live Selected Work</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
+            ) : currentTab === "trusted-founders" ? (
+              <Link
+                href="/#trusted-by"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Users className="w-3.5 h-3.5 text-primary" />
+                <span>Live /#trusted-by</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
+            ) : currentTab === "core-services" ? (
+              <Link
+                href="/#services"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Layers className="w-3.5 h-3.5 text-primary" />
+                <span>Live /#services</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
+            ) : currentTab === "featured-work" ? (
+              <Link
+                href="/#work"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
+                <span>Live /#work</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
+            ) : currentTab === "industries" ? (
+              <Link
+                href="/#industries"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-xs font-semibold text-dark-muted hover:text-primary transition-all shadow-xs"
+              >
+                <Building2 className="w-3.5 h-3.5 text-primary" />
+                <span>Live /#industries</span>
+                <ExternalLink className="w-3 h-3 text-dark-muted/50" />
+              </Link>
             ) : (
               <Link
                 href="/contact"
@@ -3071,53 +4512,76 @@ export default function AdminClient() {
                 currentTab === "projects"
                   ? fetchProjects
                   : currentTab === "reviews"
-                  ? fetchReviews
-                  : currentTab === "queries"
-                  ? () => fetchQueries()
-                  : currentTab === "brands"
-                  ? fetchBrands
-                  : currentTab === "capabilities"
-                  ? fetchCapabilities
-                  : currentTab === "selected-work"
-                  ? fetchSelectedWorks
-                  : fetchCompanyInfo
+                    ? fetchReviews
+                    : currentTab === "queries"
+                      ? () => fetchQueries()
+                      : currentTab === "brands"
+                        ? fetchBrands
+                        : currentTab === "capabilities"
+                          ? fetchCapabilities
+                          : currentTab === "selected-work"
+                            ? fetchSelectedWorks
+                            : currentTab === "trusted-founders"
+                              ? fetchFounders
+                              : currentTab === "core-services"
+                                ? fetchCoreServices
+                                : currentTab === "featured-work"
+                                  ? fetchFeaturedWorks
+                                  : currentTab === "industries"
+                                    ? fetchIndustries
+                                    : fetchCompanyInfo
               }
               disabled={
                 currentTab === "projects"
                   ? isLoadingProjects
                   : currentTab === "reviews"
-                  ? isLoadingReviews
-                  : currentTab === "queries"
-                  ? isLoadingQueries
-                  : currentTab === "brands"
-                  ? isLoadingBrands
-                  : currentTab === "capabilities"
-                  ? isLoadingCapabilities
-                  : currentTab === "selected-work"
-                  ? isLoadingSelectedWorks
-                  : isLoadingCompanyInfo
+                    ? isLoadingReviews
+                    : currentTab === "queries"
+                      ? isLoadingQueries
+                      : currentTab === "brands"
+                        ? isLoadingBrands
+                        : currentTab === "capabilities"
+                          ? isLoadingCapabilities
+                          : currentTab === "selected-work"
+                            ? isLoadingSelectedWorks
+                            : currentTab === "trusted-founders"
+                              ? isLoadingFounders
+                              : currentTab === "core-services"
+                                ? isLoadingCoreServices
+                                : currentTab === "featured-work"
+                                  ? isLoadingFeaturedWorks
+                                  : currentTab === "industries"
+                                    ? isLoadingIndustries
+                                    : isLoadingCompanyInfo
               }
               className="p-2 sm:p-2.5 rounded-xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
               title="Refresh Data"
             >
               <RefreshCw
-                className={`w-4 h-4 ${
-                  (currentTab === "projects"
+                className={`w-4 h-4 ${(currentTab === "projects"
                     ? isLoadingProjects
                     : currentTab === "reviews"
-                    ? isLoadingReviews
-                    : currentTab === "queries"
-                    ? isLoadingQueries
-                    : currentTab === "brands"
-                    ? isLoadingBrands
-                    : currentTab === "capabilities"
-                    ? isLoadingCapabilities
-                    : currentTab === "selected-work"
-                    ? isLoadingSelectedWorks
-                    : isLoadingCompanyInfo)
+                      ? isLoadingReviews
+                      : currentTab === "queries"
+                        ? isLoadingQueries
+                        : currentTab === "brands"
+                          ? isLoadingBrands
+                          : currentTab === "capabilities"
+                            ? isLoadingCapabilities
+                            : currentTab === "selected-work"
+                              ? isLoadingSelectedWorks
+                              : currentTab === "trusted-founders"
+                                ? isLoadingFounders
+                                : currentTab === "core-services"
+                                  ? isLoadingCoreServices
+                                  : currentTab === "featured-work"
+                                    ? isLoadingFeaturedWorks
+                                    : currentTab === "industries"
+                                      ? isLoadingIndustries
+                                      : isLoadingCompanyInfo)
                     ? "animate-spin text-primary"
                     : ""
-                }`}
+                  }`}
               />
             </button>
 
@@ -3179,6 +4643,42 @@ export default function AdminClient() {
                 <span className="hidden sm:inline">Add Showcase Slide</span>
                 <span className="sm:hidden">New Slide</span>
               </button>
+            ) : currentTab === "trusted-founders" ? (
+              <button
+                onClick={openAddFounderModal}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Founder Story</span>
+                <span className="sm:hidden">New Founder</span>
+              </button>
+            ) : currentTab === "core-services" ? (
+              <button
+                onClick={openAddServiceModal}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Service</span>
+                <span className="sm:hidden">New Service</span>
+              </button>
+            ) : currentTab === "featured-work" ? (
+              <button
+                onClick={openAddFeaturedModal}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Showcase</span>
+                <span className="sm:hidden">New Showcase</span>
+              </button>
+            ) : currentTab === "industries" ? (
+              <button
+                onClick={openAddIndustryModal}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Industry</span>
+                <span className="sm:hidden">New Industry</span>
+              </button>
             ) : null}
           </div>
         </header>
@@ -3193,226 +4693,220 @@ export default function AdminClient() {
               {/* Banner with Stats & Add Button */}
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
                 <div>
-                <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Portfolio Content Management</span>
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-black text-dark tracking-tight">
-                  Manage Client Projects &amp; Live Vercel Links
-                </h1>
-                <p className="text-sm text-dark-muted mt-1 max-w-2xl font-medium">
-                  Publish projects with live Vercel deployments, screenshots, tech stacks, and measurable client outcomes.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={fetchProjects}
-                  disabled={isLoadingProjects}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh project list"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingProjects ? "animate-spin text-primary" : ""}`} />
-                </button>
-
-                <button
-                  onClick={openAddProjectModal}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>Add New Project</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Stats Grid - Interactive Click-to-Filter */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 mb-8">
-              {/* Total */}
-              <button
-                onClick={() => setSelectedCategory("All")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "All"
-                    ? "bg-white border-primary shadow-glow-sm ring-2 ring-primary/20"
-                    : "bg-white border-border hover:border-primary/40 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-dark-muted font-bold">Total</p>
-                  <div className="w-7 h-7 rounded-lg bg-primary-light text-primary flex items-center justify-center">
-                    <Layers className="w-3.5 h-3.5" />
+                  <div className="inline-flex items-center gap-2 bg-primary-light border border-primary-200 text-primary px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Portfolio Content Management</span>
                   </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.total}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">All Disciplines</p>
-              </button>
-
-              {/* Web Development */}
-              <button
-                onClick={() => setSelectedCategory("Web Development")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "Web Development"
-                    ? "bg-white border-blue-500 shadow-glow-sm ring-2 ring-blue-500/20"
-                    : "bg-white border-border hover:border-blue-400/50 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold">Web Dev</p>
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <Code className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.web}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Next.js &amp; SaaS</p>
-              </button>
-
-              {/* Mobile Apps */}
-              <button
-                onClick={() => setSelectedCategory("Mobile App Development")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "Mobile App Development"
-                    ? "bg-white border-violet-500 shadow-glow-sm ring-2 ring-violet-500/20"
-                    : "bg-white border-border hover:border-violet-400/50 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-violet-600 font-bold">Mobile Apps</p>
-                  <div className="w-7 h-7 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center">
-                    <Smartphone className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.app}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">iOS &amp; Android</p>
-              </button>
-
-              {/* E-Commerce */}
-              <button
-                onClick={() => setSelectedCategory("E-commerce Solutions")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "E-commerce Solutions"
-                    ? "bg-white border-emerald-500 shadow-glow-sm ring-2 ring-emerald-500/20"
-                    : "bg-white border-border hover:border-emerald-400/50 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-emerald-600 font-bold">E-Commerce</p>
-                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <ShoppingCart className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.ecom}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Amazon &amp; Stores</p>
-              </button>
-
-              {/* Graphic Designing */}
-              <button
-                onClick={() => setSelectedCategory("Graphic Designing")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "Graphic Designing"
-                    ? "bg-white border-rose-500 shadow-glow-sm ring-2 ring-rose-500/20"
-                    : "bg-white border-border hover:border-rose-400/50 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-rose-600 font-bold">Graphic Design</p>
-                  <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-                    <Palette className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.graphic}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Creatives &amp; 3D</p>
-              </button>
-
-              {/* Branding */}
-              <button
-                onClick={() => setSelectedCategory("Branding")}
-                className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
-                  selectedCategory === "Branding"
-                    ? "bg-white border-amber-500 shadow-glow-sm ring-2 ring-amber-500/20"
-                    : "bg-white border-border hover:border-amber-400/50 hover:shadow-card-hover"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-wider text-amber-600 font-bold">Branding</p>
-                  <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <PenTool className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{stats.branding}</p>
-                <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Identity &amp; Packaging</p>
-              </button>
-            </div>
-
-            {/* Project Content Workspace */}
-            <div className="space-y-6">
-              {/* Search & Category Filter Bar */}
-              <div className="bg-white border border-border rounded-2xl p-4 sm:p-5 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-lg font-black text-dark tracking-tight">
-                      {selectedCategory === "All"
-                        ? "All Portfolio Projects"
-                        : `${selectedCategory}`}
-                    </h3>
-                    <span className="px-2.5 py-0.5 rounded-full bg-primary-light text-primary text-xs font-black">
-                      {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
-                    </span>
-                  </div>
-                  <p className="text-xs text-dark-muted font-medium mt-0.5 truncate">
-                    {selectedCategory === "All"
-                      ? "Showing active client case studies across all digital disciplines"
-                      : SERVICE_CATEGORY_META[selectedCategory]?.tagline ||
-                        `Filtered projects for ${selectedCategory}`}
+                  <h1 className="text-3xl sm:text-4xl font-black text-dark tracking-tight">
+                    Manage Client Projects &amp; Live Vercel Links
+                  </h1>
+                  <p className="text-sm text-dark-muted mt-1 max-w-2xl font-medium">
+                    Publish projects with live Vercel deployments, screenshots, tech stacks, and measurable client outcomes.
                   </p>
                 </div>
 
-                {/* Search Box */}
-                <div className="relative w-full sm:w-72 shrink-0">
-                  <Search className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by title, client, tech..."
-                    className="w-full bg-softBg/60 hover:bg-white focus:bg-white border border-border rounded-xl pl-10 pr-8 py-2.5 text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs p-1 cursor-pointer"
-                      title="Clear search"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Projects Cards Grid */}
-              {filteredProjects.length === 0 ? (
-                <div className="bg-white border border-border rounded-3xl p-12 text-center shadow-card">
-                  <div className="w-16 h-16 rounded-2xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4">
-                    <Search className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dark mb-1">No Projects Found</h3>
-                  <p className="text-xs text-dark-muted max-w-md mx-auto mb-6 font-medium">
-                    {searchQuery
-                      ? `No projects matched "${searchQuery}". Try a different keyword.`
-                      : `No projects in ${selectedCategory} yet. Click below to add your first project in this category!`}
-                  </p>
+                <div className="flex items-center gap-3 shrink-0">
                   <button
-                    onClick={() =>
-                      openAddProjectModal(selectedCategory !== "All" ? selectedCategory : undefined)
-                    }
-                    className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-glow-sm hover:shadow-glow inline-flex items-center gap-2 cursor-pointer transition-all"
+                    onClick={fetchProjects}
+                    disabled={isLoadingProjects}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh project list"
                   >
-                    <Plus className="w-4 h-4" />
-                    <span>
-                      Add First {selectedCategory !== "All" ? selectedCategory : "Project"}
-                    </span>
+                    <RefreshCw className={`w-5 h-5 ${isLoadingProjects ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddProjectModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add New Project</span>
                   </button>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              </div>
+
+              {/* Quick Stats Grid - Interactive Click-to-Filter */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 mb-8">
+                {/* Total */}
+                <button
+                  onClick={() => setSelectedCategory("All")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "All"
+                      ? "bg-white border-primary shadow-glow-sm ring-2 ring-primary/20"
+                      : "bg-white border-border hover:border-primary/40 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-dark-muted font-bold">Total</p>
+                    <div className="w-7 h-7 rounded-lg bg-primary-light text-primary flex items-center justify-center">
+                      <Layers className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.total}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">All Disciplines</p>
+                </button>
+
+                {/* Web Development */}
+                <button
+                  onClick={() => setSelectedCategory("Web Development")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "Web Development"
+                      ? "bg-white border-blue-500 shadow-glow-sm ring-2 ring-blue-500/20"
+                      : "bg-white border-border hover:border-blue-400/50 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold">Web Dev</p>
+                    <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                      <Code className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.web}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Next.js &amp; SaaS</p>
+                </button>
+
+                {/* Mobile Apps */}
+                <button
+                  onClick={() => setSelectedCategory("Mobile App Development")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "Mobile App Development"
+                      ? "bg-white border-violet-500 shadow-glow-sm ring-2 ring-violet-500/20"
+                      : "bg-white border-border hover:border-violet-400/50 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-violet-600 font-bold">Mobile Apps</p>
+                    <div className="w-7 h-7 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center">
+                      <Smartphone className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.app}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">iOS &amp; Android</p>
+                </button>
+
+                {/* E-Commerce */}
+                <button
+                  onClick={() => setSelectedCategory("E-commerce Solutions")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "E-commerce Solutions"
+                      ? "bg-white border-emerald-500 shadow-glow-sm ring-2 ring-emerald-500/20"
+                      : "bg-white border-border hover:border-emerald-400/50 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-emerald-600 font-bold">E-Commerce</p>
+                    <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                      <ShoppingCart className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.ecom}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Amazon &amp; Stores</p>
+                </button>
+
+                {/* Graphic Designing */}
+                <button
+                  onClick={() => setSelectedCategory("Graphic Designing")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "Graphic Designing"
+                      ? "bg-white border-rose-500 shadow-glow-sm ring-2 ring-rose-500/20"
+                      : "bg-white border-border hover:border-rose-400/50 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-rose-600 font-bold">Graphic Design</p>
+                    <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+                      <Palette className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.graphic}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Creatives &amp; 3D</p>
+                </button>
+
+                {/* Branding */}
+                <button
+                  onClick={() => setSelectedCategory("Branding")}
+                  className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${selectedCategory === "Branding"
+                      ? "bg-white border-amber-500 shadow-glow-sm ring-2 ring-amber-500/20"
+                      : "bg-white border-border hover:border-amber-400/50 hover:shadow-card-hover"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] uppercase tracking-wider text-amber-600 font-bold">Branding</p>
+                    <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                      <PenTool className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{stats.branding}</p>
+                  <p className="text-[10px] text-dark-muted font-medium mt-0.5 truncate">Identity &amp; Packaging</p>
+                </button>
+              </div>
+
+              {/* Project Content Workspace */}
+              <div className="space-y-6">
+                {/* Search & Category Filter Bar */}
+                <div className="bg-white border border-border rounded-2xl p-4 sm:p-5 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-lg font-black text-dark tracking-tight">
+                        {selectedCategory === "All"
+                          ? "All Portfolio Projects"
+                          : `${selectedCategory}`}
+                      </h3>
+                      <span className="px-2.5 py-0.5 rounded-full bg-primary-light text-primary text-xs font-black">
+                        {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-dark-muted font-medium mt-0.5 truncate">
+                      {selectedCategory === "All"
+                        ? "Showing active client case studies across all digital disciplines"
+                        : SERVICE_CATEGORY_META[selectedCategory]?.tagline ||
+                        `Filtered projects for ${selectedCategory}`}
+                    </p>
+                  </div>
+
+                  {/* Search Box */}
+                  <div className="relative w-full sm:w-72 shrink-0">
+                    <Search className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search by title, client, tech..."
+                      className="w-full bg-softBg/60 hover:bg-white focus:bg-white border border-border rounded-xl pl-10 pr-8 py-2.5 text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs p-1 cursor-pointer"
+                        title="Clear search"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Projects Cards Grid */}
+                {filteredProjects.length === 0 ? (
+                  <div className="bg-white border border-border rounded-3xl p-12 text-center shadow-card">
+                    <div className="w-16 h-16 rounded-2xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4">
+                      <Search className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-lg font-bold text-dark mb-1">No Projects Found</h3>
+                    <p className="text-xs text-dark-muted max-w-md mx-auto mb-6 font-medium">
+                      {searchQuery
+                        ? `No projects matched "${searchQuery}". Try a different keyword.`
+                        : `No projects in ${selectedCategory} yet. Click below to add your first project in this category!`}
+                    </p>
+                    <button
+                      onClick={() =>
+                        openAddProjectModal(selectedCategory !== "All" ? selectedCategory : undefined)
+                      }
+                      className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-glow-sm hover:shadow-glow inline-flex items-center gap-2 cursor-pointer transition-all"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>
+                        Add First {selectedCategory !== "All" ? selectedCategory : "Project"}
+                      </span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProjects.map((project) => (
                       <div
                         key={project.id}
@@ -3526,2684 +5020,258 @@ export default function AdminClient() {
             </div>
           )}
 
-        {/* ========================================================= */}
-        {/* TAB 2: CLIENT REVIEWS & FEEDBACK MANAGEMENT VIEW           */}
-        {/* ========================================================= */}
-        {currentTab === "reviews" && (
-          <div>
-            {/* Banner with Stats & Add Button */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                  <span>Client Testimonial &amp; Feedback Operations</span>
+          {/* ========================================================= */}
+          {/* TAB 2: CLIENT REVIEWS & FEEDBACK MANAGEMENT VIEW           */}
+          {/* ========================================================= */}
+          {currentTab === "reviews" && (
+            <div>
+              {/* Banner with Stats & Add Button */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
+                <div>
+                  <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                    <span>Client Testimonial &amp; Feedback Operations</span>
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl font-black text-dark tracking-tight">
+                    Review, Moderate &amp; Curate Testimonials
+                  </h1>
+                  <p className="text-sm text-dark-muted mt-1 max-w-2xl font-medium">
+                    Manage all client endorsements. Any review you add or delete here automatically updates and syncs with the live website testimonials section.
+                  </p>
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-black text-dark tracking-tight">
-                  Review, Moderate &amp; Curate Testimonials
-                </h1>
-                <p className="text-sm text-dark-muted mt-1 max-w-2xl font-medium">
-                  Manage all client endorsements. Any review you add or delete here automatically updates and syncs with the live website testimonials section.
-                </p>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchReviews}
+                    disabled={isLoadingReviews}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh reviews list"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingReviews ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddReviewModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add New Review</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={fetchReviews}
-                  disabled={isLoadingReviews}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh reviews list"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingReviews ? "animate-spin text-primary" : ""}`} />
-                </button>
+              {/* Quick Stats Grid for Reviews */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Reviews</p>
+                  <p className="text-2xl font-black text-dark mt-1">{reviewStats.total}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Active in testimonial carousel</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Client Submissions</p>
+                  <p className="text-2xl font-black text-dark mt-1">{reviewStats.userSubmitted}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Submitted via /feedback form</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-amber-600 font-bold">5-Star Ratings</p>
+                  <p className="text-2xl font-black text-dark mt-1">{reviewStats.fiveStars}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Maximum satisfaction score</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Average Rating</p>
+                  <p className="text-2xl font-black text-dark mt-1 flex items-center gap-1.5">
+                    <span>{reviewStats.avgRating}</span>
+                    <Star className="w-5 h-5 fill-amber-400 text-amber-400 inline" />
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Across all client engagements</p>
+                </div>
+              </div>
 
-                <button
-                  onClick={openAddReviewModal}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>Add New Review</span>
-                </button>
-              </div>
-            </div>
+              {/* Filters: Category, Rating & Search */}
+              <div className="space-y-4 mb-8">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                  {/* Category Pills */}
+                  <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+                    {REVIEW_SERVICE_CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedReviewCategory(cat)}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${selectedReviewCategory === cat
+                            ? "bg-primary text-white shadow-glow-sm"
+                            : "bg-white text-dark-muted hover:text-primary hover:bg-primary-light/50 border border-border shadow-xs"
+                          }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
 
-            {/* Quick Stats Grid for Reviews */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Reviews</p>
-                <p className="text-2xl font-black text-dark mt-1">{reviewStats.total}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Active in testimonial carousel</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Client Submissions</p>
-                <p className="text-2xl font-black text-dark mt-1">{reviewStats.userSubmitted}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Submitted via /feedback form</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-amber-600 font-bold">5-Star Ratings</p>
-                <p className="text-2xl font-black text-dark mt-1">{reviewStats.fiveStars}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Maximum satisfaction score</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-primary font-bold">Average Rating</p>
-                <p className="text-2xl font-black text-dark mt-1 flex items-center gap-1.5">
-                  <span>{reviewStats.avgRating}</span>
-                  <Star className="w-5 h-5 fill-amber-400 text-amber-400 inline" />
-                </p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Across all client engagements</p>
-              </div>
-            </div>
+                  {/* Search Box */}
+                  <div className="relative min-w-[260px]">
+                    <Search className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={reviewSearchQuery}
+                      onChange={(e) => setReviewSearchQuery(e.target.value)}
+                      placeholder="Search by client, company, quote..."
+                      className="w-full bg-white border border-border rounded-xl pl-10 pr-4 py-2 text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
+                    />
+                    {reviewSearchQuery && (
+                      <button
+                        onClick={() => setReviewSearchQuery("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-            {/* Filters: Category, Rating & Search */}
-            <div className="space-y-4 mb-8">
-              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-                {/* Category Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-                  {REVIEW_SERVICE_CATEGORIES.map((cat) => (
+                {/* Rating Filter Pills */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-dark-muted mr-1">
+                    Filter Rating:
+                  </span>
+                  {[
+                    { label: "All Ratings", val: 0 },
+                    { label: "5 Stars", val: 5 },
+                    { label: "4 Stars", val: 4 },
+                    { label: "3 Stars & Below", val: 3 },
+                  ].map((item) => (
                     <button
-                      key={cat}
-                      onClick={() => setSelectedReviewCategory(cat)}
-                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                        selectedReviewCategory === cat
-                          ? "bg-primary text-white shadow-glow-sm"
-                          : "bg-white text-dark-muted hover:text-primary hover:bg-primary-light/50 border border-border shadow-xs"
-                      }`}
+                      key={item.val}
+                      onClick={() => setSelectedRatingFilter(item.val)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${selectedRatingFilter === item.val
+                          ? "bg-amber-400 text-dark font-bold shadow-xs"
+                          : "bg-white text-dark-muted hover:text-dark hover:bg-primary-light/50 border border-border shadow-xs"
+                        }`}
                     >
-                      {cat}
+                      {item.label}
                     </button>
                   ))}
                 </div>
-
-                {/* Search Box */}
-                <div className="relative min-w-[260px]">
-                  <Search className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={reviewSearchQuery}
-                    onChange={(e) => setReviewSearchQuery(e.target.value)}
-                    placeholder="Search by client, company, quote..."
-                    className="w-full bg-white border border-border rounded-xl pl-10 pr-4 py-2 text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
-                  />
-                  {reviewSearchQuery && (
-                    <button
-                      onClick={() => setReviewSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
               </div>
 
-              {/* Rating Filter Pills */}
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-dark-muted mr-1">
-                  Filter Rating:
-                </span>
-                {[
-                  { label: "All Ratings", val: 0 },
-                  { label: "5 Stars", val: 5 },
-                  { label: "4 Stars", val: 4 },
-                  { label: "3 Stars & Below", val: 3 },
-                ].map((item) => (
+              {/* Reviews Cards Grid */}
+              {filteredReviews.length === 0 ? (
+                <div className="bg-white border border-border rounded-3xl p-12 text-center my-8 shadow-card">
+                  <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 mx-auto flex items-center justify-center mb-4">
+                    <MessageSquare className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg font-bold text-dark mb-1">No Reviews Found</h3>
+                  <p className="text-xs text-dark-muted max-w-md mx-auto mb-6 font-medium">
+                    {reviewSearchQuery
+                      ? `No testimonials matched "${reviewSearchQuery}". Try another keyword.`
+                      : "No client reviews match this filter. Click the button below to add a new review!"}
+                  </p>
                   <button
-                    key={item.val}
-                    onClick={() => setSelectedRatingFilter(item.val)}
-                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                      selectedRatingFilter === item.val
-                        ? "bg-amber-400 text-dark font-bold shadow-xs"
-                        : "bg-white text-dark-muted hover:text-dark hover:bg-primary-light/50 border border-border shadow-xs"
-                    }`}
+                    onClick={openAddReviewModal}
+                    className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-glow-sm hover:shadow-glow inline-flex items-center gap-2 cursor-pointer transition-all"
                   >
-                    {item.label}
+                    <Plus className="w-4 h-4" />
+                    <span>Add First Review</span>
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Reviews Cards Grid */}
-            {filteredReviews.length === 0 ? (
-              <div className="bg-white border border-border rounded-3xl p-12 text-center my-8 shadow-card">
-                <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 mx-auto flex items-center justify-center mb-4">
-                  <MessageSquare className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-bold text-dark mb-1">No Reviews Found</h3>
-                <p className="text-xs text-dark-muted max-w-md mx-auto mb-6 font-medium">
-                  {reviewSearchQuery
-                    ? `No testimonials matched "${reviewSearchQuery}". Try another keyword.`
-                    : "No client reviews match this filter. Click the button below to add a new review!"}
-                </p>
-                <button
-                  onClick={openAddReviewModal}
-                  className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-glow-sm hover:shadow-glow inline-flex items-center gap-2 cursor-pointer transition-all"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Add First Review</span>
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredReviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="bg-white border border-border rounded-3xl p-6 hover:border-primary/40 hover:shadow-card-hover transition-all flex flex-col justify-between group shadow-card"
-                  >
-                    <div>
-                      {/* Card Header: Client Info & Avatar */}
-                      <div className="flex items-start justify-between gap-3 mb-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <img
-                            src={review.avatar}
-                            alt={review.name}
-                            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20 shrink-0 bg-primary-light/30"
-                          />
-                          <div className="min-w-0">
-                            <h4 className="text-sm font-bold text-dark group-hover:text-primary transition-colors truncate">
-                              {review.name}
-                            </h4>
-                            <p className="text-xs text-dark-muted truncate font-medium">
-                              {review.role} • {review.company}
-                            </p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredReviews.map((review) => (
+                    <div
+                      key={review.id}
+                      className="bg-white border border-border rounded-3xl p-6 hover:border-primary/40 hover:shadow-card-hover transition-all flex flex-col justify-between group shadow-card"
+                    >
+                      <div>
+                        {/* Card Header: Client Info & Avatar */}
+                        <div className="flex items-start justify-between gap-3 mb-4">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <img
+                              src={review.avatar}
+                              alt={review.name}
+                              className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20 shrink-0 bg-primary-light/30"
+                            />
+                            <div className="min-w-0">
+                              <h4 className="text-sm font-bold text-dark group-hover:text-primary transition-colors truncate">
+                                {review.name}
+                              </h4>
+                              <p className="text-xs text-dark-muted truncate font-medium">
+                                {review.role} • {review.company}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Origin / Platform badge */}
+                          <div className="shrink-0 flex flex-col items-end gap-1">
+                            {review.isUserSubmitted ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-700">
+                                <CheckCircle2 className="w-2.5 h-2.5" />
+                                <span>Web Submission</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-light border border-primary-200 text-[10px] font-bold text-primary">
+                                <Award className="w-2.5 h-2.5" />
+                                <span>Curated</span>
+                              </span>
+                            )}
+                            <span className="text-[10px] uppercase font-bold text-dark-muted/60 tracking-wider">
+                              {review.platform || "verified"}
+                            </span>
                           </div>
                         </div>
 
-                        {/* Origin / Platform badge */}
-                        <div className="shrink-0 flex flex-col items-end gap-1">
-                          {review.isUserSubmitted ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-700">
-                              <CheckCircle2 className="w-2.5 h-2.5" />
-                              <span>Web Submission</span>
+                        {/* Stars & Category Tag */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-1 text-amber-400">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-3.5 h-3.5 ${i < (review.rating || 5)
+                                    ? "fill-amber-400 text-amber-400"
+                                    : "text-gray-200"
+                                  }`}
+                              />
+                            ))}
+                            <span className="text-xs font-bold text-dark-muted ml-1.5">
+                              {(review.rating || 5).toFixed(1)}
                             </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-light border border-primary-200 text-[10px] font-bold text-primary">
-                              <Award className="w-2.5 h-2.5" />
-                              <span>Curated</span>
-                            </span>
-                          )}
-                          <span className="text-[10px] uppercase font-bold text-dark-muted/60 tracking-wider">
-                            {review.platform || "verified"}
-                          </span>
-                        </div>
-                      </div>
+                          </div>
 
-                      {/* Stars & Category Tag */}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-1 text-amber-400">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-3.5 h-3.5 ${
-                                i < (review.rating || 5)
-                                  ? "fill-amber-400 text-amber-400"
-                                  : "text-gray-200"
-                              }`}
-                            />
-                          ))}
-                          <span className="text-xs font-bold text-dark-muted ml-1.5">
-                            {(review.rating || 5).toFixed(1)}
+                          <span className="px-2.5 py-0.5 rounded-full bg-softBg border border-border text-[11px] font-bold text-dark-muted truncate max-w-[170px]">
+                            {review.tag}
                           </span>
                         </div>
 
-                        <span className="px-2.5 py-0.5 rounded-full bg-softBg border border-border text-[11px] font-bold text-dark-muted truncate max-w-[170px]">
-                          {review.tag}
-                        </span>
+                        {/* Quote Content */}
+                        <div className="p-3.5 rounded-2xl bg-softBg border border-border mb-4">
+                          <p className="text-xs text-dark-muted leading-relaxed italic line-clamp-4 font-medium">
+                            &ldquo;{review.quote}&rdquo;
+                          </p>
+                        </div>
                       </div>
 
-                      {/* Quote Content */}
-                      <div className="p-3.5 rounded-2xl bg-softBg border border-border mb-4">
-                        <p className="text-xs text-dark-muted leading-relaxed italic line-clamp-4 font-medium">
-                          &ldquo;{review.quote}&rdquo;
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Card Footer: Date & Actions */}
-                    <div className="pt-4 border-t border-border flex items-center justify-between">
-                      <span className="text-[11px] text-dark-muted/60 font-mono">
-                        {review.createdAt
-                          ? new Date(review.createdAt).toLocaleDateString("en-US", {
+                      {/* Card Footer: Date & Actions */}
+                      <div className="pt-4 border-t border-border flex items-center justify-between">
+                        <span className="text-[11px] text-dark-muted/60 font-mono">
+                          {review.createdAt
+                            ? new Date(review.createdAt).toLocaleDateString("en-US", {
                               month: "short",
                               day: "numeric",
                               year: "numeric",
                             })
-                          : "Curated Showcase"}
-                      </span>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => openEditReviewModal(review)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
-                        >
-                          <Edit3 className="w-3.5 h-3.5 text-primary" />
-                          <span>Edit</span>
-                        </button>
-
-                        <button
-                          onClick={() => setDeleteReviewConfirmId(review.id)}
-                          className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
-                          title="Delete review from testimonials"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* TAB: CLIENT INQUIRIES & LEADS MANAGEMENT                  */}
-        {/* ========================================================= */}
-        {currentTab === "queries" && (
-          <div className="space-y-8 animate-in fade-in duration-300">
-            {/* Banner with Stats & Refresh Button */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-border">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
-                  <Inbox className="w-3.5 h-3.5" />
-                  <span>Lead Pipeline &amp; Client Inquiries</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
-                  Client Inquiries, RFPs &amp; WhatsApp Leads
-                </h1>
-                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
-                  Every project inquiry submitted via the website contact form, modal, or &ldquo;Chat on WhatsApp&rdquo; CTA button is captured here. Reply directly on WhatsApp, email, or telephone with one click.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={() => fetchQueries()}
-                  disabled={isLoadingQueries}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh inquiries from server"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingQueries ? "animate-spin text-primary" : ""}`} />
-                </button>
-
-                <a
-                  href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4 fill-white/20" />
-                  <span>Test WhatsApp Concierge</span>
-                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Inquiries</p>
-                  <Inbox className="w-4 h-4 text-primary" />
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{queryStats.total}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Recorded across all touchpoints</p>
-              </div>
-
-              <div className="bg-white border border-amber-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-amber-50/40">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-wider text-amber-700 font-bold">New / Uncontacted</p>
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-                </div>
-                <p className="text-2xl font-black text-amber-900 mt-2">{queryStats.newCount}</p>
-                <p className="text-[11px] text-amber-700/80 mt-0.5">Awaiting initial response</p>
-              </div>
-
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">In Progress / Contacted</p>
-                  <Sparkles className="w-4 h-4 text-blue-600" />
-                </div>
-                <p className="text-2xl font-black text-dark mt-2">{queryStats.contactedCount + queryStats.inProgressCount}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Active client discussions</p>
-              </div>
-
-              <div className="bg-white border border-emerald-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-emerald-50/40">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-wider text-emerald-800 font-bold">WhatsApp CTA Leads</p>
-                  <MessageCircle className="w-4 h-4 text-emerald-600" />
-                </div>
-                <p className="text-2xl font-black text-emerald-900 mt-2">{queryStats.whatsappCount}</p>
-                <p className="text-[11px] text-emerald-700/80 mt-0.5">From &ldquo;Chat on WhatsApp&rdquo; CTA</p>
-              </div>
-            </div>
-
-            {/* Filter and Search Bar */}
-            <div className="bg-white border border-border rounded-2xl p-4 shadow-card space-y-3">
-              <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-                {/* Search Bar */}
-                <div className="relative flex-1">
-                  <Search className="w-4 h-4 text-dark-muted/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={querySearch}
-                    onChange={(e) => setQuerySearch(e.target.value)}
-                    placeholder="Search client name, email, phone, company, service or requirements..."
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-softBg text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:bg-white transition-all font-medium"
-                  />
-                  {querySearch && (
-                    <button
-                      onClick={() => setQuerySearch("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs p-1"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Source Filter */}
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider shrink-0">Source:</span>
-                  <select
-                    value={selectedSourceFilter}
-                    onChange={(e) => setSelectedSourceFilter(e.target.value)}
-                    className="px-3 py-2 rounded-xl border border-border bg-white text-xs font-semibold text-dark focus:outline-hidden focus:border-primary cursor-pointer"
-                  >
-                    <option value="all">All Sources ({queries.length})</option>
-                    <option value="forms">Website Forms &amp; Modal</option>
-                    <option value="whatsapp">💬 WhatsApp CTA Clicks ({queryStats.whatsappCount})</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Status Pills */}
-              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/60">
-                <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider mr-1">Status:</span>
-                {[
-                  { key: "all", label: "All Inquiries", count: queries.length },
-                  { key: "new", label: "New", count: queryStats.newCount },
-                  { key: "contacted", label: "Contacted", count: queryStats.contactedCount },
-                  { key: "in_progress", label: "In Progress", count: queryStats.inProgressCount },
-                  { key: "closed", label: "Closed", count: queryStats.closedCount },
-                ].map((pill) => (
-                  <button
-                    key={pill.key}
-                    onClick={() => setSelectedStatusFilter(pill.key)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                      selectedStatusFilter === pill.key
-                        ? "bg-dark text-white border-dark shadow-xs"
-                        : "bg-white text-dark-muted border-border hover:bg-softBg hover:text-dark"
-                    }`}
-                  >
-                    <span>{pill.label}</span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
-                        selectedStatusFilter === pill.key ? "bg-white/20 text-white" : "bg-softBg text-dark-muted"
-                      }`}
-                    >
-                      {pill.count}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Inquiries Cards Grid */}
-            {isLoadingQueries ? (
-              <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
-                <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto" />
-                <p className="text-sm font-bold text-dark">Syncing client inquiries &amp; WhatsApp leads...</p>
-              </div>
-            ) : filteredQueries.length === 0 ? (
-              <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
-                <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center">
-                  <Inbox className="w-8 h-8" />
-                </div>
-                <h3 className="text-lg font-bold text-dark">No inquiries found</h3>
-                <p className="text-xs sm:text-sm text-dark-muted max-w-md mx-auto">
-                  {querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all"
-                    ? "No inquiries match your current search or filter criteria. Try clearing filters."
-                    : "No client inquiries have been submitted yet. Inquiries from the website contact forms and WhatsApp buttons will appear here in real time."}
-                </p>
-                {(querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all") && (
-                  <button
-                    onClick={() => {
-                      setQuerySearch("");
-                      setSelectedStatusFilter("all");
-                      setSelectedSourceFilter("all");
-                      setSelectedQueryServiceFilter("All");
-                    }}
-                    className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
-                  >
-                    Reset Filters
-                  </button>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-5">
-                {filteredQueries.map((query) => {
-                  const isWhatsAppLead = query.source === "whatsapp_cta";
-                  const statusColors: Record<string, { bg: string; text: string; border: string }> = {
-                    new: { bg: "bg-amber-50", text: "text-amber-800", border: "border-amber-300" },
-                    contacted: { bg: "bg-blue-50", text: "text-blue-800", border: "border-blue-300" },
-                    in_progress: { bg: "bg-purple-50", text: "text-purple-800", border: "border-purple-300" },
-                    closed: { bg: "bg-emerald-50", text: "text-emerald-800", border: "border-emerald-300" },
-                  };
-                  const currentStatusStyle = statusColors[query.status] || statusColors.new;
-
-                  return (
-                    <div
-                      key={query.id}
-                      className={`bg-white border rounded-3xl p-6 shadow-card hover:shadow-card-hover transition-all space-y-5 ${
-                        query.status === "new" ? "border-amber-300/80 ring-1 ring-amber-300/40" : "border-border"
-                      }`}
-                    >
-                      {/* Top Bar: ID, Date, Source, and Status Dropdown */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border/70">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-softBg border border-border text-dark">
-                            #{query.id}
-                          </span>
-
-                          {isWhatsAppLead ? (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-extrabold">
-                              <MessageCircle className="w-3.5 h-3.5 fill-emerald-600/20 text-emerald-600" />
-                              <span>WhatsApp CTA Lead</span>
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[11px] font-extrabold">
-                              <Mail className="w-3.5 h-3.5" />
-                              <span>{query.source === "contact_page" ? "Contact Page" : "Modal Lead"}</span>
-                            </span>
-                          )}
-
-                          <span className="text-[11px] text-dark-muted font-medium flex items-center gap-1 ml-1">
-                            <Clock className="w-3.5 h-3.5 text-dark-muted/60" />
-                            <span>{formatQueryDate(query.receivedAt)}</span>
-                          </span>
-                        </div>
-
-                        {/* Status Selector Dropdown */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] uppercase font-bold text-dark-muted tracking-wider">Status:</span>
-                          <select
-                            value={query.status}
-                            disabled={isUpdatingStatusId === query.id}
-                            onChange={(e) =>
-                              handleUpdateQueryStatus(
-                                query.id,
-                                e.target.value as "new" | "contacted" | "in_progress" | "closed"
-                              )
-                            }
-                            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-primary/20 ${currentStatusStyle.bg} ${currentStatusStyle.text} ${currentStatusStyle.border}`}
-                          >
-                            <option value="new">🟡 New Inquiry</option>
-                            <option value="contacted">🔵 Contacted</option>
-                            <option value="in_progress">🟣 In Progress</option>
-                            <option value="closed">🟢 Closed / Won</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Main Details: Client Information & Requested Service */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Client Identity Block */}
-                        <div className="space-y-3">
-                          <div className="flex items-start gap-3">
-                            <div className="w-10 h-10 rounded-2xl bg-primary-light text-primary flex items-center justify-center shrink-0 font-bold text-sm">
-                              <User className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <h4 className="text-base font-extrabold text-dark tracking-tight">{query.name}</h4>
-                              {query.company && (
-                                <p className="text-xs text-dark-muted flex items-center gap-1 mt-0.5 font-medium">
-                                  <Building className="w-3 h-3 text-dark-muted/70" />
-                                  <span>{query.company}</span>
-                                </p>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 pt-2 text-xs">
-                            {/* Email with copy */}
-                            <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
-                              <a
-                                href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
-                                className="font-semibold text-primary hover:underline truncate flex items-center gap-1.5"
-                                title="Send email"
-                              >
-                                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                                <span className="truncate">{query.email}</span>
-                              </a>
-                              <button
-                                onClick={() => copyToClipboard(query.email, "email")}
-                                className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
-                                title="Copy email address"
-                              >
-                                <Copy className="w-3 h-3" />
-                              </button>
-                            </div>
-
-                            {/* Phone with copy */}
-                            {query.phone && (
-                              <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
-                                <a
-                                  href={`tel:${query.phone}`}
-                                  className="font-mono font-semibold text-dark hover:text-primary transition-colors truncate flex items-center gap-1.5"
-                                  title="Dial phone"
-                                >
-                                  <Phone className="w-3.5 h-3.5 text-dark-muted shrink-0" />
-                                  <span className="truncate">{query.phone}</span>
-                                </a>
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    onClick={() => copyToClipboard(query.phone || "", "phone number")}
-                                    className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
-                                    title="Copy phone number"
-                                  >
-                                    <Copy className="w-3 h-3" />
-                                  </button>
-                                  <button
-                                    onClick={() => openWhatsAppForClient(query)}
-                                    className="p-1 hover:bg-emerald-100 rounded-lg text-emerald-700 transition-colors cursor-pointer"
-                                    title="Chat with client on WhatsApp"
-                                  >
-                                    <MessageCircle className="w-3 h-3 fill-emerald-600/30" />
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Project Brief & Service Required Block */}
-                        <div className="md:col-span-2 space-y-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold">
-                              <Sparkles className="w-3 h-3 text-purple-600" />
-                              <span>{query.service}</span>
-                            </span>
-                          </div>
-
-                          <div className="p-4 rounded-2xl bg-softBg/80 border border-border/80">
-                            <p className="text-xs uppercase font-extrabold text-dark-muted/70 tracking-wider mb-1.5 flex items-center gap-1">
-                              <FileText className="w-3 h-3" />
-                              <span>Project Scope &amp; Client Brief:</span>
-                            </p>
-                            <p className="text-xs sm:text-sm text-dark leading-relaxed whitespace-pre-wrap font-medium">
-                              {query.description}
-                            </p>
-                          </div>
-
-                          {/* Admin Internal Notes */}
-                          <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-[11px] font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-1">
-                                <Edit3 className="w-3 h-3" />
-                                <span>Internal Operations Note:</span>
-                              </span>
-                              {editingNotesId !== query.id && (
-                                <button
-                                  onClick={() => {
-                                    setEditingNotesId(query.id);
-                                    setTempNotes(query.notes || "");
-                                  }}
-                                  className="text-[11px] text-primary hover:underline font-bold cursor-pointer"
-                                >
-                                  {query.notes ? "Edit Note" : "+ Add Note"}
-                                </button>
-                              )}
-                            </div>
-
-                            {editingNotesId === query.id ? (
-                              <div className="space-y-2">
-                                <textarea
-                                  value={tempNotes}
-                                  onChange={(e) => setTempNotes(e.target.value)}
-                                  placeholder="Add internal notes on calls, pricing, or next steps..."
-                                  rows={2}
-                                  className="w-full p-2.5 rounded-xl border border-amber-300 bg-white text-xs text-dark focus:outline-hidden focus:ring-2 focus:ring-primary/20"
-                                />
-                                <div className="flex items-center justify-end gap-2">
-                                  <button
-                                    onClick={() => setEditingNotesId(null)}
-                                    className="px-3 py-1 rounded-lg border border-border text-xs font-semibold hover:bg-white text-dark-muted cursor-pointer"
-                                  >
-                                    Cancel
-                                  </button>
-                                  <button
-                                    onClick={() => handleSaveQueryNotes(query.id, tempNotes)}
-                                    className="px-3 py-1 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
-                                  >
-                                    Save Note
-                                  </button>
-                                </div>
-                              </div>
-                            ) : (
-                              <p className="text-xs text-dark-muted font-medium italic">
-                                {query.notes || "No internal notes recorded yet."}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Card Action Footer Bar */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-border/70">
-                        <div className="flex flex-wrap items-center gap-2">
-                          {/* 1-Click WhatsApp Chat Button */}
-                          <button
-                            type="button"
-                            onClick={() => openWhatsAppForClient(query)}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-extrabold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                          >
-                            <MessageCircle className="w-4 h-4 fill-white/20" />
-                            <span>Chat on WhatsApp</span>
-                            <ExternalLink className="w-3 h-3 opacity-70" />
-                          </button>
-
-                          {/* Email Client */}
-                          <a
-                            href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition-all cursor-pointer"
-                          >
-                            <Mail className="w-3.5 h-3.5" />
-                            <span>Email</span>
-                          </a>
-
-                          {/* Call Client if phone available */}
-                          {query.phone && (
-                            <a
-                              href={`tel:${query.phone}`}
-                              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-softBg hover:bg-slate-200 text-dark border border-border text-xs font-bold transition-all cursor-pointer"
-                            >
-                              <Phone className="w-3.5 h-3.5 text-primary" />
-                              <span>Call</span>
-                            </a>
-                          )}
-                        </div>
-
-                        {/* Delete Inquiry Button */}
-                        <button
-                          type="button"
-                          onClick={() => setDeleteQueryConfirmId(query.id)}
-                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 text-xs font-bold transition-all cursor-pointer"
-                          title="Delete inquiry from CMS"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* TAB 3: TRUSTED BY BRANDS & MARQUEE MANAGEMENT            */}
-        {/* ========================================================= */}
-        {currentTab === "brands" && (
-          <div>
-            {/* Banner with Stats & Add Button */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>Client &amp; Enterprise Partners</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
-                  Trusted By Leading Brands &amp; Businesses
-                </h1>
-                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
-                  Manage the client logos and brand partners rotating live in the homepage interactive marquee. Add new brand partners, update logos, set custom order, or toggle visibility with one click.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={fetchBrands}
-                  disabled={isLoadingBrands}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh brand list"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingBrands ? "animate-spin text-primary" : ""}`} />
-                </button>
-
-                <button
-                  onClick={openAddBrandModal}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>Add Brand Partner</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Stats Grid for Brands */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Brands</p>
-                <p className="text-2xl font-black text-dark mt-1">{brandStats.total}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured brand partners</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Active in Marquee</p>
-                <p className="text-2xl font-black text-emerald-600 mt-1">{brandStats.active}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Visible on homepage right now</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-slate-500 font-bold">Hidden / Inactive</p>
-                <p className="text-2xl font-black text-dark mt-1">{brandStats.hidden}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Excluded from marquee rotation</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-primary font-bold">Website Linked</p>
-                <p className="text-2xl font-black text-primary mt-1">{brandStats.linked}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Clickable redirect logos</p>
-              </div>
-            </div>
-
-            {/* Live Homepage Marquee Preview Strip */}
-            <div className="bg-white border border-border rounded-3xl p-6 shadow-card mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
-                    Live Homepage Marquee Preview
-                  </h3>
-                  <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
-                    {brands.filter((b) => b.active).length} Active Logos
-                  </span>
-                </div>
-                <Link
-                  href="/"
-                  target="_blank"
-                  className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-                >
-                  <span>Open Homepage</span>
-                  <ExternalLink className="w-3 h-3" />
-                </Link>
-              </div>
-
-              {/* Mini Marquee Container */}
-              <div className="rounded-2xl border border-border/80 bg-softBg/60 p-4 sm:p-5 overflow-x-auto">
-                <div className="flex items-center gap-8 min-w-max">
-                  <div className="flex items-center gap-2 shrink-0 border-r border-border pr-6">
-                    <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                    <div>
-                      <p className="text-xs font-black text-dark tracking-tight">Trusted By</p>
-                      <p className="text-[10px] text-dark-muted font-medium">Leading brands &amp; businesses</p>
-                    </div>
-                  </div>
-
-                  {brands
-                    .filter((b) => b.active)
-                    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-                    .map((b) => (
-                      <div
-                        key={b.id}
-                        className="group flex flex-col items-center gap-1 shrink-0 px-3 py-2 rounded-xl bg-white border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-sm transition-all"
-                      >
-                        {/* Logo Image */}
-                        <div className="h-9 w-24 flex items-center justify-center">
-                          <img
-                            src={b.logoUrl}
-                            alt={b.alt || b.name}
-                            className="max-h-7 max-w-[85px] w-auto h-auto object-contain transition-transform duration-200 group-hover:scale-105"
-                          />
-                        </div>
-                        <span className="text-[10px] font-bold text-dark-muted group-hover:text-primary transition-colors">
-                          {b.name}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Filter & Search Bar */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
-              <div className="relative flex-1 max-w-md">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark-muted/50" />
-                <input
-                  type="text"
-                  value={brandSearchQuery}
-                  onChange={(e) => setBrandSearchQuery(e.target.value)}
-                  placeholder="Search brand partners by name or website..."
-                  className="w-full bg-white border border-border rounded-xl pl-10 pr-10 py-2.5 text-xs text-dark placeholder:text-dark-muted/40 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
-                />
-                {brandSearchQuery && (
-                  <button
-                    onClick={() => setBrandSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark p-1"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between sm:justify-end gap-3 text-xs text-dark-muted font-medium">
-                <span>
-                  Showing <strong>{filteredBrands.length}</strong> of {brands.length} partners
-                </span>
-                <button
-                  onClick={openAddBrandModal}
-                  className="sm:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-glow-sm"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Add Brand</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Brands Cards Grid */}
-            {isLoadingBrands ? (
-              <div className="flex flex-col items-center justify-center py-20 text-dark-muted">
-                <RefreshCw className="w-8 h-8 animate-spin text-primary mb-3" />
-                <p className="text-sm font-semibold">Loading brand partners...</p>
-              </div>
-            ) : filteredBrands.length === 0 ? (
-              <div className="bg-white border border-border rounded-3xl p-12 text-center text-dark-muted shadow-card">
-                <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4 shadow-xs">
-                  <Award className="w-8 h-8" />
-                </div>
-                <h3 className="text-lg font-bold text-dark">No Brand Partners Found</h3>
-                <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
-                  {brandSearchQuery
-                    ? `No partners match "${brandSearchQuery}". Clear your search query or add a new brand partner.`
-                    : "No brand partners configured yet. Add your first brand logo to display in the marquee."}
-                </p>
-                <div className="mt-6 flex items-center justify-center gap-3">
-                  {brandSearchQuery && (
-                    <button
-                      onClick={() => setBrandSearchQuery("")}
-                      className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark hover:bg-softBg transition-colors"
-                    >
-                      Clear Search
-                    </button>
-                  )}
-                  <button
-                    onClick={openAddBrandModal}
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs shadow-glow-sm transition-all cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add New Brand Partner</span>
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {filteredBrands.map((brand, index) => (
-                  <div
-                    key={brand.id}
-                    className="bg-white border border-border hover:border-primary/30 rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
-                  >
-                    <div>
-                      {/* Card Header: Order & Active Toggle */}
-                      <div className="flex items-center justify-between gap-2 mb-4">
-                        <span className="px-2.5 py-1 rounded-xl bg-softBg text-dark font-mono text-[11px] font-black border border-border/80">
-                          #{brand.order ?? index + 1}
-                        </span>
-
-                        <button
-                          onClick={() => handleToggleBrandActive(brand)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
-                            brand.active
-                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
-                              : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200"
-                          }`}
-                          title={brand.active ? "Click to hide from marquee" : "Click to activate in marquee"}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              brand.active ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
-                            }`}
-                          />
-                          <span>{brand.active ? "Active" : "Hidden"}</span>
-                        </button>
-                      </div>
-
-                      {/* Logo Canvas Preview */}
-                      <div className="h-28 rounded-2xl bg-softBg/60 border border-border/70 flex items-center justify-center p-4 relative group-hover:bg-primary-light/20 group-hover:border-primary/20 transition-all overflow-hidden mb-4">
-                        <img
-                          src={brand.logoUrl}
-                          alt={brand.alt || brand.name}
-                          className="max-h-12 max-w-[140px] w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-xs"
-                          onError={(e) => {
-                            // fallback gracefully
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                      </div>
-
-                      {/* Brand Info */}
-                      <div>
-                        <h4 className="text-base font-extrabold text-dark tracking-tight">
-                          {brand.name}
-                        </h4>
-
-                        {brand.websiteUrl ? (
-                          <a
-                            href={brand.websiteUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline mt-1 truncate max-w-full"
-                          >
-                            <Globe className="w-3 h-3 shrink-0" />
-                            <span className="truncate">{brand.websiteUrl.replace(/^https?:\/\//, "")}</span>
-                            <ExternalLink className="w-2.5 h-2.5 shrink-0 opacity-70" />
-                          </a>
-                        ) : (
-                          <p className="text-xs text-dark-muted/50 mt-1">No website URL linked</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Card Actions Footer */}
-                    <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
-                      <span className="text-[11px] text-dark-muted/60 font-mono">
-                        Order #{brand.order ?? index + 1}
-                      </span>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => openEditBrandModal(brand)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
-                        >
-                          <Edit3 className="w-3.5 h-3.5 text-primary" />
-                          <span>Edit</span>
-                        </button>
-
-                        <button
-                          onClick={() => setDeleteBrandConfirmId(brand.id)}
-                          className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
-                          title="Delete brand partner from marquee"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* TAB 4: SERVICES & CAPABILITIES MARQUEE                   */}
-        {/* ========================================================= */}
-        {currentTab === "capabilities" && (
-          <div>
-            {/* Banner with Stats & Add Button */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Interactive Services &amp; Tech Marquee</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
-                  Services &amp; Capabilities Badges
-                </h1>
-                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
-                  Manage the double-track capabilities and services badges rotating on the homepage. Edit badge titles, category tags, track direction (Track 1 moves left, Track 2 moves right), icons, sequence order, and visibility.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={fetchCapabilities}
-                  disabled={isLoadingCapabilities}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh capabilities list"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingCapabilities ? "animate-spin text-primary" : ""}`} />
-                </button>
-
-                <button
-                  onClick={() => openAddCapabilityModal()}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>Add Capability Badge</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Stats Grid for Capabilities */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Badges</p>
-                <p className="text-2xl font-black text-dark mt-1">{capabilityStats.total}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Across both marquee tracks</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Active in Marquee</p>
-                <p className="text-2xl font-black text-emerald-600 mt-1">{capabilityStats.active}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Live on website right now</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-primary font-bold">Track 1 (Leftward)</p>
-                <p className="text-2xl font-black text-primary mt-1">{capabilityStats.track1}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Top marquee row badges</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-indigo-700 font-bold">Track 2 (Rightward)</p>
-                <p className="text-2xl font-black text-indigo-600 mt-1">{capabilityStats.track2}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Bottom marquee row badges</p>
-              </div>
-            </div>
-
-            {/* Live Double-Track Marquee Preview Box */}
-            <div className="bg-white border border-border rounded-3xl p-6 shadow-card mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
-                    Live Double-Track Marquee Preview
-                  </h3>
-                  <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
-                    {capabilities.filter((c) => c.active).length} Active Badges
-                  </span>
-                </div>
-                <Link
-                  href="/#services"
-                  target="_blank"
-                  className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-                >
-                  <span>Open Homepage Services</span>
-                  <ExternalLink className="w-3 h-3" />
-                </Link>
-              </div>
-
-              {/* Double Track Container */}
-              <div className="rounded-2xl border border-border/80 bg-softBg/60 p-4 sm:p-5 space-y-3 overflow-x-auto">
-                {/* Track 1 Strip */}
-                <div className="flex items-center gap-3 min-w-max">
-                  <span className="px-2.5 py-1 rounded-lg bg-primary text-white text-[10px] font-bold shrink-0 uppercase tracking-wider">
-                    Track 1 (Left)
-                  </span>
-                  {capabilities
-                    .filter((c) => c.active && c.track === 1)
-                    .sort((a, b) => (a.order || 0) - (b.order || 0))
-                    .map((item) => (
-                      <div
-                        key={item.id}
-                        className="px-3.5 py-2 rounded-xl bg-white border border-border/80 flex items-center gap-2 shadow-xs shrink-0"
-                      >
-                        <div className="text-primary">
-                          <CapabilityIcon iconKey={item.iconKey} className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs font-extrabold text-dark whitespace-nowrap">
-                          {item.name}
-                        </span>
-                        <span className="text-[9px] uppercase font-bold text-dark-muted tracking-wider">
-                          {item.category}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-
-                {/* Track 2 Strip */}
-                <div className="flex items-center gap-3 min-w-max">
-                  <span className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-[10px] font-bold shrink-0 uppercase tracking-wider">
-                    Track 2 (Right)
-                  </span>
-                  {capabilities
-                    .filter((c) => c.active && c.track === 2)
-                    .sort((a, b) => (a.order || 0) - (b.order || 0))
-                    .map((item) => (
-                      <div
-                        key={item.id}
-                        className="px-3.5 py-2 rounded-xl bg-white border border-border/80 flex items-center gap-2 shadow-xs shrink-0"
-                      >
-                        <div className="text-indigo-600">
-                          <CapabilityIcon iconKey={item.iconKey} className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs font-extrabold text-dark whitespace-nowrap">
-                          {item.name}
-                        </span>
-                        <span className="text-[9px] uppercase font-bold text-dark-muted tracking-wider">
-                          {item.category}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Filter & Search Bar */}
-            <div className="space-y-4 mb-6">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark-muted/50" />
-                  <input
-                    type="text"
-                    value={capabilitySearchQuery}
-                    onChange={(e) => setCapabilitySearchQuery(e.target.value)}
-                    placeholder="Search capabilities by name, category, or tech..."
-                    className="w-full bg-white border border-border rounded-xl pl-10 pr-10 py-2.5 text-xs text-dark placeholder:text-dark-muted/40 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
-                  />
-                  {capabilitySearchQuery && (
-                    <button
-                      onClick={() => setCapabilitySearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark p-1"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Track Selector Tabs */}
-                <div className="flex items-center gap-1.5 p-1 bg-softBg rounded-xl border border-border self-start sm:self-auto">
-                  <button
-                    onClick={() => setSelectedTrackFilter("all")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      selectedTrackFilter === "all"
-                        ? "bg-white text-primary shadow-xs"
-                        : "text-dark-muted hover:text-dark"
-                    }`}
-                  >
-                    All Tracks ({capabilities.length})
-                  </button>
-                  <button
-                    onClick={() => setSelectedTrackFilter(1)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      selectedTrackFilter === 1
-                        ? "bg-white text-primary shadow-xs"
-                        : "text-dark-muted hover:text-dark"
-                    }`}
-                  >
-                    Track 1 ({capabilities.filter((c) => c.track === 1).length})
-                  </button>
-                  <button
-                    onClick={() => setSelectedTrackFilter(2)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      selectedTrackFilter === 2
-                        ? "bg-white text-primary shadow-xs"
-                        : "text-dark-muted hover:text-dark"
-                    }`}
-                  >
-                    Track 2 ({capabilities.filter((c) => c.track === 2).length})
-                  </button>
-                </div>
-              </div>
-
-              {/* Category Filter Chips */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                {CAPABILITY_CATEGORIES.map((cat) => {
-                  const isSelected = selectedCapabilityCategory === cat;
-                  const count =
-                    cat === "All"
-                      ? capabilities.length
-                      : capabilities.filter(
-                          (c) => c.category.toLowerCase() === cat.toLowerCase()
-                        ).length;
-
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCapabilityCategory(cat)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${
-                        isSelected
-                          ? "bg-primary text-white border-primary shadow-glow-sm"
-                          : "bg-white border-border text-dark-muted hover:text-dark hover:border-primary/30"
-                      }`}
-                    >
-                      <span>{cat}</span>
-                      <span
-                        className={`ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] ${
-                          isSelected ? "bg-white/25 text-white" : "bg-softBg text-dark-muted"
-                        }`}
-                      >
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Badges Grid */}
-            {isLoadingCapabilities ? (
-              <div className="flex flex-col items-center justify-center py-20 text-dark-muted">
-                <RefreshCw className="w-8 h-8 animate-spin text-primary mb-3" />
-                <p className="text-sm font-semibold">Loading capability badges...</p>
-              </div>
-            ) : filteredCapabilities.length === 0 ? (
-              <div className="bg-white border border-border rounded-3xl p-12 text-center text-dark-muted shadow-card">
-                <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4 shadow-xs">
-                  <Sparkles className="w-8 h-8" />
-                </div>
-                <h3 className="text-lg font-bold text-dark">No Capabilities Found</h3>
-                <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
-                  {capabilitySearchQuery
-                    ? `No badges match "${capabilitySearchQuery}". Clear your search or add a new badge.`
-                    : "No capability badges configured yet. Add your first service badge to display in the marquee."}
-                </p>
-                <div className="mt-6 flex items-center justify-center gap-3">
-                  {capabilitySearchQuery && (
-                    <button
-                      onClick={() => setCapabilitySearchQuery("")}
-                      className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark hover:bg-softBg transition-colors"
-                    >
-                      Clear Search
-                    </button>
-                  )}
-                  <button
-                    onClick={() => openAddCapabilityModal()}
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs shadow-glow-sm transition-all cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add New Capability</span>
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {filteredCapabilities.map((cap) => (
-                  <div
-                    key={cap.id}
-                    className="bg-white border border-border hover:border-primary/30 rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
-                  >
-                    <div>
-                      {/* Top Row: Track & Active Toggle */}
-                      <div className="flex items-center justify-between gap-2 mb-4">
-                        <span
-                          className={`px-2.5 py-1 rounded-xl text-[11px] font-black font-mono border ${
-                            cap.track === 1
-                              ? "bg-primary-light text-primary border-primary/20"
-                              : "bg-indigo-50 text-indigo-700 border-indigo-200"
-                          }`}
-                        >
-                          Track {cap.track} • #{cap.order}
-                        </span>
-
-                        <button
-                          onClick={() => handleToggleCapabilityActive(cap)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
-                            cap.active
-                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
-                              : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200"
-                          }`}
-                          title={cap.active ? "Click to hide from marquee" : "Click to activate in marquee"}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              cap.active ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
-                            }`}
-                          />
-                          <span>{cap.active ? "Active" : "Hidden"}</span>
-                        </button>
-                      </div>
-
-                      {/* Icon Canvas & Badge Info */}
-                      <div className="flex items-start gap-3.5 mb-3">
-                        <div className="w-12 h-12 rounded-2xl bg-primary-light/70 text-primary flex items-center justify-center shrink-0 border border-primary/20 shadow-xs group-hover:scale-110 transition-transform">
-                          <CapabilityIcon iconKey={cap.iconKey} className="w-6 h-6" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm sm:text-base font-extrabold text-dark tracking-tight leading-snug">
-                            {cap.name}
-                          </h4>
-                          <span className="inline-block mt-1 text-[10px] uppercase font-extrabold tracking-wider text-primary bg-primary-light/60 px-2 py-0.5 rounded-md">
-                            {cap.category}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card Actions Footer */}
-                    <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
-                      <span className="text-[10px] font-mono text-dark-muted/60">
-                        Icon: {cap.iconKey}
-                      </span>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => openEditCapabilityModal(cap)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
-                        >
-                          <Edit3 className="w-3.5 h-3.5 text-primary" />
-                          <span>Edit</span>
-                        </button>
-
-                        <button
-                          onClick={() => setDeleteCapabilityConfirmId(cap.id)}
-                          className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
-                          title="Delete capability badge from marquee"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* TAB 5: CONTACT CHANNELS & BRAND TAGLINE SETTINGS          */}
-        {/* ========================================================= */}
-        {currentTab === "company" && (
-          <div className="space-y-8 animate-in fade-in duration-300">
-            {/* Hero Header & Overview */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-white via-softBg to-primary-light/30 border border-border shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider">
-                  <Building2 className="w-3.5 h-3.5" />
-                  <span>Company Profile &amp; Touchpoints</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
-                  Contact Channels &amp; Brand Settings
-                </h2>
-                <p className="text-sm text-dark-muted max-w-2xl leading-relaxed">
-                  Directly manage your inquiries email, two phone lines, instant WhatsApp concierge number,
-                  headquarters address, and the official <span className="font-semibold text-primary">&ldquo;Your Vision. Our Expertise.&rdquo;</span> tagline.
-                  Changes save directly and update live across the entire website.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (window.confirm("Reset all contact and brand fields to default UNIQOVA values?")) {
-                      setCompanyInfo(DEFAULT_COMPANY_INFO);
-                      showToast("success", "Reset form to default company settings. Click Save to persist.");
-                    }
-                  }}
-                  className="px-4 py-2.5 rounded-xl bg-white hover:bg-rose-50 border border-border hover:border-rose-300 text-dark-muted hover:text-rose-600 text-xs font-bold transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Reset Defaults</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Live Interactive Preview Cards */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-dark-muted flex items-center gap-2">
-                  <Globe className="w-3.5 h-3.5 text-primary" />
-                  <span>Live Website Previews (Instant Synchronized Rendering)</span>
-                </h3>
-                <span className="text-[11px] text-dark-muted/70 font-mono">
-                  Footer &bull; WhatsApp Concierge &bull; Brand Header
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Preview 1: Footer Contact Block (Dark Theme Mirror) */}
-                <div className="rounded-3xl bg-[#0F0D1B] text-white p-6 border border-purple-900/40 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl pointer-events-none" />
-                  
-                  <div>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-purple-300/80">
-                        Footer Preview
-                      </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
-                        Live Preview
-                      </span>
-                    </div>
-
-                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-white mb-4">
-                      CONTACT US
-                    </h4>
-
-                    <div className="space-y-3.5 text-xs text-purple-200/90">
-                      {/* Email */}
-                      <div className="flex items-start gap-2.5">
-                        <Mail className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <div className="min-w-0">
-                          <p className="font-semibold text-white truncate">
-                            {companyInfo.email || "hello@uniquova.com"}
-                          </p>
-                          <p className="text-[10px] text-purple-300/60">
-                            {companyInfo.emailLabel || "Inquiries & RFPs"}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Phone 1 */}
-                      <div className="flex items-start gap-2.5">
-                        <Phone className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <div className="min-w-0">
-                          <p className="font-semibold text-white truncate">
-                            {companyInfo.primaryPhone || "+91 (0) 98765-43210"}
-                          </p>
-                          <p className="text-[10px] text-purple-300/60">
-                            {companyInfo.primaryPhoneLabel || "Mon – Fri, 9am – 6pm IST"}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Phone 2 (Optional) */}
-                      {companyInfo.secondaryPhone && (
-                        <div className="flex items-start gap-2.5">
-                          <PhoneCall className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                          <div className="min-w-0">
-                            <p className="font-semibold text-white truncate">
-                              {companyInfo.secondaryPhone}
-                            </p>
-                            <p className="text-[10px] text-purple-300/60">
-                              {companyInfo.secondaryPhoneLabel || "Secondary Contact"}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Office Address */}
-                      <div className="flex items-start gap-2.5">
-                        <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <div className="min-w-0">
-                          <p className="font-semibold text-white">
-                            {companyInfo.officeName || "UNIQUOVA Digital HQ"}
-                          </p>
-                          <p className="text-[10px] text-purple-300/60 leading-relaxed">
-                            {companyInfo.address || "Tech Park Corridor, Sector 4, Bangalore & New Delhi, India"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Social Media Icons Live Preview */}
-                    <div className="pt-3.5 mt-3.5 border-t border-white/10 flex items-center justify-between">
-                      <span className="text-[10px] text-purple-300/70 font-semibold uppercase tracking-wider">
-                        Social Channels:
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        {companyInfo.socialLinks?.linkedin?.enabled !== false && Boolean(companyInfo.socialLinks?.linkedin?.url?.trim()) && (
-                          <span
-                            className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
-                            title="LinkedIn (Visible)"
-                          >
-                            in
-                          </span>
-                        )}
-                        {companyInfo.socialLinks?.twitter?.enabled !== false && Boolean(companyInfo.socialLinks?.twitter?.url?.trim()) && (
-                          <span
-                            className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
-                            title="Twitter / X (Visible)"
-                          >
-                            𝕏
-                          </span>
-                        )}
-                        {companyInfo.socialLinks?.instagram?.enabled !== false && Boolean(companyInfo.socialLinks?.instagram?.url?.trim()) && (
-                          <span
-                            className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
-                            title="Instagram (Visible)"
-                          >
-                            ig
-                          </span>
-                        )}
-                        {companyInfo.socialLinks?.facebook?.enabled !== false && Boolean(companyInfo.socialLinks?.facebook?.url?.trim()) && (
-                          <span
-                            className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
-                            title="Facebook (Visible)"
-                          >
-                            fb
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 mt-3 border-t border-white/10 text-[10px] text-purple-300/60 truncate">
-                    &copy; {new Date().getFullYear()} UNIQUOVA Digital Agency. {companyInfo.tagline}
-                  </div>
-                </div>
-
-                {/* Preview 2: Floating WhatsApp Concierge Widget */}
-                <div className="rounded-3xl bg-gradient-to-br from-emerald-950 via-[#0a2318] to-emerald-900 text-white p-6 border border-emerald-700/40 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
-
-                  <div>
-                    <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3 mb-4">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-300">
-                        WhatsApp Concierge
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/30">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                        <span>Online</span>
-                      </span>
-                    </div>
-
-                    {/* Popout bubble mockup */}
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 border border-emerald-200 text-dark shadow-lg mb-4 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                          <MessageCircle className="w-4 h-4 fill-white" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-dark leading-tight">
-                            Chat on WhatsApp
-                          </p>
-                          <p className="text-[10px] text-dark-muted">
-                            Replies in under 5 minutes
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        Active
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 text-xs">
-                      <div>
-                        <span className="text-[10px] uppercase tracking-wider text-emerald-300/70 font-bold">
-                          Assigned WhatsApp Number
-                        </span>
-                        <p className="font-mono font-bold text-sm text-emerald-100">
-                          {companyInfo.whatsappNumber || "+91 98765 43210"}
-                        </p>
-                      </div>
-
-                      <div>
-                        <span className="text-[10px] uppercase tracking-wider text-emerald-300/70 font-bold">
-                          Default Greeting Message
-                        </span>
-                        <p className="text-[11px] text-emerald-200/80 italic line-clamp-2">
-                          &ldquo;{companyInfo.whatsappMessage || "Hi UNIQOVA Team! I'm interested in discussing a new digital project."}&rdquo;
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 mt-4 border-t border-emerald-500/20 flex items-center justify-between">
-                    <span className="text-[10px] text-emerald-300/70">
-                      Destination: wa.me
-                    </span>
-                    <a
-                      href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white text-[11px] font-bold transition-all shadow-sm cursor-pointer"
-                    >
-                      <span>Test WhatsApp Link</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Preview 3: Official Brand Identity & Tagline */}
-                <div className="rounded-3xl bg-white border border-border p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
-
-                  <div>
-                    <div className="flex items-center justify-between border-b border-border pb-3 mb-4">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
-                        Brand Identity Preview
-                      </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary-light text-primary font-bold">
-                        Tagline Sync
-                      </span>
-                    </div>
-
-                    {/* Logo with tagline mockup */}
-                    <div className="p-4 rounded-2xl bg-softBg/80 border border-border/80 flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center text-primary font-black text-xl shrink-0">
-                        <Sparkles className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <div className="flex items-baseline">
-                          <span className="font-black text-lg text-dark tracking-tight">UNIQUOVA</span>
-                          <span className="text-primary font-black text-lg leading-none ml-0.5">.</span>
-                        </div>
-                        <p className="text-xs font-semibold text-primary tracking-tight">
-                          {companyInfo.tagline || "Your Vision. Our Expertise."}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 text-xs text-dark-muted">
-                      <p className="font-medium text-dark">Where this tagline displays:</p>
-                      <ul className="space-y-1.5 text-[11px] list-disc list-inside">
-                        <li>Main Header Logo Subtitle</li>
-                        <li>Footer &amp; CMS Login Gateways</li>
-                        <li>Page Metadata &amp; Search Engine Snippets</li>
-                        <li>Official Copyright &amp; Legal Notices</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-[11px] text-dark-muted font-mono">
-                    <span>Status: Dynamic Sync</span>
-                    <span className="text-emerald-600 font-bold">&bull; Verified Active</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Editing Form Cards */}
-            <form onSubmit={handleSaveCompanyInfo} className="space-y-6">
-              {/* CARD 1: Email Address */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-dark">
-                      1. Official Inquiries Email Address
-                    </h3>
-                    <p className="text-xs text-dark-muted">
-                      RFP submissions, partnership queries, and client communication address.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      Email Address <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Mail className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="email"
-                        required
-                        value={companyInfo.email}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, email: e.target.value })
-                        }
-                        placeholder="hello@uniquova.com"
-                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      />
-                    </div>
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      Used for mailto: links in Header, Contact, and Footer.
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      Email Label / Subtitle
-                    </label>
-                    <input
-                      type="text"
-                      value={companyInfo.emailLabel}
-                      onChange={(e) =>
-                        setCompanyInfo({ ...companyInfo, emailLabel: e.target.value })
-                      }
-                      placeholder="Inquiries & RFPs"
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                    />
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      Appears beneath the email in the footer.
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 2: Two Contact Phone Numbers */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-dark">
-                      2. Direct Contact Phone Numbers (Two Dedicated Lines)
-                    </h3>
-                    <p className="text-xs text-dark-muted">
-                      Provide both primary sales line and secondary support/management line.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Contact Number 1 (Primary) */}
-                  <div className="p-5 rounded-2xl bg-softBg/60 border border-border space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                        <Phone className="w-3.5 h-3.5" />
-                        <span>Contact Line 1 (Primary)</span>
-                      </span>
-                      <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        Required
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-dark mb-1.5">
-                        Phone Number
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={companyInfo.primaryPhone}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, primaryPhone: e.target.value })
-                        }
-                        placeholder="+91 (0) 98765-43210"
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-dark mb-1.5">
-                        Availability Hours / Subtitle
-                      </label>
-                      <input
-                        type="text"
-                        value={companyInfo.primaryPhoneLabel}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, primaryPhoneLabel: e.target.value })
-                        }
-                        placeholder="Mon – Fri, 9am – 6pm IST"
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Contact Number 2 (Secondary) */}
-                  <div className="p-5 rounded-2xl bg-softBg/60 border border-border space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                        <PhoneCall className="w-3.5 h-3.5" />
-                        <span>Contact Line 2 (Secondary / Support)</span>
-                      </span>
-                      <span className="text-[10px] font-bold text-dark-muted bg-white px-2 py-0.5 rounded-md border border-border">
-                        Optional
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-dark mb-1.5">
-                        Second Phone Number
-                      </label>
-                      <input
-                        type="text"
-                        value={companyInfo.secondaryPhone}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, secondaryPhone: e.target.value })
-                        }
-                        placeholder="+91 (0) 98765-43211"
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-dark mb-1.5">
-                        Second Line Subtitle / Label
-                      </label>
-                      <input
-                        type="text"
-                        value={companyInfo.secondaryPhoneLabel}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, secondaryPhoneLabel: e.target.value })
-                        }
-                        placeholder="Support & Direct Line"
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 3: Instant WhatsApp Concierge Number */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                    <MessageCircle className="w-5 h-5 fill-emerald-600 text-transparent" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-dark">
-                      3. WhatsApp Concierge &amp; Floating Chat Settings
-                    </h3>
-                    <p className="text-xs text-dark-muted">
-                      Direct click-to-chat integration for floating pop-up widget and contact channels.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      WhatsApp Number (With Country Code) <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <MessageCircle className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        required
-                        value={companyInfo.whatsappNumber}
-                        onChange={(e) =>
-                          setCompanyInfo({ ...companyInfo, whatsappNumber: e.target.value })
-                        }
-                        placeholder="+91 98765 43210"
-                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all font-mono"
-                      />
-                    </div>
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      Auto-sanitized to international format (e.g. <code>919876543210</code> for <code>wa.me/919876543210</code>).
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      Pre-filled Chat Message
-                    </label>
-                    <input
-                      type="text"
-                      value={companyInfo.whatsappMessage}
-                      onChange={(e) =>
-                        setCompanyInfo({ ...companyInfo, whatsappMessage: e.target.value })
-                      }
-                      placeholder="Hi UNIQOVA Team! I'm interested in discussing a project."
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
-                    />
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      The pre-filled text in WhatsApp when clients click to chat.
-                    </span>
-                  </div>
-                </div>
-
-                {/* Generated WhatsApp link showcase */}
-                <div className="mt-4 p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs text-emerald-950 font-mono truncate">
-                    <span className="font-bold text-emerald-700 shrink-0">Live URL:</span>
-                    <span className="truncate">{formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}</span>
-                  </div>
-                  <a
-                    href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs"
-                  >
-                    <span>Test Chat</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-
-                {/* Homepage CTA Live Mirror Preview */}
-                <div className="mt-6 pt-6 border-t border-border">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-dark flex items-center gap-2">
-                      <Sparkles className="w-3.5 h-3.5 text-primary" />
-                      <span>Homepage CTA &ldquo;Chat on WhatsApp&rdquo; Mirror</span>
-                    </span>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      Auto-Tracks Inquiries in CMS
-                    </span>
-                  </div>
-
-                  <div className="rounded-3xl bg-gradient-to-br from-[#120e24] via-[#1a1438] to-[#0d091e] p-6 sm:p-8 text-white border border-purple-500/20 shadow-xl relative overflow-hidden">
-                    <div className="text-center space-y-3 relative z-10">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-purple-200 uppercase tracking-wider">
-                        <Sparkles className="w-3 h-3 text-purple-300" />
-                        <span>Let&apos;s Build Something Iconic</span>
-                      </div>
-                      <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                        Have an Idea? <br className="hidden sm:inline" />Let&apos;s Make It Happen.
-                      </h4>
-                      <p className="text-xs text-purple-200/80 max-w-lg mx-auto">
-                        From e-commerce marketplaces to custom web and mobile apps, our team is ready to scale your vision.
-                      </p>
-
-                      <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                        <div className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-xs opacity-90 shadow-glow-sm">
-                          Start Your Project &rarr;
-                        </div>
-                        <a
-                          href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-5 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
-                        >
-                          <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Chat on WhatsApp</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] text-dark-muted mt-2.5 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>
-                      When visitors click &ldquo;Chat on WhatsApp&rdquo; on the homepage CTA banner, a lead inquiry is automatically stored in your <strong className="text-dark">Client Queries</strong> tab with source <code>whatsapp_cta</code>.
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 4: Physical Office & Headquarters Address */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-dark">
-                      4. Physical Office Headquarters &amp; Address
-                    </h3>
-                    <p className="text-xs text-dark-muted">
-                      Appears in the footer contact block and contact discovery page.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="sm:col-span-1">
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      Office / Campus Name <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={companyInfo.officeName}
-                      onChange={(e) =>
-                        setCompanyInfo({ ...companyInfo, officeName: e.target.value })
-                      }
-                      placeholder="UNIQUOVA Digital HQ"
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-semibold"
-                    />
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      e.g. UNIQUOVA Digital HQ or Studio Hub.
-                    </span>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                      Complete Street &amp; City Address <span className="text-rose-500">*</span>
-                    </label>
-                    <textarea
-                      rows={2}
-                      required
-                      value={companyInfo.address}
-                      onChange={(e) =>
-                        setCompanyInfo({ ...companyInfo, address: e.target.value })
-                      }
-                      placeholder="Tech Park Corridor, Sector 4, Bangalore & New Delhi, India"
-                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none leading-relaxed"
-                    />
-                    <span className="text-[11px] text-dark-muted mt-1 block">
-                      Full street, corridor, sector, and location address.
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 5: Official Brand Tagline */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 text-primary flex items-center justify-center shrink-0">
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-dark">
-                      5. Official Brand Tagline
-                    </h3>
-                    <p className="text-xs text-dark-muted">
-                      Your company&apos;s primary slogan (&ldquo;Your Vision. Our Expertise.&rdquo;).
-                    </p>
-                  </div>
-                </div>
-
-                <div className="max-w-2xl">
-                  <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
-                    Official Tagline <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={companyInfo.tagline}
-                    onChange={(e) =>
-                      setCompanyInfo({ ...companyInfo, tagline: e.target.value })
-                    }
-                    placeholder="Your Vision. Our Expertise."
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-base font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  />
-                  <div className="mt-2 flex items-center gap-2 text-xs text-dark-muted">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <span>Renders directly under the UNIQOVA monogram logo and in footer legal bar.</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 6: Social Media Channels & Visibility */}
-              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-100 text-primary flex items-center justify-center shrink-0">
-                      <Share2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-extrabold text-dark">
-                        6. Official Social Media Channels &amp; Visibility Controls
-                      </h3>
-                      <p className="text-xs text-dark-muted">
-                        Directly edit your social URLs and toggle any icon on/off to show or hide it from the website footer.
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="text-[11px] font-semibold text-primary bg-primary-light/60 px-3 py-1 rounded-full border border-primary/20 self-start sm:self-auto">
-                    4 Social Channels Available
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Platform 1: LinkedIn */}
-                  <div className={`p-5 rounded-2xl border transition-all ${
-                    companyInfo.socialLinks?.linkedin?.enabled !== false
-                      ? "bg-white border-border shadow-xs"
-                      : "bg-slate-50/70 border-slate-200 opacity-75"
-                  }`}>
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center shrink-0 font-bold text-xs">
-                          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.6 1.6 0 0 0-1.6 1.6c0 .88.72 1.63 1.6 1.63.88 0 1.6-.75 1.6-1.63 0-.88-.72-1.6-1.6-1.6" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-dark">LinkedIn</h4>
-                          <span className="text-[10px] text-dark-muted">Professional Network</span>
-                        </div>
-                      </div>
-
-                      {/* Visibility Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleSocialVisibility("linkedin")}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                          companyInfo.socialLinks?.linkedin?.enabled !== false
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                            : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
-                        }`}
-                        title="Click to toggle visibility on website (instant save)"
-                      >
-                        <span className={`w-2 h-2 rounded-full ${
-                          companyInfo.socialLinks?.linkedin?.enabled !== false
-                            ? "bg-emerald-500 animate-pulse"
-                            : "bg-slate-400"
-                        }`} />
-                        <span>{companyInfo.socialLinks?.linkedin?.enabled !== false ? "Visible" : "Hidden"}</span>
-                      </button>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
-                        Profile URL
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="url"
-                          value={companyInfo.socialLinks?.linkedin?.url ?? "https://linkedin.com"}
-                          onChange={(e) => {
-                            const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
-                            setCompanyInfo({
-                              ...companyInfo,
-                              socialLinks: {
-                                ...current,
-                                linkedin: {
-                                  ...current.linkedin,
-                                  url: e.target.value,
-                                },
-                              },
-                            });
-                          }}
-                          placeholder="https://linkedin.com/company/uniquova"
-                          className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                        />
-                        {companyInfo.socialLinks?.linkedin?.url && (
-                          <a
-                            href={companyInfo.socialLinks.linkedin.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
-                            title="Test Link in new tab"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Platform 2: Twitter / X */}
-                  <div className={`p-5 rounded-2xl border transition-all ${
-                    companyInfo.socialLinks?.twitter?.enabled !== false
-                      ? "bg-white border-border shadow-xs"
-                      : "bg-slate-50/70 border-slate-200 opacity-75"
-                  }`}>
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-black/10 text-dark flex items-center justify-center shrink-0 font-bold text-xs">
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-dark">Twitter / X</h4>
-                          <span className="text-[10px] text-dark-muted">Microblogging</span>
-                        </div>
-                      </div>
-
-                      {/* Visibility Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleSocialVisibility("twitter")}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                          companyInfo.socialLinks?.twitter?.enabled !== false
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                            : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
-                        }`}
-                        title="Click to toggle visibility on website (instant save)"
-                      >
-                        <span className={`w-2 h-2 rounded-full ${
-                          companyInfo.socialLinks?.twitter?.enabled !== false
-                            ? "bg-emerald-500 animate-pulse"
-                            : "bg-slate-400"
-                        }`} />
-                        <span>{companyInfo.socialLinks?.twitter?.enabled !== false ? "Visible" : "Hidden"}</span>
-                      </button>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
-                        Profile URL
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="url"
-                          value={companyInfo.socialLinks?.twitter?.url ?? "https://twitter.com"}
-                          onChange={(e) => {
-                            const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
-                            setCompanyInfo({
-                              ...companyInfo,
-                              socialLinks: {
-                                ...current,
-                                twitter: {
-                                  ...current.twitter,
-                                  url: e.target.value,
-                                },
-                              },
-                            });
-                          }}
-                          placeholder="https://x.com/uniquova"
-                          className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                        />
-                        {companyInfo.socialLinks?.twitter?.url && (
-                          <a
-                            href={companyInfo.socialLinks.twitter.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
-                            title="Test Link in new tab"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Platform 3: Instagram */}
-                  <div className={`p-5 rounded-2xl border transition-all ${
-                    companyInfo.socialLinks?.instagram?.enabled !== false
-                      ? "bg-white border-border shadow-xs"
-                      : "bg-slate-50/70 border-slate-200 opacity-75"
-                  }`}>
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#E4405F]/10 text-[#E4405F] flex items-center justify-center shrink-0 font-bold text-xs">
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-dark">Instagram</h4>
-                          <span className="text-[10px] text-dark-muted">Visual Content</span>
-                        </div>
-                      </div>
-
-                      {/* Visibility Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleSocialVisibility("instagram")}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                          companyInfo.socialLinks?.instagram?.enabled !== false
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                            : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
-                        }`}
-                        title="Click to toggle visibility on website (instant save)"
-                      >
-                        <span className={`w-2 h-2 rounded-full ${
-                          companyInfo.socialLinks?.instagram?.enabled !== false
-                            ? "bg-emerald-500 animate-pulse"
-                            : "bg-slate-400"
-                        }`} />
-                        <span>{companyInfo.socialLinks?.instagram?.enabled !== false ? "Visible" : "Hidden"}</span>
-                      </button>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
-                        Profile URL
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="url"
-                          value={companyInfo.socialLinks?.instagram?.url ?? "https://instagram.com"}
-                          onChange={(e) => {
-                            const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
-                            setCompanyInfo({
-                              ...companyInfo,
-                              socialLinks: {
-                                ...current,
-                                instagram: {
-                                  ...current.instagram,
-                                  url: e.target.value,
-                                },
-                              },
-                            });
-                          }}
-                          placeholder="https://instagram.com/uniquova"
-                          className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                        />
-                        {companyInfo.socialLinks?.instagram?.url && (
-                          <a
-                            href={companyInfo.socialLinks.instagram.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
-                            title="Test Link in new tab"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Platform 4: Facebook */}
-                  <div className={`p-5 rounded-2xl border transition-all ${
-                    companyInfo.socialLinks?.facebook?.enabled !== false
-                      ? "bg-white border-border shadow-xs"
-                      : "bg-slate-50/70 border-slate-200 opacity-75"
-                  }`}>
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center shrink-0 font-bold text-xs">
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-dark">Facebook</h4>
-                          <span className="text-[10px] text-dark-muted">Community Page</span>
-                        </div>
-                      </div>
-
-                      {/* Visibility Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleSocialVisibility("facebook")}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                          companyInfo.socialLinks?.facebook?.enabled !== false
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                            : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
-                        }`}
-                        title="Click to toggle visibility on website (instant save)"
-                      >
-                        <span className={`w-2 h-2 rounded-full ${
-                          companyInfo.socialLinks?.facebook?.enabled !== false
-                            ? "bg-emerald-500 animate-pulse"
-                            : "bg-slate-400"
-                        }`} />
-                        <span>{companyInfo.socialLinks?.facebook?.enabled !== false ? "Visible" : "Hidden"}</span>
-                      </button>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
-                        Profile / Page URL
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="url"
-                          value={companyInfo.socialLinks?.facebook?.url ?? "https://facebook.com"}
-                          onChange={(e) => {
-                            const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
-                            setCompanyInfo({
-                              ...companyInfo,
-                              socialLinks: {
-                                ...current,
-                                facebook: {
-                                  ...current.facebook,
-                                  url: e.target.value,
-                                },
-                              },
-                            });
-                          }}
-                          placeholder="https://facebook.com/uniquova"
-                          className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
-                        />
-                        {companyInfo.socialLinks?.facebook?.url && (
-                          <a
-                            href={companyInfo.socialLinks.facebook.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
-                            title="Test Link in new tab"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 p-3.5 rounded-2xl bg-softBg/60 border border-border/80 flex items-center gap-2.5 text-xs text-dark-muted">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                  <span>
-                    When a social network is toggled to <strong className="text-slate-700">Hidden</strong>, its circular icon is automatically removed from the live website footer.
-                  </span>
-                </div>
-              </div>
-
-              {/* Form Action Footer */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-border">
-                <p className="text-xs text-dark-muted font-medium">
-                  Saving updates your email, phone numbers, WhatsApp link, and tagline immediately across all pages.
-                </p>
-
-                <div className="flex items-center gap-3 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (window.confirm("Discard changes and reload saved settings?")) {
-                        fetchCompanyInfo();
-                        showToast("success", "Reloaded saved settings.");
-                      }
-                    }}
-                    disabled={isLoadingCompanyInfo}
-                    className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white hover:bg-softBg border border-border text-dark-muted hover:text-dark text-xs font-bold transition-all cursor-pointer"
-                  >
-                    Discard Changes
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={isSavingCompanyInfo}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-extrabold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <Save className={`w-4 h-4 ${isSavingCompanyInfo ? "animate-spin" : ""}`} />
-                    <span>{isSavingCompanyInfo ? "Saving..." : "Save Settings"}</span>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* TAB 6: SELECTED WORK SHOWCASE (Ideas brought to life)     */}
-        {/* ========================================================= */}
-        {currentTab === "selected-work" && (
-          <div className="space-y-6">
-            {/* Header Banner */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
-                  <Layers className="w-3.5 h-3.5" />
-                  <span>Homepage 3D Cinema Showcase</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
-                  Selected Work Showcase Slides
-                </h1>
-                <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
-                  Manage the showcase cards rotating in the 3D scroll-up cinema section on the homepage.
-                  Update high-resolution images, video loops, alt descriptions, and slide sequences with instant real-time sync.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={fetchSelectedWorks}
-                  disabled={isLoadingSelectedWorks}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
-                  title="Refresh Showcase Slides"
-                >
-                  <RefreshCw className={`w-5 h-5 ${isLoadingSelectedWorks ? "animate-spin text-primary" : ""}`} />
-                </button>
-
-                <button
-                  onClick={openAddSelectedWorkModal}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>Add Showcase Slide</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Slides</p>
-                <p className="text-2xl font-black text-dark mt-1">{selectedWorks.length}</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured cinema showcases</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-primary font-bold">Image Slides</p>
-                <p className="text-2xl font-black text-primary mt-1">
-                  {selectedWorks.filter((w) => !w.isVideo).length}
-                </p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">High-definition showcases</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Video Loops</p>
-                <p className="text-2xl font-black text-purple-600 mt-1">
-                  {selectedWorks.filter((w) => w.isVideo).length}
-                </p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Motion backgrounds</p>
-              </div>
-              <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
-                <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Autoplay Interval</p>
-                <p className="text-2xl font-black text-emerald-600 mt-1">2.0s</p>
-                <p className="text-[11px] text-dark-muted/60 mt-0.5">Smooth automated shift</p>
-              </div>
-            </div>
-
-            {/* Live Homepage Section Preview Strip */}
-            <div className="bg-white border border-border rounded-3xl p-6 shadow-card">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
-                    Live Homepage Showcase Order
-                  </h3>
-                  <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
-                    {selectedWorks.length} Slides in Rotation
-                  </span>
-                </div>
-                <Link
-                  href="/#selected-work"
-                  target="_blank"
-                  className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-                >
-                  <span>Preview Section on Homepage</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-              {/* Horizontal Thumbnail Strip */}
-              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
-                {selectedWorks.map((item, idx) => (
-                  <div
-                    key={item.id}
-                    className="relative w-36 sm:w-44 h-24 rounded-2xl overflow-hidden border border-border shrink-0 bg-dark group shadow-xs"
-                  >
-                    <img
-                      src={item.src}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-mono font-bold text-white">
-                      #{String(idx + 1).padStart(2, "0")}
-                    </div>
-                    {item.isVideo && (
-                      <div className="absolute top-2 right-2 p-1 rounded-md bg-purple-600/80 text-white text-[9px]">
-                        <Video className="w-3 h-3" />
-                      </div>
-                    )}
-                    <p className="absolute bottom-1.5 left-2 right-2 text-[11px] font-bold text-white truncate">
-                      {item.title}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Showcase Cards Grid */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-black text-dark">
-                  All Showcase Slides ({selectedWorks.length})
-                </h2>
-                <span className="text-xs text-dark-muted font-medium">
-                  Use arrows to reorder slide sequence
-                </span>
-              </div>
-
-              {isLoadingSelectedWorks && selectedWorks.length === 0 ? (
-                <div className="p-12 text-center bg-white border border-border rounded-3xl">
-                  <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
-                  <p className="text-sm font-bold text-dark">Loading showcase slides...</p>
-                </div>
-              ) : selectedWorks.length === 0 ? (
-                <div className="p-12 text-center bg-white border border-border rounded-3xl">
-                  <Layers className="w-12 h-12 text-dark-muted/40 mx-auto mb-3" />
-                  <h3 className="text-base font-bold text-dark">No showcase slides found</h3>
-                  <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
-                    Add your first showcase slide to display in the homepage 3D scroll-up showcase.
-                  </p>
-                  <button
-                    onClick={openAddSelectedWorkModal}
-                    className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-glow-sm"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add First Slide</span>
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedWorks.map((item, idx) => (
-                    <div
-                      key={item.id}
-                      className="bg-white border border-border rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
-                    >
-                      <div className="space-y-3">
-                        {/* Slide Preview & Badges */}
-                        <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden bg-black border border-border">
-                          {item.isVideo && item.videoSrc ? (
-                            <video
-                              src={item.videoSrc}
-                              poster={item.src}
-                              muted
-                              loop
-                              playsInline
-                              autoPlay
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <img
-                              src={item.src}
-                              alt={item.alt || item.title}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                          )}
-
-                          {/* Top Badges */}
-                          <div className="absolute top-3 left-3 flex items-center gap-2">
-                            <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white font-mono text-xs font-bold border border-white/10">
-                              #{String(idx + 1).padStart(2, "0")}
-                            </span>
-                            <span
-                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${
-                                item.isVideo
-                                  ? "bg-purple-600/90 text-white"
-                                  : "bg-white/90 text-dark"
-                              }`}
-                            >
-                              {item.isVideo ? "Video Loop" : "Static Image"}
-                            </span>
-                          </div>
-
-                          {/* Reordering Controls in preview */}
-                          <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/10">
-                            <button
-                              type="button"
-                              onClick={() => handleMoveSelectedWork(idx, "up")}
-                              disabled={idx === 0}
-                              className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
-                              title="Move Slide Up"
-                            >
-                              <ChevronUp className="w-4 h-4" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleMoveSelectedWork(idx, "down")}
-                              disabled={idx === selectedWorks.length - 1}
-                              className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
-                              title="Move Slide Down"
-                            >
-                              <ChevronDown className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Title and Media Info */}
-                        <div>
-                          <h3 className="text-base font-extrabold text-dark leading-snug">
-                            {item.title}
-                          </h3>
-                          {item.alt && (
-                            <p className="text-xs text-dark-muted line-clamp-2 mt-1 leading-relaxed">
-                              {item.alt}
-                            </p>
-                          )}
-                          <div className="mt-2 text-[11px] font-mono text-dark-muted/80 bg-softBg px-2.5 py-1.5 rounded-lg truncate border border-border/60">
-                            <span className="font-bold text-dark">Source:</span> {item.src}
-                          </div>
-                          {item.isVideo && item.videoSrc && (
-                            <div className="mt-1 text-[11px] font-mono text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg truncate border border-purple-200">
-                              <span className="font-bold">Video:</span> {item.videoSrc}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Card Action Footer */}
-                      <div className="pt-4 mt-4 border-t border-border flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-semibold text-dark-muted">
-                          Slide #{idx + 1} of {selectedWorks.length}
+                            : "Curated Showcase"}
                         </span>
 
                         <div className="flex items-center gap-2">
                           <button
-                            type="button"
-                            onClick={() => openEditSelectedWorkModal(item)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary text-xs font-bold transition-all border border-border hover:border-primary/30 cursor-pointer"
+                            onClick={() => openEditReviewModal(review)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
                           >
-                            <Edit3 className="w-3.5 h-3.5" />
+                            <Edit3 className="w-3.5 h-3.5 text-primary" />
                             <span>Edit</span>
                           </button>
 
                           <button
-                            type="button"
-                            onClick={() => setDeleteSelectedWorkConfirmId(item.id)}
-                            className="p-1.5 rounded-xl bg-softBg hover:bg-rose-50 text-dark-muted hover:text-rose-600 transition-all border border-border hover:border-rose-200 cursor-pointer"
-                            title="Delete slide"
+                            onClick={() => setDeleteReviewConfirmId(review.id)}
+                            className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
+                            title="Delete review from testimonials"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -6214,10 +5282,3296 @@ export default function AdminClient() {
                 </div>
               )}
             </div>
-          </div>
-        )}
-      </main>
-    </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB: CLIENT INQUIRIES & LEADS MANAGEMENT                  */}
+          {/* ========================================================= */}
+          {currentTab === "queries" && (
+            <div className="space-y-8 animate-in fade-in duration-300">
+              {/* Banner with Stats & Refresh Button */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-border">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
+                    <Inbox className="w-3.5 h-3.5" />
+                    <span>Lead Pipeline &amp; Client Inquiries</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Client Inquiries, RFPs &amp; WhatsApp Leads
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Every project inquiry submitted via the website contact form, modal, or &ldquo;Chat on WhatsApp&rdquo; CTA button is captured here. Reply directly on WhatsApp, email, or telephone with one click.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={() => fetchQueries()}
+                    disabled={isLoadingQueries}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh inquiries from server"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingQueries ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <a
+                    href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white/20" />
+                    <span>Test WhatsApp Concierge</span>
+                    <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Inquiries</p>
+                    <Inbox className="w-4 h-4 text-primary" />
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{queryStats.total}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Recorded across all touchpoints</p>
+                </div>
+
+                <div className="bg-white border border-amber-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-amber-50/40">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs uppercase tracking-wider text-amber-700 font-bold">New / Uncontacted</p>
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                  </div>
+                  <p className="text-2xl font-black text-amber-900 mt-2">{queryStats.newCount}</p>
+                  <p className="text-[11px] text-amber-700/80 mt-0.5">Awaiting initial response</p>
+                </div>
+
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">In Progress / Contacted</p>
+                    <Sparkles className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <p className="text-2xl font-black text-dark mt-2">{queryStats.contactedCount + queryStats.inProgressCount}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Active client discussions</p>
+                </div>
+
+                <div className="bg-white border border-emerald-200/80 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all bg-gradient-to-br from-white to-emerald-50/40">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs uppercase tracking-wider text-emerald-800 font-bold">WhatsApp CTA Leads</p>
+                    <MessageCircle className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <p className="text-2xl font-black text-emerald-900 mt-2">{queryStats.whatsappCount}</p>
+                  <p className="text-[11px] text-emerald-700/80 mt-0.5">From &ldquo;Chat on WhatsApp&rdquo; CTA</p>
+                </div>
+              </div>
+
+              {/* Filter and Search Bar */}
+              <div className="bg-white border border-border rounded-2xl p-4 shadow-card space-y-3">
+                <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                  {/* Search Bar */}
+                  <div className="relative flex-1">
+                    <Search className="w-4 h-4 text-dark-muted/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={querySearch}
+                      onChange={(e) => setQuerySearch(e.target.value)}
+                      placeholder="Search client name, email, phone, company, service or requirements..."
+                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-softBg text-xs text-dark placeholder:text-dark-muted/50 focus:outline-hidden focus:border-primary focus:bg-white transition-all font-medium"
+                    />
+                    {querySearch && (
+                      <button
+                        onClick={() => setQuerySearch("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark text-xs p-1"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Source Filter */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider shrink-0">Source:</span>
+                    <select
+                      value={selectedSourceFilter}
+                      onChange={(e) => setSelectedSourceFilter(e.target.value)}
+                      className="px-3 py-2 rounded-xl border border-border bg-white text-xs font-semibold text-dark focus:outline-hidden focus:border-primary cursor-pointer"
+                    >
+                      <option value="all">All Sources ({queries.length})</option>
+                      <option value="forms">Website Forms &amp; Modal</option>
+                      <option value="whatsapp">💬 WhatsApp CTA Clicks ({queryStats.whatsappCount})</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Status Pills */}
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/60">
+                  <span className="text-[11px] font-bold text-dark-muted uppercase tracking-wider mr-1">Status:</span>
+                  {[
+                    { key: "all", label: "All Inquiries", count: queries.length },
+                    { key: "new", label: "New", count: queryStats.newCount },
+                    { key: "contacted", label: "Contacted", count: queryStats.contactedCount },
+                    { key: "in_progress", label: "In Progress", count: queryStats.inProgressCount },
+                    { key: "closed", label: "Closed", count: queryStats.closedCount },
+                  ].map((pill) => (
+                    <button
+                      key={pill.key}
+                      onClick={() => setSelectedStatusFilter(pill.key)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${selectedStatusFilter === pill.key
+                          ? "bg-dark text-white border-dark shadow-xs"
+                          : "bg-white text-dark-muted border-border hover:bg-softBg hover:text-dark"
+                        }`}
+                    >
+                      <span>{pill.label}</span>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${selectedStatusFilter === pill.key ? "bg-white/20 text-white" : "bg-softBg text-dark-muted"
+                          }`}
+                      >
+                        {pill.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Inquiries Cards Grid */}
+              {isLoadingQueries ? (
+                <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
+                  <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto" />
+                  <p className="text-sm font-bold text-dark">Syncing client inquiries &amp; WhatsApp leads...</p>
+                </div>
+              ) : filteredQueries.length === 0 ? (
+                <div className="p-16 rounded-3xl bg-white border border-border text-center space-y-4">
+                  <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center">
+                    <Inbox className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg font-bold text-dark">No inquiries found</h3>
+                  <p className="text-xs sm:text-sm text-dark-muted max-w-md mx-auto">
+                    {querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all"
+                      ? "No inquiries match your current search or filter criteria. Try clearing filters."
+                      : "No client inquiries have been submitted yet. Inquiries from the website contact forms and WhatsApp buttons will appear here in real time."}
+                  </p>
+                  {(querySearch || selectedStatusFilter !== "all" || selectedSourceFilter !== "all") && (
+                    <button
+                      onClick={() => {
+                        setQuerySearch("");
+                        setSelectedStatusFilter("all");
+                        setSelectedSourceFilter("all");
+                        setSelectedQueryServiceFilter("All");
+                      }}
+                      className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
+                    >
+                      Reset Filters
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-5">
+                  {filteredQueries.map((query) => {
+                    const isWhatsAppLead = query.source === "whatsapp_cta";
+                    const statusColors: Record<string, { bg: string; text: string; border: string }> = {
+                      new: { bg: "bg-amber-50", text: "text-amber-800", border: "border-amber-300" },
+                      contacted: { bg: "bg-blue-50", text: "text-blue-800", border: "border-blue-300" },
+                      in_progress: { bg: "bg-purple-50", text: "text-purple-800", border: "border-purple-300" },
+                      closed: { bg: "bg-emerald-50", text: "text-emerald-800", border: "border-emerald-300" },
+                    };
+                    const currentStatusStyle = statusColors[query.status] || statusColors.new;
+
+                    return (
+                      <div
+                        key={query.id}
+                        className={`bg-white border rounded-3xl p-6 shadow-card hover:shadow-card-hover transition-all space-y-5 ${query.status === "new" ? "border-amber-300/80 ring-1 ring-amber-300/40" : "border-border"
+                          }`}
+                      >
+                        {/* Top Bar: ID, Date, Source, and Status Dropdown */}
+                        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border/70">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-softBg border border-border text-dark">
+                              #{query.id}
+                            </span>
+
+                            {isWhatsAppLead ? (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-extrabold">
+                                <MessageCircle className="w-3.5 h-3.5 fill-emerald-600/20 text-emerald-600" />
+                                <span>WhatsApp CTA Lead</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[11px] font-extrabold">
+                                <Mail className="w-3.5 h-3.5" />
+                                <span>{query.source === "contact_page" ? "Contact Page" : "Modal Lead"}</span>
+                              </span>
+                            )}
+
+                            <span className="text-[11px] text-dark-muted font-medium flex items-center gap-1 ml-1">
+                              <Clock className="w-3.5 h-3.5 text-dark-muted/60" />
+                              <span>{formatQueryDate(query.receivedAt)}</span>
+                            </span>
+                          </div>
+
+                          {/* Status Selector Dropdown */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] uppercase font-bold text-dark-muted tracking-wider">Status:</span>
+                            <select
+                              value={query.status}
+                              disabled={isUpdatingStatusId === query.id}
+                              onChange={(e) =>
+                                handleUpdateQueryStatus(
+                                  query.id,
+                                  e.target.value as "new" | "contacted" | "in_progress" | "closed"
+                                )
+                              }
+                              className={`px-3 py-1.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-primary/20 ${currentStatusStyle.bg} ${currentStatusStyle.text} ${currentStatusStyle.border}`}
+                            >
+                              <option value="new">🟡 New Inquiry</option>
+                              <option value="contacted">🔵 Contacted</option>
+                              <option value="in_progress">🟣 In Progress</option>
+                              <option value="closed">🟢 Closed / Won</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Main Details: Client Information & Requested Service */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {/* Client Identity Block */}
+                          <div className="space-y-3">
+                            <div className="flex items-start gap-3">
+                              <div className="w-10 h-10 rounded-2xl bg-primary-light text-primary flex items-center justify-center shrink-0 font-bold text-sm">
+                                <User className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <h4 className="text-base font-extrabold text-dark tracking-tight">{query.name}</h4>
+                                {query.company && (
+                                  <p className="text-xs text-dark-muted flex items-center gap-1 mt-0.5 font-medium">
+                                    <Building className="w-3 h-3 text-dark-muted/70" />
+                                    <span>{query.company}</span>
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="space-y-2 pt-2 text-xs">
+                              {/* Email with copy */}
+                              <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
+                                <a
+                                  href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
+                                  className="font-semibold text-primary hover:underline truncate flex items-center gap-1.5"
+                                  title="Send email"
+                                >
+                                  <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+                                  <span className="truncate">{query.email}</span>
+                                </a>
+                                <button
+                                  onClick={() => copyToClipboard(query.email, "email")}
+                                  className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
+                                  title="Copy email address"
+                                >
+                                  <Copy className="w-3 h-3" />
+                                </button>
+                              </div>
+
+                              {/* Phone with copy */}
+                              {query.phone && (
+                                <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-softBg border border-border/80">
+                                  <a
+                                    href={`tel:${query.phone}`}
+                                    className="font-mono font-semibold text-dark hover:text-primary transition-colors truncate flex items-center gap-1.5"
+                                    title="Dial phone"
+                                  >
+                                    <Phone className="w-3.5 h-3.5 text-dark-muted shrink-0" />
+                                    <span className="truncate">{query.phone}</span>
+                                  </a>
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      onClick={() => copyToClipboard(query.phone || "", "phone number")}
+                                      className="p-1 hover:bg-white rounded-lg text-dark-muted hover:text-dark transition-colors cursor-pointer"
+                                      title="Copy phone number"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                      onClick={() => openWhatsAppForClient(query)}
+                                      className="p-1 hover:bg-emerald-100 rounded-lg text-emerald-700 transition-colors cursor-pointer"
+                                      title="Chat with client on WhatsApp"
+                                    >
+                                      <MessageCircle className="w-3 h-3 fill-emerald-600/30" />
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Project Brief & Service Required Block */}
+                          <div className="md:col-span-2 space-y-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold">
+                                <Sparkles className="w-3 h-3 text-purple-600" />
+                                <span>{query.service}</span>
+                              </span>
+                            </div>
+
+                            <div className="p-4 rounded-2xl bg-softBg/80 border border-border/80">
+                              <p className="text-xs uppercase font-extrabold text-dark-muted/70 tracking-wider mb-1.5 flex items-center gap-1">
+                                <FileText className="w-3 h-3" />
+                                <span>Project Scope &amp; Client Brief:</span>
+                              </p>
+                              <p className="text-xs sm:text-sm text-dark leading-relaxed whitespace-pre-wrap font-medium">
+                                {query.description}
+                              </p>
+                            </div>
+
+                            {/* Admin Internal Notes */}
+                            <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <span className="text-[11px] font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-1">
+                                  <Edit3 className="w-3 h-3" />
+                                  <span>Internal Operations Note:</span>
+                                </span>
+                                {editingNotesId !== query.id && (
+                                  <button
+                                    onClick={() => {
+                                      setEditingNotesId(query.id);
+                                      setTempNotes(query.notes || "");
+                                    }}
+                                    className="text-[11px] text-primary hover:underline font-bold cursor-pointer"
+                                  >
+                                    {query.notes ? "Edit Note" : "+ Add Note"}
+                                  </button>
+                                )}
+                              </div>
+
+                              {editingNotesId === query.id ? (
+                                <div className="space-y-2">
+                                  <textarea
+                                    value={tempNotes}
+                                    onChange={(e) => setTempNotes(e.target.value)}
+                                    placeholder="Add internal notes on calls, pricing, or next steps..."
+                                    rows={2}
+                                    className="w-full p-2.5 rounded-xl border border-amber-300 bg-white text-xs text-dark focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+                                  />
+                                  <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => setEditingNotesId(null)}
+                                      className="px-3 py-1 rounded-lg border border-border text-xs font-semibold hover:bg-white text-dark-muted cursor-pointer"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={() => handleSaveQueryNotes(query.id, tempNotes)}
+                                      className="px-3 py-1 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-all cursor-pointer"
+                                    >
+                                      Save Note
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-xs text-dark-muted font-medium italic">
+                                  {query.notes || "No internal notes recorded yet."}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card Action Footer Bar */}
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-border/70">
+                          <div className="flex flex-wrap items-center gap-2">
+                            {/* 1-Click WhatsApp Chat Button */}
+                            <button
+                              type="button"
+                              onClick={() => openWhatsAppForClient(query)}
+                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-extrabold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                            >
+                              <MessageCircle className="w-4 h-4 fill-white/20" />
+                              <span>Chat on WhatsApp</span>
+                              <ExternalLink className="w-3 h-3 opacity-70" />
+                            </button>
+
+                            {/* Email Client */}
+                            <a
+                              href={`mailto:${query.email}?subject=UNIQOVA%20Inquiry%20Follow-up%20%7C%20${query.id}`}
+                              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition-all cursor-pointer"
+                            >
+                              <Mail className="w-3.5 h-3.5" />
+                              <span>Email</span>
+                            </a>
+
+                            {/* Call Client if phone available */}
+                            {query.phone && (
+                              <a
+                                href={`tel:${query.phone}`}
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-softBg hover:bg-slate-200 text-dark border border-border text-xs font-bold transition-all cursor-pointer"
+                              >
+                                <Phone className="w-3.5 h-3.5 text-primary" />
+                                <span>Call</span>
+                              </a>
+                            )}
+                          </div>
+
+                          {/* Delete Inquiry Button */}
+                          <button
+                            type="button"
+                            onClick={() => setDeleteQueryConfirmId(query.id)}
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 text-xs font-bold transition-all cursor-pointer"
+                            title="Delete inquiry from CMS"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB 3: TRUSTED BY BRANDS & MARQUEE MANAGEMENT            */}
+          {/* ========================================================= */}
+          {currentTab === "brands" && (
+            <div>
+              {/* Banner with Stats & Add Button */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
+                    <Award className="w-3.5 h-3.5" />
+                    <span>Client &amp; Enterprise Partners</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Trusted By Leading Brands &amp; Businesses
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the client logos and brand partners rotating live in the homepage interactive marquee. Add new brand partners, update logos, set custom order, or toggle visibility with one click.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchBrands}
+                    disabled={isLoadingBrands}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh brand list"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingBrands ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddBrandModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Brand Partner</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid for Brands */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Brands</p>
+                  <p className="text-2xl font-black text-dark mt-1">{brandStats.total}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured brand partners</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Active in Marquee</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">{brandStats.active}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Visible on homepage right now</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-slate-500 font-bold">Hidden / Inactive</p>
+                  <p className="text-2xl font-black text-dark mt-1">{brandStats.hidden}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Excluded from marquee rotation</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Website Linked</p>
+                  <p className="text-2xl font-black text-primary mt-1">{brandStats.linked}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Clickable redirect logos</p>
+                </div>
+              </div>
+
+              {/* Live Homepage Marquee Preview Strip */}
+              <div className="bg-white border border-border rounded-3xl p-6 shadow-card mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
+                      Live Homepage Marquee Preview
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
+                      {brands.filter((b) => b.active).length} Active Logos
+                    </span>
+                  </div>
+                  <Link
+                    href="/"
+                    target="_blank"
+                    className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>Open Homepage</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
+                </div>
+
+                {/* Mini Marquee Container */}
+                <div className="rounded-2xl border border-border/80 bg-softBg/60 p-4 sm:p-5 overflow-x-auto">
+                  <div className="flex items-center gap-8 min-w-max">
+                    <div className="flex items-center gap-2 shrink-0 border-r border-border pr-6">
+                      <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                      <div>
+                        <p className="text-xs font-black text-dark tracking-tight">Trusted By</p>
+                        <p className="text-[10px] text-dark-muted font-medium">Leading brands &amp; businesses</p>
+                      </div>
+                    </div>
+
+                    {brands
+                      .filter((b) => b.active)
+                      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+                      .map((b) => (
+                        <div
+                          key={b.id}
+                          className="group flex flex-col items-center gap-1 shrink-0 px-3 py-2 rounded-xl bg-white border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-sm transition-all"
+                        >
+                          {/* Logo Image */}
+                          <div className="h-9 w-24 flex items-center justify-center">
+                            <img
+                              src={b.logoUrl}
+                              alt={b.alt || b.name}
+                              className="max-h-7 max-w-[85px] w-auto h-auto object-contain transition-transform duration-200 group-hover:scale-105"
+                            />
+                          </div>
+                          <span className="text-[10px] font-bold text-dark-muted group-hover:text-primary transition-colors">
+                            {b.name}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Filter & Search Bar */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark-muted/50" />
+                  <input
+                    type="text"
+                    value={brandSearchQuery}
+                    onChange={(e) => setBrandSearchQuery(e.target.value)}
+                    placeholder="Search brand partners by name or website..."
+                    className="w-full bg-white border border-border rounded-xl pl-10 pr-10 py-2.5 text-xs text-dark placeholder:text-dark-muted/40 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
+                  />
+                  {brandSearchQuery && (
+                    <button
+                      onClick={() => setBrandSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark p-1"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between sm:justify-end gap-3 text-xs text-dark-muted font-medium">
+                  <span>
+                    Showing <strong>{filteredBrands.length}</strong> of {brands.length} partners
+                  </span>
+                  <button
+                    onClick={openAddBrandModal}
+                    className="sm:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-glow-sm"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Brand</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Brands Cards Grid */}
+              {isLoadingBrands ? (
+                <div className="flex flex-col items-center justify-center py-20 text-dark-muted">
+                  <RefreshCw className="w-8 h-8 animate-spin text-primary mb-3" />
+                  <p className="text-sm font-semibold">Loading brand partners...</p>
+                </div>
+              ) : filteredBrands.length === 0 ? (
+                <div className="bg-white border border-border rounded-3xl p-12 text-center text-dark-muted shadow-card">
+                  <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4 shadow-xs">
+                    <Award className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg font-bold text-dark">No Brand Partners Found</h3>
+                  <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
+                    {brandSearchQuery
+                      ? `No partners match "${brandSearchQuery}". Clear your search query or add a new brand partner.`
+                      : "No brand partners configured yet. Add your first brand logo to display in the marquee."}
+                  </p>
+                  <div className="mt-6 flex items-center justify-center gap-3">
+                    {brandSearchQuery && (
+                      <button
+                        onClick={() => setBrandSearchQuery("")}
+                        className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark hover:bg-softBg transition-colors"
+                      >
+                        Clear Search
+                      </button>
+                    )}
+                    <button
+                      onClick={openAddBrandModal}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs shadow-glow-sm transition-all cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Brand Partner</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {filteredBrands.map((brand, index) => (
+                    <div
+                      key={brand.id}
+                      className="bg-white border border-border hover:border-primary/30 rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                    >
+                      <div>
+                        {/* Card Header: Order & Active Toggle */}
+                        <div className="flex items-center justify-between gap-2 mb-4">
+                          <span className="px-2.5 py-1 rounded-xl bg-softBg text-dark font-mono text-[11px] font-black border border-border/80">
+                            #{brand.order ?? index + 1}
+                          </span>
+
+                          <button
+                            onClick={() => handleToggleBrandActive(brand)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${brand.active
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+                                : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200"
+                              }`}
+                            title={brand.active ? "Click to hide from marquee" : "Click to activate in marquee"}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${brand.active ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
+                                }`}
+                            />
+                            <span>{brand.active ? "Active" : "Hidden"}</span>
+                          </button>
+                        </div>
+
+                        {/* Logo Canvas Preview */}
+                        <div className="h-28 rounded-2xl bg-softBg/60 border border-border/70 flex items-center justify-center p-4 relative group-hover:bg-primary-light/20 group-hover:border-primary/20 transition-all overflow-hidden mb-4">
+                          <img
+                            src={brand.logoUrl}
+                            alt={brand.alt || brand.name}
+                            className="max-h-12 max-w-[140px] w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-xs"
+                            onError={(e) => {
+                              // fallback gracefully
+                              e.currentTarget.style.display = "none";
+                            }}
+                          />
+                        </div>
+
+                        {/* Brand Info */}
+                        <div>
+                          <h4 className="text-base font-extrabold text-dark tracking-tight">
+                            {brand.name}
+                          </h4>
+
+                          {brand.websiteUrl ? (
+                            <a
+                              href={brand.websiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline mt-1 truncate max-w-full"
+                            >
+                              <Globe className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{brand.websiteUrl.replace(/^https?:\/\//, "")}</span>
+                              <ExternalLink className="w-2.5 h-2.5 shrink-0 opacity-70" />
+                            </a>
+                          ) : (
+                            <p className="text-xs text-dark-muted/50 mt-1">No website URL linked</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Card Actions Footer */}
+                      <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                        <span className="text-[11px] text-dark-muted/60 font-mono">
+                          Order #{brand.order ?? index + 1}
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openEditBrandModal(brand)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
+                          >
+                            <Edit3 className="w-3.5 h-3.5 text-primary" />
+                            <span>Edit</span>
+                          </button>
+
+                          <button
+                            onClick={() => setDeleteBrandConfirmId(brand.id)}
+                            className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
+                            title="Delete brand partner from marquee"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB 4: SERVICES & CAPABILITIES MARQUEE                   */}
+          {/* ========================================================= */}
+          {currentTab === "capabilities" && (
+            <div>
+              {/* Banner with Stats & Add Button */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-8 border-b border-border">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-3 border border-primary/20">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Interactive Services &amp; Tech Marquee</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Services &amp; Capabilities Badges
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the double-track capabilities and services badges rotating on the homepage. Edit badge titles, category tags, track direction (Track 1 moves left, Track 2 moves right), icons, sequence order, and visibility.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchCapabilities}
+                    disabled={isLoadingCapabilities}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh capabilities list"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingCapabilities ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={() => openAddCapabilityModal()}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Capability Badge</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid for Capabilities */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Badges</p>
+                  <p className="text-2xl font-black text-dark mt-1">{capabilityStats.total}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Across both marquee tracks</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Active in Marquee</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">{capabilityStats.active}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Live on website right now</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Track 1 (Leftward)</p>
+                  <p className="text-2xl font-black text-primary mt-1">{capabilityStats.track1}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Top marquee row badges</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-indigo-700 font-bold">Track 2 (Rightward)</p>
+                  <p className="text-2xl font-black text-indigo-600 mt-1">{capabilityStats.track2}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Bottom marquee row badges</p>
+                </div>
+              </div>
+
+              {/* Live Double-Track Marquee Preview Box */}
+              <div className="bg-white border border-border rounded-3xl p-6 shadow-card mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
+                      Live Double-Track Marquee Preview
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
+                      {capabilities.filter((c) => c.active).length} Active Badges
+                    </span>
+                  </div>
+                  <Link
+                    href="/#services"
+                    target="_blank"
+                    className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>Open Homepage Services</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
+                </div>
+
+                {/* Double Track Container */}
+                <div className="rounded-2xl border border-border/80 bg-softBg/60 p-4 sm:p-5 space-y-3 overflow-x-auto">
+                  {/* Track 1 Strip */}
+                  <div className="flex items-center gap-3 min-w-max">
+                    <span className="px-2.5 py-1 rounded-lg bg-primary text-white text-[10px] font-bold shrink-0 uppercase tracking-wider">
+                      Track 1 (Left)
+                    </span>
+                    {capabilities
+                      .filter((c) => c.active && c.track === 1)
+                      .sort((a, b) => (a.order || 0) - (b.order || 0))
+                      .map((item) => (
+                        <div
+                          key={item.id}
+                          className="px-3.5 py-2 rounded-xl bg-white border border-border/80 flex items-center gap-2 shadow-xs shrink-0"
+                        >
+                          <div className="text-primary">
+                            <CapabilityIcon iconKey={item.iconKey} className="w-4 h-4" />
+                          </div>
+                          <span className="text-xs font-extrabold text-dark whitespace-nowrap">
+                            {item.name}
+                          </span>
+                          <span className="text-[9px] uppercase font-bold text-dark-muted tracking-wider">
+                            {item.category}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Track 2 Strip */}
+                  <div className="flex items-center gap-3 min-w-max">
+                    <span className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-[10px] font-bold shrink-0 uppercase tracking-wider">
+                      Track 2 (Right)
+                    </span>
+                    {capabilities
+                      .filter((c) => c.active && c.track === 2)
+                      .sort((a, b) => (a.order || 0) - (b.order || 0))
+                      .map((item) => (
+                        <div
+                          key={item.id}
+                          className="px-3.5 py-2 rounded-xl bg-white border border-border/80 flex items-center gap-2 shadow-xs shrink-0"
+                        >
+                          <div className="text-indigo-600">
+                            <CapabilityIcon iconKey={item.iconKey} className="w-4 h-4" />
+                          </div>
+                          <span className="text-xs font-extrabold text-dark whitespace-nowrap">
+                            {item.name}
+                          </span>
+                          <span className="text-[9px] uppercase font-bold text-dark-muted tracking-wider">
+                            {item.category}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Filter & Search Bar */}
+              <div className="space-y-4 mb-6">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark-muted/50" />
+                    <input
+                      type="text"
+                      value={capabilitySearchQuery}
+                      onChange={(e) => setCapabilitySearchQuery(e.target.value)}
+                      placeholder="Search capabilities by name, category, or tech..."
+                      className="w-full bg-white border border-border rounded-xl pl-10 pr-10 py-2.5 text-xs text-dark placeholder:text-dark-muted/40 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs transition-all"
+                    />
+                    {capabilitySearchQuery && (
+                      <button
+                        onClick={() => setCapabilitySearchQuery("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark p-1"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Track Selector Tabs */}
+                  <div className="flex items-center gap-1.5 p-1 bg-softBg rounded-xl border border-border self-start sm:self-auto">
+                    <button
+                      onClick={() => setSelectedTrackFilter("all")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedTrackFilter === "all"
+                          ? "bg-white text-primary shadow-xs"
+                          : "text-dark-muted hover:text-dark"
+                        }`}
+                    >
+                      All Tracks ({capabilities.length})
+                    </button>
+                    <button
+                      onClick={() => setSelectedTrackFilter(1)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedTrackFilter === 1
+                          ? "bg-white text-primary shadow-xs"
+                          : "text-dark-muted hover:text-dark"
+                        }`}
+                    >
+                      Track 1 ({capabilities.filter((c) => c.track === 1).length})
+                    </button>
+                    <button
+                      onClick={() => setSelectedTrackFilter(2)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedTrackFilter === 2
+                          ? "bg-white text-primary shadow-xs"
+                          : "text-dark-muted hover:text-dark"
+                        }`}
+                    >
+                      Track 2 ({capabilities.filter((c) => c.track === 2).length})
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category Filter Chips */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                  {CAPABILITY_CATEGORIES.map((cat) => {
+                    const isSelected = selectedCapabilityCategory === cat;
+                    const count =
+                      cat === "All"
+                        ? capabilities.length
+                        : capabilities.filter(
+                          (c) => c.category.toLowerCase() === cat.toLowerCase()
+                        ).length;
+
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCapabilityCategory(cat)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${isSelected
+                            ? "bg-primary text-white border-primary shadow-glow-sm"
+                            : "bg-white border-border text-dark-muted hover:text-dark hover:border-primary/30"
+                          }`}
+                      >
+                        <span>{cat}</span>
+                        <span
+                          className={`ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] ${isSelected ? "bg-white/25 text-white" : "bg-softBg text-dark-muted"
+                            }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Badges Grid */}
+              {isLoadingCapabilities ? (
+                <div className="flex flex-col items-center justify-center py-20 text-dark-muted">
+                  <RefreshCw className="w-8 h-8 animate-spin text-primary mb-3" />
+                  <p className="text-sm font-semibold">Loading capability badges...</p>
+                </div>
+              ) : filteredCapabilities.length === 0 ? (
+                <div className="bg-white border border-border rounded-3xl p-12 text-center text-dark-muted shadow-card">
+                  <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4 shadow-xs">
+                    <Sparkles className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg font-bold text-dark">No Capabilities Found</h3>
+                  <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
+                    {capabilitySearchQuery
+                      ? `No badges match "${capabilitySearchQuery}". Clear your search or add a new badge.`
+                      : "No capability badges configured yet. Add your first service badge to display in the marquee."}
+                  </p>
+                  <div className="mt-6 flex items-center justify-center gap-3">
+                    {capabilitySearchQuery && (
+                      <button
+                        onClick={() => setCapabilitySearchQuery("")}
+                        className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark hover:bg-softBg transition-colors"
+                      >
+                        Clear Search
+                      </button>
+                    )}
+                    <button
+                      onClick={() => openAddCapabilityModal()}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs shadow-glow-sm transition-all cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Capability</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {filteredCapabilities.map((cap) => (
+                    <div
+                      key={cap.id}
+                      className="bg-white border border-border hover:border-primary/30 rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                    >
+                      <div>
+                        {/* Top Row: Track & Active Toggle */}
+                        <div className="flex items-center justify-between gap-2 mb-4">
+                          <span
+                            className={`px-2.5 py-1 rounded-xl text-[11px] font-black font-mono border ${cap.track === 1
+                                ? "bg-primary-light text-primary border-primary/20"
+                                : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                              }`}
+                          >
+                            Track {cap.track} • #{cap.order}
+                          </span>
+
+                          <button
+                            onClick={() => handleToggleCapabilityActive(cap)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${cap.active
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+                                : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200"
+                              }`}
+                            title={cap.active ? "Click to hide from marquee" : "Click to activate in marquee"}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${cap.active ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
+                                }`}
+                            />
+                            <span>{cap.active ? "Active" : "Hidden"}</span>
+                          </button>
+                        </div>
+
+                        {/* Icon Canvas & Badge Info */}
+                        <div className="flex items-start gap-3.5 mb-3">
+                          <div className="w-12 h-12 rounded-2xl bg-primary-light/70 text-primary flex items-center justify-center shrink-0 border border-primary/20 shadow-xs group-hover:scale-110 transition-transform">
+                            <CapabilityIcon iconKey={cap.iconKey} className="w-6 h-6" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm sm:text-base font-extrabold text-dark tracking-tight leading-snug">
+                              {cap.name}
+                            </h4>
+                            <span className="inline-block mt-1 text-[10px] uppercase font-extrabold tracking-wider text-primary bg-primary-light/60 px-2 py-0.5 rounded-md">
+                              {cap.category}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card Actions Footer */}
+                      <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-dark-muted/60">
+                          Icon: {cap.iconKey}
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openEditCapabilityModal(cap)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-primary-light text-xs font-bold text-dark-muted hover:text-primary border border-border hover:border-primary/30 transition-all shadow-xs cursor-pointer"
+                          >
+                            <Edit3 className="w-3.5 h-3.5 text-primary" />
+                            <span>Edit</span>
+                          </button>
+
+                          <button
+                            onClick={() => setDeleteCapabilityConfirmId(cap.id)}
+                            className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all shadow-xs cursor-pointer"
+                            title="Delete capability badge from marquee"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB 5: CONTACT CHANNELS & BRAND TAGLINE SETTINGS          */}
+          {/* ========================================================= */}
+          {currentTab === "company" && (
+            <div className="space-y-8 animate-in fade-in duration-300">
+              {/* Hero Header & Overview */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-white via-softBg to-primary-light/30 border border-border shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider">
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Company Profile &amp; Touchpoints</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+                    Contact Channels &amp; Brand Settings
+                  </h2>
+                  <p className="text-sm text-dark-muted max-w-2xl leading-relaxed">
+                    Directly manage your inquiries email, two phone lines, instant WhatsApp concierge number,
+                    headquarters address, and the official <span className="font-semibold text-primary">&ldquo;Your Vision. Our Expertise.&rdquo;</span> tagline.
+                    Changes save directly and update live across the entire website.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm("Reset all contact and brand fields to default UNIQOVA values?")) {
+                        setCompanyInfo(DEFAULT_COMPANY_INFO);
+                        showToast("success", "Reset form to default company settings. Click Save to persist.");
+                      }
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-white hover:bg-rose-50 border border-border hover:border-rose-300 text-dark-muted hover:text-rose-600 text-xs font-bold transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>Reset Defaults</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Live Interactive Preview Cards */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xs font-extrabold uppercase tracking-wider text-dark-muted flex items-center gap-2">
+                    <Globe className="w-3.5 h-3.5 text-primary" />
+                    <span>Live Website Previews (Instant Synchronized Rendering)</span>
+                  </h3>
+                  <span className="text-[11px] text-dark-muted/70 font-mono">
+                    Footer &bull; WhatsApp Concierge &bull; Brand Header
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Preview 1: Footer Contact Block (Dark Theme Mirror) */}
+                  <div className="rounded-3xl bg-[#0F0D1B] text-white p-6 border border-purple-900/40 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-purple-300/80">
+                          Footer Preview
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+                          Live Preview
+                        </span>
+                      </div>
+
+                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-white mb-4">
+                        CONTACT US
+                      </h4>
+
+                      <div className="space-y-3.5 text-xs text-purple-200/90">
+                        {/* Email */}
+                        <div className="flex items-start gap-2.5">
+                          <Mail className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <div className="min-w-0">
+                            <p className="font-semibold text-white truncate">
+                              {companyInfo.email || "hello@uniquova.com"}
+                            </p>
+                            <p className="text-[10px] text-purple-300/60">
+                              {companyInfo.emailLabel || "Inquiries & RFPs"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Phone 1 */}
+                        <div className="flex items-start gap-2.5">
+                          <Phone className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <div className="min-w-0">
+                            <p className="font-semibold text-white truncate">
+                              {companyInfo.primaryPhone || "+91 (0) 98765-43210"}
+                            </p>
+                            <p className="text-[10px] text-purple-300/60">
+                              {companyInfo.primaryPhoneLabel || "Mon – Fri, 9am – 6pm IST"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Phone 2 (Optional) */}
+                        {companyInfo.secondaryPhone && (
+                          <div className="flex items-start gap-2.5">
+                            <PhoneCall className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                            <div className="min-w-0">
+                              <p className="font-semibold text-white truncate">
+                                {companyInfo.secondaryPhone}
+                              </p>
+                              <p className="text-[10px] text-purple-300/60">
+                                {companyInfo.secondaryPhoneLabel || "Secondary Contact"}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Office Address */}
+                        <div className="flex items-start gap-2.5">
+                          <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <div className="min-w-0">
+                            <p className="font-semibold text-white">
+                              {companyInfo.officeName || "UNIQUOVA Digital HQ"}
+                            </p>
+                            <p className="text-[10px] text-purple-300/60 leading-relaxed">
+                              {companyInfo.address || "Tech Park Corridor, Sector 4, Bangalore & New Delhi, India"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Social Media Icons Live Preview */}
+                      <div className="pt-3.5 mt-3.5 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[10px] text-purple-300/70 font-semibold uppercase tracking-wider">
+                          Social Channels:
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {companyInfo.socialLinks?.linkedin?.enabled !== false && Boolean(companyInfo.socialLinks?.linkedin?.url?.trim()) && (
+                            <span
+                              className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
+                              title="LinkedIn (Visible)"
+                            >
+                              in
+                            </span>
+                          )}
+                          {companyInfo.socialLinks?.twitter?.enabled !== false && Boolean(companyInfo.socialLinks?.twitter?.url?.trim()) && (
+                            <span
+                              className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
+                              title="Twitter / X (Visible)"
+                            >
+                              𝕏
+                            </span>
+                          )}
+                          {companyInfo.socialLinks?.instagram?.enabled !== false && Boolean(companyInfo.socialLinks?.instagram?.url?.trim()) && (
+                            <span
+                              className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
+                              title="Instagram (Visible)"
+                            >
+                              ig
+                            </span>
+                          )}
+                          {companyInfo.socialLinks?.facebook?.enabled !== false && Boolean(companyInfo.socialLinks?.facebook?.url?.trim()) && (
+                            <span
+                              className="w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
+                              title="Facebook (Visible)"
+                            >
+                              fb
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-white/10 text-[10px] text-purple-300/60 truncate">
+                      &copy; {new Date().getFullYear()} UNIQUOVA Digital Agency. {companyInfo.tagline}
+                    </div>
+                  </div>
+
+                  {/* Preview 2: Floating WhatsApp Concierge Widget */}
+                  <div className="rounded-3xl bg-gradient-to-br from-emerald-950 via-[#0a2318] to-emerald-900 text-white p-6 border border-emerald-700/40 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3 mb-4">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-300">
+                          WhatsApp Concierge
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/30">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                          <span>Online</span>
+                        </span>
+                      </div>
+
+                      {/* Popout bubble mockup */}
+                      <div className="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 border border-emerald-200 text-dark shadow-lg mb-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                            <MessageCircle className="w-4 h-4 fill-white" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-dark leading-tight">
+                              Chat on WhatsApp
+                            </p>
+                            <p className="text-[10px] text-dark-muted">
+                              Replies in under 5 minutes
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          Active
+                        </span>
+                      </div>
+
+                      <div className="space-y-2 text-xs">
+                        <div>
+                          <span className="text-[10px] uppercase tracking-wider text-emerald-300/70 font-bold">
+                            Assigned WhatsApp Number
+                          </span>
+                          <p className="font-mono font-bold text-sm text-emerald-100">
+                            {companyInfo.whatsappNumber || "+91 98765 43210"}
+                          </p>
+                        </div>
+
+                        <div>
+                          <span className="text-[10px] uppercase tracking-wider text-emerald-300/70 font-bold">
+                            Default Greeting Message
+                          </span>
+                          <p className="text-[11px] text-emerald-200/80 italic line-clamp-2">
+                            &ldquo;{companyInfo.whatsappMessage || "Hi UNIQOVA Team! I'm interested in discussing a new digital project."}&rdquo;
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 mt-4 border-t border-emerald-500/20 flex items-center justify-between">
+                      <span className="text-[10px] text-emerald-300/70">
+                        Destination: wa.me
+                      </span>
+                      <a
+                        href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                      >
+                        <span>Test WhatsApp Link</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Preview 3: Official Brand Identity & Tagline */}
+                  <div className="rounded-3xl bg-white border border-border p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between border-b border-border pb-3 mb-4">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-dark-muted">
+                          Brand Identity Preview
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary-light text-primary font-bold">
+                          Tagline Sync
+                        </span>
+                      </div>
+
+                      {/* Logo with tagline mockup */}
+                      <div className="p-4 rounded-2xl bg-softBg/80 border border-border/80 flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center text-primary font-black text-xl shrink-0">
+                          <Sparkles className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <div className="flex items-baseline">
+                            <span className="font-black text-lg text-dark tracking-tight">UNIQUOVA</span>
+                            <span className="text-primary font-black text-lg leading-none ml-0.5">.</span>
+                          </div>
+                          <p className="text-xs font-semibold text-primary tracking-tight">
+                            {companyInfo.tagline || "Your Vision. Our Expertise."}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 text-xs text-dark-muted">
+                        <p className="font-medium text-dark">Where this tagline displays:</p>
+                        <ul className="space-y-1.5 text-[11px] list-disc list-inside">
+                          <li>Main Header Logo Subtitle</li>
+                          <li>Footer &amp; CMS Login Gateways</li>
+                          <li>Page Metadata &amp; Search Engine Snippets</li>
+                          <li>Official Copyright &amp; Legal Notices</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-[11px] text-dark-muted font-mono">
+                      <span>Status: Dynamic Sync</span>
+                      <span className="text-emerald-600 font-bold">&bull; Verified Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Editing Form Cards */}
+              <form onSubmit={handleSaveCompanyInfo} className="space-y-6">
+                {/* CARD 1: Email Address */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-dark">
+                        1. Official Inquiries Email Address
+                      </h3>
+                      <p className="text-xs text-dark-muted">
+                        RFP submissions, partnership queries, and client communication address.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        Email Address <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Mail className="w-4 h-4 text-dark-muted/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="email"
+                          required
+                          value={companyInfo.email}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, email: e.target.value })
+                          }
+                          placeholder="hello@uniquova.com"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        />
+                      </div>
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        Used for mailto: links in Header, Contact, and Footer.
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        Email Label / Subtitle
+                      </label>
+                      <input
+                        type="text"
+                        value={companyInfo.emailLabel}
+                        onChange={(e) =>
+                          setCompanyInfo({ ...companyInfo, emailLabel: e.target.value })
+                        }
+                        placeholder="Inquiries & RFPs"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      />
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        Appears beneath the email in the footer.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CARD 2: Two Contact Phone Numbers */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-dark">
+                        2. Direct Contact Phone Numbers (Two Dedicated Lines)
+                      </h3>
+                      <p className="text-xs text-dark-muted">
+                        Provide both primary sales line and secondary support/management line.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Contact Number 1 (Primary) */}
+                    <div className="p-5 rounded-2xl bg-softBg/60 border border-border space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-extrabold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                          <Phone className="w-3.5 h-3.5" />
+                          <span>Contact Line 1 (Primary)</span>
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          Required
+                        </span>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-dark mb-1.5">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={companyInfo.primaryPhone}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, primaryPhone: e.target.value })
+                          }
+                          placeholder="+91 (0) 98765-43210"
+                          className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-dark mb-1.5">
+                          Availability Hours / Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          value={companyInfo.primaryPhoneLabel}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, primaryPhoneLabel: e.target.value })
+                          }
+                          placeholder="Mon – Fri, 9am – 6pm IST"
+                          className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Contact Number 2 (Secondary) */}
+                    <div className="p-5 rounded-2xl bg-softBg/60 border border-border space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-extrabold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                          <PhoneCall className="w-3.5 h-3.5" />
+                          <span>Contact Line 2 (Secondary / Support)</span>
+                        </span>
+                        <span className="text-[10px] font-bold text-dark-muted bg-white px-2 py-0.5 rounded-md border border-border">
+                          Optional
+                        </span>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-dark mb-1.5">
+                          Second Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          value={companyInfo.secondaryPhone}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, secondaryPhone: e.target.value })
+                          }
+                          placeholder="+91 (0) 98765-43211"
+                          className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-dark mb-1.5">
+                          Second Line Subtitle / Label
+                        </label>
+                        <input
+                          type="text"
+                          value={companyInfo.secondaryPhoneLabel}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, secondaryPhoneLabel: e.target.value })
+                          }
+                          placeholder="Support & Direct Line"
+                          className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CARD 3: Instant WhatsApp Concierge Number */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                      <MessageCircle className="w-5 h-5 fill-emerald-600 text-transparent" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-dark">
+                        3. WhatsApp Concierge &amp; Floating Chat Settings
+                      </h3>
+                      <p className="text-xs text-dark-muted">
+                        Direct click-to-chat integration for floating pop-up widget and contact channels.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        WhatsApp Number (With Country Code) <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <MessageCircle className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          required
+                          value={companyInfo.whatsappNumber}
+                          onChange={(e) =>
+                            setCompanyInfo({ ...companyInfo, whatsappNumber: e.target.value })
+                          }
+                          placeholder="+91 98765 43210"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all font-mono"
+                        />
+                      </div>
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        Auto-sanitized to international format (e.g. <code>919876543210</code> for <code>wa.me/919876543210</code>).
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        Pre-filled Chat Message
+                      </label>
+                      <input
+                        type="text"
+                        value={companyInfo.whatsappMessage}
+                        onChange={(e) =>
+                          setCompanyInfo({ ...companyInfo, whatsappMessage: e.target.value })
+                        }
+                        placeholder="Hi UNIQOVA Team! I'm interested in discussing a project."
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                      />
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        The pre-filled text in WhatsApp when clients click to chat.
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Generated WhatsApp link showcase */}
+                  <div className="mt-4 p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 text-xs text-emerald-950 font-mono truncate">
+                      <span className="font-bold text-emerald-700 shrink-0">Live URL:</span>
+                      <span className="truncate">{formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}</span>
+                    </div>
+                    <a
+                      href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs"
+                    >
+                      <span>Test Chat</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+
+                  {/* Homepage CTA Live Mirror Preview */}
+                  <div className="mt-6 pt-6 border-t border-border">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-bold uppercase tracking-wider text-dark flex items-center gap-2">
+                        <Sparkles className="w-3.5 h-3.5 text-primary" />
+                        <span>Homepage CTA &ldquo;Chat on WhatsApp&rdquo; Mirror</span>
+                      </span>
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        Auto-Tracks Inquiries in CMS
+                      </span>
+                    </div>
+
+                    <div className="rounded-3xl bg-gradient-to-br from-[#120e24] via-[#1a1438] to-[#0d091e] p-6 sm:p-8 text-white border border-purple-500/20 shadow-xl relative overflow-hidden">
+                      <div className="text-center space-y-3 relative z-10">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-purple-200 uppercase tracking-wider">
+                          <Sparkles className="w-3 h-3 text-purple-300" />
+                          <span>Let&apos;s Build Something Iconic</span>
+                        </div>
+                        <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                          Have an Idea? <br className="hidden sm:inline" />Let&apos;s Make It Happen.
+                        </h4>
+                        <p className="text-xs text-purple-200/80 max-w-lg mx-auto">
+                          From e-commerce marketplaces to custom web and mobile apps, our team is ready to scale your vision.
+                        </p>
+
+                        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                          <div className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-xs opacity-90 shadow-glow-sm">
+                            Start Your Project &rarr;
+                          </div>
+                          <a
+                            href={formatWhatsAppUrl(companyInfo.whatsappNumber, companyInfo.whatsappMessage)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-5 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Chat on WhatsApp</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-dark-muted mt-2.5 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>
+                        When visitors click &ldquo;Chat on WhatsApp&rdquo; on the homepage CTA banner, a lead inquiry is automatically stored in your <strong className="text-dark">Client Queries</strong> tab with source <code>whatsapp_cta</code>.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* CARD 4: Physical Office & Headquarters Address */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-dark">
+                        4. Physical Office Headquarters &amp; Address
+                      </h3>
+                      <p className="text-xs text-dark-muted">
+                        Appears in the footer contact block and contact discovery page.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="sm:col-span-1">
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        Office / Campus Name <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={companyInfo.officeName}
+                        onChange={(e) =>
+                          setCompanyInfo({ ...companyInfo, officeName: e.target.value })
+                        }
+                        placeholder="UNIQUOVA Digital HQ"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-semibold"
+                      />
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        e.g. UNIQUOVA Digital HQ or Studio Hub.
+                      </span>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                        Complete Street &amp; City Address <span className="text-rose-500">*</span>
+                      </label>
+                      <textarea
+                        rows={2}
+                        required
+                        value={companyInfo.address}
+                        onChange={(e) =>
+                          setCompanyInfo({ ...companyInfo, address: e.target.value })
+                        }
+                        placeholder="Tech Park Corridor, Sector 4, Bangalore & New Delhi, India"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-white text-dark text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none leading-relaxed"
+                      />
+                      <span className="text-[11px] text-dark-muted mt-1 block">
+                        Full street, corridor, sector, and location address.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CARD 5: Official Brand Tagline */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-purple-100 text-primary flex items-center justify-center shrink-0">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-dark">
+                        5. Official Brand Tagline
+                      </h3>
+                      <p className="text-xs text-dark-muted">
+                        Your company&apos;s primary slogan (&ldquo;Your Vision. Our Expertise.&rdquo;).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="max-w-2xl">
+                    <label className="block text-xs font-bold text-dark uppercase tracking-wider mb-2">
+                      Official Tagline <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={companyInfo.tagline}
+                      onChange={(e) =>
+                        setCompanyInfo({ ...companyInfo, tagline: e.target.value })
+                      }
+                      placeholder="Your Vision. Our Expertise."
+                      className="w-full px-4 py-3 rounded-xl border border-border bg-white text-dark text-base font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    />
+                    <div className="mt-2 flex items-center gap-2 text-xs text-dark-muted">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      <span>Renders directly under the UNIQOVA monogram logo and in footer legal bar.</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CARD 6: Social Media Channels & Visibility */}
+                <div className="p-6 sm:p-7 rounded-3xl bg-white border border-border shadow-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-purple-100 text-primary flex items-center justify-center shrink-0">
+                        <Share2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-extrabold text-dark">
+                          6. Official Social Media Channels &amp; Visibility Controls
+                        </h3>
+                        <p className="text-xs text-dark-muted">
+                          Directly edit your social URLs and toggle any icon on/off to show or hide it from the website footer.
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="text-[11px] font-semibold text-primary bg-primary-light/60 px-3 py-1 rounded-full border border-primary/20 self-start sm:self-auto">
+                      4 Social Channels Available
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Platform 1: LinkedIn */}
+                    <div className={`p-5 rounded-2xl border transition-all ${companyInfo.socialLinks?.linkedin?.enabled !== false
+                        ? "bg-white border-border shadow-xs"
+                        : "bg-slate-50/70 border-slate-200 opacity-75"
+                      }`}>
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center shrink-0 font-bold text-xs">
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.6 1.6 0 0 0-1.6 1.6c0 .88.72 1.63 1.6 1.63.88 0 1.6-.75 1.6-1.63 0-.88-.72-1.6-1.6-1.6" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-dark">LinkedIn</h4>
+                            <span className="text-[10px] text-dark-muted">Professional Network</span>
+                          </div>
+                        </div>
+
+                        {/* Visibility Toggle Button */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSocialVisibility("linkedin")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${companyInfo.socialLinks?.linkedin?.enabled !== false
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                              : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
+                            }`}
+                          title="Click to toggle visibility on website (instant save)"
+                        >
+                          <span className={`w-2 h-2 rounded-full ${companyInfo.socialLinks?.linkedin?.enabled !== false
+                              ? "bg-emerald-500 animate-pulse"
+                              : "bg-slate-400"
+                            }`} />
+                          <span>{companyInfo.socialLinks?.linkedin?.enabled !== false ? "Visible" : "Hidden"}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
+                          Profile URL
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="url"
+                            value={companyInfo.socialLinks?.linkedin?.url ?? "https://linkedin.com"}
+                            onChange={(e) => {
+                              const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
+                              setCompanyInfo({
+                                ...companyInfo,
+                                socialLinks: {
+                                  ...current,
+                                  linkedin: {
+                                    ...current.linkedin,
+                                    url: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                            placeholder="https://linkedin.com/company/uniquova"
+                            className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                          />
+                          {companyInfo.socialLinks?.linkedin?.url && (
+                            <a
+                              href={companyInfo.socialLinks.linkedin.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
+                              title="Test Link in new tab"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Platform 2: Twitter / X */}
+                    <div className={`p-5 rounded-2xl border transition-all ${companyInfo.socialLinks?.twitter?.enabled !== false
+                        ? "bg-white border-border shadow-xs"
+                        : "bg-slate-50/70 border-slate-200 opacity-75"
+                      }`}>
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-black/10 text-dark flex items-center justify-center shrink-0 font-bold text-xs">
+                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-dark">Twitter / X</h4>
+                            <span className="text-[10px] text-dark-muted">Microblogging</span>
+                          </div>
+                        </div>
+
+                        {/* Visibility Toggle Button */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSocialVisibility("twitter")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${companyInfo.socialLinks?.twitter?.enabled !== false
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                              : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
+                            }`}
+                          title="Click to toggle visibility on website (instant save)"
+                        >
+                          <span className={`w-2 h-2 rounded-full ${companyInfo.socialLinks?.twitter?.enabled !== false
+                              ? "bg-emerald-500 animate-pulse"
+                              : "bg-slate-400"
+                            }`} />
+                          <span>{companyInfo.socialLinks?.twitter?.enabled !== false ? "Visible" : "Hidden"}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
+                          Profile URL
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="url"
+                            value={companyInfo.socialLinks?.twitter?.url ?? "https://twitter.com"}
+                            onChange={(e) => {
+                              const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
+                              setCompanyInfo({
+                                ...companyInfo,
+                                socialLinks: {
+                                  ...current,
+                                  twitter: {
+                                    ...current.twitter,
+                                    url: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                            placeholder="https://x.com/uniquova"
+                            className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                          />
+                          {companyInfo.socialLinks?.twitter?.url && (
+                            <a
+                              href={companyInfo.socialLinks.twitter.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
+                              title="Test Link in new tab"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Platform 3: Instagram */}
+                    <div className={`p-5 rounded-2xl border transition-all ${companyInfo.socialLinks?.instagram?.enabled !== false
+                        ? "bg-white border-border shadow-xs"
+                        : "bg-slate-50/70 border-slate-200 opacity-75"
+                      }`}>
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#E4405F]/10 text-[#E4405F] flex items-center justify-center shrink-0 font-bold text-xs">
+                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-dark">Instagram</h4>
+                            <span className="text-[10px] text-dark-muted">Visual Content</span>
+                          </div>
+                        </div>
+
+                        {/* Visibility Toggle Button */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSocialVisibility("instagram")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${companyInfo.socialLinks?.instagram?.enabled !== false
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                              : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
+                            }`}
+                          title="Click to toggle visibility on website (instant save)"
+                        >
+                          <span className={`w-2 h-2 rounded-full ${companyInfo.socialLinks?.instagram?.enabled !== false
+                              ? "bg-emerald-500 animate-pulse"
+                              : "bg-slate-400"
+                            }`} />
+                          <span>{companyInfo.socialLinks?.instagram?.enabled !== false ? "Visible" : "Hidden"}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
+                          Profile URL
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="url"
+                            value={companyInfo.socialLinks?.instagram?.url ?? "https://instagram.com"}
+                            onChange={(e) => {
+                              const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
+                              setCompanyInfo({
+                                ...companyInfo,
+                                socialLinks: {
+                                  ...current,
+                                  instagram: {
+                                    ...current.instagram,
+                                    url: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                            placeholder="https://instagram.com/uniquova"
+                            className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                          />
+                          {companyInfo.socialLinks?.instagram?.url && (
+                            <a
+                              href={companyInfo.socialLinks.instagram.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
+                              title="Test Link in new tab"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Platform 4: Facebook */}
+                    <div className={`p-5 rounded-2xl border transition-all ${companyInfo.socialLinks?.facebook?.enabled !== false
+                        ? "bg-white border-border shadow-xs"
+                        : "bg-slate-50/70 border-slate-200 opacity-75"
+                      }`}>
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center shrink-0 font-bold text-xs">
+                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-dark">Facebook</h4>
+                            <span className="text-[10px] text-dark-muted">Community Page</span>
+                          </div>
+                        </div>
+
+                        {/* Visibility Toggle Button */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSocialVisibility("facebook")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${companyInfo.socialLinks?.facebook?.enabled !== false
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                              : "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300"
+                            }`}
+                          title="Click to toggle visibility on website (instant save)"
+                        >
+                          <span className={`w-2 h-2 rounded-full ${companyInfo.socialLinks?.facebook?.enabled !== false
+                              ? "bg-emerald-500 animate-pulse"
+                              : "bg-slate-400"
+                            }`} />
+                          <span>{companyInfo.socialLinks?.facebook?.enabled !== false ? "Visible" : "Hidden"}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-dark-muted uppercase tracking-wider mb-1.5">
+                          Profile / Page URL
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="url"
+                            value={companyInfo.socialLinks?.facebook?.url ?? "https://facebook.com"}
+                            onChange={(e) => {
+                              const current = companyInfo.socialLinks || DEFAULT_COMPANY_INFO.socialLinks!;
+                              setCompanyInfo({
+                                ...companyInfo,
+                                socialLinks: {
+                                  ...current,
+                                  facebook: {
+                                    ...current.facebook,
+                                    url: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                            placeholder="https://facebook.com/uniquova"
+                            className="flex-1 px-3.5 py-2 rounded-xl border border-border bg-white text-dark text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-mono"
+                          />
+                          {companyInfo.socialLinks?.facebook?.url && (
+                            <a
+                              href={companyInfo.socialLinks.facebook.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary border border-border transition-all cursor-pointer"
+                              title="Test Link in new tab"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 p-3.5 rounded-2xl bg-softBg/60 border border-border/80 flex items-center gap-2.5 text-xs text-dark-muted">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                    <span>
+                      When a social network is toggled to <strong className="text-slate-700">Hidden</strong>, its circular icon is automatically removed from the live website footer.
+                    </span>
+                  </div>
+                </div>
+
+                {/* Form Action Footer */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-border">
+                  <p className="text-xs text-dark-muted font-medium">
+                    Saving updates your email, phone numbers, WhatsApp link, and tagline immediately across all pages.
+                  </p>
+
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (window.confirm("Discard changes and reload saved settings?")) {
+                          fetchCompanyInfo();
+                          showToast("success", "Reloaded saved settings.");
+                        }
+                      }}
+                      disabled={isLoadingCompanyInfo}
+                      className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white hover:bg-softBg border border-border text-dark-muted hover:text-dark text-xs font-bold transition-all cursor-pointer"
+                    >
+                      Discard Changes
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={isSavingCompanyInfo}
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white font-extrabold text-xs sm:text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <Save className={`w-4 h-4 ${isSavingCompanyInfo ? "animate-spin" : ""}`} />
+                      <span>{isSavingCompanyInfo ? "Saving..." : "Save Settings"}</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB 6: SELECTED WORK SHOWCASE (Ideas brought to life)     */}
+          {/* ========================================================= */}
+          {currentTab === "selected-work" && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Homepage 3D Cinema Showcase</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Selected Work Showcase Slides
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the showcase cards rotating in the 3D scroll-up cinema section on the homepage.
+                    Update high-resolution images, video loops, alt descriptions, and slide sequences with instant real-time sync.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchSelectedWorks}
+                    disabled={isLoadingSelectedWorks}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh Showcase Slides"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingSelectedWorks ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddSelectedWorkModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Showcase Slide</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Slides</p>
+                  <p className="text-2xl font-black text-dark mt-1">{selectedWorks.length}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured cinema showcases</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Image Slides</p>
+                  <p className="text-2xl font-black text-primary mt-1">
+                    {selectedWorks.filter((w) => !w.isVideo).length}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">High-definition showcases</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Video Loops</p>
+                  <p className="text-2xl font-black text-purple-600 mt-1">
+                    {selectedWorks.filter((w) => w.isVideo).length}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Motion backgrounds</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Autoplay Interval</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">2.0s</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Smooth automated shift</p>
+                </div>
+              </div>
+
+              {/* Live Homepage Section Preview Strip */}
+              <div className="bg-white border border-border rounded-3xl p-6 shadow-card">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
+                      Live Homepage Showcase Order
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
+                      {selectedWorks.length} Slides in Rotation
+                    </span>
+                  </div>
+                  <Link
+                    href="/#selected-work"
+                    target="_blank"
+                    className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>Preview Section on Homepage</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                {/* Horizontal Thumbnail Strip */}
+                <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                  {selectedWorks.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      className="relative w-36 sm:w-44 h-24 rounded-2xl overflow-hidden border border-border shrink-0 bg-dark group shadow-xs"
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-mono font-bold text-white">
+                        #{String(idx + 1).padStart(2, "0")}
+                      </div>
+                      {item.isVideo && (
+                        <div className="absolute top-2 right-2 p-1 rounded-md bg-purple-600/80 text-white text-[9px]">
+                          <Video className="w-3 h-3" />
+                        </div>
+                      )}
+                      <p className="absolute bottom-1.5 left-2 right-2 text-[11px] font-bold text-white truncate">
+                        {item.title}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Showcase Cards Grid */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-black text-dark">
+                    All Showcase Slides ({selectedWorks.length})
+                  </h2>
+                  <span className="text-xs text-dark-muted font-medium">
+                    Use arrows to reorder slide sequence
+                  </span>
+                </div>
+
+                {isLoadingSelectedWorks && selectedWorks.length === 0 ? (
+                  <div className="p-12 text-center bg-white border border-border rounded-3xl">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">Loading showcase slides...</p>
+                  </div>
+                ) : selectedWorks.length === 0 ? (
+                  <div className="p-12 text-center bg-white border border-border rounded-3xl">
+                    <Layers className="w-12 h-12 text-dark-muted/40 mx-auto mb-3" />
+                    <h3 className="text-base font-bold text-dark">No showcase slides found</h3>
+                    <p className="text-xs text-dark-muted mt-1 max-w-sm mx-auto">
+                      Add your first showcase slide to display in the homepage 3D scroll-up showcase.
+                    </p>
+                    <button
+                      onClick={openAddSelectedWorkModal}
+                      className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-glow-sm"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add First Slide</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedWorks.map((item, idx) => (
+                      <div
+                        key={item.id}
+                        className="bg-white border border-border rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                      >
+                        <div className="space-y-3">
+                          {/* Slide Preview & Badges */}
+                          <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden bg-black border border-border">
+                            {item.isVideo && item.videoSrc ? (
+                              <video
+                                src={item.videoSrc}
+                                poster={item.src}
+                                muted
+                                loop
+                                playsInline
+                                autoPlay
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <img
+                                src={item.src}
+                                alt={item.alt || item.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              />
+                            )}
+
+                            {/* Top Badges */}
+                            <div className="absolute top-3 left-3 flex items-center gap-2">
+                              <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white font-mono text-xs font-bold border border-white/10">
+                                #{String(idx + 1).padStart(2, "0")}
+                              </span>
+                              <span
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${item.isVideo
+                                    ? "bg-purple-600/90 text-white"
+                                    : "bg-white/90 text-dark"
+                                  }`}
+                              >
+                                {item.isVideo ? "Video Loop" : "Static Image"}
+                              </span>
+                            </div>
+
+                            {/* Reordering Controls in preview */}
+                            <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/10">
+                              <button
+                                type="button"
+                                onClick={() => handleMoveSelectedWork(idx, "up")}
+                                disabled={idx === 0}
+                                className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+                                title="Move Slide Up"
+                              >
+                                <ChevronUp className="w-4 h-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleMoveSelectedWork(idx, "down")}
+                                disabled={idx === selectedWorks.length - 1}
+                                className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+                                title="Move Slide Down"
+                              >
+                                <ChevronDown className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Title and Media Info */}
+                          <div>
+                            <h3 className="text-base font-extrabold text-dark leading-snug">
+                              {item.title}
+                            </h3>
+                            {item.alt && (
+                              <p className="text-xs text-dark-muted line-clamp-2 mt-1 leading-relaxed">
+                                {item.alt}
+                              </p>
+                            )}
+                            <div className="mt-2 text-[11px] font-mono text-dark-muted/80 bg-softBg px-2.5 py-1.5 rounded-lg truncate border border-border/60">
+                              <span className="font-bold text-dark">Source:</span> {item.src}
+                            </div>
+                            {item.isVideo && item.videoSrc && (
+                              <div className="mt-1 text-[11px] font-mono text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg truncate border border-purple-200">
+                                <span className="font-bold">Video:</span> {item.videoSrc}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Card Action Footer */}
+                        <div className="pt-4 mt-4 border-t border-border flex items-center justify-between gap-2">
+                          <span className="text-[11px] font-semibold text-dark-muted">
+                            Slide #{idx + 1} of {selectedWorks.length}
+                          </span>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => openEditSelectedWorkModal(item)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-softBg hover:bg-primary-light text-dark-muted hover:text-primary text-xs font-bold transition-all border border-border hover:border-primary/30 cursor-pointer"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>Edit</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => setDeleteSelectedWorkConfirmId(item.id)}
+                              className="p-1.5 rounded-xl bg-softBg hover:bg-rose-50 text-dark-muted hover:text-rose-600 transition-all border border-border hover:border-rose-200 cursor-pointer"
+                              title="Delete slide"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB 6: TRUSTED BY AI FOUNDERS CMS                         */}
+          {/* ========================================================= */}
+          {currentTab === "trusted-founders" && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                    <Users className="w-3.5 h-3.5" />
+                    <span>Homepage AI Founders Carousel</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Trusted by AI Founders Showcase
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the flagship founder stories, testimonials, and dual conveyor deliverables carousel
+                    featured on the homepage. Edit quotes, founder avatars, custom brand logos, impact metrics, and showcase assets.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchFounders}
+                    disabled={isLoadingFounders}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh Founder Stories"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingFounders ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddFounderModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Founder Story</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Stories</p>
+                  <p className="text-2xl font-black text-dark mt-1">{founders.length}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Active founder case studies</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Deliverable Items</p>
+                  <p className="text-2xl font-black text-primary mt-1">
+                    {founders.reduce((acc, f) => acc + (f.workImages?.length || 0), 0)}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">High-res marquee assets</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Custom Logos</p>
+                  <p className="text-2xl font-black text-purple-600 mt-1">
+                    {founders.filter((f) => f.customLogoUrl).length}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Uploaded brand marks</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Homepage Live</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">Interactive</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Dual marquee conveyor</p>
+                </div>
+              </div>
+
+              {/* Live Homepage Section Preview Strip */}
+              <div className="bg-white border border-border rounded-3xl p-6 shadow-card">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <h3 className="text-xs uppercase tracking-wider font-extrabold text-dark">
+                      Carousel Slide Sequence
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px] font-bold">
+                      {founders.length} Brands in Rotation
+                    </span>
+                  </div>
+                  <Link
+                    href="/#trusted-by"
+                    target="_blank"
+                    className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>Preview Section on Live Site</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                {/* Horizontal Stories Carousel Preview */}
+                <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                  {founders.map((story, idx) => (
+                    <div
+                      key={story.id}
+                      className="relative w-48 sm:w-56 rounded-2xl overflow-hidden border border-border shrink-0 bg-white p-3.5 shadow-xs flex flex-col justify-between group hover:border-primary/50 transition-all"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono font-bold text-dark-muted">
+                            #{String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <div
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: story.accentColor || "#7545F5" }}
+                          />
+                        </div>
+                        <p className="font-extrabold text-xs text-dark truncate">{story.companyName}</p>
+                        <p className="text-[10px] text-dark-muted/80 line-clamp-2 mt-1 italic">
+                          &quot;{story.quote}&quot;
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-3 pt-2 border-t border-border/60">
+                        <img
+                          src={story.founderAvatar || "/images/team/team-1.jpg"}
+                          alt={story.founderName}
+                          className="w-5 h-5 rounded-full object-cover shrink-0"
+                        />
+                        <span className="text-[10px] font-bold text-dark truncate">
+                          {story.founderName}
+                        </span>
+                        <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-softBg text-dark-muted shrink-0">
+                          {story.workImages?.length || 0} imgs
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Founder Stories Management List */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between px-1">
+                  <h2 className="text-lg font-black text-dark tracking-tight">
+                    Configured Founder Stories ({founders.length})
+                  </h2>
+                  <span className="text-xs text-dark-muted font-medium">
+                    Drag or use arrows to reorder slide sequence
+                  </span>
+                </div>
+
+                {founders.length === 0 ? (
+                  <div className="bg-white border border-border rounded-3xl p-12 text-center shadow-card">
+                    <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary mx-auto flex items-center justify-center mb-4 shadow-sm">
+                      <Users className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-lg font-black text-dark mb-1">No Founder Stories Found</h3>
+                    <p className="text-xs text-dark-muted max-w-md mx-auto mb-6 leading-relaxed">
+                      Add founder testimonials and showcase deliverables to appear in the &quot;Trusted by AI founders&quot; section on the homepage.
+                    </p>
+                    <button
+                      onClick={openAddFounderModal}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Create First Founder Story</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {founders.map((story, index) => (
+                      <div
+                        key={story.id}
+                        className="bg-white border border-border rounded-3xl p-6 sm:p-7 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group"
+                      >
+                        {/* Top Accent Strip */}
+                        <div
+                          className="absolute top-0 left-0 right-0 h-1.5"
+                          style={{ backgroundColor: story.accentColor || "#7545F5" }}
+                        />
+
+                        {/* Header Row */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-border">
+                          <div className="flex items-center gap-3">
+                            <span className="px-2.5 py-1 rounded-xl bg-softBg text-dark font-mono text-xs font-black">
+                              #{String(index + 1).padStart(2, "0")}
+                            </span>
+
+                            {/* Company Logo / Mark */}
+                            {story.customLogoUrl ? (
+                              <img
+                                src={story.customLogoUrl}
+                                alt={story.companyName}
+                                className="h-7 w-auto max-w-[130px] object-contain"
+                              />
+                            ) : (
+                              <div className="flex items-center gap-1.5">
+                                <span
+                                  className="px-2 py-0.5 rounded text-[10px] font-black uppercase text-white tracking-widest"
+                                  style={{ backgroundColor: story.accentColor || "#7545F5" }}
+                                >
+                                  {story.logoType || story.companyName.substring(0, 4)}
+                                </span>
+                                <span className="font-black text-base text-dark">
+                                  {story.companyName}
+                                </span>
+                              </div>
+                            )}
+
+                            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary-light text-primary hidden md:inline-block">
+                              {story.companyCategory}
+                            </span>
+                          </div>
+
+                          {/* Card Action Buttons */}
+                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                            {/* Reorder Buttons */}
+                            <div className="flex items-center bg-softBg border border-border rounded-xl p-0.5">
+                              <button
+                                type="button"
+                                onClick={() => handleMoveFounder(index, "up")}
+                                disabled={index === 0}
+                                className="p-1 rounded-lg hover:bg-white text-dark-muted hover:text-dark disabled:opacity-30 transition-all cursor-pointer"
+                                title="Move Slide Earlier"
+                              >
+                                <ChevronUp className="w-4 h-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleMoveFounder(index, "down")}
+                                disabled={index === founders.length - 1}
+                                className="p-1 rounded-lg hover:bg-white text-dark-muted hover:text-dark disabled:opacity-30 transition-all cursor-pointer"
+                                title="Move Slide Later"
+                              >
+                                <ChevronDown className="w-4 h-4" />
+                              </button>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => openEditFounderModal(story)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-primary-light text-dark-muted hover:text-primary transition-all border border-border text-xs font-bold cursor-pointer shadow-xs"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>Edit Story</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => setDeleteFounderConfirmId(story.id)}
+                              className="p-1.5 rounded-xl bg-softBg hover:bg-rose-50 text-dark-muted hover:text-rose-600 transition-all border border-border hover:border-rose-200 cursor-pointer"
+                              title="Delete founder story"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Main Story Content */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                          {/* Quote & Founder Meta */}
+                          <div className="lg:col-span-2 space-y-4">
+                            <blockquote className="text-sm sm:text-base font-serif italic text-dark leading-relaxed pl-3 border-l-2 border-primary/40">
+                              &quot;{story.quote}&quot;
+                            </blockquote>
+
+                            {/* Founder Details */}
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={story.founderAvatar || "/images/team/team-1.jpg"}
+                                alt={story.founderName}
+                                className="w-10 h-10 rounded-full object-cover border border-border shadow-xs"
+                              />
+                              <div>
+                                <p className="font-extrabold text-xs text-dark">{story.founderName}</p>
+                                <p className="text-[11px] text-dark-muted">{story.founderRole}</p>
+                              </div>
+                              {story.projectLink && (
+                                <Link
+                                  href={story.projectLink}
+                                  target="_blank"
+                                  className="ml-auto text-[11px] font-bold text-primary hover:underline inline-flex items-center gap-1"
+                                >
+                                  <span>See the project</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </Link>
+                              )}
+                            </div>
+
+                            {/* Case study summary */}
+                            {story.caseStudySummary && (
+                              <p className="text-xs text-dark-muted leading-relaxed font-medium">
+                                {story.caseStudySummary}
+                              </p>
+                            )}
+
+                            {/* Metrics Pills */}
+                            {story.metrics && story.metrics.length > 0 && (
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                {story.metrics.map((m, mIdx) => (
+                                  <div
+                                    key={mIdx}
+                                    className="px-3 py-1 rounded-xl bg-softBg border border-border/80 flex items-center gap-2"
+                                  >
+                                    <span className="text-[10px] uppercase font-bold text-dark-muted">
+                                      {m.label}:
+                                    </span>
+                                    <span className="text-xs font-black text-dark font-mono">
+                                      {m.value}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Deliverables Marquee Preview (Right Column) */}
+                          <div className="bg-softBg/60 border border-border rounded-2xl p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="text-[11px] font-extrabold uppercase tracking-wider text-dark flex items-center gap-1.5">
+                                <ImageIcon className="w-3.5 h-3.5 text-primary" />
+                                <span>Deliverables Showcase</span>
+                              </span>
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white border border-border text-dark-muted">
+                                {story.workImages?.length || 0} Items
+                              </span>
+                            </div>
+
+                            {story.workImages && story.workImages.length > 0 ? (
+                              <div className="grid grid-cols-2 gap-2">
+                                {story.workImages.slice(0, 4).map((w, wIdx) => (
+                                  <div
+                                    key={w.id || wIdx}
+                                    className="relative rounded-xl overflow-hidden aspect-4/3 bg-dark border border-border group/thumb"
+                                  >
+                                    <img
+                                      src={w.image}
+                                      alt={w.title}
+                                      className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-1.5">
+                                      <p className="text-[9px] font-bold text-white truncate drop-shadow-sm">
+                                        {w.caption || w.title}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="text-center py-6 text-xs text-dark-muted/60">
+                                No deliverable images configured
+                              </div>
+                            )}
+
+                            <p className="text-[10px] text-dark-muted/60 mt-2.5 text-center">
+                              Automatically streams in dual columns on live homepage
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB: OUR CORE DIGITAL SERVICES CMS                        */}
+          {/* ========================================================= */}
+          {currentTab === "core-services" && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Homepage Core Digital Services</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Our Core Digital Services
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the interactive service cards, domain categories, deliverable tags, and instant image preview slideshows rendered in the homepage services grid.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchCoreServices}
+                    disabled={isLoadingCoreServices}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh Services"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingCoreServices ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddServiceModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Service</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Services</p>
+                  <p className="text-2xl font-black text-dark mt-1">{coreServices.length}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Active service domains</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Deliverable Tags</p>
+                  <p className="text-2xl font-black text-primary mt-1">
+                    {coreServices.reduce((acc, s) => acc + (s.tags?.length || 0), 0)}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Dynamic slideshow triggers</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Grid Layout</p>
+                  <p className="text-2xl font-black text-purple-600 mt-1">3 Columns</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Responsive card matrix</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Live Status</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">Synced</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Instant cached hydration</p>
+                </div>
+              </div>
+
+              {/* Services Cards List */}
+              <div className="space-y-4">
+                {isLoadingCoreServices ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">Loading core services...</p>
+                  </div>
+                ) : coreServices.length === 0 ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <Layers className="w-10 h-10 text-dark-muted/40 mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">No services found</p>
+                    <button
+                      onClick={openAddServiceModal}
+                      className="mt-4 px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs"
+                    >
+                      Add First Service
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {coreServices.map((service, idx) => (
+                      <div
+                        key={service.id || idx}
+                        className="bg-white border border-border rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Image Preview & Category Badge */}
+                          <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 mb-4 border border-border">
+                            <img
+                              src={service.defaultImage}
+                              alt={service.title}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[10px] font-bold">
+                              {service.domain}
+                            </div>
+                            <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full text-dark text-[10px] font-mono font-bold">
+                              #{idx + 1}
+                            </div>
+                          </div>
+
+                          {/* Title & Link */}
+                          <h3 className="text-base font-extrabold text-dark leading-snug line-clamp-2">
+                            {service.title}
+                          </h3>
+                          <p className="text-xs text-dark-muted font-mono mt-1 truncate">
+                            {service.link || `/services/${service.slug}`}
+                          </p>
+
+                          {/* Deliverable Tags Pills */}
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {service.tags?.map((t: ServiceTag, tIdx: number) => (
+                              <span
+                                key={tIdx}
+                                className="text-[10px] font-medium bg-softBg text-dark-muted px-2 py-0.5 rounded-full border border-border"
+                              >
+                                {t.label}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Card Footer Actions */}
+                        <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleMoveService(idx, "up")}
+                              disabled={idx === 0}
+                              className="p-1.5 rounded-lg border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Up"
+                            >
+                              <ChevronUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleMoveService(idx, "down")}
+                              disabled={idx === coreServices.length - 1}
+                              className="p-1.5 rounded-lg border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Down"
+                            >
+                              <ChevronDown className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => openEditServiceModal(service)}
+                              className="p-2 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary transition-all cursor-pointer"
+                              title="Edit Service"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteServiceConfirmId(service.id)}
+                              className="p-2 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-600 transition-all cursor-pointer"
+                              title="Delete Service"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB: FEATURED WORK SHOWCASE (3D TUNNEL) CMS               */}
+          {/* ========================================================= */}
+          {currentTab === "featured-work" && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Homepage 3D Infinite Tunnel</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Featured Work Showcase
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the full-screen 3D tunnel showcase cards, interactive domain tags, taglines, and redirect destinations.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchFeaturedWorks}
+                    disabled={isLoadingFeaturedWorks}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh Featured Work"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingFeaturedWorks ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddFeaturedModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Showcase</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Showcases</p>
+                  <p className="text-2xl font-black text-dark mt-1">{featuredWorks.length}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">3D Tunnel layers</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Tunnel Height</p>
+                  <p className="text-2xl font-black text-primary mt-1">550vh</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Smooth scroll journey</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">3D Chamber</p>
+                  <p className="text-2xl font-black text-purple-600 mt-1">GPU Accelerated</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Spring physics dampening</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Live Status</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">Active</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Interactive portal link</p>
+                </div>
+              </div>
+
+              {/* Featured Works List */}
+              <div className="space-y-4">
+                {isLoadingFeaturedWorks ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">Loading showcases...</p>
+                  </div>
+                ) : featuredWorks.length === 0 ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <Sparkles className="w-10 h-10 text-dark-muted/40 mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">No showcases configured</p>
+                    <button
+                      onClick={openAddFeaturedModal}
+                      className="mt-4 px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs"
+                    >
+                      Add First Showcase
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {featuredWorks.map((item, idx) => (
+                      <div
+                        key={item.id || idx}
+                        className="bg-white border border-border rounded-3xl p-5 sm:p-6 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Image Showcase Preview */}
+                          <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 mb-4 border border-border group/img">
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-primary text-xs font-black shadow-sm">
+                              {item.domain}
+                            </div>
+                            <div className="absolute top-3 right-3 bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shadow-md">
+                              #{idx + 1}
+                            </div>
+                          </div>
+
+                          {/* Title & Tagline */}
+                          <h3 className="text-lg font-black text-dark tracking-tight">
+                            {item.title}
+                          </h3>
+                          {item.tagline && (
+                            <p className="text-xs text-primary font-bold mt-1">
+                              {item.tagline}
+                            </p>
+                          )}
+                          <p className="text-xs text-dark-muted font-mono mt-2 truncate">
+                            Destination: {item.domainLink}
+                          </p>
+                        </div>
+
+                        {/* Footer Actions */}
+                        <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleMoveFeatured(idx, "up")}
+                              disabled={idx === 0}
+                              className="p-2 rounded-xl border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Up"
+                            >
+                              <ChevronUp className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleMoveFeatured(idx, "down")}
+                              disabled={idx === featuredWorks.length - 1}
+                              className="p-2 rounded-xl border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Down"
+                            >
+                              <ChevronDown className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => openEditFeaturedModal(item)}
+                              className="p-2.5 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary transition-all cursor-pointer"
+                              title="Edit Showcase"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteFeaturedConfirmId(item.id)}
+                              className="p-2.5 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-600 transition-all cursor-pointer"
+                              title="Delete Showcase"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* TAB: INDUSTRIES WE SERVE CMS                              */}
+          {/* ========================================================= */}
+          {currentTab === "industries" && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-border rounded-3xl p-6 sm:p-8 shadow-card">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider mb-2">
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Market Frameworks & Marquee</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                    Industries We Serve
+                  </h1>
+                  <p className="text-xs sm:text-sm text-dark-muted mt-1 max-w-2xl font-medium leading-relaxed">
+                    Manage the market sector frameworks, horizontal marquee cards, specialized solutions, and quantifiable metrics across both homepage and /industries.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={fetchIndustries}
+                    disabled={isLoadingIndustries}
+                    className="p-3.5 rounded-2xl bg-white hover:bg-primary-light/50 border border-border text-dark-muted hover:text-primary transition-all disabled:opacity-50 shadow-xs cursor-pointer"
+                    title="Refresh Industries"
+                  >
+                    <RefreshCw className={`w-5 h-5 ${isLoadingIndustries ? "animate-spin text-primary" : ""}`} />
+                  </button>
+
+                  <button
+                    onClick={openAddIndustryModal}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-sm shadow-glow-sm hover:shadow-glow transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>Add Industry</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-dark-muted font-bold">Total Sectors</p>
+                  <p className="text-2xl font-black text-dark mt-1">{industriesList.length}</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Configured market domains</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-primary font-bold">Solutions Mapped</p>
+                  <p className="text-2xl font-black text-primary mt-1">
+                    {industriesList.reduce((acc, ind) => acc + (ind.solutions?.length || 0), 0)}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Technical & creative services</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-purple-700 font-bold">Metrics Defined</p>
+                  <p className="text-2xl font-black text-purple-600 mt-1">
+                    {industriesList.reduce((acc, ind) => acc + (ind.metrics?.length || 0), 0)}
+                  </p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Quantifiable performance KPIs</p>
+                </div>
+                <div className="bg-white border border-border rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all">
+                  <p className="text-xs uppercase tracking-wider text-emerald-700 font-bold">Homepage Slider</p>
+                  <p className="text-2xl font-black text-emerald-600 mt-1">Infinite Marquee</p>
+                  <p className="text-[11px] text-dark-muted/60 mt-0.5">Pause-on-hover carousel</p>
+                </div>
+              </div>
+
+              {/* Industries Cards List */}
+              <div className="space-y-4">
+                {isLoadingIndustries ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">Loading industries...</p>
+                  </div>
+                ) : industriesList.length === 0 ? (
+                  <div className="text-center py-20 bg-white border border-border rounded-3xl">
+                    <Building2 className="w-10 h-10 text-dark-muted/40 mx-auto mb-3" />
+                    <p className="text-sm font-bold text-dark">No industry sectors found</p>
+                    <button
+                      onClick={openAddIndustryModal}
+                      className="mt-4 px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs"
+                    >
+                      Add First Sector
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {industriesList.map((ind, idx) => (
+                      <div
+                        key={ind.id || idx}
+                        className="bg-white border border-border rounded-3xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Cover Image */}
+                          <div className="relative w-full aspect-16/11 rounded-2xl overflow-hidden bg-slate-100 mb-4 border border-border">
+                            <img
+                              src={ind.image}
+                              alt={ind.title}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[10px] font-bold">
+                              {ind.tag}
+                            </div>
+                            <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full text-dark text-[10px] font-mono font-bold">
+                              #{idx + 1}
+                            </div>
+                          </div>
+
+                          {/* Title & Tag */}
+                          <h3 className="text-lg font-black text-dark tracking-tight">
+                            {ind.title}
+                          </h3>
+                          <p className="text-xs text-dark-muted mt-1 leading-relaxed line-clamp-2">
+                            {ind.description}
+                          </p>
+
+                          {/* Solutions */}
+                          <div className="mt-3 flex flex-wrap gap-1">
+                            {ind.solutions?.slice(0, 3).map((sol, sIdx) => (
+                              <span
+                                key={sIdx}
+                                className="text-[10px] bg-softBg text-dark-muted px-2 py-0.5 rounded-full border border-border"
+                              >
+                                {sol}
+                              </span>
+                            ))}
+                            {(ind.solutions?.length || 0) > 3 && (
+                              <span className="text-[10px] bg-softBg text-primary font-bold px-1.5 py-0.5 rounded-full border border-border">
+                                +{(ind.solutions?.length || 0) - 3}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Metrics Preview */}
+                          <div className="mt-3 grid grid-cols-2 gap-2 pt-3 border-t border-border/60">
+                            {ind.metrics?.slice(0, 2).map((m, mIdx) => (
+                              <div key={mIdx} className="bg-softBg/60 rounded-xl p-2 text-center">
+                                <p className="text-xs font-black text-primary">{m.value}</p>
+                                <p className="text-[9px] text-dark-muted truncate">{m.label}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Footer Actions */}
+                        <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleMoveIndustry(idx, "up")}
+                              disabled={idx === 0}
+                              className="p-1.5 rounded-lg border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Up"
+                            >
+                              <ChevronUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleMoveIndustry(idx, "down")}
+                              disabled={idx === industriesList.length - 1}
+                              className="p-1.5 rounded-lg border border-border hover:bg-softBg disabled:opacity-30 text-dark-muted hover:text-dark transition-all cursor-pointer"
+                              title="Move Down"
+                            >
+                              <ChevronDown className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => openEditIndustryModal(ind)}
+                              className="p-2 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary transition-all cursor-pointer"
+                              title="Edit Industry"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteIndustryConfirmId(ind.id)}
+                              className="p-2 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-600 transition-all cursor-pointer"
+                              title="Delete Industry"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
 
       {/* ------------------------------------------------------------- */}
       {/* MODAL 1: ADD / EDIT PROJECT MODAL                             */}
@@ -6376,22 +8730,20 @@ export default function AdminClient() {
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, mediaType: "image" })}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        formData.mediaType === "image"
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${formData.mediaType === "image"
                           ? "bg-primary text-white shadow-xs"
                           : "bg-white text-dark-muted hover:text-dark border border-border"
-                      }`}
+                        }`}
                     >
                       Image
                     </button>
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, mediaType: "video" })}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        formData.mediaType === "video"
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${formData.mediaType === "video"
                           ? "bg-primary text-white shadow-xs"
                           : "bg-white text-dark-muted hover:text-dark border border-border"
-                      }`}
+                        }`}
                     >
                       Video
                     </button>
@@ -6418,11 +8770,10 @@ export default function AdminClient() {
                         key={idx}
                         type="button"
                         onClick={() => setFormData({ ...formData, mediaUrl: preset.url })}
-                        className={`text-[10px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
-                          formData.mediaUrl === preset.url
+                        className={`text-[10px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${formData.mediaUrl === preset.url
                             ? "border-primary bg-primary text-white font-bold shadow-xs"
                             : "border-border bg-white text-dark-muted hover:text-primary hover:border-primary/40"
-                        }`}
+                          }`}
                       >
                         {preset.label}
                       </button>
@@ -6721,11 +9072,10 @@ export default function AdminClient() {
                         className="p-1 hover:scale-110 transition-transform cursor-pointer"
                       >
                         <Star
-                          className={`w-6 h-6 ${
-                            star <= reviewFormData.rating
+                          className={`w-6 h-6 ${star <= reviewFormData.rating
                               ? "fill-amber-400 text-amber-400"
                               : "text-gray-300"
-                          }`}
+                            }`}
                         />
                       </button>
                     ))}
@@ -6783,11 +9133,10 @@ export default function AdminClient() {
                         key={idx}
                         type="button"
                         onClick={() => setReviewFormData({ ...reviewFormData, avatar: p.url })}
-                        className={`inline-flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
-                          reviewFormData.avatar === p.url
+                        className={`inline-flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${reviewFormData.avatar === p.url
                             ? "border-amber-400 bg-amber-50 text-amber-800 font-bold shadow-xs"
                             : "border-border bg-white text-dark-muted hover:text-dark hover:border-border"
-                        }`}
+                          }`}
                       >
                         <img src={p.url} alt={p.label} className="w-4 h-4 rounded-full object-cover" />
                         <span>{p.label}</span>
@@ -7123,11 +9472,10 @@ export default function AdminClient() {
                             alt: prev.alt || `${preset.label} Logo`,
                           }));
                         }}
-                        className={`p-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer text-left ${
-                          brandFormData.logoUrl === preset.url
+                        className={`p-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer text-left ${brandFormData.logoUrl === preset.url
                             ? "bg-primary-light border-primary text-primary font-bold shadow-xs"
                             : "bg-white border-border text-dark-muted hover:bg-softBg hover:text-dark"
-                        }`}
+                          }`}
                       >
                         <div className="w-6 h-6 rounded bg-softBg flex items-center justify-center shrink-0 p-0.5">
                           <img
@@ -7264,11 +9612,10 @@ export default function AdminClient() {
                           onClick={() =>
                             setCapabilityFormData((prev) => ({ ...prev, category: cat }))
                           }
-                          className={`text-[10px] px-2 py-0.5 rounded-md border font-semibold transition-all cursor-pointer ${
-                            capabilityFormData.category === cat
+                          className={`text-[10px] px-2 py-0.5 rounded-md border font-semibold transition-all cursor-pointer ${capabilityFormData.category === cat
                               ? "bg-primary text-white border-primary"
                               : "bg-softBg text-dark-muted border-border hover:text-dark"
-                          }`}
+                            }`}
                         >
                           {cat}
                         </button>
@@ -7289,11 +9636,10 @@ export default function AdminClient() {
                     <button
                       type="button"
                       onClick={() => setCapabilityFormData((prev) => ({ ...prev, track: 1 }))}
-                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                        capabilityFormData.track === 1
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${capabilityFormData.track === 1
                           ? "bg-primary-light border-primary shadow-xs"
                           : "bg-white border-border hover:bg-softBg"
-                      }`}
+                        }`}
                     >
                       <p className="text-xs font-black text-dark">Track 1 (Top)</p>
                       <p className="text-[10px] text-dark-muted mt-0.5">Moves Leftward ←</p>
@@ -7302,11 +9648,10 @@ export default function AdminClient() {
                     <button
                       type="button"
                       onClick={() => setCapabilityFormData((prev) => ({ ...prev, track: 2 }))}
-                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                        capabilityFormData.track === 2
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${capabilityFormData.track === 2
                           ? "bg-indigo-50 border-indigo-500 shadow-xs"
                           : "bg-white border-border hover:bg-softBg"
-                      }`}
+                        }`}
                     >
                       <p className="text-xs font-black text-dark">Track 2 (Bottom)</p>
                       <p className="text-[10px] text-dark-muted mt-0.5">Moves Rightward →</p>
@@ -7383,11 +9728,10 @@ export default function AdminClient() {
                       onClick={() =>
                         setCapabilityFormData((prev) => ({ ...prev, iconKey: option.key }))
                       }
-                      className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition-all cursor-pointer text-left ${
-                        capabilityFormData.iconKey === option.key
+                      className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition-all cursor-pointer text-left ${capabilityFormData.iconKey === option.key
                           ? "bg-primary-light border-primary text-primary font-bold shadow-xs"
                           : "bg-white border-border text-dark-muted hover:bg-white hover:text-dark hover:border-primary/30"
-                      }`}
+                        }`}
                     >
                       <div className="w-7 h-7 rounded-lg bg-softBg flex items-center justify-center shrink-0">
                         <CapabilityIcon iconKey={option.key} className="w-4 h-4" />
@@ -7504,11 +9848,10 @@ export default function AdminClient() {
                     onClick={() =>
                       setSelectedWorkFormData((prev) => ({ ...prev, isVideo: false }))
                     }
-                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                      !selectedWorkFormData.isVideo
+                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${!selectedWorkFormData.isVideo
                         ? "bg-primary text-white border-primary shadow-xs"
                         : "bg-white text-dark-muted border-border hover:bg-softBg"
-                    }`}
+                      }`}
                   >
                     <ImageIcon className="w-4 h-4" />
                     <span>Static Image</span>
@@ -7519,11 +9862,10 @@ export default function AdminClient() {
                     onClick={() =>
                       setSelectedWorkFormData((prev) => ({ ...prev, isVideo: true }))
                     }
-                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                      selectedWorkFormData.isVideo
+                    className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${selectedWorkFormData.isVideo
                         ? "bg-purple-600 text-white border-purple-600 shadow-xs"
                         : "bg-white text-dark-muted border-border hover:bg-softBg"
-                    }`}
+                      }`}
                   >
                     <Video className="w-4 h-4" />
                     <span>Video Loop</span>
@@ -7583,11 +9925,10 @@ export default function AdminClient() {
                         onClick={() =>
                           setSelectedWorkFormData((prev) => ({ ...prev, src: preset.path }))
                         }
-                        className={`text-[10px] px-2.5 py-1 rounded-lg border font-semibold transition-all cursor-pointer ${
-                          selectedWorkFormData.src === preset.path
+                        className={`text-[10px] px-2.5 py-1 rounded-lg border font-semibold transition-all cursor-pointer ${selectedWorkFormData.src === preset.path
                             ? "bg-primary text-white border-primary shadow-xs"
                             : "bg-softBg text-dark-muted border-border hover:text-dark hover:border-primary/40"
-                        }`}
+                          }`}
                       >
                         {preset.label}
                       </button>
@@ -7696,8 +10037,8 @@ export default function AdminClient() {
                   {isSavingSelectedWork
                     ? "Saving..."
                     : editingSelectedWorkId
-                    ? "Update Showcase Slide"
-                    : "Add Showcase Slide"}
+                      ? "Update Showcase Slide"
+                      : "Add Showcase Slide"}
                 </button>
               </div>
             </form>
@@ -7730,6 +10071,1374 @@ export default function AdminClient() {
                 className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
               >
                 Yes, Delete Slide
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL 9: ADD / EDIT TRUSTED FOUNDER STORY MODAL               */}
+      {/* ------------------------------------------------------------- */}
+      {isFounderModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white border border-border rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative my-8 max-h-[92vh] overflow-y-auto text-dark">
+            <button
+              onClick={() => setIsFounderModalOpen(false)}
+              className="absolute top-6 right-6 text-dark-muted hover:text-dark p-1.5 rounded-full hover:bg-softBg transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {editingFounderId ? "Modify Founder Story" : "New AI Founder Story"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-dark mt-1">
+                {editingFounderId ? "Edit Founder Story & Deliverables" : "Add Story to AI Founders Showcase"}
+              </h2>
+              <p className="text-xs text-dark-muted mt-1 font-medium">
+                Configure company identity, testimonial quote, impact metrics, and showcase deliverables for the dual conveyor marquee.
+              </p>
+            </div>
+
+            {/* Modal Internal Navigation Tabs */}
+            <div className="flex items-center gap-2 border-b border-border pb-3 mb-6 overflow-x-auto scrollbar-thin">
+              <button
+                type="button"
+                onClick={() => setFounderModalTab("company")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${founderModalTab === "company"
+                    ? "bg-primary text-white shadow-xs"
+                    : "bg-softBg text-dark-muted hover:text-dark"
+                  }`}
+              >
+                1. Company &amp; Branding
+              </button>
+              <button
+                type="button"
+                onClick={() => setFounderModalTab("founder")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${founderModalTab === "founder"
+                    ? "bg-primary text-white shadow-xs"
+                    : "bg-softBg text-dark-muted hover:text-dark"
+                  }`}
+              >
+                2. Founder &amp; Testimonial
+              </button>
+              <button
+                type="button"
+                onClick={() => setFounderModalTab("metrics")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${founderModalTab === "metrics"
+                    ? "bg-primary text-white shadow-xs"
+                    : "bg-softBg text-dark-muted hover:text-dark"
+                  }`}
+              >
+                3. Impact Metrics ({founderFormData.metrics.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setFounderModalTab("work")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${founderModalTab === "work"
+                    ? "bg-primary text-white shadow-xs"
+                    : "bg-softBg text-dark-muted hover:text-dark"
+                  }`}
+              >
+                4. Deliverables Showcase ({founderFormData.workImages.length})
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveFounder} className="space-y-5">
+              {/* TAB 1: COMPANY & BRANDING */}
+              {founderModalTab === "company" && (
+                <div className="space-y-4 animate-in fade-in-50">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Company Name */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        Company Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={founderFormData.companyName}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, companyName: e.target.value }))
+                        }
+                        placeholder="e.g. Outset Law"
+                        required
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-medium"
+                      />
+                    </div>
+
+                    {/* Company Category */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        Category / Industry Tagline
+                      </label>
+                      <input
+                        type="text"
+                        value={founderFormData.companyCategory}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, companyCategory: e.target.value }))
+                        }
+                        placeholder="e.g. Legal AI &amp; Contract Intelligence"
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Accent Color Selection */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                      Brand Accent Color
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        {[
+                          { color: "#7545F5", label: "Purple" },
+                          { color: "#1C593F", label: "Forest" },
+                          { color: "#F97316", label: "Orange" },
+                          { color: "#10B981", label: "Emerald" },
+                          { color: "#2563EB", label: "Blue" },
+                          { color: "#EC4899", label: "Pink" },
+                        ].map((swatch) => (
+                          <button
+                            key={swatch.color}
+                            type="button"
+                            onClick={() =>
+                              setFounderFormData((prev) => ({ ...prev, accentColor: swatch.color }))
+                            }
+                            className={`w-7 h-7 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${founderFormData.accentColor === swatch.color
+                                ? "border-dark ring-2 ring-primary/30 scale-110"
+                                : "border-border/60 hover:scale-105"
+                              }`}
+                            style={{ backgroundColor: swatch.color }}
+                            title={swatch.label}
+                          >
+                            {founderFormData.accentColor === swatch.color && (
+                              <Check className="w-3.5 h-3.5 text-white stroke-[3]" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-2 ml-auto">
+                        <span className="text-[11px] font-mono text-dark-muted font-bold">Custom:</span>
+                        <input
+                          type="color"
+                          value={founderFormData.accentColor || "#7545F5"}
+                          onChange={(e) =>
+                            setFounderFormData((prev) => ({ ...prev, accentColor: e.target.value }))
+                          }
+                          className="w-8 h-8 rounded-lg cursor-pointer border border-border p-0.5"
+                        />
+                        <input
+                          type="text"
+                          value={founderFormData.accentColor}
+                          onChange={(e) =>
+                            setFounderFormData((prev) => ({ ...prev, accentColor: e.target.value }))
+                          }
+                          placeholder="#7545F5"
+                          className="w-24 bg-white border border-border rounded-xl px-2.5 py-1.5 text-xs text-dark font-mono font-bold"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Logo Source Type */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                      Logo Representation
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                      {[
+                        { type: "custom" as const, label: "Custom Image Logo" },
+                        { type: "outset" as const, label: "Preset: Outset" },
+                        { type: "megahr" as const, label: "Preset: MegaHR" },
+                        { type: "euroteam" as const, label: "Preset: Euroteam" },
+                        { type: "ruuster" as const, label: "Preset: Ruuster" },
+                        { type: "913" as const, label: "Preset: 913.ai" },
+                        { type: "needle" as const, label: "Preset: Needle" },
+                      ].map((preset) => (
+                        <button
+                          key={preset.type}
+                          type="button"
+                          onClick={() =>
+                            setFounderFormData((prev) => ({ ...prev, logoType: preset.type }))
+                          }
+                          className={`px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${founderFormData.logoType === preset.type
+                              ? "bg-primary text-white border-primary shadow-xs"
+                              : "bg-white text-dark-muted border-border hover:bg-softBg"
+                            }`}
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Custom Logo File or URL (if custom or uploaded) */}
+                    <div className="p-4 bg-softBg rounded-2xl border border-border space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-dark">
+                          Custom Logo Image (PNG / SVG / WebP)
+                        </span>
+                        <label className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline cursor-pointer font-bold">
+                          <Upload className="w-3 h-3" />
+                          <span>Upload Logo File</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFounderCustomLogoUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+
+                      <input
+                        type="text"
+                        value={founderFormData.customLogoUrl}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({
+                            ...prev,
+                            customLogoUrl: e.target.value,
+                            logoType: "custom",
+                          }))
+                        }
+                        placeholder="e.g. /images/brands/custom_logo.svg or data:image/..."
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary font-mono"
+                      />
+
+                      {founderFormData.customLogoUrl && (
+                        <div className="flex items-center gap-3 pt-1">
+                          <span className="text-[11px] text-dark-muted font-medium">Logo Preview:</span>
+                          <div className="p-2 bg-white rounded-xl border border-border inline-flex items-center">
+                            <img
+                              src={founderFormData.customLogoUrl}
+                              alt="Logo Preview"
+                              className="h-6 w-auto max-w-[140px] object-contain"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Display Order Sequence */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                      Display Sequence Order
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={founderFormData.order}
+                      onChange={(e) =>
+                        setFounderFormData((prev) => ({
+                          ...prev,
+                          order: parseInt(e.target.value) || 1,
+                        }))
+                      }
+                      className="w-32 bg-white border border-border rounded-xl px-3.5 py-2 text-xs text-dark font-mono font-bold"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 2: FOUNDER & TESTIMONIAL */}
+              {founderModalTab === "founder" && (
+                <div className="space-y-4 animate-in fade-in-50">
+                  {/* Testimonial Quote */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                      Testimonial Quote *
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={founderFormData.quote}
+                      onChange={(e) =>
+                        setFounderFormData((prev) => ({ ...prev, quote: e.target.value }))
+                      }
+                      placeholder="e.g. A legal brand that feels humane, modern, and trustworthy. Our client inquiries doubled in the first quarter."
+                      required
+                      className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-medium leading-relaxed"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Founder Name */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        Founder Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={founderFormData.founderName}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, founderName: e.target.value }))
+                        }
+                        placeholder="e.g. Eleanor Sterling"
+                        required
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-medium"
+                      />
+                    </div>
+
+                    {/* Founder Role */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        Founder Role &amp; Title
+                      </label>
+                      <input
+                        type="text"
+                        value={founderFormData.founderRole}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, founderRole: e.target.value }))
+                        }
+                        placeholder="e.g. Managing Partner, Outset Law"
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-dark-muted/40 shadow-xs font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Founder Avatar */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark">
+                        Founder Portrait / Avatar
+                      </label>
+                      <label className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline cursor-pointer font-bold">
+                        <Upload className="w-3 h-3" />
+                        <span>Upload Photo (&lt; 8MB)</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFounderAvatarUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-3 mb-2">
+                      <img
+                        src={founderFormData.founderAvatar || "/images/team/team-1.jpg"}
+                        alt="Avatar Preview"
+                        className="w-12 h-12 rounded-full object-cover border border-border shadow-xs shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={founderFormData.founderAvatar}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, founderAvatar: e.target.value }))
+                        }
+                        placeholder="/images/team/team-1.jpg"
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2 text-xs text-dark focus:outline-hidden focus:border-primary font-mono"
+                      />
+                    </div>
+
+                    {/* Avatar Presets */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-dark-muted font-bold">Presets:</span>
+                      {["/images/team/team-1.jpg", "/images/team/team-2.jpg", "/images/team/team-3.jpg", "/images/team/team-4.jpg"].map((p, idx) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setFounderFormData((prev) => ({ ...prev, founderAvatar: p }))}
+                          className={`text-[10px] px-2 py-0.5 rounded-lg border font-semibold ${founderFormData.founderAvatar === p
+                              ? "bg-primary text-white border-primary"
+                              : "bg-softBg text-dark-muted border-border"
+                            }`}
+                        >
+                          Team {idx + 1}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Case Study Summary & Project Link */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        Case Study Summary
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={founderFormData.caseStudySummary}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, caseStudySummary: e.target.value }))
+                        }
+                        placeholder="Comprehensive repositioning, billboard campaigns..."
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2 text-xs text-dark focus:outline-hidden focus:border-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                        &quot;See the project&quot; Link URL
+                      </label>
+                      <input
+                        type="text"
+                        value={founderFormData.projectLink}
+                        onChange={(e) =>
+                          setFounderFormData((prev) => ({ ...prev, projectLink: e.target.value }))
+                        }
+                        placeholder="/our-work"
+                        className="w-full bg-white border border-border rounded-xl px-3.5 py-2 text-xs text-dark focus:outline-hidden focus:border-primary font-mono"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: IMPACT METRICS */}
+              {founderModalTab === "metrics" && (
+                <div className="space-y-4 animate-in fade-in-50">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-dark">
+                        Key Transformation Metrics
+                      </h4>
+                      <p className="text-[11px] text-dark-muted">
+                        Highlighted impact statistics shown in pills on the carousel card.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddFounderMetric}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-light text-primary hover:bg-primary hover:text-white font-bold text-xs transition-colors cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add Metric</span>
+                    </button>
+                  </div>
+
+                  {founderFormData.metrics.length === 0 ? (
+                    <div className="text-center py-8 bg-softBg rounded-2xl border border-dashed border-border text-xs text-dark-muted">
+                      No metrics added. Click &quot;Add Metric&quot; to highlight quantifiable results.
+                    </div>
+                  ) : (
+                    <div className="space-y-2.5">
+                      {founderFormData.metrics.map((metric, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-3 p-3 bg-softBg rounded-2xl border border-border"
+                        >
+                          <div className="flex-1">
+                            <label className="block text-[10px] font-bold uppercase text-dark-muted mb-1">
+                              Metric Label
+                            </label>
+                            <input
+                              type="text"
+                              value={metric.label}
+                              onChange={(e) =>
+                                handleFounderMetricChange(idx, "label", e.target.value)
+                              }
+                              placeholder="e.g. Client Inquiries"
+                              className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark focus:outline-hidden focus:border-primary"
+                            />
+                          </div>
+
+                          <div className="w-36">
+                            <label className="block text-[10px] font-bold uppercase text-dark-muted mb-1">
+                              Value / Stat
+                            </label>
+                            <input
+                              type="text"
+                              value={metric.value}
+                              onChange={(e) =>
+                                handleFounderMetricChange(idx, "value", e.target.value)
+                              }
+                              placeholder="e.g. +104%"
+                              className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark font-mono font-bold focus:outline-hidden focus:border-primary"
+                            />
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFounderMetric(idx)}
+                            className="self-end mb-1 p-2 rounded-xl text-dark-muted hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                            title="Remove Metric"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB 4: DELIVERABLES SHOWCASE */}
+              {founderModalTab === "work" && (
+                <div className="space-y-4 animate-in fade-in-50">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-dark">
+                        Dual Conveyor Deliverable Assets ({founderFormData.workImages.length})
+                      </h4>
+                      <p className="text-[11px] text-dark-muted">
+                        High-resolution design deliverables, posters, and web screenshots that stream on the conveyor marquee.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddWorkItem}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-light text-primary hover:bg-primary hover:text-white font-bold text-xs transition-colors cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add Deliverable Asset</span>
+                    </button>
+                  </div>
+
+                  {founderFormData.workImages.length === 0 ? (
+                    <div className="text-center py-8 bg-softBg rounded-2xl border border-dashed border-border text-xs text-dark-muted">
+                      No deliverables added yet. Click &quot;Add Deliverable Asset&quot; to attach showcase images.
+                    </div>
+                  ) : (
+                    <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
+                      {founderFormData.workImages.map((work, idx) => (
+                        <div
+                          key={work.id || idx}
+                          className="bg-softBg border border-border rounded-2xl p-4 space-y-3"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-extrabold text-dark flex items-center gap-2">
+                              <span className="px-2 py-0.5 rounded-md bg-white text-dark font-mono text-[10px]">
+                                Item #{idx + 1}
+                              </span>
+                              <span>{work.title || `Deliverable ${idx + 1}`}</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveWorkItem(idx)}
+                              className="text-dark-muted hover:text-rose-600 p-1 rounded-lg hover:bg-white transition-colors cursor-pointer"
+                              title="Delete Deliverable"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="sm:col-span-2 space-y-2">
+                              <div>
+                                <label className="block text-[10px] font-bold uppercase text-dark-muted mb-1">
+                                  Deliverable Title
+                                </label>
+                                <input
+                                  type="text"
+                                  value={work.title}
+                                  onChange={(e) =>
+                                    handleWorkItemChange(idx, "title", e.target.value)
+                                  }
+                                  placeholder="e.g. Outset — Subway Takeover Series"
+                                  className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark focus:outline-hidden focus:border-primary"
+                                />
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                  <label className="block text-[10px] font-bold uppercase text-dark-muted mb-1">
+                                    Caption
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={work.caption}
+                                    onChange={(e) =>
+                                      handleWorkItemChange(idx, "caption", e.target.value)
+                                    }
+                                    placeholder="e.g. Brand Identity Suite"
+                                    className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark focus:outline-hidden focus:border-primary"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-bold uppercase text-dark-muted mb-1">
+                                    Category
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={work.category}
+                                    onChange={(e) =>
+                                      handleWorkItemChange(idx, "category", e.target.value)
+                                    }
+                                    placeholder="e.g. Billboard &amp; OOH"
+                                    className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark focus:outline-hidden focus:border-primary"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Image URL & Upload */}
+                              <div>
+                                <div className="flex items-center justify-between mb-1">
+                                  <label className="block text-[10px] font-bold uppercase text-dark-muted">
+                                    Image URL / Asset
+                                  </label>
+                                  <label className="inline-flex items-center gap-1 text-[10px] text-primary hover:underline cursor-pointer font-bold">
+                                    <Upload className="w-2.5 h-2.5" />
+                                    <span>Upload Image</span>
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) => handleWorkItemImageUpload(idx, e)}
+                                      className="hidden"
+                                    />
+                                  </label>
+                                </div>
+                                <input
+                                  type="text"
+                                  value={work.image}
+                                  onChange={(e) =>
+                                    handleWorkItemChange(idx, "image", e.target.value)
+                                  }
+                                  placeholder="/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_480.webp"
+                                  className="w-full bg-white border border-border rounded-xl px-3 py-1.5 text-xs text-dark font-mono focus:outline-hidden focus:border-primary"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Thumbnail Preview */}
+                            <div className="flex flex-col items-center justify-center">
+                              <div className="relative w-full aspect-4/3 rounded-xl overflow-hidden bg-black border border-border">
+                                {work.image ? (
+                                  <img
+                                    src={work.image}
+                                    alt={work.title}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-[10px] text-dark-muted">
+                                    No Image
+                                  </div>
+                                )}
+                              </div>
+                              <span className="text-[10px] text-dark-muted mt-1 font-mono">
+                                Marquee Col {idx % 2 === 0 ? "1" : "2"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Form Action Footer */}
+              <div className="pt-4 border-t border-border flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {founderModalTab !== "company" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs = ["company", "founder", "metrics", "work"] as const;
+                        const curr = tabs.indexOf(founderModalTab);
+                        if (curr > 0) setFounderModalTab(tabs[curr - 1]);
+                      }}
+                      className="px-3 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                    >
+                      &larr; Back
+                    </button>
+                  )}
+                  {founderModalTab !== "work" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs = ["company", "founder", "metrics", "work"] as const;
+                        const curr = tabs.indexOf(founderModalTab);
+                        if (curr < tabs.length - 1) setFounderModalTab(tabs[curr + 1]);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-softBg hover:bg-border text-xs font-bold text-dark transition-colors cursor-pointer"
+                    >
+                      Next &rarr;
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsFounderModalOpen(false)}
+                    className="px-4 py-2.5 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSavingFounder}
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {isSavingFounder
+                      ? "Saving Story..."
+                      : editingFounderId
+                        ? "Update Founder Story"
+                        : "Create Founder Story"}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL 10: DELETE FOUNDER STORY CONFIRMATION MODAL             */}
+      {/* ------------------------------------------------------------- */}
+      {deleteFounderConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Founder Story?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This founder story and all attached deliverable items will be permanently removed from the &quot;Trusted by AI founders&quot; section.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteFounderConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteFounder(deleteFounderConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                Yes, Delete Story
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL: ADD / EDIT CORE DIGITAL SERVICE                        */}
+      {/* ------------------------------------------------------------- */}
+      {isServiceModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white border border-border rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8 max-h-[92vh] overflow-y-auto text-dark">
+            <button
+              onClick={() => setIsServiceModalOpen(false)}
+              className="absolute top-6 right-6 text-dark-muted hover:text-dark p-1.5 rounded-full hover:bg-softBg transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {editingServiceId ? "Modify Service" : "New Core Service"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-dark mt-1">
+                {editingServiceId ? "Edit Digital Service" : "Create Core Digital Service"}
+              </h2>
+            </div>
+
+            <form onSubmit={handleSaveService} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Domain / Category *
+                  </label>
+                  <input
+                    type="text"
+                    value={serviceFormData.domain}
+                    onChange={(e) => setServiceFormData({ ...serviceFormData, domain: e.target.value })}
+                    placeholder="e.g. Web Development"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    URL Slug *
+                  </label>
+                  <input
+                    type="text"
+                    value={serviceFormData.slug}
+                    onChange={(e) => setServiceFormData({ ...serviceFormData, slug: e.target.value })}
+                    placeholder="e.g. web-development"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Headline Title *
+                </label>
+                <input
+                  type="text"
+                  value={serviceFormData.title}
+                  onChange={(e) => setServiceFormData({ ...serviceFormData, title: e.target.value })}
+                  placeholder="e.g. Websites that close deals"
+                  required
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Redirect Link
+                  </label>
+                  <input
+                    type="text"
+                    value={serviceFormData.link}
+                    onChange={(e) => setServiceFormData({ ...serviceFormData, link: e.target.value })}
+                    placeholder="e.g. /services/web-development"
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Cover Image URL / Upload
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={serviceFormData.defaultImage}
+                      onChange={(e) => setServiceFormData({ ...serviceFormData, defaultImage: e.target.value })}
+                      placeholder="/images/services/web_dev_bg.jpg"
+                      className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono"
+                    />
+                    <label className="shrink-0 p-2.5 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary cursor-pointer transition-all">
+                      <Upload className="w-4 h-4" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleServiceDefaultImageUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                  {serviceFormData.defaultImage && (
+                    <div className="relative mt-2 w-full h-24 rounded-xl overflow-hidden border border-border bg-slate-100">
+                      <img
+                        src={serviceFormData.defaultImage}
+                        alt="Service Preview"
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-1 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-xs font-mono">
+                        Active Image Preview
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Deliverable Tags Section */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark">
+                    Deliverable Tags & Slideshow Previews ({serviceFormData.tags.length})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleAddServiceTag}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-dark cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Deliverable Tag</span>
+                  </button>
+                </div>
+
+                <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                  {serviceFormData.tags.map((tag: ServiceTag, tIdx: number) => (
+                    <div
+                      key={tIdx}
+                      className="flex items-center gap-2 p-2.5 rounded-xl bg-softBg/60 border border-border"
+                    >
+                      {tag.image && (
+                        <div className="w-8 h-8 rounded-lg overflow-hidden border border-border shrink-0 bg-slate-100">
+                          <img src={tag.image} alt={tag.label} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <input
+                        type="text"
+                        value={tag.label}
+                        onChange={(e) => handleServiceTagChange(tIdx, "label", e.target.value)}
+                        placeholder="Tag Label (e.g. Next.js performance)"
+                        className="flex-1 bg-white border border-border rounded-lg px-2.5 py-1.5 text-xs text-dark"
+                      />
+                      <input
+                        type="text"
+                        value={tag.image}
+                        onChange={(e) => handleServiceTagChange(tIdx, "image", e.target.value)}
+                        placeholder="Preview Image URL"
+                        className="flex-1 bg-white border border-border rounded-lg px-2.5 py-1.5 text-xs text-dark font-mono"
+                      />
+                      <label className="shrink-0 p-2 rounded-lg bg-white border border-border hover:bg-primary-light/50 text-dark-muted hover:text-primary cursor-pointer">
+                        <Upload className="w-3.5 h-3.5" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleServiceTagImageUpload(e, tIdx)}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveServiceTag(tIdx)}
+                        className="shrink-0 p-2 rounded-lg bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Form Action Buttons */}
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setIsServiceModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingService}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingService ? "Saving..." : editingServiceId ? "Update Service" : "Create Service"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE SERVICE CONFIRMATION */}
+      {deleteServiceConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Core Service?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This service card and its deliverable tags will be removed from the homepage grid.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteServiceConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteService(deleteServiceConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md cursor-pointer"
+              >
+                Yes, Delete Service
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL: ADD / EDIT FEATURED WORK SHOWCASE (3D TUNNEL)          */}
+      {/* ------------------------------------------------------------- */}
+      {isFeaturedModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white border border-border rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8 max-h-[92vh] overflow-y-auto text-dark">
+            <button
+              onClick={() => setIsFeaturedModalOpen(false)}
+              className="absolute top-6 right-6 text-dark-muted hover:text-dark p-1.5 rounded-full hover:bg-softBg transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {editingFeaturedId ? "Modify Showcase" : "New 3D Showcase"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-dark mt-1">
+                {editingFeaturedId ? "Edit Featured Showcase" : "Create 3D Tunnel Showcase"}
+              </h2>
+            </div>
+
+            <form onSubmit={handleSaveFeatured} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Showcase Title *
+                </label>
+                <input
+                  type="text"
+                  value={featuredFormData.title}
+                  onChange={(e) => setFeaturedFormData({ ...featuredFormData, title: e.target.value })}
+                  placeholder="e.g. Apex Direct — D2C & Marketplace Store"
+                  required
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Domain / Category *
+                  </label>
+                  <input
+                    type="text"
+                    value={featuredFormData.domain}
+                    onChange={(e) => setFeaturedFormData({ ...featuredFormData, domain: e.target.value })}
+                    placeholder="e.g. E-commerce Solutions"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Redirect URL
+                  </label>
+                  <input
+                    type="text"
+                    value={featuredFormData.domainLink}
+                    onChange={(e) => setFeaturedFormData({ ...featuredFormData, domainLink: e.target.value })}
+                    placeholder="e.g. /services/ecommerce"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Tagline / Subtitle
+                </label>
+                <input
+                  type="text"
+                  value={featuredFormData.tagline || ""}
+                  onChange={(e) => setFeaturedFormData({ ...featuredFormData, tagline: e.target.value })}
+                  placeholder="e.g. Amazon & Flipkart Multi-Channel Growth"
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Showcase Image URL / Upload
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={featuredFormData.image}
+                    onChange={(e) => setFeaturedFormData({ ...featuredFormData, image: e.target.value })}
+                    placeholder="/images/portfolio/apex_ecommerce.jpg"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono"
+                  />
+                  <label className="shrink-0 p-2.5 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary cursor-pointer transition-all">
+                    <Upload className="w-4 h-4" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFeaturedImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Form Action Buttons */}
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setIsFeaturedModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingFeatured}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingFeatured ? "Saving..." : editingFeaturedId ? "Update Showcase" : "Create Showcase"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE FEATURED WORK CONFIRMATION */}
+      {deleteFeaturedConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Showcase?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This card will be removed from the 3D tunnel infinite showcase on the homepage.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteFeaturedConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteFeatured(deleteFeaturedConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md cursor-pointer"
+              >
+                Yes, Delete Showcase
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MODAL: ADD / EDIT INDUSTRY SECTOR                             */}
+      {/* ------------------------------------------------------------- */}
+      {isIndustryModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white border border-border rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8 max-h-[92vh] overflow-y-auto text-dark">
+            <button
+              onClick={() => setIsIndustryModalOpen(false)}
+              className="absolute top-6 right-6 text-dark-muted hover:text-dark p-1.5 rounded-full hover:bg-softBg transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {editingIndustryId ? "Modify Sector" : "New Industry Sector"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-dark mt-1">
+                {editingIndustryId ? "Edit Industry Sector" : "Create Industry Framework"}
+              </h2>
+            </div>
+
+            <form onSubmit={handleSaveIndustry} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Sector ID / Slug *
+                  </label>
+                  <input
+                    type="text"
+                    value={industryFormData.id}
+                    onChange={(e) => setIndustryFormData({ ...industryFormData, id: e.target.value })}
+                    placeholder="e.g. retail, saas, fintech"
+                    required
+                    disabled={!!editingIndustryId}
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all disabled:bg-slate-50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Sector Title *
+                  </label>
+                  <input
+                    type="text"
+                    value={industryFormData.title}
+                    onChange={(e) => setIndustryFormData({ ...industryFormData, title: e.target.value })}
+                    placeholder="e.g. E-commerce & Retail"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Tagline / Sub-sector
+                  </label>
+                  <input
+                    type="text"
+                    value={industryFormData.tag}
+                    onChange={(e) => setIndustryFormData({ ...industryFormData, tag: e.target.value })}
+                    placeholder="e.g. Marketplaces & D2C Brands"
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                    Icon Symbol
+                  </label>
+                  <select
+                    value={industryFormData.icon}
+                    onChange={(e) => setIndustryFormData({ ...industryFormData, icon: e.target.value })}
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  >
+                    <option value="ShoppingBag">ShoppingBag (Retail/Ecom)</option>
+                    <option value="Cpu">Cpu (Tech/SaaS)</option>
+                    <option value="HeartPulse">HeartPulse (Healthcare)</option>
+                    <option value="GraduationCap">GraduationCap (Education)</option>
+                    <option value="Sparkles">Sparkles (Fashion/Beauty)</option>
+                    <option value="Rocket">Rocket (Startups/Scaleups)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Sector Image URL / Upload
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={industryFormData.image}
+                    onChange={(e) => setIndustryFormData({ ...industryFormData, image: e.target.value })}
+                    placeholder="/images/industries/ecommerce.jpg"
+                    required
+                    className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono"
+                  />
+                  <label className="shrink-0 p-2.5 rounded-xl border border-border hover:bg-softBg text-dark-muted hover:text-primary cursor-pointer transition-all">
+                    <Upload className="w-4 h-4" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleIndustryImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                  Sector Description
+                </label>
+                <textarea
+                  rows={3}
+                  value={industryFormData.description}
+                  onChange={(e) => setIndustryFormData({ ...industryFormData, description: e.target.value })}
+                  placeholder="Describe your capabilities and strategic value in this sector..."
+                  className="w-full bg-white border border-border rounded-xl px-3.5 py-2.5 text-xs text-dark focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                />
+              </div>
+
+              {/* Solutions List */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark">
+                    Key Solutions ({industryFormData.solutions.length})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleAddIndustrySolution}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-dark cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Solution</span>
+                  </button>
+                </div>
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                  {industryFormData.solutions.map((sol, sIdx) => (
+                    <div key={sIdx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={sol}
+                        onChange={(e) => handleIndustrySolutionChange(sIdx, e.target.value)}
+                        placeholder="Solution Name (e.g. Amazon PPC & Shopify Stores)"
+                        className="flex-1 bg-white border border-border rounded-lg px-3 py-1.5 text-xs text-dark"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveIndustrySolution(sIdx)}
+                        className="p-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics List */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-dark">
+                    Impact Metrics ({industryFormData.metrics.length})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleAddIndustryMetric}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-dark cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Metric</span>
+                  </button>
+                </div>
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                  {industryFormData.metrics.map((m, mIdx) => (
+                    <div key={mIdx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={m.label}
+                        onChange={(e) => handleIndustryMetricChange(mIdx, "label", e.target.value)}
+                        placeholder="Label (e.g. Average GMV Scale)"
+                        className="flex-1 bg-white border border-border rounded-lg px-3 py-1.5 text-xs text-dark"
+                      />
+                      <input
+                        type="text"
+                        value={m.value}
+                        onChange={(e) => handleIndustryMetricChange(mIdx, "value", e.target.value)}
+                        placeholder="Value (e.g. +240%)"
+                        className="w-32 bg-white border border-border rounded-lg px-3 py-1.5 text-xs text-dark font-bold text-primary"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveIndustryMetric(mIdx)}
+                        className="p-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Form Action Buttons */}
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setIsIndustryModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingIndustry}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold text-xs shadow-glow-sm hover:shadow-glow transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingIndustry ? "Saving..." : editingIndustryId ? "Update Sector" : "Create Sector"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE INDUSTRY CONFIRMATION */}
+      {deleteIndustryConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/70 backdrop-blur-sm">
+          <div className="bg-white border border-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center text-dark animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 mx-auto flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-dark mb-1">Delete Industry Sector?</h3>
+            <p className="text-xs text-dark-muted mb-6 leading-relaxed font-medium">
+              Are you sure? This market sector framework will be removed from the homepage marquee and /industries.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setDeleteIndustryConfirmId(null)}
+                className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-dark-muted hover:bg-softBg cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteIndustry(deleteIndustryConfirmId)}
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md cursor-pointer"
+              >
+                Yes, Delete Industry
               </button>
             </div>
           </div>

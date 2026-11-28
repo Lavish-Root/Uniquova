@@ -1,0 +1,308 @@
+[
+  {
+    "id": "retail",
+    "title": "E-commerce & Retail",
+    "tag": "Marketplaces & D2C Brands",
+    "icon": "ShoppingBag",
+    "image": "/images/industries/ecommerce.jpg",
+    "order": 1,
+    "accent": {
+      "bg": "from-emerald-500/10 via-purple-500/5 to-transparent",
+      "border": "border-emerald-500/20",
+      "badge": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "badgeText": "text-emerald-600",
+      "glow": "rgba(16, 185, 129, 0.15)"
+    },
+    "description": "Multi-channel marketplace domination, direct-to-consumer storefronts, inventory automation, and high-converting marketing campaigns that scale revenue rapidly.",
+    "solutions": [
+      "Amazon & Flipkart PPC",
+      "Shopify & Headless Stores",
+      "A+ Product Content",
+      "ROAS Optimization"
+    ],
+    "metrics": [
+      {
+        "label": "Average GMV Scale",
+        "value": "+240%"
+      },
+      {
+        "label": "Managed Monthly GMV",
+        "value": "₹4.2Cr+"
+      },
+      {
+        "label": "Avg Product Rating",
+        "value": "4.8★"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "🔥 +240% GMV Scale",
+        "sub": "Marketplace Scaling"
+      },
+      {
+        "text": "⭐ ROAS 4.8x",
+        "sub": "Ad Efficiency"
+      }
+    ],
+    "whyUniquova": [
+      "End-to-end Amazon & Flipkart brand registry, A+ content, and algorithmic keyword positioning",
+      "Headless Shopify architectures engineered for instantaneous mobile checkout conversions",
+      "Automated ROAS telemetry and real-time inventory velocity management across multi-channels"
+    ]
+  },
+  {
+    "id": "saas",
+    "title": "Technology & SaaS",
+    "tag": "Cloud Platforms & Modern APIs",
+    "icon": "Cpu",
+    "image": "/images/industries/saas.jpg",
+    "order": 2,
+    "accent": {
+      "bg": "from-blue-500/10 via-primary/5 to-transparent",
+      "border": "border-blue-500/20",
+      "badge": "bg-blue-50 text-blue-700 border-blue-200",
+      "badgeText": "text-blue-600",
+      "glow": "rgba(59, 130, 246, 0.15)"
+    },
+    "description": "Interactive product dashboards, high-converting lead generation web pages, and sleek application interfaces that reduce churn and empower developers.",
+    "solutions": [
+      "Modern Web Apps",
+      "Design Systems",
+      "Developer Portals",
+      "Conversion Rate Optimization"
+    ],
+    "metrics": [
+      {
+        "label": "Cloud Uptime SLA",
+        "value": "99.98%"
+      },
+      {
+        "label": "User Activation Lift",
+        "value": "3.2x"
+      },
+      {
+        "label": "Core Web Vitals P95",
+        "value": "< 420ms"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "⚡ 99.98% Cloud SLA",
+        "sub": "Enterprise Grade"
+      },
+      {
+        "text": "🚀 3.2x User Activation",
+        "sub": "Frictionless Flow"
+      }
+    ],
+    "whyUniquova": [
+      "Enterprise Next.js architecture with instant server-side hydration and sub-second P95 loads",
+      "Comprehensive design systems in Figma translated to reusable Tailwind component libraries",
+      "Developer-focused interactive documentation, API explorer sandboxes, and self-serve onboarding"
+    ]
+  },
+  {
+    "id": "healthcare",
+    "title": "Healthcare & MedTech",
+    "tag": "HIPAA & Telehealth Platforms",
+    "icon": "HeartPulse",
+    "image": "/images/industries/healthcare.jpg",
+    "order": 3,
+    "accent": {
+      "bg": "from-teal-500/10 via-primary/5 to-transparent",
+      "border": "border-teal-500/20",
+      "badge": "bg-teal-50 text-teal-700 border-teal-200",
+      "badgeText": "text-teal-600",
+      "glow": "rgba(20, 184, 166, 0.15)"
+    },
+    "description": "HIPAA-conscious digital health platforms, patient booking systems, clinic branding, and accessible telemedicine mobile apps built for clinical trust.",
+    "solutions": [
+      "Patient Portals",
+      "Telehealth Mobile Apps",
+      "Medical Brand Identity",
+      "Regulatory-Ready Web"
+    ],
+    "metrics": [
+      {
+        "label": "Security & Privacy",
+        "value": "100% HIPAA"
+      },
+      {
+        "label": "Patient Onboard Lift",
+        "value": "+65%"
+      },
+      {
+        "label": "Telehealth Sessions",
+        "value": "40k+"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "🛡️ 100% HIPAA Compliant",
+        "sub": "Data Shield Verified"
+      },
+      {
+        "text": "🩺 40k+ Live Sessions",
+        "sub": "Telemedicine Platform"
+      }
+    ],
+    "whyUniquova": [
+      "Strict HIPAA, ISO-27001, and Indian Digital Personal Data Protection (DPDP) compliance",
+      "Encrypted doctor-patient teleconsultation video streams with electronic prescription delivery",
+      "Accessibility-first WCAG AAA compliant interfaces designed for diverse patient demographics"
+    ]
+  },
+  {
+    "id": "education",
+    "title": "Education & EdTech",
+    "tag": "Interactive LMS & Virtual Classrooms",
+    "icon": "GraduationCap",
+    "image": "/images/industries/education.jpg",
+    "order": 4,
+    "accent": {
+      "bg": "from-amber-500/10 via-primary/5 to-transparent",
+      "border": "border-amber-500/20",
+      "badge": "bg-amber-50 text-amber-700 border-amber-200",
+      "badgeText": "text-amber-600",
+      "glow": "rgba(245, 158, 11, 0.15)"
+    },
+    "description": "Engaging learning management systems, course landing funnels, virtual classrooms, and interactive student web portals designed for maximum retention.",
+    "solutions": [
+      "Interactive LMS",
+      "Student Portals",
+      "Course Funnels",
+      "Mobile Learning Apps"
+    ],
+    "metrics": [
+      {
+        "label": "Course Completion",
+        "value": "84%"
+      },
+      {
+        "label": "Certified Learners",
+        "value": "10k+"
+      },
+      {
+        "label": "Video Stream Latency",
+        "value": "0 ms"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "🎓 84% Completion Rate",
+        "sub": "Gamified Retention"
+      },
+      {
+        "text": "⚡ Zero-Lag Video Stream",
+        "sub": "Ultra-Fast Delivery"
+      }
+    ],
+    "whyUniquova": [
+      "Gamified LMS platforms with real-time quiz evaluations, video chaptering, and verifiable certificates",
+      "High-converting webinar and course landing funnels with automated WhatsApp notification drips",
+      "Cross-device native-feel mobile learning web applications with offline content bookmarking"
+    ]
+  },
+  {
+    "id": "fashion",
+    "title": "Lifestyle & Fashion",
+    "tag": "Haute Couture & Lookbook Stores",
+    "icon": "Sparkles",
+    "image": "/images/industries/fashion.jpg",
+    "order": 5,
+    "accent": {
+      "bg": "from-rose-500/10 via-primary/5 to-transparent",
+      "border": "border-rose-500/20",
+      "badge": "bg-rose-50 text-rose-700 border-rose-200",
+      "badgeText": "text-rose-600",
+      "glow": "rgba(244, 63, 94, 0.15)"
+    },
+    "description": "Ultra-chic editorial branding, lookbook digital experiences, fast mobile storefronts, and scroll-stopping social ad creatives tailored for luxury aesthetics.",
+    "solutions": [
+      "Editorial Visual Systems",
+      "High-Speed Catalogs",
+      "Influencer Ad Kits",
+      "Luxury Packaging"
+    ],
+    "metrics": [
+      {
+        "label": "Meta & Social ROAS",
+        "value": "3.8x"
+      },
+      {
+        "label": "Mobile Catalog Speed",
+        "value": "0.8s"
+      },
+      {
+        "label": "Mobile Checkout Lift",
+        "value": "+48%"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "✨ 3.8x Social Ad ROAS",
+        "sub": "High-CTR Creative"
+      },
+      {
+        "text": "📱 Sub-1s Mobile Catalog",
+        "sub": "Edge Cached"
+      }
+    ],
+    "whyUniquova": [
+      "Haute-couture typography, interactive lookbook carousels, and 3D garment visualization",
+      "Scroll-stopping social ad creatives tailored for Instagram Reels, Meta Ads, and TikTok formats",
+      "Sub-second image catalog delivery powered by Next.js edge caching and WebP optimization"
+    ]
+  },
+  {
+    "id": "startups",
+    "title": "Startups & Small Businesses",
+    "tag": "MVP Acceleration & Seed Capital",
+    "icon": "Rocket",
+    "image": "/images/industries/startups.jpg",
+    "order": 6,
+    "accent": {
+      "bg": "from-purple-500/10 via-orange-500/5 to-transparent",
+      "border": "border-purple-500/20",
+      "badge": "bg-purple-50 text-purple-700 border-purple-200",
+      "badgeText": "text-purple-600",
+      "glow": "rgba(117, 69, 245, 0.15)"
+    },
+    "description": "Fast-track MVPs, investor pitch decks, brand launches, and cost-effective digital marketing frameworks tailored to rapid market entry and traction.",
+    "solutions": [
+      "Rapid MVP Launch",
+      "Investor Pitch Decks",
+      "Foundational Brand Kits",
+      "Zero-to-One Marketing"
+    ],
+    "metrics": [
+      {
+        "label": "MVP Build Sprint",
+        "value": "4 Weeks"
+      },
+      {
+        "label": "Client Capital Raised",
+        "value": "₹8.5Cr+"
+      },
+      {
+        "label": "Investor Readiness",
+        "value": "100%"
+      }
+    ],
+    "floatingBadges": [
+      {
+        "text": "⏱️ 4-Week Rapid MVP",
+        "sub": "Zero-to-Launch"
+      },
+      {
+        "text": "📈 ₹8.5Cr+ Capital Raised",
+        "sub": "Investor Validated"
+      }
+    ],
+    "whyUniquova": [
+      "Zero-to-One MVP architecture designed to launch live product into user hands within 30 days",
+      "Investor-ready pitch decks, interactive clickable Figma prototypes, and traction dashboards",
+      "Cost-efficient performance marketing playbooks that maximize runway and prove unit economics"
+    ]
+  }
+]

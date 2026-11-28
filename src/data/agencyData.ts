@@ -659,6 +659,7 @@ export interface IndustryItem {
   tag: string;
   icon: string;
   image: string;
+  order?: number;
   accent: {
     bg: string;
     border: string;
@@ -671,6 +672,32 @@ export interface IndustryItem {
   metrics: IndustryMetric[];
   floatingBadges: { text: string; sub?: string }[];
   whyUniquova: string[];
+}
+
+export interface ServiceTag {
+  label: string;
+  image: string;
+}
+
+export interface CoreServiceItem {
+  id: string;
+  slug: string;
+  domain: string;
+  title: string;
+  defaultImage: string;
+  link: string;
+  order: number;
+  tags: ServiceTag[];
+}
+
+export interface FeaturedWorkItem {
+  id: string;
+  title: string;
+  domain: string;
+  tagline?: string;
+  image: string;
+  domainLink: string;
+  order: number;
 }
 
 export const INDUSTRIES_DATA: IndustryItem[] = [
@@ -1211,6 +1238,43 @@ export const DEFAULT_SELECTED_WORK: SelectedWorkItem[] = [
     order: 10,
   },
 ];
+
+export interface BrandWorkItem {
+  id: string;
+  companyName: string;
+  category: string;
+  title: string;
+  image: string;
+  caption: string;
+  quote?: string;
+  founderName?: string;
+  founderRole?: string;
+  metrics?: { label: string; value: string }[];
+  summary?: string;
+  projectLink?: string;
+}
+
+export interface FounderStory {
+  id: string;
+  companyName: string;
+  companyCategory: string;
+  logoType?: "megahr" | "913" | "ruuster" | "euroteam" | "needle" | "outset" | "custom";
+  customLogoUrl?: string;
+  quote: string;
+  founderName: string;
+  founderRole: string;
+  founderAvatar: string;
+  projectLink: string;
+  accentColor: string;
+  metrics: { label: string; value: string }[];
+  caseStudySummary: string;
+  workImages: BrandWorkItem[];
+  col1Items?: BrandWorkItem[];
+  col2Items?: BrandWorkItem[];
+  order?: number;
+  featured?: boolean;
+}
+
 
 
 

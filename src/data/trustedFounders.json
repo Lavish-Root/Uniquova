@@ -1,0 +1,1700 @@
+[
+  {
+    "id": "mega-hr",
+    "companyName": ".",
+    "companyCategory": "Technology, Information and Internet",
+    "logoType": "custom",
+    "quote": "“A thoughtful blend of creativity, functionality, and elegant design. UNIQUOVA brought the Syaahi vision to life with an experience that feels truly special.”",
+    "founderName": "SHREYANSH",
+    "founderRole": "Founder & CEO",
+    "founderAvatar": "/images/trusted_founders/avatar_1795850814826_hpj90.webp",
+    "projectLink": "/our-work",
+    "accentColor": "#7545F5",
+    "metrics": [],
+    "caseStudySummary": "UNIQOVA transformed Syaahi into a modern digital reading platform with elegant typography, intuitive UI/UX, and a seamless experience for literature lovers.",
+    "workImages": [
+      {
+        "id": "megahr-w1",
+        "companyName": "MegaHR",
+        "category": "UI/UX Design",
+        "title": "App UI/UX Design",
+        "image": "/images/trusted_founders/deliverable_1795850814835_c5rkg.webp",
+        "caption": "Intuitive and seamless reading experience.",
+        "quote": "“Our subway takeover series established MegaHR as the defining AI recruitment brand across NYC tech hubs.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Footfall Reach",
+            "value": "2.4M"
+          },
+          {
+            "label": "Direct Signups",
+            "value": "+340%"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "96.8%"
+          }
+        ],
+        "summary": "City-wide digital subway screens takeover showing live candidate qualification workflows.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "megahr-w2",
+        "companyName": "MegaHR",
+        "category": "App Development",
+        "title": "Mobile App Interface",
+        "image": "/images/trusted_founders/deliverable_1795850814840_0tsc6.webp",
+        "caption": "Modern layouts crafted for readers.",
+        "quote": "“The platform interface engineered by UNIQOVA allowed recruiters to screen 10x more candidates effortlessly.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "P95 Latency",
+            "value": "< 240ms"
+          },
+          {
+            "label": "Recruiter NPS",
+            "value": "94.2"
+          },
+          {
+            "label": "Screen Velocity",
+            "value": "12x"
+          }
+        ],
+        "summary": "Responsive Next.js web application with real-time biometric candidate ranking and automated scheduling.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "megahr-w3",
+        "companyName": "MegaHR",
+        "category": "Branding",
+        "title": "Brand Visual Identity",
+        "image": "/images/trusted_founders/deliverable_1795850814847_gfukc.webp",
+        "caption": "Elegant typography and cohesive visual language.",
+        "quote": "“From logo geometry to color tokens, UNIQOVA created a unified brand language that scales with our enterprise growth.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Brand Equity",
+            "value": "$6.5M"
+          },
+          {
+            "label": "Design Consistency",
+            "value": "100%"
+          },
+          {
+            "label": "Press Features",
+            "value": "18 Outlets"
+          }
+        ],
+        "summary": "Design system tokens, corporate stationery, investor pitch decks, and brand guideline documentation.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "megahr-w4",
+        "companyName": "MegaHR",
+        "category": "Product Design",
+        "title": "App Experience Showcase",
+        "image": "/images/trusted_founders/deliverable_1795850814855_tooj1.webp",
+        "caption": "A complete look at Syaahi's digital experience.",
+        "quote": "“The mobile and tablet screener gives talent teams instant access to pipeline health on the go.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Mobile Daily Active",
+            "value": "85%"
+          },
+          {
+            "label": "Candidate Match",
+            "value": "99.1%"
+          },
+          {
+            "label": "Time to Hire",
+            "value": "3.2 Days"
+          }
+        ],
+        "summary": "Optimized mobile tablet workspace for executive recruiters and talent leads.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "megahr-w1",
+        "companyName": "MegaHR",
+        "category": "UI/UX Design",
+        "title": "App UI/UX Design",
+        "image": "/images/trusted_founders/deliverable_1795850814835_c5rkg.webp",
+        "caption": "Intuitive and seamless reading experience.",
+        "quote": "“Our subway takeover series established MegaHR as the defining AI recruitment brand across NYC tech hubs.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Footfall Reach",
+            "value": "2.4M"
+          },
+          {
+            "label": "Direct Signups",
+            "value": "+340%"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "96.8%"
+          }
+        ],
+        "summary": "City-wide digital subway screens takeover showing live candidate qualification workflows.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "megahr-w3",
+        "companyName": "MegaHR",
+        "category": "Branding",
+        "title": "Brand Visual Identity",
+        "image": "/images/trusted_founders/deliverable_1795850814847_gfukc.webp",
+        "caption": "Elegant typography and cohesive visual language.",
+        "quote": "“From logo geometry to color tokens, UNIQOVA created a unified brand language that scales with our enterprise growth.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Brand Equity",
+            "value": "$6.5M"
+          },
+          {
+            "label": "Design Consistency",
+            "value": "100%"
+          },
+          {
+            "label": "Press Features",
+            "value": "18 Outlets"
+          }
+        ],
+        "summary": "Design system tokens, corporate stationery, investor pitch decks, and brand guideline documentation.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "megahr-w2",
+        "companyName": "MegaHR",
+        "category": "App Development",
+        "title": "Mobile App Interface",
+        "image": "/images/trusted_founders/deliverable_1795850814840_0tsc6.webp",
+        "caption": "Modern layouts crafted for readers.",
+        "quote": "“The platform interface engineered by UNIQOVA allowed recruiters to screen 10x more candidates effortlessly.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "P95 Latency",
+            "value": "< 240ms"
+          },
+          {
+            "label": "Recruiter NPS",
+            "value": "94.2"
+          },
+          {
+            "label": "Screen Velocity",
+            "value": "12x"
+          }
+        ],
+        "summary": "Responsive Next.js web application with real-time biometric candidate ranking and automated scheduling.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "megahr-w4",
+        "companyName": "MegaHR",
+        "category": "Product Design",
+        "title": "App Experience Showcase",
+        "image": "/images/trusted_founders/deliverable_1795850814855_tooj1.webp",
+        "caption": "A complete look at Syaahi's digital experience.",
+        "quote": "“The mobile and tablet screener gives talent teams instant access to pipeline health on the go.”",
+        "founderName": "Darren Bounds",
+        "founderRole": "Founder & CEO, MegaHR",
+        "metrics": [
+          {
+            "label": "Mobile Daily Active",
+            "value": "85%"
+          },
+          {
+            "label": "Candidate Match",
+            "value": "99.1%"
+          },
+          {
+            "label": "Time to Hire",
+            "value": "3.2 Days"
+          }
+        ],
+        "summary": "Optimized mobile tablet workspace for executive recruiters and talent leads.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 1,
+    "featured": true,
+    "customLogoUrl": "/images/trusted_founders/logo_1795850984739_drn2p.png"
+  },
+  {
+    "id": "913-ai",
+    "companyName": "Slicco",
+    "companyCategory": "Fast-Casual American Pizzeria",
+    "logoType": "custom",
+    "quote": "“A complete brand we're proud to put in front of investors and customers.”",
+    "founderName": "Jason Miller",
+    "founderRole": "Founder & Owner, Slicco (USA)",
+    "founderAvatar": "/images/trusted_founders/avatar_1795853334628_82qa9.webp",
+    "projectLink": "/our-work",
+    "accentColor": "#F97316",
+    "metrics": [],
+    "caseStudySummary": "Engineered a complete QSR brand identity for US pizzeria Slicco, featuring a custom product-first wordmark, retro character mascot, warm Americana color palette, storefront signage, and cohesive touchpoints.",
+    "workImages": [
+      {
+        "id": "913-w1",
+        "companyName": "913.ai",
+        "category": "Brand Identity",
+        "title": "Slicco — Custom Product-First Wordmark",
+        "image": "/images/trusted_founders/deliverable_1795853334643_v9rdw.webp",
+        "caption": "Pizza Slice & Peeking Eyes Logo",
+        "quote": "“The glossy 3D wave visual assets defined our category and positioned us as an elite AI research studio.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Investor Traction",
+            "value": "$4.2M"
+          },
+          {
+            "label": "Session Time",
+            "value": "+3.8m"
+          },
+          {
+            "label": "Global Mentions",
+            "value": "450+"
+          }
+        ],
+        "summary": "Photorealistic 3D particle wave simulations representing continuous AI agent intelligence.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "913-w2",
+        "companyName": "913.ai",
+        "category": "Environmental & Signage",
+        "title": "Slicco — Illuminated Storefront Signage",
+        "image": "/images/trusted_founders/deliverable_1795853334656_j70gc.webp",
+        "caption": "Backlit Exterior Blade Sign",
+        "quote": "“Sub-second agent execution telemetry packed in an ultra-clean, distraction-free developer interface.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Task Throughput",
+            "value": "250K/day"
+          },
+          {
+            "label": "Dev Retention",
+            "value": "96.2%"
+          },
+          {
+            "label": "Uptime SLA",
+            "value": "99.99%"
+          }
+        ],
+        "summary": "Real-time multi-agent orchestration console with graph-based reasoning monitors and token consumption analytics.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "913-w3",
+        "companyName": "913.ai",
+        "category": "Mascot & Print Collateral",
+        "title": "Slicco — Custom Retro Mascot & Cups",
+        "image": "/images/trusted_founders/deliverable_1795853334666_kid7g.webp",
+        "caption": "Character Illustration & Dual-Tone Cups",
+        "quote": "“The physical touchpoints and packaging created by UNIQOVA left institutional investors speechless.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Term Sheets",
+            "value": "4 Offers"
+          },
+          {
+            "label": "Valuation Jump",
+            "value": "2.8x"
+          },
+          {
+            "label": "Partner NPS",
+            "value": "98.4"
+          }
+        ],
+        "summary": "Matte black structural packaging, foil-stamped documentation, and custom dimensional investor kits.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "913-w4",
+        "companyName": "913.ai",
+        "category": "QSR Packaging & Touchpoints",
+        "title": "Slicco — Custom Die-Cut Slice Trays",
+        "image": "/images/trusted_founders/deliverable_1795853334674_eensu.webp",
+        "caption": "Branded QSR Serving Collateral",
+        "quote": "“Our team and community wear the brand with immense pride at every tier-1 AI conference globally.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Conference Merch",
+            "value": "5,000+"
+          },
+          {
+            "label": "Community Growth",
+            "value": "+450%"
+          },
+          {
+            "label": "Organic Reach",
+            "value": "1.2M"
+          }
+        ],
+        "summary": "Embroidered technical outerwear, weatherproof windbreakers, hardware packaging, and investor kits.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "913-w1",
+        "companyName": "913.ai",
+        "category": "Brand Identity",
+        "title": "Slicco — Custom Product-First Wordmark",
+        "image": "/images/trusted_founders/deliverable_1795853334643_v9rdw.webp",
+        "caption": "Pizza Slice & Peeking Eyes Logo",
+        "quote": "“The glossy 3D wave visual assets defined our category and positioned us as an elite AI research studio.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Investor Traction",
+            "value": "$4.2M"
+          },
+          {
+            "label": "Session Time",
+            "value": "+3.8m"
+          },
+          {
+            "label": "Global Mentions",
+            "value": "450+"
+          }
+        ],
+        "summary": "Photorealistic 3D particle wave simulations representing continuous AI agent intelligence.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "913-w3",
+        "companyName": "913.ai",
+        "category": "Mascot & Print Collateral",
+        "title": "Slicco — Custom Retro Mascot & Cups",
+        "image": "/images/trusted_founders/deliverable_1795853334666_kid7g.webp",
+        "caption": "Character Illustration & Dual-Tone Cups",
+        "quote": "“The physical touchpoints and packaging created by UNIQOVA left institutional investors speechless.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Term Sheets",
+            "value": "4 Offers"
+          },
+          {
+            "label": "Valuation Jump",
+            "value": "2.8x"
+          },
+          {
+            "label": "Partner NPS",
+            "value": "98.4"
+          }
+        ],
+        "summary": "Matte black structural packaging, foil-stamped documentation, and custom dimensional investor kits.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "913-w2",
+        "companyName": "913.ai",
+        "category": "Environmental & Signage",
+        "title": "Slicco — Illuminated Storefront Signage",
+        "image": "/images/trusted_founders/deliverable_1795853334656_j70gc.webp",
+        "caption": "Backlit Exterior Blade Sign",
+        "quote": "“Sub-second agent execution telemetry packed in an ultra-clean, distraction-free developer interface.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Task Throughput",
+            "value": "250K/day"
+          },
+          {
+            "label": "Dev Retention",
+            "value": "96.2%"
+          },
+          {
+            "label": "Uptime SLA",
+            "value": "99.99%"
+          }
+        ],
+        "summary": "Real-time multi-agent orchestration console with graph-based reasoning monitors and token consumption analytics.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "913-w4",
+        "companyName": "913.ai",
+        "category": "QSR Packaging & Touchpoints",
+        "title": "Slicco — Custom Die-Cut Slice Trays",
+        "image": "/images/trusted_founders/deliverable_1795853334674_eensu.webp",
+        "caption": "Branded QSR Serving Collateral",
+        "quote": "“Our team and community wear the brand with immense pride at every tier-1 AI conference globally.”",
+        "founderName": "Immo Ait Stapelfeld",
+        "founderRole": "CEO & Founder, 913.ai",
+        "metrics": [
+          {
+            "label": "Conference Merch",
+            "value": "5,000+"
+          },
+          {
+            "label": "Community Growth",
+            "value": "+450%"
+          },
+          {
+            "label": "Organic Reach",
+            "value": "1.2M"
+          }
+        ],
+        "summary": "Embroidered technical outerwear, weatherproof windbreakers, hardware packaging, and investor kits.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 2,
+    "featured": true,
+    "customLogoUrl": "/images/trusted_founders/logo_1795853993674_lquri.png"
+  },
+  {
+    "id": "ruuster-ai",
+    "companyName": "Ruuster",
+    "companyCategory": "AI Real Estate Intelligence",
+    "logoType": "ruuster",
+    "quote": "“UNIQUOVA transformed our vision into an iconic brand identity and platform that scaled user acquisition 300%.”",
+    "founderName": "Alexander Wright",
+    "founderRole": "Founder & CEO, Ruuster",
+    "founderAvatar": "/images/team/team-3.jpg",
+    "projectLink": "/our-work",
+    "accentColor": "#F97316",
+    "metrics": [
+      {
+        "label": "Active Investors",
+        "value": "24,000+"
+      },
+      {
+        "label": "Conversion Lift",
+        "value": "+182%"
+      },
+      {
+        "label": "P95 Speed",
+        "value": "0.42s"
+      }
+    ],
+    "caseStudySummary": "Large-scale Manhattan billboard campaign, scalable Next.js cloud web application, design system, and multi-platform visual guidelines.",
+    "workImages": [
+      {
+        "id": "ruuster-w1",
+        "companyName": "Ruuster",
+        "category": "Large-Format OOH",
+        "title": "Ruuster — Manhattan Building Billboard",
+        "image": "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_480.webp",
+        "caption": "Manhattan Billboard Campaign",
+        "quote": "“The towering Manhattan billboard campaign instantly drove enterprise credibility and institutional buy-in.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Impression Count",
+            "value": "5.8M"
+          },
+          {
+            "label": "Institutional LPs",
+            "value": "48 Funds"
+          },
+          {
+            "label": "Direct Inbound",
+            "value": "+210%"
+          }
+        ],
+        "summary": "Iconic high-rise billboard takeover in Midtown Manhattan featuring bold brand typography.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-w2",
+        "companyName": "Ruuster",
+        "category": "Cloud Web App",
+        "title": "Ruuster — AI Property Intelligence Platform",
+        "image": "/images/selected_work/it4cXk12EJX3M46FocEoA4IDN8_480.webp",
+        "caption": "Real-Time Valuation Engine",
+        "quote": "“Our web platform processes millions of residential listings in real time with breathtaking performance.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Query Speed",
+            "value": "0.42s"
+          },
+          {
+            "label": "Listings Synced",
+            "value": "3.2M"
+          },
+          {
+            "label": "User Retention",
+            "value": "91.4%"
+          }
+        ],
+        "summary": "High-concurrency React & Next.js cloud portal with geospatial predictive yield mapping.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-w3",
+        "companyName": "Ruuster",
+        "category": "Urban OOH Advertising",
+        "title": "Ruuster — Transit Hub Display Series",
+        "image": "/images/selected_work/2QlElFBnG4q7Qn7iIoRrvaKfE_480.webp",
+        "caption": "Transit Hub Billboard Series",
+        "quote": "“Striking visuals that cut through the noise of urban commuter hubs and generated record app signups.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "App Installs",
+            "value": "65,000+"
+          },
+          {
+            "label": "Cost Per Install",
+            "value": "$1.85"
+          },
+          {
+            "label": "Active Volume",
+            "value": "$45M+"
+          }
+        ],
+        "summary": "Multi-city digital transit screens showcasing real-time residential investment yields.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-w4",
+        "companyName": "Ruuster",
+        "category": "Fintech Interface",
+        "title": "Ruuster — Mobile Investor Portal",
+        "image": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
+        "caption": "Mobile Investment App UI",
+        "quote": "“Sleek holographic card architecture and fluid interactions that our high-net-worth clients praise daily.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Store Rating",
+            "value": "4.9 ★"
+          },
+          {
+            "label": "AUM Growth",
+            "value": "3.2x"
+          },
+          {
+            "label": "Daily Sessions",
+            "value": "4.8"
+          }
+        ],
+        "summary": "Native mobile wallet and fractional real estate trading UI with instant ACH settlement.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "ruuster-c1-1",
+        "companyName": "Ruuster",
+        "category": "Large-Format OOH",
+        "title": "Ruuster — Manhattan Building Billboard",
+        "image": "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_480.webp",
+        "caption": "Manhattan Billboard Campaign",
+        "quote": "“The towering Manhattan billboard campaign instantly drove enterprise credibility and institutional buy-in.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Impression Count",
+            "value": "5.8M"
+          },
+          {
+            "label": "Institutional LPs",
+            "value": "48 Funds"
+          },
+          {
+            "label": "Direct Inbound",
+            "value": "+210%"
+          }
+        ],
+        "summary": "Iconic high-rise billboard takeover in Midtown Manhattan featuring bold brand typography.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-c1-2",
+        "companyName": "Ruuster",
+        "category": "Cloud Web App",
+        "title": "Ruuster — AI Property Intelligence Platform",
+        "image": "/images/selected_work/it4cXk12EJX3M46FocEoA4IDN8_480.webp",
+        "caption": "Real-Time Valuation Engine",
+        "quote": "“Our web platform processes millions of residential listings in real time with breathtaking performance.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Query Speed",
+            "value": "0.42s"
+          },
+          {
+            "label": "Listings Synced",
+            "value": "3.2M"
+          },
+          {
+            "label": "User Retention",
+            "value": "91.4%"
+          }
+        ],
+        "summary": "High-concurrency React & Next.js cloud portal with geospatial predictive yield mapping.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-c1-3",
+        "companyName": "Ruuster",
+        "category": "Urban OOH Advertising",
+        "title": "Ruuster — Transit Hub Display Series",
+        "image": "/images/selected_work/2QlElFBnG4q7Qn7iIoRrvaKfE_480.webp",
+        "caption": "Transit Hub Billboard Series",
+        "quote": "“Striking visuals that cut through the noise of urban commuter hubs and generated record app signups.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "App Installs",
+            "value": "65,000+"
+          },
+          {
+            "label": "Cost Per Install",
+            "value": "$1.85"
+          },
+          {
+            "label": "Active Volume",
+            "value": "$45M+"
+          }
+        ],
+        "summary": "Multi-city digital transit screens showcasing real-time residential investment yields.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "ruuster-c2-1",
+        "companyName": "Ruuster",
+        "category": "Fintech Interface",
+        "title": "Ruuster — Mobile Investor Portal",
+        "image": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
+        "caption": "Mobile Investment App UI",
+        "quote": "“Sleek holographic card architecture and fluid interactions that our high-net-worth clients praise daily.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Store Rating",
+            "value": "4.9 ★"
+          },
+          {
+            "label": "AUM Growth",
+            "value": "3.2x"
+          },
+          {
+            "label": "Daily Sessions",
+            "value": "4.8"
+          }
+        ],
+        "summary": "Native mobile wallet and fractional real estate trading UI with instant ACH settlement.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-c2-2",
+        "companyName": "Ruuster",
+        "category": "Investor Decks",
+        "title": "Ruuster — Institutional LP Deck Architecture",
+        "image": "/images/selected_work/lHVy2gEqT4bpJpxQsWz3JpyIDI4_480.webp",
+        "caption": "Institutional Fund Presentation",
+        "quote": "“The decks and visual identity engineered by UNIQOVA allowed us to raise our institutional round ahead of schedule.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Capital Raised",
+            "value": "$18.5M"
+          },
+          {
+            "label": "LP Commitments",
+            "value": "100%"
+          },
+          {
+            "label": "Due Diligence",
+            "value": "12 Days"
+          }
+        ],
+        "summary": "Institutional investor presentations, interactive financial models, and executive summary materials.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "ruuster-c2-3",
+        "companyName": "Ruuster",
+        "category": "Geospatial Analytics",
+        "title": "Ruuster — High-Yield Property Heatmap",
+        "image": "/images/selected_work/it4cXk12EJX3M46FocEoA4IDN8_480.webp",
+        "caption": "High-Yield Geospatial Heatmap",
+        "quote": "“Real-time predictive yield heatmaps gave retail investors institutional-grade data at their fingertips.”",
+        "founderName": "Alexander Wright",
+        "founderRole": "Founder & CEO, Ruuster",
+        "metrics": [
+          {
+            "label": "Yield Accuracy",
+            "value": "98.7%"
+          },
+          {
+            "label": "Transactions",
+            "value": "$120M+"
+          },
+          {
+            "label": "User NPS",
+            "value": "93.4"
+          }
+        ],
+        "summary": "Web-based geospatial valuation engine powered by deep learning predictive rent algorithms.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 3,
+    "featured": true
+  },
+  {
+    "id": "euroteam-logistics",
+    "companyName": "Euroteam",
+    "companyCategory": "Sustainable Global Logistics",
+    "logoType": "euroteam",
+    "quote": "“The digital architecture and enterprise branding engineered by the team gave us an undeniable enterprise edge in global markets.”",
+    "founderName": "Mark Van Dijk",
+    "founderRole": "Managing Director, Euroteam",
+    "founderAvatar": "/images/team/team-4.jpg",
+    "projectLink": "/our-work",
+    "accentColor": "#10B981",
+    "metrics": [
+      {
+        "label": "Route Volume",
+        "value": "€120M+"
+      },
+      {
+        "label": "Lighthouse Score",
+        "value": "100/100"
+      },
+      {
+        "label": "Partner Conversion",
+        "value": "+64%"
+      }
+    ],
+    "caseStudySummary": "Enterprise digital transformation, real-time fleet scheduling dashboard, sustainable identity guidelines, and international web platform.",
+    "workImages": [
+      {
+        "id": "euroteam-w1",
+        "companyName": "Euroteam",
+        "category": "OOH & Brand Takeover",
+        "title": "Euroteam — Highway 3-Banner Billboard Series",
+        "image": "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_480.webp",
+        "caption": "Highway 3-Banner Billboard Series",
+        "quote": "“Our sustainable green brand banners immediately elevated our prestige across major European transit freight routes.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Freight Inquiries",
+            "value": "+84%"
+          },
+          {
+            "label": "Partner Deals",
+            "value": "€32M"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "99.1%"
+          }
+        ],
+        "summary": "Highway outdoor billboard series highlighting sustainable carbon-neutral freight logistics.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-w2",
+        "companyName": "Euroteam",
+        "category": "Enterprise Web App",
+        "title": "Euroteam — Global Logistics Web Platform",
+        "image": "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
+        "caption": "Fleet Scheduling & Route Interface",
+        "quote": "“Sub-200ms route calculations and a world-class UI that our international supply chain partners praise daily.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Global Coverage",
+            "value": "48 Countries"
+          },
+          {
+            "label": "Response Time",
+            "value": "< 200ms"
+          },
+          {
+            "label": "Client Retention",
+            "value": "99.1%"
+          }
+        ],
+        "summary": "Enterprise web application featuring real-time fleet scheduling, multi-currency checkout, and instant dispatch.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-w3",
+        "companyName": "Euroteam",
+        "category": "Generative Identity",
+        "title": "Euroteam — Dynamic Sustainable Patterns",
+        "image": "/images/selected_work/yylnHjpawl6cfQNJLwRB14HQ_480.webp",
+        "caption": "Fleet Wraps & Dynamic Patterns",
+        "quote": "“Every touchpoint—from shipping containers to digital apps—embodies our commitment to clean, forward-moving logistics.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Fleet Touchpoints",
+            "value": "1,200+"
+          },
+          {
+            "label": "Brand Equity",
+            "value": "€45M"
+          },
+          {
+            "label": "Consistency Score",
+            "value": "100%"
+          }
+        ],
+        "summary": "Generative vector patterns applied across electric trucks, shipping containers, and environmental impact collateral.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-w4",
+        "companyName": "Euroteam",
+        "category": "Logistics Telemetry",
+        "title": "Euroteam — Route Command Center",
+        "image": "/images/selected_work/wUqQcSSSVGIKdc8JPIo7HYcBvA_480.webp",
+        "caption": "Global Operations Dashboard",
+        "quote": "“Real-time telematics dashboard that gave our operations team complete clarity across European freight lanes.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "On-Time Dispatch",
+            "value": "99.8%"
+          },
+          {
+            "label": "Fuel Optimization",
+            "value": "-18%"
+          },
+          {
+            "label": "Active Routes",
+            "value": "480+"
+          }
+        ],
+        "summary": "Cloud-native mission control dashboard monitoring cargo telemetry and carbon offsets in real time.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "euroteam-c1-1",
+        "companyName": "Euroteam",
+        "category": "OOH & Brand Takeover",
+        "title": "Euroteam — Highway 3-Banner Billboard Series",
+        "image": "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_480.webp",
+        "caption": "Highway 3-Banner Billboard Series",
+        "quote": "“Our sustainable green brand banners immediately elevated our prestige across major European transit freight routes.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Freight Inquiries",
+            "value": "+84%"
+          },
+          {
+            "label": "Partner Deals",
+            "value": "€32M"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "99.1%"
+          }
+        ],
+        "summary": "Highway outdoor billboard series highlighting sustainable carbon-neutral freight logistics.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-c1-2",
+        "companyName": "Euroteam",
+        "category": "Enterprise Web App",
+        "title": "Euroteam — Global Logistics Web Platform",
+        "image": "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
+        "caption": "Fleet Scheduling & Route Interface",
+        "quote": "“Sub-200ms route calculations and a world-class UI that our international supply chain partners praise daily.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Global Coverage",
+            "value": "48 Countries"
+          },
+          {
+            "label": "Response Time",
+            "value": "< 200ms"
+          },
+          {
+            "label": "Client Retention",
+            "value": "99.1%"
+          }
+        ],
+        "summary": "Enterprise web application featuring real-time fleet scheduling, multi-currency checkout, and instant dispatch.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-c1-3",
+        "companyName": "Euroteam",
+        "category": "Generative Identity",
+        "title": "Euroteam — Dynamic Sustainable Patterns",
+        "image": "/images/selected_work/yylnHjpawl6cfQNJLwRB14HQ_480.webp",
+        "caption": "Fleet Wraps & Dynamic Patterns",
+        "quote": "“Every touchpoint—from shipping containers to digital apps—embodies our commitment to clean, forward-moving logistics.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Fleet Touchpoints",
+            "value": "1,200+"
+          },
+          {
+            "label": "Brand Equity",
+            "value": "€45M"
+          },
+          {
+            "label": "Consistency Score",
+            "value": "100%"
+          }
+        ],
+        "summary": "Generative vector patterns applied across electric trucks, shipping containers, and environmental impact collateral.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "euroteam-c2-1",
+        "companyName": "Euroteam",
+        "category": "Logistics Telemetry",
+        "title": "Euroteam — Route Command Center",
+        "image": "/images/selected_work/wUqQcSSSVGIKdc8JPIo7HYcBvA_480.webp",
+        "caption": "Global Operations Dashboard",
+        "quote": "“Real-time telematics dashboard that gave our operations team complete clarity across European freight lanes.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "On-Time Dispatch",
+            "value": "99.8%"
+          },
+          {
+            "label": "Fuel Optimization",
+            "value": "-18%"
+          },
+          {
+            "label": "Active Routes",
+            "value": "480+"
+          }
+        ],
+        "summary": "Cloud-native mission control dashboard monitoring cargo telemetry and carbon offsets in real time.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-c2-2",
+        "companyName": "Euroteam",
+        "category": "Freight Corridor OOH",
+        "title": "Euroteam — European Transit Freight Corridor",
+        "image": "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_480.webp",
+        "caption": "European Freight Transit Banners",
+        "quote": "“Cohesive visual communication across ports, highways, and railway freight terminals.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Transit Routes",
+            "value": "480+"
+          },
+          {
+            "label": "Partner Trust",
+            "value": "99.8%"
+          },
+          {
+            "label": "Emissions Saved",
+            "value": "32,000T"
+          }
+        ],
+        "summary": "International transit signage engineered for visibility in all weather conditions.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "euroteam-c2-3",
+        "companyName": "Euroteam",
+        "category": "Route Dispatch UI",
+        "title": "Euroteam — Instant Route Dispatch Engine",
+        "image": "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp",
+        "caption": "Instant Dispatch Engine UI",
+        "quote": "“Zero-friction dispatch engine that reduced route planning time from hours to seconds.”",
+        "founderName": "Mark Van Dijk",
+        "founderRole": "Managing Director, Euroteam",
+        "metrics": [
+          {
+            "label": "Dispatch Velocity",
+            "value": "14x"
+          },
+          {
+            "label": "Driver Adoption",
+            "value": "98.5%"
+          },
+          {
+            "label": "Fuel Cost",
+            "value": "-18%"
+          }
+        ],
+        "summary": "Responsive tablet interface used by over 3,000 European freight drivers and depot coordinators.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 4,
+    "featured": true
+  },
+  {
+    "id": "needle-health",
+    "companyName": "Needle",
+    "companyCategory": "On-Demand Healthcare Logistics",
+    "logoType": "needle",
+    "quote": "“UNIQUOVA gave Needle the bold, consumer-friendly identity we needed to solve medication shortages nationwide.”",
+    "founderName": "Dr. Julian Vance",
+    "founderRole": "Co-Founder & CEO, Needle",
+    "founderAvatar": "/images/team/team-5.jpg",
+    "projectLink": "/our-work",
+    "accentColor": "#7545F5",
+    "metrics": [
+      {
+        "label": "Pharmacies Synced",
+        "value": "14,000+"
+      },
+      {
+        "label": "Rx Fill Rate",
+        "value": "94.8%"
+      },
+      {
+        "label": "Time Saved",
+        "value": "4.5 Hrs"
+      }
+    ],
+    "caseStudySummary": "Full consumer brand identity, high-impact city billboard campaign, real-time prescription pharmacy inventory platform, and iOS/Android patient apps.",
+    "workImages": [
+      {
+        "id": "needle-w1",
+        "companyName": "Needle",
+        "category": "Urban Billboard",
+        "title": "Needle — Citywide Pharmacy Locator Billboard",
+        "image": "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_480.webp",
+        "caption": "Needle Finds Your Medications",
+        "quote": "“The superhero billboard campaign made Needle an overnight sensation across metro transit corridors.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "App Signups",
+            "value": "+420%"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "97.4%"
+          },
+          {
+            "label": "Prescriptions Filled",
+            "value": "350K+"
+          }
+        ],
+        "summary": "Bold, human-centric citywide billboard takeover connecting patients directly with verified pharmacy stock.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-w2",
+        "companyName": "Needle",
+        "category": "Pharmacy Web Platform",
+        "title": "Needle — Real-Time Stock Engine",
+        "image": "/images/selected_work/hpcsAqyp0liwh7Ok2IW6n891fQ_480.webp",
+        "caption": "Real-Time Pharmacy Stock Engine",
+        "quote": "“Patients find rare medication in seconds instead of calling 20 pharmacies manually.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Query Speed",
+            "value": "< 180ms"
+          },
+          {
+            "label": "Sync Accuracy",
+            "value": "99.4%"
+          },
+          {
+            "label": "Patient NPS",
+            "value": "96.5"
+          }
+        ],
+        "summary": "Cloud-native web platform aggregating live inventory feeds from major pharmacy chains in real time.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-w3",
+        "companyName": "Needle",
+        "category": "Transit Billboard Series",
+        "title": "Needle — Commuter Transit Displays",
+        "image": "/images/selected_work/9poKWYVyKb5i4OwJGKSpWYNX44_480.webp",
+        "caption": "Commuter Transit Display Series",
+        "quote": "“Clear, empathetic messaging that resonated with patients during critical healthcare needs.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Metro Reach",
+            "value": "3.8M"
+          },
+          {
+            "label": "Organic Mentions",
+            "value": "1,800+"
+          },
+          {
+            "label": "Doctor Referrals",
+            "value": "2,400+"
+          }
+        ],
+        "summary": "High-visibility transit posters placed adjacent to medical centers and transit hubs.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-w4",
+        "companyName": "Needle",
+        "category": "Mobile Health UI",
+        "title": "Needle — Patient Notification Wallet",
+        "image": "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_480.webp",
+        "caption": "Patient Notification & Alert UI",
+        "quote": "“Instant push alerts the millisecond a patient's prescription is stocked at their local pharmacy.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Notification Open",
+            "value": "78%"
+          },
+          {
+            "label": "Claim Speed",
+            "value": "< 4 Mins"
+          },
+          {
+            "label": "App Store",
+            "value": "4.9 ★"
+          }
+        ],
+        "summary": "Frictionless patient wallet with push notifications, automated transfer requests, and insurance cards.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "needle-c1-1",
+        "companyName": "Needle",
+        "category": "Urban Billboard",
+        "title": "Needle — Citywide Pharmacy Locator Billboard",
+        "image": "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_480.webp",
+        "caption": "Needle Finds Your Medications",
+        "quote": "“The superhero billboard campaign made Needle an overnight sensation across metro transit corridors.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "App Signups",
+            "value": "+420%"
+          },
+          {
+            "label": "Brand Recall",
+            "value": "97.4%"
+          },
+          {
+            "label": "Prescriptions Filled",
+            "value": "350K+"
+          }
+        ],
+        "summary": "Bold, human-centric citywide billboard takeover connecting patients directly with verified pharmacy stock.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-c1-2",
+        "companyName": "Needle",
+        "category": "Pharmacy Web Platform",
+        "title": "Needle — Real-Time Stock Engine",
+        "image": "/images/selected_work/hpcsAqyp0liwh7Ok2IW6n891fQ_480.webp",
+        "caption": "Real-Time Pharmacy Stock Engine",
+        "quote": "“Patients find rare medication in seconds instead of calling 20 pharmacies manually.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Query Speed",
+            "value": "< 180ms"
+          },
+          {
+            "label": "Sync Accuracy",
+            "value": "99.4%"
+          },
+          {
+            "label": "Patient NPS",
+            "value": "96.5"
+          }
+        ],
+        "summary": "Cloud-native web platform aggregating live inventory feeds from major pharmacy chains in real time.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-c1-3",
+        "companyName": "Needle",
+        "category": "Transit Billboard Series",
+        "title": "Needle — Commuter Transit Displays",
+        "image": "/images/selected_work/9poKWYVyKb5i4OwJGKSpWYNX44_480.webp",
+        "caption": "Commuter Transit Display Series",
+        "quote": "“Clear, empathetic messaging that resonated with patients during critical healthcare needs.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Metro Reach",
+            "value": "3.8M"
+          },
+          {
+            "label": "Organic Mentions",
+            "value": "1,800+"
+          },
+          {
+            "label": "Doctor Referrals",
+            "value": "2,400+"
+          }
+        ],
+        "summary": "High-visibility transit posters placed adjacent to medical centers and transit hubs.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "needle-c2-1",
+        "companyName": "Needle",
+        "category": "Mobile Health UI",
+        "title": "Needle — Patient Notification Wallet",
+        "image": "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_480.webp",
+        "caption": "Patient Notification & Alert UI",
+        "quote": "“Instant push alerts the millisecond a patient's prescription is stocked at their local pharmacy.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Notification Open",
+            "value": "78%"
+          },
+          {
+            "label": "Claim Speed",
+            "value": "< 4 Mins"
+          },
+          {
+            "label": "App Store",
+            "value": "4.9 ★"
+          }
+        ],
+        "summary": "Frictionless patient wallet with push notifications, automated transfer requests, and insurance cards.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-c2-2",
+        "companyName": "Needle",
+        "category": "National OOH Campaign",
+        "title": "Needle — Nationwide Pharmacy Network Billboard",
+        "image": "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_480.webp",
+        "caption": "National Pharmacy Network",
+        "quote": "“Our brand presence established Needle as the gold standard patient advocacy tool in digital health.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Pharmacy Partners",
+            "value": "14,000+"
+          },
+          {
+            "label": "Patient Savings",
+            "value": "$4.2M"
+          },
+          {
+            "label": "Press Coverage",
+            "value": "42 Outlets"
+          }
+        ],
+        "summary": "Nationwide outdoor awareness campaign emphasizing instant medication location and stock verification.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "needle-c2-3",
+        "companyName": "Needle",
+        "category": "Prescription Telemetry",
+        "title": "Needle — Prescription Routing Architecture",
+        "image": "/images/selected_work/hpcsAqyp0liwh7Ok2IW6n891fQ_480.webp",
+        "caption": "Prescription Routing Architecture",
+        "quote": "“Automated transfer requests routed directly to nearby pharmacies with 100% HIPAA compliance.”",
+        "founderName": "Dr. Julian Vance",
+        "founderRole": "Co-Founder & CEO, Needle",
+        "metrics": [
+          {
+            "label": "Transfer Time",
+            "value": "< 15 Mins"
+          },
+          {
+            "label": "HIPAA Compliant",
+            "value": "100%"
+          },
+          {
+            "label": "User Growth",
+            "value": "18x"
+          }
+        ],
+        "summary": "HIPAA-compliant cloud telemetry managing medication requests across state pharmacy networks.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 5,
+    "featured": true
+  },
+  {
+    "id": "outset-law",
+    "companyName": "Outset Law",
+    "companyCategory": "Modern Corporate & Personal Law",
+    "logoType": "outset",
+    "quote": "“A legal brand that feels humane, modern, and trustworthy. Our client inquiries doubled in the first quarter.”",
+    "founderName": "Eleanor Sterling",
+    "founderRole": "Managing Partner, Outset Law",
+    "founderAvatar": "/images/team/team-6.jpg",
+    "projectLink": "/our-work",
+    "accentColor": "#1C593F",
+    "metrics": [
+      {
+        "label": "Client Inbound",
+        "value": "+210%"
+      },
+      {
+        "label": "Consultation Rate",
+        "value": "74%"
+      },
+      {
+        "label": "Avg Resolution",
+        "value": "-35%"
+      }
+    ],
+    "caseStudySummary": "Modern legal branding, boardroom billboard series, seamless client intake portal, brand typography guidelines, and digital consultation systems.",
+    "workImages": [
+      {
+        "id": "outset-w1",
+        "companyName": "Outset Law",
+        "category": "Executive Billboard",
+        "title": "Outset Law — Executive Hall & Boardroom Billboard",
+        "image": "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_480.webp",
+        "caption": "Legal Clarity for Life's Transitions",
+        "quote": "“The calming, sophisticated billboard established Outset Law as the premier trusted counsel for major life events.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Inbound Retainers",
+            "value": "€4.8M"
+          },
+          {
+            "label": "Brand Equity",
+            "value": "98.9%"
+          },
+          {
+            "label": "Client Trust",
+            "value": "100%"
+          }
+        ],
+        "summary": "Prestigious indoor and outdoor billboard installations emphasizing calm guidance through complex legal transitions.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-w2",
+        "companyName": "Outset Law",
+        "category": "Transit Brand Series",
+        "title": "Outset Law — Metro Transit Law Architecture",
+        "image": "/images/selected_work/l5uacj7PHrYhKwot8vkmbWa4HM_480.webp",
+        "caption": "Metro Transit Law Series",
+        "quote": "“Warm, approachable legal communication that stripped away archaic jargon and connected with real people.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Inquiry Volume",
+            "value": "+180%"
+          },
+          {
+            "label": "Response Time",
+            "value": "< 2 Hrs"
+          },
+          {
+            "label": "Client Retention",
+            "value": "96.4%"
+          }
+        ],
+        "summary": "Subway and urban transit series highlighting transparent pricing and compassionate family law services.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-w3",
+        "companyName": "Outset Law",
+        "category": "Client Intake UI",
+        "title": "Outset Law — Frictionless Consultation Portal",
+        "image": "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_480.webp",
+        "caption": "Digital Client Intake Portal",
+        "quote": "“Clients can schedule, upload sensitive case files, and communicate securely with their attorney in minutes.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Booking Speed",
+            "value": "3 Mins"
+          },
+          {
+            "label": "Intake Drop-off",
+            "value": "-62%"
+          },
+          {
+            "label": "Client NPS",
+            "value": "97.8"
+          }
+        ],
+        "summary": "End-to-end encrypted client intake portal with interactive case assessment and direct attorney scheduling.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-w4",
+        "companyName": "Outset Law",
+        "category": "Legal Tech Automation",
+        "title": "Outset Law — Document & Contract Workflow",
+        "image": "/images/selected_work/rZy5kVEyJg6E87JFlpFNpA2BSQ_480.webp",
+        "caption": "Automated Document Workflows",
+        "quote": "“Streamlined paperwork and automated drafting allowed our partners to focus 100% on advocacy.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Drafting Velocity",
+            "value": "5x"
+          },
+          {
+            "label": "Error Rate",
+            "value": "0.0%"
+          },
+          {
+            "label": "Partner Hours Saved",
+            "value": "40+/wk"
+          }
+        ],
+        "summary": "Intelligent document automation engine generating bespoke estate planning and corporate contracts.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col1Items": [
+      {
+        "id": "outset-c1-1",
+        "companyName": "Outset Law",
+        "category": "Executive Billboard",
+        "title": "Outset Law — Executive Hall & Boardroom Billboard",
+        "image": "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_480.webp",
+        "caption": "Legal Clarity for Life's Transitions",
+        "quote": "“The calming, sophisticated billboard established Outset Law as the premier trusted counsel for major life events.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Inbound Retainers",
+            "value": "€4.8M"
+          },
+          {
+            "label": "Brand Equity",
+            "value": "98.9%"
+          },
+          {
+            "label": "Client Trust",
+            "value": "100%"
+          }
+        ],
+        "summary": "Prestigious indoor and outdoor billboard installations emphasizing calm guidance through complex legal transitions.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-c1-2",
+        "companyName": "Outset Law",
+        "category": "Transit Brand Series",
+        "title": "Outset Law — Metro Transit Law Architecture",
+        "image": "/images/selected_work/l5uacj7PHrYhKwot8vkmbWa4HM_480.webp",
+        "caption": "Metro Transit Law Series",
+        "quote": "“Warm, approachable legal communication that stripped away archaic jargon and connected with real people.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Inquiry Volume",
+            "value": "+180%"
+          },
+          {
+            "label": "Response Time",
+            "value": "< 2 Hrs"
+          },
+          {
+            "label": "Client Retention",
+            "value": "96.4%"
+          }
+        ],
+        "summary": "Subway and urban transit series highlighting transparent pricing and compassionate family law services.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-c1-3",
+        "companyName": "Outset Law",
+        "category": "Client Intake UI",
+        "title": "Outset Law — Frictionless Consultation Portal",
+        "image": "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_480.webp",
+        "caption": "Digital Client Intake Portal",
+        "quote": "“Clients can schedule, upload sensitive case files, and communicate securely with their attorney in minutes.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Booking Speed",
+            "value": "3 Mins"
+          },
+          {
+            "label": "Intake Drop-off",
+            "value": "-62%"
+          },
+          {
+            "label": "Client NPS",
+            "value": "97.8"
+          }
+        ],
+        "summary": "End-to-end encrypted client intake portal with interactive case assessment and direct attorney scheduling.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "col2Items": [
+      {
+        "id": "outset-c2-1",
+        "companyName": "Outset Law",
+        "category": "Legal Tech Automation",
+        "title": "Outset Law — Document & Contract Workflow",
+        "image": "/images/selected_work/rZy5kVEyJg6E87JFlpFNpA2BSQ_480.webp",
+        "caption": "Automated Document Workflows",
+        "quote": "“Streamlined paperwork and automated drafting allowed our partners to focus 100% on advocacy.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Drafting Velocity",
+            "value": "5x"
+          },
+          {
+            "label": "Error Rate",
+            "value": "0.0%"
+          },
+          {
+            "label": "Partner Hours Saved",
+            "value": "40+/wk"
+          }
+        ],
+        "summary": "Intelligent document automation engine generating bespoke estate planning and corporate contracts.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-c2-2",
+        "companyName": "Outset Law",
+        "category": "High-Impact OOH",
+        "title": "Outset Law — Life Transitions Billboard Series",
+        "image": "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_480.webp",
+        "caption": "Life Transitions Billboard Series",
+        "quote": "“A modern visual standard that elevated the firm to the top tier of international practice.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Referral Rate",
+            "value": "88%"
+          },
+          {
+            "label": "Corporate Clients",
+            "value": "140+"
+          },
+          {
+            "label": "National Reach",
+            "value": "2.8M"
+          }
+        ],
+        "summary": "High-impact outdoor media conveying calm authority and dependable legal counsel.",
+        "projectLink": "/our-work"
+      },
+      {
+        "id": "outset-c2-3",
+        "companyName": "Outset Law",
+        "category": "Brand Guidelines",
+        "title": "Outset Law — Humane Brand Guidelines & Tokens",
+        "image": "/images/selected_work/l5uacj7PHrYhKwot8vkmbWa4HM_480.webp",
+        "caption": "Humane Brand Guidelines & Tokens",
+        "quote": "“The design tokens and editorial guidelines ensure our message remains consistent across all offices.”",
+        "founderName": "Eleanor Sterling",
+        "founderRole": "Managing Partner, Outset Law",
+        "metrics": [
+          {
+            "label": "Brand Uniformity",
+            "value": "100%"
+          },
+          {
+            "label": "Multi-Office Sync",
+            "value": "6 Locations"
+          },
+          {
+            "label": "Client Satisfaction",
+            "value": "99.2%"
+          }
+        ],
+        "summary": "Complete brand guidelines covering typography, legal documentation styling, and office signage.",
+        "projectLink": "/our-work"
+      }
+    ],
+    "order": 6,
+    "featured": true
+  }
+]

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import initialFounders from "@/data/trustedFounders.json";
 import {
   motion,
   AnimatePresence,
@@ -36,7 +37,8 @@ export interface FounderStory {
   id: string;
   companyName: string;
   companyCategory: string;
-  logoType: "megahr" | "913" | "ruuster" | "euroteam" | "needle" | "outset";
+  logoType?: "megahr" | "913" | "ruuster" | "euroteam" | "needle" | "outset" | "custom";
+  customLogoUrl?: string;
   quote: string;
   founderName: string;
   founderRole: string;
@@ -46,8 +48,10 @@ export interface FounderStory {
   metrics: { label: string; value: string }[];
   caseStudySummary: string;
   workImages: BrandWorkItem[];
-  col1Items: BrandWorkItem[];
-  col2Items: BrandWorkItem[];
+  col1Items?: BrandWorkItem[];
+  col2Items?: BrandWorkItem[];
+  order?: number;
+  featured?: boolean;
 }
 
 export const FEATURED_FOUNDERS: FounderStory[] = [
@@ -1288,6 +1292,9 @@ interface TrustedByCompaniesProps {
 }
 
 export default function TrustedByCompanies({ onOpenContact }: TrustedByCompaniesProps) {
+  const [stories, setStories] = useState<FounderStory[]>(
+    (initialFounders && initialFounders.length > 0 ? initialFounders : FEATURED_FOUNDERS) as FounderStory[]
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -1296,18 +1303,50 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   const containerRef = useRef<HTMLDivElement>(null);
   const bentoGridRef = useRef<HTMLDivElement>(null);
 
-  const total = FEATURED_FOUNDERS.length;
-  const current = FEATURED_FOUNDERS[currentIndex];
+  // Fetch dynamic founder stories from CMS API with session cache
+  useEffect(() => {
+    try {
+      const cached = sessionStorage.getItem("uniquova_founders_v1");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setStories(parsed);
+        }
+      }
+    } catch {
+      // Ignore
+    }
+
+    fetch(`/api/trusted-founders?t=${Date.now()}`, { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.stories) && data.stories.length > 0) {
+          setStories(data.stories);
+          try {
+            sessionStorage.setItem("uniquova_founders_v1", JSON.stringify(data.stories));
+          } catch {
+            // Ignore
+          }
+        }
+      })
+      .catch(() => {
+        // Keep fallback
+      });
+  }, []);
+
+  const total = stories.length;
+  const safeIndex = total > 0 ? currentIndex % total : 0;
+  const current = stories[safeIndex] || FEATURED_FOUNDERS[0];
 
   // Navigation handlers
   const nextSlide = useCallback(() => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % total);
+    setCurrentIndex((prev) => (total > 0 ? (prev + 1) % total : 0));
   }, [total]);
 
   const prevSlide = useCallback(() => {
     setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
+    setCurrentIndex((prev) => (total > 0 ? (prev - 1 + total) % total : 0));
   }, [total]);
 
   // Autoplay interval with pause on hover
@@ -1381,6 +1420,18 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
   };
 
   const renderCompanyLogo = (story: FounderStory) => {
+    if (story.customLogoUrl) {
+      return (
+        <div className="flex items-center gap-2.5">
+          <img
+            src={story.customLogoUrl}
+            alt={story.companyName}
+            className="h-7 w-auto object-contain max-w-[140px]"
+          />
+          <span className="font-extrabold text-2xl text-dark tracking-tight">{story.companyName}</span>
+        </div>
+      );
+    }
     if (story.logoType === "megahr") {
       return (
         <div className="flex items-center gap-2.5">
@@ -1435,12 +1486,25 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
         </div>
       );
     }
+    if (story.logoType === "outset") {
+      return (
+        <div className="flex items-center gap-2">
+          <div className="px-1.5 py-0.5 rounded bg-[#1C593F] text-white text-[10px] font-black tracking-widest uppercase">
+            OUTSET
+          </div>
+          <span className="font-extrabold text-2xl text-dark tracking-tight">Outset Law</span>
+        </div>
+      );
+    }
     return (
       <div className="flex items-center gap-2">
-        <div className="px-1.5 py-0.5 rounded bg-[#1C593F] text-white text-[10px] font-black tracking-widest uppercase">
-          OUTSET
+        <div
+          className="px-2 py-0.5 rounded text-white text-[10px] font-black tracking-widest uppercase"
+          style={{ backgroundColor: story.accentColor || "#7545F5" }}
+        >
+          {story.companyName.substring(0, 6).toUpperCase()}
         </div>
-        <span className="font-extrabold text-2xl text-dark tracking-tight">Outset Law</span>
+        <span className="font-extrabold text-2xl text-dark tracking-tight">{story.companyName}</span>
       </div>
     );
   };
@@ -1651,42 +1715,57 @@ export default function TrustedByCompanies({ onOpenContact }: TrustedByCompanies
                   {/* Column 1: Continuous Vertical Marquee Up */}
                   <div className="h-full overflow-hidden">
                     <div className="animate-marquee-up pause-on-hover flex flex-col gap-3 sm:gap-3.5 will-change-transform">
-                      {[...current.col1Items, ...current.col1Items].map((item, idx) => (
-                        <div
-                          key={`${item.id}-c1-${idx}`}
-                          onClick={() => setSelectedStoryModal(item)}
-                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
-                        </div>
-                      ))}
+                      {(() => {
+                        const col1 = (current.col1Items && current.col1Items.length > 0)
+                          ? current.col1Items
+                          : (current.workImages || []).filter((_, i) => i % 2 === 0);
+                        const finalCol1 = col1.length > 0 ? col1 : (current.workImages || []);
+                        return [...finalCol1, ...finalCol1].map((item, idx) => (
+                          <div
+                            key={`${item.id}-c1-${idx}`}
+                            onClick={() => setSelectedStoryModal(item)}
+                            className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#0A0910] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
+                          >
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
+                          </div>
+                        ));
+                      })()}
                     </div>
                   </div>
 
                   {/* Column 2: Continuous Vertical Marquee Down */}
                   <div className="h-full overflow-hidden">
                     <div className="animate-marquee-down pause-on-hover flex flex-col gap-3 sm:gap-3.5 will-change-transform">
-                      {[...current.col2Items, ...current.col2Items].map((item, idx) => (
-                        <div
-                          key={`${item.id}-c2-${idx}`}
-                          onClick={() => setSelectedStoryModal(item)}
-                          className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
-                        </div>
-                      ))}
+                      {(() => {
+                        const col2 = (current.col2Items && current.col2Items.length > 0)
+                          ? current.col2Items
+                          : (current.workImages || []).filter((_, i) => i % 2 !== 0);
+                        const fallbackCol1 = (current.col1Items && current.col1Items.length > 0)
+                          ? current.col1Items
+                          : (current.workImages || []);
+                        const finalCol2 = col2.length > 0 ? col2 : fallbackCol1;
+                        return [...finalCol2, ...finalCol2].map((item, idx) => (
+                          <div
+                            key={`${item.id}-c2-${idx}`}
+                            onClick={() => setSelectedStoryModal(item)}
+                            className="group/card relative h-[180px] sm:h-[200px] lg:h-[210px] w-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#16151E] border border-primary/20 hover:border-primary/60 shadow-[0_8px_24px_rgba(21,19,35,0.12)] hover:shadow-glow-sm cursor-pointer transition-all duration-300 ease-out shrink-0"
+                          >
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-cover object-center select-none group-hover/card:scale-105 transition-transform duration-500 ease-out"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 rounded-[inherit] border border-white/10 pointer-events-none" />
+                          </div>
+                        ));
+                      })()}
                     </div>
                   </div>
                 </motion.div>

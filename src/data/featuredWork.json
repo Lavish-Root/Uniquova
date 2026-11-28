@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ecommerce-work",
+    "title": "Apex Direct — D2C & Marketplace Store",
+    "domain": "E-commerce Solutions",
+    "tagline": "Amazon & Flipkart Multi-Channel Growth",
+    "image": "/images/portfolio/apex_ecommerce.jpg",
+    "domainLink": "/services/ecommerce",
+    "order": 1
+  },
+  {
+    "id": "web-dev-work",
+    "title": "Manufacturing Art — High-Speed Web App",
+    "domain": "Website Development",
+    "tagline": "Next.js Production Architecture & UI/UX",
+    "image": "/images/selected_work/QAxA8GI2uEu8q2zketxqbeX0Rg_480.webp",
+    "domainLink": "/services/web-development",
+    "order": 2
+  },
+  {
+    "id": "app-dev-work",
+    "title": "Zenith Health — iOS & Android Mobile App",
+    "domain": "App Development",
+    "tagline": "Native 60fps Mobile Performance & Telehealth",
+    "image": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
+    "domainLink": "/services/app-development",
+    "order": 3
+  },
+  {
+    "id": "branding-work",
+    "title": "MegaHR — Metro Takeover Brand System",
+    "domain": "Branding & Identity",
+    "tagline": "Visual Identity, Design Tokens & Guidelines",
+    "image": "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp",
+    "domainLink": "/services/branding",
+    "order": 4
+  },
+  {
+    "id": "graphic-design-work",
+    "title": "DeluPay — 3D Visual Identity & Motion",
+    "domain": "Graphic Designing",
+    "tagline": "High-CTR Ads, 3D Mockups & Social Creatives",
+    "image": "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_480.webp",
+    "domainLink": "/services/graphic-designing",
+    "order": 5
+  }
+]

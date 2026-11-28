@@ -1,0 +1,231 @@
+[
+  {
+    "id": "ecommerce",
+    "slug": "ecommerce",
+    "domain": "E-commerce",
+    "title": "E-commerce that drives real sales",
+    "defaultImage": "/images/services/ecom_shopping_store.jpg",
+    "link": "/services/ecommerce",
+    "order": 1,
+    "tags": [
+      {
+        "label": "Amazon management",
+        "image": "/images/services/ecommerce_bg_1.jpg"
+      },
+      {
+        "label": "Flipkart operations",
+        "image": "/images/services/ecommerce_bg_3.jpg"
+      },
+      {
+        "label": "PPC ad campaigns",
+        "image": "/images/services/ecom_digital_retail.jpg"
+      },
+      {
+        "label": "Listing SEO",
+        "image": "/images/services/ecom_packages.jpg"
+      },
+      {
+        "label": "Product catalogs",
+        "image": "/images/services/ecom_shopping_store.jpg"
+      },
+      {
+        "label": "Storefront design",
+        "image": "/images/services/ecom_laptop_cart.jpg"
+      }
+    ]
+  },
+  {
+    "id": "app-development",
+    "slug": "app-development",
+    "domain": "App Development",
+    "title": "Apps that users love daily",
+    "defaultImage": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp",
+    "link": "/services/app-development",
+    "order": 3,
+    "tags": [
+      {
+        "label": "iOS applications",
+        "image": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp"
+      },
+      {
+        "label": "Android apps",
+        "image": "/images/services/app_dev_bg.jpg"
+      },
+      {
+        "label": "Cross-platform",
+        "image": "/images/selected_work/KentOs5VhgKxRvEU6cqYCY2pH7A_480.webp"
+      },
+      {
+        "label": "Fluid UI/UX",
+        "image": "/images/selected_work/qcyJpQGUrkkC5mT7vOWCxH6fZk_480.webp"
+      },
+      {
+        "label": "Custom features",
+        "image": "/images/selected_work/VoRww8rQDPyN3LNlZtvNUDqZOVE_480.webp"
+      },
+      {
+        "label": "App Store launch",
+        "image": "/images/selected_work/7FldzCFmPc3PkirvuWP1hV6M_480.webp"
+      }
+    ]
+  },
+  {
+    "id": "branding",
+    "slug": "branding",
+    "domain": "Branding",
+    "title": "Brand identity that means something",
+    "defaultImage": "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp",
+    "link": "/services/branding",
+    "order": 4,
+    "tags": [
+      {
+        "label": "Branding strategy",
+        "image": "/images/services/branding_bg.jpg"
+      },
+      {
+        "label": "Naming & positioning",
+        "image": "/images/selected_work/HAegA2N4CzuRhh4T7urCIBx84M_480.webp"
+      },
+      {
+        "label": "Logo design",
+        "image": "/images/selected_work/6Fiwu9F9MKkOxpv42vAlXksFU_480.webp"
+      },
+      {
+        "label": "Visual identity",
+        "image": "/images/selected_work/AqzNoOtPPVkoo2wVZLMef3uhL8o_480.webp"
+      },
+      {
+        "label": "Brand guidelines",
+        "image": "/images/selected_work/6Fiwu9F9MKkOxpv42vAlXksFU_480.webp"
+      },
+      {
+        "label": "Marketing materials",
+        "image": "/images/selected_work/rLOEAajcxuoSByBHZOjxaMTnzA_480.webp"
+      }
+    ]
+  },
+  {
+    "id": "graphic-design",
+    "slug": "graphic-design",
+    "domain": "Graphic Designing",
+    "title": "Creatives that stop the scroll",
+    "defaultImage": "/images/services/graphic_design_bg.jpg",
+    "link": "/services/graphic-design",
+    "order": 5,
+    "tags": [
+      {
+        "label": "Social media creatives",
+        "image": "/images/selected_work/uqMI3M9FIeMorIDx6YyRwRj9C8_480.webp"
+      },
+      {
+        "label": "Ad campaigns",
+        "image": "/images/services/graphic_design_bg.jpg"
+      },
+      {
+        "label": "3D mockups",
+        "image": "/images/selected_work/gtavCMDLHB0d9ehFukQtVNbXeU_480.webp"
+      },
+      {
+        "label": "Motion graphics",
+        "image": "/images/selected_work/rjlcLH3DNif0U74oMAOCto3zT0_480.webp"
+      },
+      {
+        "label": "Pitch & sales decks",
+        "image": "/images/selected_work/pT9GV8WvHgTQ65MW162mjfBro_480.webp"
+      },
+      {
+        "label": "Marketing banners",
+        "image": "/images/selected_work/rLOEAajcxuoSByBHZOjxaMTnzA_480.webp"
+      }
+    ]
+  },
+  {
+    "id": "growth-strategy",
+    "slug": "ecommerce",
+    "domain": "Integrated Growth",
+    "title": "Growth strategy that scales brands",
+    "defaultImage": "/images/pillars/integrated.jpg",
+    "link": "/contact",
+    "order": 6,
+    "tags": [
+      {
+        "label": "Dedicated growth team",
+        "image": "/images/pillars/tech_execution.jpg"
+      },
+      {
+        "label": "Omnichannel scaling",
+        "image": "/images/pillars/integrated.jpg"
+      },
+      {
+        "label": "Conversion optimization",
+        "image": "/images/pillars/business_focused.jpg"
+      },
+      {
+        "label": "Full-funnel roadmap",
+        "image": "/images/pillars/scalable.jpg"
+      },
+      {
+        "label": "Founder Slack channel",
+        "image": "/images/pillars/client_centric.jpg"
+      }
+    ]
+  },
+  {
+    "id": "web-development",
+    "slug": "web-development",
+    "domain": "Web Development",
+    "title": "Websites that close deals",
+    "defaultImage": "/images/services/service_default_1795856839126_exi4z.webp",
+    "link": "/services/web-development",
+    "order": 7,
+    "tags": [
+      {
+        "label": "Website design",
+        "image": "/images/services/tag_0_1795856839129_gauap.webp"
+      },
+      {
+        "label": "Landing pages",
+        "image": "/images/services/tag_1_1795856839131_bxlmm.webp"
+      },
+      {
+        "label": "Wireframes & UX",
+        "image": "/images/services/tag_2_1795856839133_79lj7.webp"
+      },
+      {
+        "label": "Custom web apps",
+        "image": "/images/services/tag_3_1795856839135_96c7p.webp"
+      },
+      {
+        "label": "Next.js performance",
+        "image": "/images/selected_work/5XLw1iOCFMkIdPcaUnzOqvhUN8M_480.webp"
+      },
+      {
+        "label": "Design systems",
+        "image": "/images/selected_work/me7oqaVBqgeLO9RXw1QevAGsFlw_480.webp"
+      }
+    ]
+  },
+  {
+    "id": "service-1795857304853",
+    "slug": "web-development",
+    "domain": "Web Development",
+    "title": "Websites that close deals",
+    "defaultImage": "/images/services/service_default_1795857371277_vup0f.webp",
+    "link": "/services/web-development",
+    "order": 8,
+    "tags": [
+      {
+        "label": "High-Converting UI/UX",
+        "image": "/images/services/tag_0_1795857371281_n2073.webp"
+      },
+      {
+        "label": "New Capability",
+        "image": "/images/services/tag_1_1795857371283_76mjj.webp"
+      },
+      {
+        "label": "New Capability",
+        "image": "/images/services/tag_2_1795857371285_or497.webp"
+      }
+    ]
+  }
+]

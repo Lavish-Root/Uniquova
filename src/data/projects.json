@@ -179,14 +179,14 @@
   },
   {
     "id": "proj_brand_1",
-    "title": "Lumina Organics — Global Brand Identity & Packaging",
+    "title": "Slicco Pizza — National Brand Identity & Franchise Visual System",
     "serviceCategory": "Branding",
-    "client": "Lumina Group",
-    "description": "Comprehensive corporate visual identity system: custom logo mark, typography hierarchy, sustainable packaging die-lines, and full brand guideline book.",
-    "vercelUrl": "https://uniquova.com/services/branding",
+    "client": "Jason Miller",
+    "description": "End-to-end brand identity for US pizzeria Slicco: custom pizza-slice logo, retro mascot, warm vintage palette, signage, and complete visual guidelines.",
+    "vercelUrl": "",
     "githubUrl": "",
     "mediaType": "image",
-    "mediaUrl": "/images/services/branding_bg.jpg?v=3",
+    "mediaUrl": "/images/portfolio/media_1795852653620_4w43b.jpg",
     "badges": [
       "Packaging",
       "Luxury"
@@ -196,17 +196,38 @@
       "Identity"
     ],
     "gallery": [
-      "/images/services/branding_bg.jpg?v=3",
-      "/images/portfolio/lumina_brand.jpg",
-      "/images/selected_work/HihuK51yaPuGKHmnXrlbzvzZM_1920.webp"
+      "/images/portfolio/deliverable_01_1795852653709_diif5.jpg",
+      "/images/portfolio/deliverable_02_1795852653711_b4ez3.jpg",
+      "/images/portfolio/deliverable_03_1795852653714_q4fiz.jpg",
+      "/images/portfolio/deliverable_04_1795852653720_sr3th.jpg",
+      "/images/portfolio/deliverable_05_1795852653723_hy1fq.jpg",
+      "/images/portfolio/deliverable_06_1795852653725_vpqbd.jpg",
+      "/images/portfolio/deliverable_07_1795852653730_o1xis.jpg",
+      "/images/portfolio/deliverable_08_1795852653733_y2x4d.jpg",
+      "/images/portfolio/deliverable_09_1795852653736_vd71h.jpg",
+      "/images/portfolio/deliverable_10_1795852653739_ic7e6.jpg",
+      "/images/portfolio/deliverable_11_1795852653754_lzsrj.jpg",
+      "/images/portfolio/deliverable_12_1795852653787_r3t9c.jpg",
+      "/images/portfolio/deliverable_13_1795852653790_nx33o.jpg",
+      "/images/portfolio/deliverable_14_1795852653799_6w3ib.jpg",
+      "/images/portfolio/deliverable_15_1795852653809_1amko.jpg",
+      "/images/portfolio/deliverable_16_1795852653815_yd3cu.jpg",
+      "/images/portfolio/deliverable_17_1795852653826_y5ugw.jpg",
+      "/images/portfolio/deliverable_18_1795852653835_80ysu.jpg",
+      "/images/portfolio/deliverable_19_1795852653840_79wvn.jpg"
     ],
     "technologies": [
-      "Brand Strategy",
-      "Master Guidelines",
+      "Brand Identity",
+      "Logo & Wordmark Design",
+      "Custom Typography",
+      "Character & Mascot Illustration",
       "Packaging Design",
-      "Vector Craft"
+      "Die-Line Layout",
+      "Storefront Signage Design",
+      "Adobe Illustrator",
+      "Adobe Photoshop"
     ],
-    "impact": "Sold Out in 48 Hours",
+    "impact": "",
     "metrics": [
       {
         "label": "Brand Recall",
